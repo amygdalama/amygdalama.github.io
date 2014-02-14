@@ -12,7 +12,7 @@ Creating a website hosted on GitHub pages using Pelican, with content ported fro
      Please answer the following questions so this script can generate the files needed by Pelican.  
 
     
-     > Where do you want to create your new web site? [.] .  
+     \> Where do you want to create your new web site? [.] .  
      > What will be the title of this web site? Amy Hanlon  
      > Who will be the author of this web site? Amy Hanlon  
      > What will be the default language of this web site? [en] en  
