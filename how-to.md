@@ -4,7 +4,8 @@ Creating a website hosted on GitHub pages using Pelican, with content ported fro
 2. Initial Pelican setup in a virtualenv: http://docs.getpelican.com/en/3.3.0/getting_started.html
   * run quickstart  
 
-    ```(blog)amygdalama.github.io [master #%] $ pelican-quickstart  
+    ```
+    (blog)amygdalama.github.io [master #%] $ pelican-quickstart  
      Welcome to pelican-quickstart v3.3.0.  
 
      This script will help you create a new Pelican-based website.  
