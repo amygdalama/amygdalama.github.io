@@ -5,7 +5,7 @@ Creating a website hosted on GitHub pages using Pelican, with content ported fro
   * run quickstart  
 
     ```
-     (blog)amygdalama.github.io [master #%] $ pelican-quickstart  
+    (blog)amygdalama.github.io [master #%] $ pelican-quickstart  
      Welcome to pelican-quickstart v3.3.0.  
 
      This script will help you create a new Pelican-based website.  
@@ -30,6 +30,6 @@ Creating a website hosted on GitHub pages using Pelican, with content ported fro
      Done. Your new project is available at /Users/amyhanlon/Projects/amygdalama.github.io  
      (blog)amygdalama.github.io [master #%] $ ls  
      Makefile		develop_server.sh	how-to.md		pelicanconf.py  
-     content			fabfile.py		output			publishconf.py  
+     content			fabfile.py		output			publishconf.py
      ```
 I don't want this to be in a code block.
