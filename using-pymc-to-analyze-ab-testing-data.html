@@ -1,43 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>Using PyMC to Analyze A/B Testing Data - Amy Hanlon</title>
+    <link href="http://fonts.googleapis.com/css?family=Arimo:400,700|Inika" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/theme/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/pastie.css" />
+    <link href="/" type="application/atom+xml" rel="alternate" title="Amy Hanlon Atom Feed" />
 
 
-    <meta name="tags" contents="ab testing" />
-    <meta name="tags" contents="bayesian methods for hackers" />
-    <meta name="tags" contents="matplotlib" />
-    <meta name="tags" contents="numpy" />
-    <meta name="tags" contents="pymc" />
-    <meta name="tags" contents="python" />
+  </head>
 
-</head>
-
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="">Amy Hanlon <strong></strong></a></h1>
-        </header><!-- /#banner -->
-        <nav id="menu"><ul>
-            <li><a href="/pages/bio.html">Biography</a></li>
-            <li><a href="/pages/endorsements.html">Endorsements</a></li>
-            <li><a href="/pages/home.html">Home</a></li>
-        </ul></nav><!-- /#menu -->
-<section id="content" class="body">
-  <header>
-    <h2 class="entry-title">
-      <a href="/using-pymc-to-analyze-ab-testing-data.html" rel="bookmark"
-         title="Permalink to Using PyMC to Analyze A/B Testing Data">Using PyMC to Analyze A/B Testing Data</a></h2>
- 
-  </header>
-  <footer class="post-info">
-    <abbr class="published" title="2013-12-24T22:23:00">
-      Tue 24 December 2013
-    </abbr>
-    <address class="vcard author">
-      By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
-    </address>
-  </footer><!-- /.post-info -->
-  <div class="entry-content">
-    <p>In Chapter 2 of <a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">Bayesian Methods for Hackers</a>, there's an example of
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span8">
+<div id="content">
+    <div class="header">
+        <h1>Using PyMC to Analyze A/B Testing Data</h1>
+    </div>
+    <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Tue 24 December 2013</span> - <span class="tags"><a href="/tag/ab testing/">ab testing</a>, <a href="/tag/bayesian methods for hackers/">bayesian methods for hackers</a>, <a href="/tag/matplotlib/">matplotlib</a>, <a href="/tag/numpy/">numpy</a>, <a href="/tag/pymc/">pymc</a>, <a href="/tag/python/">python</a></span></small></p>
+        <div class="entry-content">
+        <p>In Chapter 2 of <a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">Bayesian Methods for Hackers</a>, there's an example of
 Bayesian analysis of an A/B test using simulated data. I decided to play
 around with this analysis method with real A/B landing page test data
 from one of my clients.</p>
@@ -132,13 +116,41 @@ print "Probability site A is WORSE than site B: %.3f" % \<br />
 page B is better than page A, and these results come very intuitively
 from looking at the graphs.</p>
 <p>The full code can be found on my <a href="https://github.com/amygdalama/tutorials/blob/master/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/MySourceFiles/Chapter2/ab-real-data.py">GitHub</a>.</p>
-  </div><!-- /.entry-content -->
-</section>
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
-                which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-        </footer><!-- /#contentinfo -->
-</body>
+        </div><!-- /.entry-content -->
+</div>
+        </div>
+        <div class="span3 offset1">
+          <div class="well">
+            <ul class="nav nav-list">
+              <li class="nav-header">Blog</li>
+              <li ><a href="">Index</a></li>
+              <li ><a href="/tags/">Tags</a></li>
+              <li ><a href="/archives/">Archiv</a></li>
+              <li class="nav-header">Seiten</li>
+              <li><a href="/pages/bio.html">Biography</a></li>
+              <li><a href="/pages/endorsements.html">Endorsements</a></li>
+              <li><a href="/pages/home.html">Home</a></li>
+              <li class="nav-header">Links</li>
+              <li><a href="http://getpelican.com/">Pelican</a></li>
+              <li><a href="http://python.org/">Python.org</a></li>
+              <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+              <li><a href="#">You can modify those links in your config file</a></li>
+            </ul>
+          </div><!-- /#menu -->
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="row">
+        <div class="span12">
+          <div id="about">
+            <p>Proudly powered by <a href="http://twitter.github.com/bootstrap/">bootstrap</a>, <a href="http://docs.notmyidea.org/alexis/pelican/">pelican</a>, <a href="http://python.org">python</a> and <a href="http://www.julo.ch/about/">Alex</a>!</p>
+          </div><!-- /#about -->
+        </div><!-- /#contentinfo -->
+      </div>
+    </div>
+
+
+  </body>
 </html>
