@@ -1,261 +1,455 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-  <head>
-    <title>Blog - Amy Hanlon</title>
-    <link href="http://fonts.googleapis.com/css?family=Arimo:400,700|Inika" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/theme/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="/theme/pastie.css" />
-    <link href="/" type="application/atom+xml" rel="alternate" title="Amy Hanlon Atom Feed" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Amy Hanlon</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+   
 
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-  </head>
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
+                <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
 
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="span8">
-<div id="content">
-<h1>Blog</h1>
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
 
-<ul class="unstyled">
-        <li>
-            <div>
-                <div class="header">
-                    <h2>ipython and pandas are whoa!</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Fri 14 February 2014</span> - <span class="tags"><a href="/tag/data analysis/">data analysis</a>, <a href="/tag/hacker school/">hacker school</a>, <a href="/tag/ipython/">ipython</a>, <a href="/tag/matplotlib/">matplotlib</a>, <a href="/tag/pandas/">pandas</a>, <a href="/tag/python/">python</a></span></small></p>
-                <div class="entry-content">
-                    <p>In my first five months of using Python, I would create .py files and
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/bio.html">Biography</a></li>
+                    <li><a href="/pages/endorsements.html">Endorsements</a></li>
+                    <li><a href="/pages/home.html">Home</a></li>
+                    <li ><a href="/category/hacker-school.html">Hacker School</a></li>
+                    <li ><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
+                    <li ><a href="/category/projects.html">Projects</a></li>
+                    <li ><a href="/category/uncategorized.html">Uncategorized</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+        
+        
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/ipython-and-pandas-are-whoa.html">ipython and pandas are whoa!</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-02-14T15:52:00">
+                Fri 14 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+        </address>
+<p>In <a href="/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="/tag/data-analysis.html">data analysis</a><a href="/tag/hacker-school.html">hacker school</a><a href="/tag/ipython.html">ipython</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/pandas.html">pandas</a><a href="/tag/python.html">python</a></p></footer><!-- /.post-info --><p>In my first five months of using Python, I would create .py files and
 then execute them in the terminal, like the loyal follower of <a href="http://learnpythonthehardway.org/book/">LPTHW</a>
 that I am. While it's certainly necessary to be able to write Python
-scripts and execute them from the terminal, I've learned ...</p>
-                </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/ipython-and-pandas-are-whoa.html" rel="bookmark" title="Permalink to ipython and pandas are whoa!">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+scripts and execute them from the terminal, I've learned that this
+workflow isn't the best way to explore data in Python.</p>
+<p>I initially converted to Python from R, and since have missed the
+interactiveness of working within RStudio (you don't have to re-run your
+entire code every time you make a change and want to view the results)
+and how R allows you to so quickly get to your data with data frames
+built straight from text files. Enter: <a href="http://ipython.org/">ipython</a> and <a href="http://pandas.pydata.org/">pandas</a>. (Go
+to their respective sites for installation instructions.)</p>
+<p>Julia Evans has a fantastic <a href="https://github.com/jvns/pandas-cookbook">tutorial</a> on how to use pandas in an
+ipython notebook. Here, I'd like to explore the differences between
+doing data analysis using ipython notebook and pandas versus writing .py
+scripts using mainly standard Python packages and executing via the
+terminal.</p>
+<p>Let's use the classic iris dataset for some simple analysis. First we
+need to do some setup. Create a directory for our project (mine is
+stored within my Projects directory that I keep in my Home directory.)
+In the terminal:</p>
+<p>[code lang="bash" gutter="false"]\$ mkdir
+\~/Projects/ipython-pandas-whoa<br />
+\$ cd \~/Projects[/code]</p>
+<p>Then create a Python script and open it with a text editor (I use
+Sublime Text 2, which I've <a href="http://www.sublimetext.com/docs/2/osx_command_line.html">configured</a> to open files with the command
+<code>subl</code>.</p>
+<p>[code lang="bash" gutter="false"]\$ touch barbaric-script.py<br />
+\$ subl barbaric-script.py[/code]</p>
+<p>This should open up a blank .py file in Sublime. If you don't have
+<code>subl</code> set up, you can simply open up the blank barbaric-script.py file
+we created with the <code>touch</code> command in your text editor of choice.</p>
+<p>In the barbaric-script.py file, let's import the necessary packages.
+We'll be using a couple standard python packages plus matplotlib.pyplot.
+If you don't have matplotlib installed, you can find installation
+instructions <a href="http://matplotlib.org/users/installing.html">here</a>.</p>
+<p>[code lang="python"]<br />
+import csv<br />
+import pprint<br />
+import urllib2</p>
+<p>import matplotlib.pyplot as plt[/code]</p>
+<p>To get the iris data, we'll use Python's built-in urllib2 and csv
+packages and then do some basic formatting. Let's process the dataset as
+a list of dictionaries.</p>
+<p>[code lang="python" firstline="8"]url =
+"http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data"</p>
+<p># Open data from URL as a file-like object<br />
+f = urllib2.urlopen(url)</p>
+<p># Create an empty list to store our data<br />
+parsed_data = []</p>
+<p># Read file<br />
+raw_data = csv.reader(f)</p>
+<p># Define our headers since the file doesn't contain explicit headers<br />
+# I found these headers from looking at the documentation at<br />
+#
+http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names<br />
+headers = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal
+Width', 'Class'<br />
+]</p>
+<p># Iterate through the rows in the file, and create a dictionary for
+each row<br />
+for row in raw_data:</p>
+<p># Dictionaries should have headers -> row<br />
+parsed_data.append(dict(zip(headers, row)))</p>
+<p># Delete the last row of parsed_data because it's blank<br />
+parsed_data = parsed_data[:-1]</p>
+<p># Let's see what parsed_data looks like<br />
+pprint.pprint(parsed_data[:3])[/code]</p>
+<p>What you should see when you execute barbaric-script.py:</p>
+<p>[code language="bash" gutter="false"]\$ python barbaric-script.py<br />
+[{'Class': 'Iris-setosa',<br />
+'Petal Length': '1.4',<br />
+'Petal Width': '0.2',<br />
+'Sepal Length': '5.1',<br />
+'Sepal Width': '3.5'},<br />
+{'Class': 'Iris-setosa',<br />
+'Petal Length': '1.4',<br />
+'Petal Width': '0.2',<br />
+'Sepal Length': '4.9',<br />
+'Sepal Width': '3.0'},<br />
+{'Class': 'Iris-setosa',<br />
+'Petal Length': '1.3',<br />
+'Petal Width': '0.2',<br />
+'Sepal Length': '4.7',<br />
+'Sepal Width': '3.2'}][/code]</p>
+<p>Great! So we have our data formatted nicely. We have a list with
+elements corresponding to each row in the file, and the elements in the
+list are dictionaries. The keys in the dictionaries are the column
+headers, and the values are the values associated with the respective
+column header for that particular row. For example, the first
+row/observation (printed as the first dictionary out of the three listed
+above) is in the class Iris-setosa, has a Petal Length of 1.4, a Petal
+Width of 0.2, a Sepal Length of 5.1, and a Sepal Width of 3.5. Let's do
+some plotting to explore our data. We can make a histogram! Add the
+following lines to your barbaric-script.py file:</p>
+<p>[code lang="python" firstline="37"]# Let's create a list of the Sepal
+Lengths<br />
+# I'm calling float on the entries because otherwise they're stored as
+strings<br />
+sepal_lengths = [float(parsed_data[i]['Sepal Length'])<br />
+for i in range(len(parsed_data))]</p>
+<p>plt.hist(sepal_lengths, color='#348ABD', edgecolor='none')<br />
+plt.xlabel('Sepal Length')<br />
+plt.ylabel('Count')<br />
+plt.show()[/code]</p>
+<p>Let's try executing our script again.</p>
+<p>[code lang="bash" gutter="false"]\$ python barbaric-script.py[/code]</p>
+<p>A histogram should pop up in a separate window:</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/barbaric.png"><img alt="barbaric" src="http://mathamy.files.wordpress.com/2014/02/barbaric.png" /></a></p>
+<p>That's a lot of code (18 lines)! And we didn't even do anything
+complicated - just parsed our data and plotted a histogram. Also, notice
+that each time you tried to fix a bug or add a feature (like plotting
+the histogram), you had to execute the entire script again, rather than
+just the piece where you fixed the bug. That doesn't matter too much
+since our data is fairly small and the script doesn't require much time
+to execute, but it would be pretty annoying if our script took longer to
+run.</p>
+<p>Now let's try doing the same thing, but using pandas in an ipython
+notebook. Use the terminal to run ipython notebook:</p>
+<p>[code lang="bash" gutter="false"]\$ cd \~/Projects/ipython-pandas-whoa<br />
+\$ ipython notebook[/code]</p>
+<p>This will set up a local server on your computer, which will serve the
+ipython notebooks that are in your working directory (right now you
+don't have any) to http://127.0.0.1:8888. This should automatically open
+up in your browser.</p>
+<p>In the tab that opens in your browser, click "New Notebook". A new
+ipython notebook will open up in another tab. A new cell will also open
+up. Cells are places where you can write and execute code. This is what
+a cell looks like:</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/ipythoncell.png"><img alt="ipythoncell" src="http://mathamy.files.wordpress.com/2014/02/ipythoncell.png" /></a></p>
+<p>To allow matplotlib to post plots within your notebook, rather than
+opening up a separate window (like when we executed our .py script),
+type the following into the cell:</p>
+<p>[code lang="python" gutter="false"]%matplotlib inline[/code]</p>
+<p>Then to execute the cell, press shift+enter (which will execute the cell
+your cursor is currently in and then automatically either move to the
+next cell, if one exists, or open up a new cell). Once you press
+shift+enter, your notebook should look like:</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/secondcell.png"><img alt="secondcell" src="http://mathamy.files.wordpress.com/2014/02/secondcell.png" /></a></p>
+<p>In the next cell, import the packages we'll be using, namely
+matplotlib.pyplot and pandas:</p>
+<p>[code lang="python" gutter="false"]import matplotlib.pyplot as plt<br />
+import pandas as pd[/code]</p>
+<p>Press shift+enter again to execute the code (I'm going to stop telling
+you to do this, but just assume that after each block of code you should
+press shift+enter. If you get confused about what your notebook should
+look like, look at my <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">example notebook</a>.)</p>
+<p>To process the iris data, we can use the built-in panda read_csv
+parser. We can get to a easy-to-use data frame within three lines of
+code!</p>
+<p>[code lang="python" gutter="false"]url =
+"http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data"</p>
+<p># Define our headers since the url doesn't contain explicit headers<br />
+# I found these headers from looking at the documentation at<br />
+#
+http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names<br />
+headers = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal
+Width', 'Class']<br />
+iris = pd.read_csv(url, header=None, names=headers)[/code]</p>
+<p>Let's see what the data looks like.</p>
+<p>[code lang="python" gutter="false"]iris[:3][/code]</p>
+<p>You should see a beautifully formatted table! This is a pandas data
+frame, which is similar to a data frame in R.</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/table.png"><img alt="table" src="http://mathamy.files.wordpress.com/2014/02/table.png" /></a></p>
+<p>Now let's plot a histogram for the Sepal Length column.</p>
+<p>[code lang="python" gutter="false"]# I use two brackets around 'Sepal
+Length' to force pandas to make this<br />
+# a data frame rather than just a series, which is like a numpy
+array.<br />
+# The brackets here aren't necessary, but makes printing
+sepal_lengths<br />
+# prettier and makes it easier for us to combine sepal_lengths with
+other<br />
+# data.<br />
+sepal_lengths = iris[['Sepal Length']]</p>
+<p># Make the plot pretty!<br />
+pd.set_option('display.mpl_style', 'default')</p>
+<p>sepal_lengths.hist()[/code]</p>
+<p>[![quite_elegant][]][quite_elegant]</p>
+<p>By this point it should be fairly obvious that ipython and pandas are
+both awesome for data analysis! They make Python a much more serious
+contender as a tool for data analysis by giving you quick and easy
+access to your data. In this simple example, the barbaric-script.py was
+18 lines of code (disregarding comments, etc) and comparatively the
+ipython notebook with pandas was only 10!</p>
+<p>For further reading, I definitely encourage you to check out Julia's
+<a href="https://github.com/jvns/pandas-cookbook">pandas cookbook</a> (presented via ipython notebooks), on which
+incidentally I'll be collaborating with her next week (eeeep)!</p>
+<p>My code for this post can be found on my <a href="https://github.com/amygdalama/ipython-pandas-whoa">GitHub</a>, and the ipython
+notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">NBViewer</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
 
-        <li><hr /></li>
-        <li>
-            <div>
-                <div class="header">
-                    <h2>Hacker School Day 2: Goals! Or, A Grasp For Sanity</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Wed 12 February 2014</span> - <span class="tags"><a href="/tag/github/">github</a>, <a href="/tag/hacker school/">hacker school</a></span></small></p>
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/hacker-school-day-2-goals.html" rel="bookmark" title="Permalink to Hacker School Day 2: Goals! Or, A Grasp For Sanity">Hacker School Day 2: Goals! Or, A Grasp For Sanity</a></h1>
+                </header>
+                
                 <div class="entry-content">
-                    <p>I have to admit day 1 of Hacker School was fairly overwhelming for me.
-With so many amazing people to talk to and interesting projects to
+<footer class="post-info">
+        <abbr class="published" title="2014-02-12T10:02:00">
+                Wed 12 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="/category/hacker-school.html">Hacker School</a>. </p>
+<p>tags: <a href="/tag/github.html">github</a><a href="/tag/hacker-school.html">hacker school</a></p></footer><!-- /.post-info -->                <p>I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
 collaborate on I felt a bit like:</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/allthetennisballs.gif"><img alt="allthetennisballs" src="http://mathamy.files.wordpress.com/2014/02/allthetennisballs.gif" /></a></p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/allthetennisballs.gif" /></p>
 <p><em>(Credit to Hacker School alumnus Alex Beaulne for finding this perfect
 gif.)</em></p>
 <p>In an attempt to regain ...</p>
+                <a class="readmore" href="/hacker-school-day-2-goals.html">read more</a>
                 </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/hacker-school-day-2-goals.html" rel="bookmark" title="Permalink to Hacker School Day 2: Goals! Or, A Grasp For Sanity">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </article></li>
+        
 
-        <li><hr /></li>
-        <li>
-            <div>
-                <div class="header">
-                    <h2>I moved cross-country for Hacker School and I'm only slightly convinced this is Real Life</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Mon 10 February 2014</span> - <span class="tags"><a href="/tag/hacker school/">hacker school</a></span></small></p>
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html" rel="bookmark" title="Permalink to I moved cross-country for Hacker School and I'm only slightly convinced this is Real Life">I moved cross-country for Hacker School and I'm only slightly convinced this is Real Life</a></h1>
+                </header>
+                
                 <div class="entry-content">
-                    <p>Or, Hacker School: Day 1.</p>
+<footer class="post-info">
+        <abbr class="published" title="2014-02-10T23:23:00">
+                Mon 10 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+        </address>
+<p>In <a href="/category/hacker-school.html">Hacker School</a>. </p>
+<p>tags: <a href="/tag/hacker-school.html">hacker school</a></p></footer><!-- /.post-info -->                <p>Or, Hacker School: Day 1.</p>
 <p>Holy Shit! I have been fairly silent over the past month because I got
 accepted to <a href="https://www.hackerschool.com/">Hacker School</a> and had to figure out the logistics of
 quitting my job, moving cross-country, and living in the most expensive
 city in the States without a proper job ...</p>
+                <a class="readmore" href="/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html">read more</a>
                 </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html" rel="bookmark" title="Permalink to I moved cross-country for Hacker School and I'm only slightly convinced this is Real Life">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </article></li>
+        
 
-        <li><hr /></li>
-        <li>
-            <div>
-                <div class="header">
-                    <h2>wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Fri 27 December 2013</span> - <span class="tags"><a href="/tag/homebrew/">homebrew</a>, <a href="/tag/matplotlib/">matplotlib</a>, <a href="/tag/osx/">osx</a>, <a href="/tag/python/">python</a></span></small></p>
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html" rel="bookmark" title="Permalink to wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm">wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm</a></h1>
+                </header>
+                
                 <div class="entry-content">
-                    <p>For the past four months I've been using Anaconda's Python distribution
+<footer class="post-info">
+        <abbr class="published" title="2013-12-27T01:08:00">
+                Fri 27 December 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+        </address>
+<p>In <a href="/category/little-eureka-moments.html">Little Eureka Moments</a>. </p>
+<p>tags: <a href="/tag/homebrew.html">homebrew</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/osx.html">osx</a><a href="/tag/python.html">python</a></p></footer><!-- /.post-info -->                <p>For the past four months I've been using Anaconda's Python distribution
 on my Macbook, which has been great (except for <a href="http://mathamy.com/2013/12/02/homebrew-path-pythonpath/">Part 1</a> of what has
 now become a series), until I wanted to play with virtualenv. Apparently
 Anaconda does not work well with virtualenv and suggests using its ...</p>
+                <a class="readmore" href="/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html">read more</a>
                 </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html" rel="bookmark" title="Permalink to wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </article></li>
+        
 
-        <li><hr /></li>
-        <li>
-            <div>
-                <div class="header">
-                    <h2>Using PyMC to Analyze A/B Testing Data</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Tue 24 December 2013</span> - <span class="tags"><a href="/tag/ab testing/">ab testing</a>, <a href="/tag/bayesian methods for hackers/">bayesian methods for hackers</a>, <a href="/tag/matplotlib/">matplotlib</a>, <a href="/tag/numpy/">numpy</a>, <a href="/tag/pymc/">pymc</a>, <a href="/tag/python/">python</a></span></small></p>
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/using-pymc-to-analyze-ab-testing-data.html" rel="bookmark" title="Permalink to Using PyMC to Analyze A/B Testing Data">Using PyMC to Analyze A/B Testing Data</a></h1>
+                </header>
+                
                 <div class="entry-content">
-                    <p>In Chapter 2 of <a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">Bayesian Methods for Hackers</a>, there's an example of
+<footer class="post-info">
+        <abbr class="published" title="2013-12-24T22:23:00">
+                Tue 24 December 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+        </address>
+<p>In <a href="/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="/tag/ab-testing.html">ab testing</a><a href="/tag/bayesian-methods-for-hackers.html">bayesian methods for hackers</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/numpy.html">numpy</a><a href="/tag/pymc.html">pymc</a><a href="/tag/python.html">python</a></p></footer><!-- /.post-info -->                <p>In Chapter 2 of <a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">Bayesian Methods for Hackers</a>, there's an example of
 Bayesian analysis of an A/B test using simulated data. I decided to play
 around with this analysis method with real A/B landing page test data
 from one of my clients.</p>
 <p>This method uses PyMC to ...</p>
+                <a class="readmore" href="/using-pymc-to-analyze-ab-testing-data.html">read more</a>
                 </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/using-pymc-to-analyze-ab-testing-data.html" rel="bookmark" title="Permalink to Using PyMC to Analyze A/B Testing Data">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </article></li>
+        
 
-        <li><hr /></li>
-        <li>
-            <div>
-                <div class="header">
-                    <h2>wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Mon 02 December 2013</span> - <span class="tags"><a href="/tag/anaconda/">anaconda</a>, <a href="/tag/homebrew/">homebrew</a>, <a href="/tag/osx/">osx</a>, <a href="/tag/python/">python</a>, <a href="/tag/unix/">unix</a></span></small></p>
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/homebrew-path-pythonpath.html" rel="bookmark" title="Permalink to wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH">wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</a></h1>
+                </header>
+                
                 <div class="entry-content">
-                    <p><span style="line-height:1.5;">About a week ago, I installed
-<a href="http://brew.sh/">Homebrew</a> on my OSX, mostly because I wanted to use Unix's wget
-package (It's like Unix's </span><a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter">accio</a><span
-style="line-height:1.5;">! wget horcrux. wget firebolt.)</span></p>
-<p><span style="line-height:1.5;">Unfortunately, doing so installed a new
-version of python on my machine and switched the ...</span></p>
+<footer class="post-info">
+        <abbr class="published" title="2013-12-02T21:48:00">
+                Mon 02 December 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="/category/little-eureka-moments.html">Little Eureka Moments</a>. </p>
+<p>tags: <a href="/tag/anaconda.html">anaconda</a><a href="/tag/homebrew.html">homebrew</a><a href="/tag/osx.html">osx</a><a href="/tag/python.html">python</a><a href="/tag/unix.html">unix</a></p></footer><!-- /.post-info -->                <p>About a week ago, I installed <a href="http://brew.sh/">Homebrew</a> on my OSX, mostly because I wanted to use Unix's <code>wget</code> command (It's like Unix's <a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter">accio</a>! <code>wget horcrux</code>. <code>wget firebolt</code>.)</p>
+<p>Unfortunately, doing so installed a new version of python on my machine and switched the <code>PATH</code> and <code>PYTHONPATH</code> away from ...</p>
+                <a class="readmore" href="/homebrew-path-pythonpath.html">read more</a>
                 </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/homebrew-path-pythonpath.html" rel="bookmark" title="Permalink to wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </article></li>
+        
 
-        <li><hr /></li>
-        <li>
-            <div>
-                <div class="header">
-                    <h2>Adventures in Miami: Bullish Conference 2013</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amy-hanlon/">Amy Hanlon</a> - </span><span>Mon 02 December 2013</span> - <span class="tags"><a href="/tag/bullish/">bullish</a>, <a href="/tag/career management/">career management</a>, <a href="/tag/negotiation/">negotiation</a>, <a href="/tag/pitching/">pitching</a>, <a href="/tag/time management/">time management</a></span></small></p>
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/adventures-in-miami-bullish-conference-2013.html" rel="bookmark" title="Permalink to Adventures in Miami: Bullish Conference 2013">Adventures in Miami: Bullish Conference 2013</a></h1>
+                </header>
+                
                 <div class="entry-content">
-                    <p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/bullicorns.jpg" /></p>
+<footer class="post-info">
+        <abbr class="published" title="2013-12-02T13:48:00">
+                Mon 02 December 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="/category/uncategorized.html">Uncategorized</a>. </p>
+<p>tags: <a href="/tag/bullish.html">bullish</a><a href="/tag/career-management.html">career management</a><a href="/tag/negotiation.html">negotiation</a><a href="/tag/pitching.html">pitching</a><a href="/tag/time-management.html">time management</a></p></footer><!-- /.post-info -->                <p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/bullicorns.jpg" /></p>
 <p><em>(Photo by Julie Lavoie)</em></p>
 <p>Adjusting to Real Life after a weekend in South Beach, filled with
 mojito-flavored space popsicles, champagne, Cuban food, unicorn puzzles,
 and badass, ambitious, feminist women is like coming down from some
 fantastic drug-induced hallucination. This morning I was unpleasantly
 surprised that there wasn't a sunkissed ...</p>
+                <a class="readmore" href="/adventures-in-miami-bullish-conference-2013.html">read more</a>
                 </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/adventures-in-miami-bullish-conference-2013.html" rel="bookmark" title="Permalink to Adventures in Miami: Bullish Conference 2013">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </article></li>
+        
 
-        <li><hr /></li>
-        <li>
-            <div>
-                <div class="header">
-                    <h2>Visualizing Social Circles Using Facebook Data</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Tue 26 November 2013</span> - <span class="tags"><a href="/tag/igraph/">igraph</a>, <a href="/tag/R/">R</a>, <a href="/tag/Rfacebook/">Rfacebook</a>, <a href="/tag/social network analysis/">social network analysis</a></span></small></p>
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/visualizing-social-circles-using-facebook-data.html" rel="bookmark" title="Permalink to Visualizing Social Circles Using Facebook Data">Visualizing Social Circles Using Facebook Data</a></h1>
+                </header>
+                
                 <div class="entry-content">
-                    <p>Intrigued by David Smith's <a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html">Facebook friends network analysis</a> using
+<footer class="post-info">
+        <abbr class="published" title="2013-11-26T23:07:00">
+                Tue 26 November 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+        </address>
+<p>In <a href="/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="/tag/igraph.html">igraph</a><a href="/tag/r.html">R</a><a href="/tag/rfacebook.html">Rfacebook</a><a href="/tag/social-network-analysis.html">social network analysis</a></p></footer><!-- /.post-info -->                <p>Intrigued by David Smith's <a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html">Facebook friends network analysis</a> using
 the Rfacebook package, I decided to try it out on my own group of
 friends, to see if my social circles are cliquey ala <a href="http://mathamy.files.wordpress.com/2013/11/j8obhx.jpg">North Shore High
 School</a>.</p>
 <p>[<img alt="" src="http://mathamy.files.wordpress.com/2013/11/screen-shot-2013-11-26-at-9-04-50-pm.png?w=300" title="facebook-graph" />][]</p>
 <p>It turns out the social circles in my network were visualized almost ...</p>
+                <a class="readmore" href="/visualizing-social-circles-using-facebook-data.html">read more</a>
                 </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/visualizing-social-circles-using-facebook-data.html" rel="bookmark" title="Permalink to Visualizing Social Circles Using Facebook Data">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </article></li>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </ol><!-- /#posts-list -->
+            </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-        <li><hr /></li>
-</ul><!-- /#posts-list -->
+        <footer id="contentinfo" class="body">
 
-<div class="pagination pagination-centered">
-    <ul>
-        <li class="active"><a href="#">1</a></li>
-    </ul>
-</div>
-</div><!-- /#content -->
-        </div>
-        <div class="span3 offset1">
-          <div class="well">
-            <ul class="nav nav-list">
-              <li class="nav-header">Blog</li>
-              <li class="active"><a href="">Index</a></li>
-              <li ><a href="/tags/">Tags</a></li>
-              <li ><a href="/archives/">Archiv</a></li>
-              <li class="nav-header">Seiten</li>
-              <li><a href="/pages/bio.html">Biography</a></li>
-              <li><a href="/pages/endorsements.html">Endorsements</a></li>
-              <li><a href="/pages/home.html">Home</a></li>
-              <li class="nav-header">Links</li>
-              <li><a href="http://getpelican.com/">Pelican</a></li>
-              <li><a href="http://python.org/">Python.org</a></li>
-              <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-              <li><a href="#">You can modify those links in your config file</a></li>
-            </ul>
-          </div><!-- /#menu -->
-        </div>
-      </div>
+        </footer><!-- /#contentinfo -->
 
-      <hr />
-
-      <div class="row">
-        <div class="span12">
-          <div id="about">
-            <p>Proudly powered by <a href="http://twitter.github.com/bootstrap/">bootstrap</a>, <a href="http://docs.notmyidea.org/alexis/pelican/">pelican</a>, <a href="http://python.org">python</a> and <a href="http://www.julo.ch/about/">Alex</a>!</p>
-          </div><!-- /#about -->
-        </div><!-- /#contentinfo -->
-      </div>
-    </div>
-
-
-  </body>
+</body>
 </html>

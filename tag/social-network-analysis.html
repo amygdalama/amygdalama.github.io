@@ -1,90 +1,101 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-  <head>
-    <title>Tag social network analysis - Amy Hanlon</title>
-    <link href="http://fonts.googleapis.com/css?family=Arimo:400,700|Inika" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/theme/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="/theme/pastie.css" />
-    <link href="/" type="application/atom+xml" rel="alternate" title="Amy Hanlon Atom Feed" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Amy Hanlon - social network analysis</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+   
 
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-  </head>
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
+                <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
 
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="span8">
-<div id="content">
-<h1>Blog</h1>
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
 
-<ul class="unstyled">
-        <li>
-            <div>
-                <div class="header">
-                    <h2>Visualizing Social Circles Using Facebook Data</h2>
-                </div>
-                <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Tue 26 November 2013</span> - <span class="tags"><a href="/tag/igraph/">igraph</a>, <a href="/tag/R/">R</a>, <a href="/tag/Rfacebook/">Rfacebook</a>, <a href="/tag/social network analysis/">social network analysis</a></span></small></p>
-                <div class="entry-content">
-                    <p>Intrigued by David Smith's <a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html">Facebook friends network analysis</a> using
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/bio.html">Biography</a></li>
+                    <li><a href="/pages/endorsements.html">Endorsements</a></li>
+                    <li><a href="/pages/home.html">Home</a></li>
+                    <li ><a href="/category/hacker-school.html">Hacker School</a></li>
+                    <li ><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
+                    <li ><a href="/category/projects.html">Projects</a></li>
+                    <li ><a href="/category/uncategorized.html">Uncategorized</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+        
+        
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/visualizing-social-circles-using-facebook-data.html">Visualizing Social Circles Using Facebook Data</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2013-11-26T23:07:00">
+                Tue 26 November 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+        </address>
+<p>In <a href="/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="/tag/igraph.html">igraph</a><a href="/tag/r.html">R</a><a href="/tag/rfacebook.html">Rfacebook</a><a href="/tag/social-network-analysis.html">social network analysis</a></p></footer><!-- /.post-info --><p>Intrigued by David Smith's <a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html">Facebook friends network analysis</a> using
 the Rfacebook package, I decided to try it out on my own group of
 friends, to see if my social circles are cliquey ala <a href="http://mathamy.files.wordpress.com/2013/11/j8obhx.jpg">North Shore High
 School</a>.</p>
 <p>[<img alt="" src="http://mathamy.files.wordpress.com/2013/11/screen-shot-2013-11-26-at-9-04-50-pm.png?w=300" title="facebook-graph" />][]</p>
-<p>It turns out the social circles in my network were visualized almost ...</p>
-                </div><!-- /.entry-content -->
-                <div class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span1 offset3">
-                        <a class="btn btn-small" href="/visualizing-social-circles-using-facebook-data.html" rel="bookmark" title="Permalink to Visualizing Social Circles Using Facebook Data">Mehr</a>
-                    </div>
-                </div>
-            </div>
-        </li>
+<p>It turns out the social circles in my network were visualized almost
+perfectly! The smallest group to the far right of the graph contains
+family members, the large group at the top contains current co-workers,
+and the large group at the bottom contains friends in the Austin cyclist
+scene. Other clusters are friends from high school, friends from
+college, and bar friends. The most isolated group is my family. The
+groups with the most connections to each other are my current coworkers,
+cyclists, and bar friends, which makes sense, because they are roughly
+in the same age group and live (or have lived) in Austin, a fairly
+connected city. Now I'm wondering how to get the data to see if Austin
+really is more connected than other cities or if it's just in our
+collective imagination.</p>
+<p>Thanks to David for the <a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html">tutorial</a> on
+graphing social networks and to Julianhi for his <a href="http://thinktostart.wordpress.com/2013/11/19/analyzing-facebook-with-r/">tutorial</a> on setting
+up Rfacebook.</p>
+<p>[<img alt="" src="http://mathamy.files.wordpress.com/2013/11/screen-shot-2013-11-26-at-9-04-50-pm.png?w=300" title="facebook-graph" />]: http://mathamy.files.wordpress.com/2013/11/screen-shot-2013-11-26-at-9-04-50-pm.png?w=300</p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
+            </ol><!-- /#posts-list -->
+            </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-        <li><hr /></li>
-</ul><!-- /#posts-list -->
+        <footer id="contentinfo" class="body">
 
-<div class="pagination pagination-centered">
-    <ul>
-        <li class="active"><a href="#">1</a></li>
-    </ul>
-</div>
-</div><!-- /#content -->
-        </div>
-        <div class="span3 offset1">
-          <div class="well">
-            <ul class="nav nav-list">
-              <li class="nav-header">Blog</li>
-              <li ><a href="">Index</a></li>
-              <li ><a href="/tags/">Tags</a></li>
-              <li ><a href="/archives/">Archiv</a></li>
-              <li class="nav-header">Seiten</li>
-              <li><a href="/pages/bio.html">Biography</a></li>
-              <li><a href="/pages/endorsements.html">Endorsements</a></li>
-              <li><a href="/pages/home.html">Home</a></li>
-              <li class="nav-header">Links</li>
-              <li><a href="http://getpelican.com/">Pelican</a></li>
-              <li><a href="http://python.org/">Python.org</a></li>
-              <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-              <li><a href="#">You can modify those links in your config file</a></li>
-            </ul>
-          </div><!-- /#menu -->
-        </div>
-      </div>
+        </footer><!-- /#contentinfo -->
 
-      <hr />
-
-      <div class="row">
-        <div class="span12">
-          <div id="about">
-            <p>Proudly powered by <a href="http://twitter.github.com/bootstrap/">bootstrap</a>, <a href="http://docs.notmyidea.org/alexis/pelican/">pelican</a>, <a href="http://python.org">python</a> and <a href="http://www.julo.ch/about/">Alex</a>!</p>
-          </div><!-- /#about -->
-        </div><!-- /#contentinfo -->
-      </div>
-    </div>
-
-
-  </body>
+</body>
 </html>

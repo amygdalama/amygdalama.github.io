@@ -1,127 +1,158 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-  <head>
-    <title>wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH - Amy Hanlon</title>
-    <link href="http://fonts.googleapis.com/css?family=Arimo:400,700|Inika" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/theme/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="/theme/pastie.css" />
-    <link href="/" type="application/atom+xml" rel="alternate" title="Amy Hanlon Atom Feed" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+   
 
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-  </head>
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
+                <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
 
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="span8">
-<div id="content">
-    <div class="header">
-        <h1>wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</h1>
-    </div>
-    <p class="meta"><small><span><a href="/author/amygdalama/">amygdalama</a> - </span><span>Mon 02 December 2013</span> - <span class="tags"><a href="/tag/anaconda/">anaconda</a>, <a href="/tag/homebrew/">homebrew</a>, <a href="/tag/osx/">osx</a>, <a href="/tag/python/">python</a>, <a href="/tag/unix/">unix</a></span></small></p>
-        <div class="entry-content">
-        <p><span style="line-height:1.5;">About a week ago, I installed
-<a href="http://brew.sh/">Homebrew</a> on my OSX, mostly because I wanted to use Unix's wget
-package (It's like Unix's </span><a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter">accio</a><span
-style="line-height:1.5;">! wget horcrux. wget firebolt.)</span></p>
-<p><span style="line-height:1.5;">Unfortunately, doing so installed a new
-version of python on my machine and switched the PATH and PYTHONPATH
-away from my <a href="https://store.continuum.io/cshop/anaconda/">Anaconda</a> version of python (which is the version I use
-and that houses all of my beloved installed packages). After hours of
-struggle, I figured out how to solve this problem.</span></p>
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/bio.html">Biography</a></li>
+                    <li><a href="/pages/endorsements.html">Endorsements</a></li>
+                    <li><a href="/pages/home.html">Home</a></li>
+                    <li ><a href="/category/hacker-school.html">Hacker School</a></li>
+                    <li class="active"><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
+                    <li ><a href="/category/projects.html">Projects</a></li>
+                    <li ><a href="/category/uncategorized.html">Uncategorized</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="homebrew-path-pythonpath.html" rel="bookmark"
+           title="Permalink to wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH">wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-12-02T21:48:00">
+                Mon 02 December 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="/category/little-eureka-moments.html">Little Eureka Moments</a>. </p>
+<p>tags: <a href="/tag/anaconda.html">anaconda</a><a href="/tag/homebrew.html">homebrew</a><a href="/tag/osx.html">osx</a><a href="/tag/python.html">python</a><a href="/tag/unix.html">unix</a></p></footer><!-- /.post-info -->      <p>About a week ago, I installed <a href="http://brew.sh/">Homebrew</a> on my OSX, mostly because I wanted to use Unix's <code>wget</code> command (It's like Unix's <a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter">accio</a>! <code>wget horcrux</code>. <code>wget firebolt</code>.)</p>
+<p>Unfortunately, doing so installed a new version of python on my machine and switched the <code>PATH</code> and <code>PYTHONPATH</code> away from my <a href="https://store.continuum.io/cshop/anaconda/">Anaconda</a> version of python (which is the version I use and that houses all of my beloved installed packages). After hours of
+struggle, I figured out how to solve this problem.</p>
 <p>First, to see if you have this problem, type in the terminal:</p>
-<p>[code language="bash" gutter="false"]\$ type -a python[/code]</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">type</span> -a python
+</pre></div>
+
+
 <p>Which will give you output looking something like this:</p>
-<p>[code language="bash" gutter="false"]alia:\~ amyhanlon\$ type -a python<br />
-python is /usr/local/bin/python<br />
-python is //anaconda/bin/python<br />
-python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python<br />
-python is //anaconda/bin/python<br />
-python is //anaconda/bin/python<br />
-python is /usr/bin/python<br />
-python is /usr/local/bin/python[/code]</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">type</span> -a python  
+python is /usr/local/bin/python  
+python is //anaconda/bin/python  
+python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python  
+python is //anaconda/bin/python  
+python is //anaconda/bin/python  
+python is /usr/bin/python  
+python is /usr/local/bin/python
+</pre></div>
+
+
 <p>This is a hierarchical list of the pythons installed on your machine.
-The python that you actually want executed when you type 'python' into
+The python that you actually want executed when you type <code>python</code> into
 the terminal should be at the top of the list. In my situation,
- '//anaconda/bin/python' is my preferred python. To get this version to
-the top of the list, you need to edit your PATH, which tells your
-machine the directory to find 'python' when you type it in the terminal.</p>
-<p>Similarly, you'll probably need to update your PYTHONPATH, which tells
+ <code>//anaconda/bin/python</code> is my preferred python. To get this version to
+the top of the list, you need to edit your <code>PATH</code>, which tells your
+machine the directory to find <code>python</code> when you type it in the terminal.</p>
+<p>Similarly, you'll probably need to update your <code>PYTHONPATH</code>, which tells
 python where to look for modules to import. To see where python is
-currently looking for modules, run python in your terminal and type the
+currently looking for modules, run <code>python</code> in your terminal and type the
 following commands:</p>
-<p>[code language="python" gutter="false"]>>> import sys<br />
->>> sys.path[/code]</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>  
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+</pre></div>
+
+
 <p>As output, python will print out a list of the directories where it
 looks for modules:</p>
-<p>[code gutter="false"]alia:\~ amyhanlon\$ python<br />
-Python 2.7.6rc1 (v2.7.6rc1:4913d0e9be30+, Oct 27 2013, 20:52:11)<br />
-[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin<br />
-Type "help", "copyright", "credits" or "license" for more
-information.[/code]<br />
-[code language="python" gutter="false"]<br />
->>> import sys<br />
->>> sys.path[/code]<br />
-[code gutter="false"]<br />
-['',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/setuptools-1.3-py2.7.egg',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/pip-1.4.1-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages', '/Users/amyhanlon',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python27.zip',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload',
-'/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages',
-'/Library/Python/2.7/site-packages'][/code]</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>  
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>  
+<span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/setuptools-1.3-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/pip-1.4.1-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages&#39;</span><span class="p">,</span> <span class="s">&#39;/Users/amyhanlon&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python27.zip&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages&#39;</span><span class="p">,</span>
+<span class="s">&#39;/Library/Python/2.7/site-packages&#39;</span><span class="p">]</span>
+</pre></div>
+
+
 <p>To fix this problem, use the terminal to open the hidden file called
-'.bash_profile' which exists in your home directory (you can just type
-in '\~' to symbolize the absolute path to your home directory). I opened
+<code>~/.bash_profile</code> which exists in your home directory (the <code>~</code> symbolizes your home directory). I opened
 this file with TextWrangler, but you can replace 'TextWrangler' in the
 command with whichever text editing program you use (the default OSX
 text editor is TextEdit).</p>
-<p>[code language="bash" gutter="false"]\$ open -a TextWrangler
-\~/.bash_profile[/code]</p>
+<div class="highlight"><pre><span class="nv">$ </span>open -a TextWrangler ~/.bash_profile
+</pre></div>
+
+
 <p>The file contents should look something like this:</p>
-<p>[code gutter="false"]# Setting PATH for Python 2.7<br />
-# The original version is saved in .bash_profile.pysave<br />
-PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:\${PATH}"<br />
-export PATH<br />
-# added by Anaconda 1.7.0 installer<br />
-export PATH="//anaconda/bin:\$PATH"<br />
-export PATH=/usr/local/bin:\$PATH<br />
-export
-PYTHONPATH="/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:\$PYTHONPATH"[/code]</p>
+<div class="highlight"><pre><span class="c"># Setting PATH for Python 2.7  </span>
+<span class="c"># The original version is saved in .bash_profile.pysave  </span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&quot;</span>  
+<span class="nb">export </span>PATH  
+<span class="c"># added by Anaconda 1.7.0 installer  </span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:$PATH&quot;</span>  
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:<span class="nv">$PATH</span>  
+<span class="nb">export</span>
+<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>
+</pre></div>
+
+
 <p>The last PATH= and PYTHONPATH= lines should be directed to the Anaconda
 location of python, and in this case they aren't. To fix this, comment
 out lines that incorrectly assign the PATH and PYTHONPATH variables, and
 add lines that assign the correct variables. I made the following edits
 to the file (changes are highlighted):</p>
 <p>[code gutter="false" highlight="3,4,8,9,10"]# Setting PATH for Python
-2.7<br />
-# The original version is saved in .bash_profile.pysave<br />
-#
-PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:\${PATH}"<br />
-PATH="//anaconda/bin:\${PATH}"<br />
-export PATH<br />
-# added by Anaconda 1.7.0 installer<br />
-export PATH="//anaconda/bin:\$PATH"<br />
-# export PATH=/usr/local/bin:\$PATH<br />
-# export
-PYTHONPATH="/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:\$PYTHONPATH"<br />
+2.7  </p>
+<h1>The original version is saved in .bash_profile.pysave</h1>
+<h1></h1>
+<p>PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"<br />
+PATH="//anaconda/bin:${PATH}"<br />
+export PATH  </p>
+<h1>added by Anaconda 1.7.0 installer</h1>
+<p>export PATH="//anaconda/bin:$PATH"  </p>
+<h1>export PATH=/usr/local/bin:$PATH</h1>
+<h1>export</h1>
+<p>PYTHONPATH="/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH"<br />
 export
-PYTHONPATH="//anaconda/lib/python2.7/site-packages:\$PYTHONPATH"[/code]</p>
+PYTHONPATH="//anaconda/lib/python2.7/site-packages:$PYTHONPATH"</p>
 <p>Save the file. Then, in the terminal (after exiting python), source the
 file, and see if you've fixed the PATH and PYTHONPATH:</p>
-<p>[code language="bash" gutter="false"]\$ source \~/.bash_profile<br />
-\$ type -a python[/code]</p>
+<p>[code language="bash" gutter="false"]$ source ~/.bash_profile<br />
+$ type -a python</p>
 <p>Now you should see the Anaconda python (or your preferable python) at
 the top of the list in the output:</p>
-<p>[code language="bash" gutter="false"]alia:\~ amyhanlon\$ type -a python<br />
+<p>[code language="bash" gutter="false"]alia:~ amyhanlon$ type -a python<br />
 python is //anaconda/bin/python<br />
 python is //anaconda/bin/python<br />
 python is /usr/local/bin/python<br />
@@ -130,17 +161,20 @@ python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python<br />
 python is //anaconda/bin/python<br />
 python is //anaconda/bin/python<br />
 python is /usr/bin/python<br />
-python is /usr/local/bin/python[/code]</p>
+python is /usr/local/bin/python</p>
 <p>Check your PYTHONPATH using the same method as before:</p>
-<p>[code gutter="false"]alia:\~ amyhanlon\$ python<br />
+<p>[code gutter="false"]alia:~ amyhanlon$ python<br />
 Python 2.7.5 |Anaconda 1.7.0 (x86_64)| (default, Jun 28 2013,
 22:20:13)<br />
 [GCC 4.0.1 (Apple Inc. build 5493)] on darwin<br />
 Type "help", "copyright", "credits" or "license" for more
-information.[/code]<br />
-[code language="python" gutter="false"]<br />
->>> import sys<br />
->>> sys.path[/code]<br />
+information.<br />
+[code language="python" gutter="false"]  </p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import sys<br />
+sys.path<br />
 [code gutter="false"]<br />
 ['', '//anaconda/lib/python2.7/site-packages/gspread-0.1.0-py2.7.egg',
 '//anaconda/lib/python2.7/site-packages/fuzzywuzzy-0.2-py2.7.egg',
@@ -157,44 +191,39 @@ information.[/code]<br />
 '//anaconda/lib/python2.7/lib-tk', '//anaconda/lib/python2.7/lib-old',
 '//anaconda/lib/python2.7/lib-dynload',
 '//anaconda/lib/python2.7/site-packages/PIL',
-'//anaconda/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info'][/code]</p>
+'//anaconda/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info']</p>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>Now the terminal is using my Anaconda version of python and is looking
 in the Anaconda library for my packages! Viola!</p>
-        </div><!-- /.entry-content -->
-</div>
-        </div>
-        <div class="span3 offset1">
-          <div class="well">
-            <ul class="nav nav-list">
-              <li class="nav-header">Blog</li>
-              <li ><a href="">Index</a></li>
-              <li ><a href="/tags/">Tags</a></li>
-              <li ><a href="/archives/">Archiv</a></li>
-              <li class="nav-header">Seiten</li>
-              <li><a href="/pages/bio.html">Biography</a></li>
-              <li><a href="/pages/endorsements.html">Endorsements</a></li>
-              <li><a href="/pages/home.html">Home</a></li>
-              <li class="nav-header">Links</li>
-              <li><a href="http://getpelican.com/">Pelican</a></li>
-              <li><a href="http://python.org/">Python.org</a></li>
-              <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-              <li><a href="#">You can modify those links in your config file</a></li>
-            </ul>
-          </div><!-- /#menu -->
-        </div>
-      </div>
+    </div><!-- /.entry-content -->
 
-      <hr />
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-      <div class="row">
-        <div class="span12">
-          <div id="about">
-            <p>Proudly powered by <a href="http://twitter.github.com/bootstrap/">bootstrap</a>, <a href="http://docs.notmyidea.org/alexis/pelican/">pelican</a>, <a href="http://python.org">python</a> and <a href="http://www.julo.ch/about/">Alex</a>!</p>
-          </div><!-- /#about -->
-        </div><!-- /#contentinfo -->
-      </div>
-    </div>
+        <footer id="contentinfo" class="body">
 
+        </footer><!-- /#contentinfo -->
 
-  </body>
+</body>
 </html>

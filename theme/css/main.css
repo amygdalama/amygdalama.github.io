@@ -3,24 +3,24 @@
 	Date: July 2009
 	Description: Sample layout for HTML5 and CSS3 goodness.
 	Version: 1.0
-	License: MIT <http://opensource.org/licenses/MIT>
-	Licensed by: Smashing Media GmbH <http://www.smashingmagazine.com/>
-	Original author: Enrique Ramírez <http://enrique-ramirez.com/>
+	Author: Enrique Ramírez
+	Autor URI: http://enrique-ramirez.com
 */
 
 /* Imports */
 @import url("reset.css");
 @import url("pygment.css");
 @import url("typogrify.css");
-@import url(//fonts.googleapis.com/css?family=Yanone+Kaffeesatz&subset=latin);
+@import url(http://fonts.googleapis.com/css?family=Lobster);
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+
 
 /***** Global *****/
 /* Body */
 body {
-    background: #F5F4EF;
-    color: #000305;
-    font-size: 87.5%; /* Base font size: 14px */
-    font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background: url("wavecut.png");
+    font-family: 'Droid Sans', sans-serif;
+    font-size: 14px ;
     line-height: 1.429;
     margin: 0;
     padding: 0;
@@ -39,7 +39,8 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 400;
 	line-height: 1.1;
 	margin-bottom: .8em;
-    font-family: 'Yanone Kaffeesatz', arial, serif;
+	font-family: 'Lobster', cursive;
+	
 }
 
 h3, h4, h5, h6 { margin-top: .8em; }
@@ -50,12 +51,12 @@ hr { border: 2px solid #EEEEEE; }
 a {outline: 0;}
 a img {border: 0px; text-decoration: none;}
 a:link, a:visited {
-	color: #C74350;
+	color: #7A4700;
 	padding: 0 1px;
 	text-decoration: underline;
 }
 a:hover, a:active {
-	background-color: #C74350;
+	background-color: #7A4700;
 	color: #fff;
 	text-decoration: none;
 	text-shadow: 1px 1px 1px #333;
@@ -66,34 +67,32 @@ h1 a:hover {
 }
 	
 /* Paragraphs */
-div.line-block,
-p { margin-top: 1em;
-    margin-bottom: 1em;}
+p {margin-bottom: 1.143em;}
 
 strong, b {font-weight: bold;}
 em, i {font-style: italic;}
 
+::-moz-selection {background: #F6CF74; color: #fff;}
+::selection {background: #F6CF74; color: #fff;}
+
 /* Lists */
 ul {
 	list-style: outside disc;
-	margin: 0em 0 0 1.5em;
+	margin: 1em 0 1.5em 1.5em;
 }
 
 ol {
 	list-style: outside decimal;
-	margin: 0em 0 0 1.5em;
+	margin: 1em 0 1.5em 1.5em;
 }
-
-li { margin-top: 0.5em;}
 
 .post-info {
     float:right;
-    margin:10px;
-    padding:5px;
+    margin:5px;
+    padding:9px;
 }
 
 .post-info p{
-    margin-top: 1px;
     margin-bottom: 1px;
 }
 
@@ -103,7 +102,7 @@ dl {margin: 0 0 1.5em 0;}
 dt {font-weight: bold;}
 dd {margin-left: 1.5em;}
 
-pre{background-color:  rgb(238, 238, 238); padding: 10px; margin: 10px; overflow: auto;}
+pre{background-color: #000; padding: 10px; color: #fff; margin: 10px; overflow: auto;}
 
 /* Quotes */
 blockquote {
@@ -147,8 +146,8 @@ aside, nav, article, figure {
 
 /***** Layout *****/
 .body {clear: both; margin: 0 auto; width: 800px;}
-img.right, figure.right {float: right; margin: 0 0 2em 2em;}
-img.left, figure.left {float: left; margin: 0 2em 2em 0;}
+img.right figure.right {float: right; margin: 0 0 2em 2em;}
+img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 
 /*
 	Header
@@ -166,10 +165,11 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 		font-weight: bold;
 		margin: 0 0 .6em .2em;
 		text-decoration: none;
+		width: 427px;
 	}
 	#banner h1 a:hover, #banner h1 a:active {
 		background: none;
-		color: #C74350;
+		color: #7A4700;
 		text-shadow: none;
 	}
 	
@@ -204,7 +204,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	#banner nav a:hover, #banner nav a:active,
 	#banner nav .active a:link, #banner nav .active a:visited {
 		background: #C74451;
-		color: #fff;
+		color: #fff;           
 		text-shadow: none !important;
 	}
 	
@@ -222,15 +222,17 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	Featured
 *****************/
 #featured {
-	background: #fff;
+	
+	background: url("toptop.png") no-repeat, url('downdown.png') no-repeat, url("white.png") repeat;
+	background-position: top,bottom,top;
 	margin-bottom: 2em;
 	overflow: hidden;
 	padding: 20px;
 	width: 760px;
 	
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
 }
 
 #featured figure {
@@ -251,15 +253,16 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	Body
 *****************/
 #content {
-	background: #fff;
+	background: url("toptop.png") no-repeat, url('downdown.png') no-repeat, url("white.png") repeat;
+	background-position: top,bottom,top;
 	margin-bottom: 2em;
 	overflow: hidden;
 	padding: 20px 20px;
 	width: 760px;
 	
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
 }
 
 /*
@@ -270,7 +273,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 #extras ul {list-style: none; margin: 0;}
 #extras li {border-bottom: 1px solid #fff;}
 #extras h2 {
-	color: #C74350;
+	color: #000000;
 	font-size: 1.429em;
 	margin-bottom: .25em;
 	padding: 0 3px;
@@ -307,29 +310,23 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	}
 	
 		/* Icons */
-		.social a[href*='about.me'] {background-image: url('../images/icons/aboutme.png');}
-		.social a[href*='bitbucket.org'] {background-image: url('../images/icons/bitbucket.png');}
-		.social a[href*='delicious.com'] {background-image: url('../images/icons/delicious.png');}
-		.social a[href*='digg.com'] {background-image: url('../images/icons/digg.png');}
-		.social a[href*='facebook.com'] {background-image: url('../images/icons/facebook.png');}
-		.social a[href*='gitorious.org'] {background-image: url('../images/icons/gitorious.png');}
-		.social a[href*='github.com'],
-		.social a[href*='git.io'] {background-image: url('../images/icons/github.png');}
-		.social a[href*='gittip.com'] {background-image: url('../images/icons/gittip.png');}
-		.social a[href*='plus.google.com'] {background-image: url('../images/icons/google-plus.png');}
-		.social a[href*='groups.google.com'] {background-image: url('../images/icons/google-groups.png');}
-		.social a[href*='news.ycombinator.com'],
-		.social a[href*='hackernewsers.com'] {background-image: url('../images/icons/hackernews.png');}
-		.social a[href*='last.fm'], .social a[href*='lastfm.'] {background-image: url('../images/icons/lastfm.png');}
-		.social a[href*='linkedin.com'] {background-image: url('../images/icons/linkedin.png');}
-		.social a[href*='reddit.com'] {background-image: url('../images/icons/reddit.png');}
-		.social a[type$='atom+xml'], .social a[type$='rss+xml'] {background-image: url('../images/icons/rss.png');}
-		.social a[href*='slideshare.net'] {background-image: url('../images/icons/slideshare.png');}
-		.social a[href*='speakerdeck.com'] {background-image: url('../images/icons/speakerdeck.png');}
-		.social a[href*='stackoverflow.com'] {background-image: url('../images/icons/stackoverflow.png');}
-		.social a[href*='twitter.com'] {background-image: url('../images/icons/twitter.png');}
-		.social a[href*='vimeo.com'] {background-image: url('../images/icons/vimeo.png');}
-		.social a[href*='youtube.com'] {background-image: url('../images/icons/youtube.png');}
+		
+
+		.social a[href*='facebook.com'] {background-image: url('../images/icons/facebook.png');
+		background-size: 16px 16px; }
+		.social a[href*='twitter.com'] {background-image: url('../images/icons/twitter_alt.png');
+		background-size: 16px 16px;  }
+		.social a[href*='quora.com'] {background-image: url('../images/icons/quora.png');
+		background-size: 16px 16px; }
+		.social a[href*='github.com'] {background-image: url('../images/icons/github.png');
+		background-size: 16px 16px; }
+		.social a[href*='news.ycombinator.com'] {background-image: url('../images/icons/hacker_news.png');
+		background-size: 16px 16px; }
+		.social a[href*='instapaper.com'] {background-image: url('../images/icons/instapaper.png');
+		background-size: 16px 16px; }
+		.social a[href*='hypem.com'] {background-image: url('../images/icons/hype_machine.png');
+		background-size: 16px 16px; }
+
 
 /*
 	About
