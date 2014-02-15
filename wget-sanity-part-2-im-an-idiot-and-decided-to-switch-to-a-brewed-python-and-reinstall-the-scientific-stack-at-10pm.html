@@ -1,48 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
-        <title>wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
 
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+
+    <meta name="tags" contents="homebrew" />
+    <meta name="tags" contents="matplotlib" />
+    <meta name="tags" contents="osx" />
+    <meta name="tags" contents="python" />
+
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Amy Hanlon </a></h1>
-                <nav><ul>
-                    <li><a href="/pages/bio.html">Biography</a></li>
-                    <li><a href="/pages/endorsements.html">Endorsements</a></li>
-                    <li><a href="/pages/home.html">Home</a></li>
-                    <li><a href="/category/hacker-school.html">Hacker School</a></li>
-                    <li class="active"><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
-                    <li><a href="/category/projects.html">Projects</a></li>
-                    <li><a href="/category/uncategorized.html">Uncategorized</a></li>
-                </ul></nav>
+                <h1><a href="">Amy Hanlon <strong></strong></a></h1>
         </header><!-- /#banner -->
+        <nav id="menu"><ul>
+            <li><a href="/pages/bio.html">Biography</a></li>
+            <li><a href="/pages/endorsements.html">Endorsements</a></li>
+            <li><a href="/pages/home.html">Home</a></li>
+        </ul></nav><!-- /#menu -->
 <section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html" rel="bookmark"
-           title="Permalink to wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm">wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm</a></h1>
-    </header>
-
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-12-27T01:08:00">
-                Fri 27 December 2013
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
-        </address>
-<p>In <a href="/category/little-eureka-moments.html">Little Eureka Moments</a>. </p>
-<p>tags: <a href="/tag/homebrew.html">homebrew</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/osx.html">osx</a><a href="/tag/python.html">python</a></p>
-</footer><!-- /.post-info -->      <p>For the past four months I've been using Anaconda's Python distribution
+  <header>
+    <h2 class="entry-title">
+      <a href="/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html" rel="bookmark"
+         title="Permalink to wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm">wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm</a></h2>
+ 
+  </header>
+  <footer class="post-info">
+    <abbr class="published" title="2013-12-27T01:08:00">
+      Fri 27 December 2013
+    </abbr>
+    <address class="vcard author">
+      By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+    </address>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>For the past four months I've been using Anaconda's Python distribution
 on my Macbook, which has been great (except for <a href="http://mathamy.com/2013/12/02/homebrew-path-pythonpath/">Part 1</a> of what has
 now become a series), until I wanted to play with virtualenv. Apparently
 Anaconda does not work well with virtualenv and suggests using its own
@@ -70,37 +63,13 @@ looking for freetype in <code>/usr/include/freetype</code>, but it wasn't there
 since Homebrew installs everything in <code>/usr/local</code>. So, creating the
 symbolic link allowed matplotlib to find freetype. In moments like these
 I'm like 'Yer a wizard, Harry.'</p>
-    </div><!-- /.entry-content -->
-
-  </article>
+  </div><!-- /.entry-content -->
 </section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
-
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
                 </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
-
 </body>
 </html>
