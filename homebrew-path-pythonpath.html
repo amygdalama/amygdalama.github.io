@@ -115,86 +115,76 @@ text editor is TextEdit).</p>
 
 
 <p>The file contents should look something like this:</p>
-<div class="highlight"><pre><span class="c"># Setting PATH for Python 2.7  </span>
+<div class="highlight"><pre><span class="c"># Setting `PATH` for Python 2.7  </span>
 <span class="c"># The original version is saved in .bash_profile.pysave  </span>
 <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&quot;</span>  
-<span class="nb">export </span>PATH  
+<span class="nb">export</span> <span class="sb">`</span>PATH<span class="sb">`</span>  
 <span class="c"># added by Anaconda 1.7.0 installer  </span>
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:$PATH&quot;</span>  
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:<span class="nv">$PATH</span>  
-<span class="nb">export</span>
-<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>
+<span class="nb">export </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>
 </pre></div>
 
 
 <p>The last PATH= and PYTHONPATH= lines should be directed to the Anaconda
 location of python, and in this case they aren't. To fix this, comment
-out lines that incorrectly assign the PATH and PYTHONPATH variables, and
-add lines that assign the correct variables. I made the following edits
-to the file (changes are highlighted):</p>
-<p>[code gutter="false" highlight="3,4,8,9,10"]# Setting PATH for Python
-2.7  </p>
-<h1>The original version is saved in .bash_profile.pysave</h1>
-<h1></h1>
-<p>PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"<br />
-PATH="//anaconda/bin:${PATH}"<br />
-export PATH  </p>
-<h1>added by Anaconda 1.7.0 installer</h1>
-<p>export PATH="//anaconda/bin:$PATH"  </p>
-<h1>export PATH=/usr/local/bin:$PATH</h1>
-<h1>export</h1>
-<p>PYTHONPATH="/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH"<br />
-export
-PYTHONPATH="//anaconda/lib/python2.7/site-packages:$PYTHONPATH"</p>
+out or delete lines that incorrectly assign the <code>PATH</code> and <code>PYTHONPATH</code> variables, and
+add lines that assign the correct variables. After making edits, my file looks like this:</p>
+<div class="highlight"><pre><span class="c"># Setting PATH for Python 2.7  </span>
+<span class="c"># The original version is saved in .bash_profile.pysave  </span>
+<span class="c">#</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&quot;</span>  
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:${PATH}&quot;</span>  
+<span class="nb">export</span> <span class="sb">`</span>PATH<span class="sb">`</span>  
+<span class="c"># added by Anaconda 1.7.0 installer  </span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:$PATH&quot;</span>  
+<span class="c"># export PATH=/usr/local/bin:$PATH  </span>
+<span class="c"># export</span>
+<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>  
+<span class="nb">export </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>
+</pre></div>
+
+
 <p>Save the file. Then, in the terminal (after exiting python), source the
-file, and see if you've fixed the PATH and PYTHONPATH:</p>
-<p>[code language="bash" gutter="false"]$ source ~/.bash_profile<br />
-$ type -a python</p>
+file, and see if you've fixed the <code>PATH</code> and <code>PYTHONPATH</code>:</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile  
+<span class="nv">$ </span><span class="nb">type</span> -a python
+python is //anaconda/bin/python  
+python is //anaconda/bin/python  
+python is /usr/local/bin/python  
+python is //anaconda/bin/python  
+python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python  
+python is //anaconda/bin/python  
+python is //anaconda/bin/python  
+python is /usr/bin/python  
+python is /usr/local/bin/python
+</pre></div>
+
+
 <p>Now you should see the Anaconda python (or your preferable python) at
-the top of the list in the output:</p>
-<p>[code language="bash" gutter="false"]alia:~ amyhanlon$ type -a python<br />
-python is //anaconda/bin/python<br />
-python is //anaconda/bin/python<br />
-python is /usr/local/bin/python<br />
-python is //anaconda/bin/python<br />
-python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python<br />
-python is //anaconda/bin/python<br />
-python is //anaconda/bin/python<br />
-python is /usr/bin/python<br />
-python is /usr/local/bin/python</p>
-<p>Check your PYTHONPATH using the same method as before:</p>
-<p>[code gutter="false"]alia:~ amyhanlon$ python<br />
-Python 2.7.5 |Anaconda 1.7.0 (x86_64)| (default, Jun 28 2013,
-22:20:13)<br />
-[GCC 4.0.1 (Apple Inc. build 5493)] on darwin<br />
-Type "help", "copyright", "credits" or "license" for more
-information.<br />
-[code language="python" gutter="false"]  </p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>import sys<br />
-sys.path<br />
-[code gutter="false"]<br />
-['', '//anaconda/lib/python2.7/site-packages/gspread-0.1.0-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages/fuzzywuzzy-0.2-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages/inflect-0.2.4-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages/beautifulsoup4-4.3.2-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages/pyicloud-0.3.0-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages/foursquare-20130707-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages/poster-0.8.1-py2.7.egg',
-'//anaconda/lib/python2.7/site-packages', '/Users/amyhanlon',
-'//anaconda/lib/python27.zip', '//anaconda/lib/python2.7',
-'//anaconda/lib/python2.7/plat-darwin',
-'//anaconda/lib/python2.7/plat-mac',
-'//anaconda/lib/python2.7/plat-mac/lib-scriptpackages',
-'//anaconda/lib/python2.7/lib-tk', '//anaconda/lib/python2.7/lib-old',
-'//anaconda/lib/python2.7/lib-dynload',
-'//anaconda/lib/python2.7/site-packages/PIL',
-'//anaconda/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info']</p>
-</blockquote>
-</blockquote>
-</blockquote>
+the top of the list in the output.</p>
+<p>Check your <code>PYTHONPATH</code> in the python interpreter by using the same method as before:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>  
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>  
+<span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;//anaconda/lib/python2.7/site-packages/gspread-0.1.0-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/fuzzywuzzy-0.2-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/inflect-0.2.4-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/beautifulsoup4-4.3.2-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/pyicloud-0.3.0-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/foursquare-20130707-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/poster-0.8.1-py2.7.egg&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages&#39;</span><span class="p">,</span> <span class="s">&#39;/Users/amyhanlon&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python27.zip&#39;</span><span class="p">,</span> <span class="s">&#39;//anaconda/lib/python2.7&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/plat-darwin&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/plat-mac&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/plat-mac/lib-scriptpackages&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/lib-tk&#39;</span><span class="p">,</span> <span class="s">&#39;//anaconda/lib/python2.7/lib-old&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/lib-dynload&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/PIL&#39;</span><span class="p">,</span>
+<span class="s">&#39;//anaconda/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info&#39;</span><span class="p">]</span>
+</pre></div>
+
+
 <p>Now the terminal is using my Anaconda version of python and is looking
 in the Anaconda library for my packages! Viola!</p>
     </div><!-- /.entry-content -->

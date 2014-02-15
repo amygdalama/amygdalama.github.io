@@ -36,7 +36,242 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/hacker-school-day-2-goals.html">Hacker School Day 2: Goals! Or, A Grasp For Sanity</a></h1> 
+                    <h1 class="entry-title"><a href="/ipython-and-pandas-are-whoa.html">ipython and pandas are whoa!</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-02-14T15:52:00">
+                Fri 14 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="/tag/data-analysis.html">data analysis</a><a href="/tag/hacker-school.html">hacker school</a><a href="/tag/ipython.html">ipython</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/pandas.html">pandas</a><a href="/tag/python.html">python</a></p></footer><!-- /.post-info --><p>In my first five months of using Python, I would create .py files and
+then execute them in the terminal, like the loyal follower of <a href="http://learnpythonthehardway.org/book/">LPTHW</a>
+that I am. While it's certainly necessary to be able to write Python
+scripts and execute them from the terminal, I've learned that this
+workflow isn't the best way to explore data in Python.</p>
+<p>I initially converted to Python from R, and since have missed the
+interactiveness of working within RStudio (you don't have to re-run your
+entire code every time you make a change and want to view the results)
+and how R allows you to so quickly get to your data with data frames
+built straight from text files. Enter: <a href="http://ipython.org/">ipython</a> and <a href="http://pandas.pydata.org/">pandas</a>. (Go
+to their respective sites for installation instructions.)</p>
+<p>Julia Evans has a fantastic <a href="https://github.com/jvns/pandas-cookbook">tutorial</a> on how to use pandas in an
+ipython notebook. Here, I'd like to explore the differences between
+doing data analysis using ipython notebook and pandas versus writing .py
+scripts using mainly standard Python packages and executing via the
+terminal.</p>
+<p>Let's use the classic iris dataset for some simple analysis. First we
+need to do some setup. Create a directory for our project (mine is
+stored within my Projects directory that I keep in my Home directory.)
+In the terminal:  </p>
+<div class="highlight"><pre><span class="nv">$ </span>mkdir ~/Projects/ipython-pandas-whoa  
+<span class="nv">$ </span><span class="nb">cd</span> ~/Projects
+</pre></div>
+
+
+<p>Then create a Python script and open it with a text editor (I use
+Sublime Text 2, which I've <a href="http://www.sublimetext.com/docs/2/osx_command_line.html">configured</a> to open files with the command
+<code>subl</code>.</p>
+<div class="highlight"><pre><span class="nv">$ </span>touch barbaric-script.py  
+<span class="nv">$ </span>subl barbaric-script.py
+</pre></div>
+
+
+<p>This should open up a blank .py file in Sublime. If you don't have
+<code>subl</code> set up, you can simply open up the blank barbaric-script.py file
+we created with the <code>touch</code> command in your text editor of choice.</p>
+<p>In the barbaric-script.py file, let's import the necessary packages.
+We'll be using a couple standard python packages plus matplotlib.pyplot.
+If you don't have matplotlib installed, you can find installation
+instructions <a href="http://matplotlib.org/users/installing.html">here</a>.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">csv</span>  
+<span class="kn">import</span> <span class="nn">pprint</span>  
+<span class="kn">import</span> <span class="nn">urllib2</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+
+
+<p>To get the iris data, we'll use Python's built-in urllib2 and csv
+packages and then do some basic formatting. Let's process the dataset as
+a list of dictionaries.</p>
+<div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&quot;</span>
+
+<span class="c"># Open data from URL as a file-like object  </span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="c"># Create an empty list to store our data  </span>
+<span class="n">parsed_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c"># Read file  </span>
+<span class="n">raw_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c"># Define our headers since the file doesn&#39;t contain explicit headers  </span>
+<span class="c"># I found these headers from looking at the documentation at  </span>
+<span class="c"># http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  </span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Sepal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Class&#39;</span>  
+    <span class="p">]</span>
+
+<span class="c"># Iterate through the rows in the file, and create a dictionary for each row  </span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="p">:</span>
+
+<span class="c"># Dictionaries should have headers -&gt; row  </span>
+<span class="n">parsed_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">row</span><span class="p">)))</span>
+
+<span class="c"># Delete the last row of parsed_data because it&#39;s blank  </span>
+<span class="n">parsed_data</span> <span class="o">=</span> <span class="n">parsed_data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c"># Let&#39;s see what parsed_data looks like  </span>
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+
+
+<p>What you should see when you execute barbaric-script.py:</p>
+<div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py  
+<span class="o">[{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
+<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.4&#39;</span>,  
+<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
+<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;5.1&#39;</span>,  
+<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.5&#39;</span><span class="o">}</span>,  
+<span class="o">{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
+<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.4&#39;</span>,  
+<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
+<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;4.9&#39;</span>,  
+<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.0&#39;</span><span class="o">}</span>,  
+<span class="o">{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
+<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.3&#39;</span>,  
+<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
+<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;4.7&#39;</span>,  
+<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.2&#39;</span><span class="o">}]</span>
+</pre></div>
+
+
+<p>Great! So we have our data formatted nicely. We have a list with
+elements corresponding to each row in the file, and the elements in the
+list are dictionaries. The keys in the dictionaries are the column
+headers, and the values are the values associated with the respective
+column header for that particular row. For example, the first
+row/observation (printed as the first dictionary out of the three listed
+above) is in the class <code>Iris-setosa</code>, has a Petal Length of <code>1.4</code>, a Petal
+Width of <code>0.2</code>, a Sepal Length of <code>5.1</code>, and a Sepal Width of <code>3.5</code>. Let's do
+some plotting to explore our data. We can make a histogram! Add the
+following lines to your barbaric-script.py file:</p>
+<div class="highlight"><pre><span class="c"># Let&#39;s create a list of the Sepal Lengths  </span>
+<span class="c"># I&#39;m calling float on the entries because otherwise they&#39;re stored as strings  </span>
+<span class="n">sepal_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">])</span>  
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">))]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;#348ABD&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Count&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Let's try executing our script again.</p>
+<div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py
+</pre></div>
+
+
+<p>A histogram should pop up in a separate window:</p>
+<p><img alt="alt text" src="http://mathamy.files.wordpress.com/2014/02/barbaric.png" /></p>
+<p>That's a lot of code (18 lines)! And we didn't even do anything
+complicated - just parsed our data and plotted a histogram. Also, notice
+that each time you tried to fix a bug or add a feature (like plotting
+the histogram), you had to execute the entire script again, rather than
+just the piece where you fixed the bug. That doesn't matter too much
+since our data is fairly small and the script doesn't require much time
+to execute, but it would be pretty annoying if our script took longer to
+run.</p>
+<p>Now let's try doing the same thing, but using pandas in an ipython
+notebook. Use the terminal to run ipython notebook:</p>
+<p>$ cd ~/Projects/ipython-pandas-whoa<br />
+$ ipython notebook</p>
+<p>This will set up a local server on your computer, which will serve the
+ipython notebooks that are in your working directory (right now you
+don't have any) to http://127.0.0.1:8888. This should automatically open
+up in your browser.</p>
+<p>In the tab that opens in your browser, click "New Notebook". A new
+ipython notebook will open up in another tab. A new cell will also open
+up. Cells are places where you can write and execute code. This is what
+a cell looks like:</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/ipythoncell.png">![ipythoncell]</a></p>
+<p>To allow matplotlib to post plots within your notebook, rather than
+opening up a separate window (like when we executed our .py script),
+type the following into the cell:</p>
+<p>[code lang="python" gutter="false"]%matplotlib inline</p>
+<p>Then to execute the cell, press shift+enter (which will execute the cell
+your cursor is currently in and then automatically either move to the
+next cell, if one exists, or open up a new cell). Once you press
+shift+enter, your notebook should look like:</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/secondcell.png">![secondcell]</a></p>
+<p>In the next cell, import the packages we'll be using, namely
+matplotlib.pyplot and pandas:</p>
+<p>[code lang="python" gutter="false"]import matplotlib.pyplot as plt<br />
+import pandas as pd</p>
+<p>Press shift+enter again to execute the code (I'm going to stop telling
+you to do this, but just assume that after each block of code you should
+press shift+enter. If you get confused about what your notebook should
+look like, look at my <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">example notebook</a>.)</p>
+<p>To process the iris data, we can use the built-in panda read_csv
+parser. We can get to a easy-to-use data frame within three lines of
+code!</p>
+<p>[code lang="python" gutter="false"]url =
+"http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data"</p>
+<h1>Define our headers since the url doesn't contain explicit headers</h1>
+<h1>I found these headers from looking at the documentation at</h1>
+<h1></h1>
+<p>http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names<br />
+headers = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal
+Width', 'Class']<br />
+iris = pd.read_csv(url, header=None, names=headers)</p>
+<p>Let's see what the data looks like.</p>
+<p>[code lang="python" gutter="false"]iris[:3]</p>
+<p>You should see a beautifully formatted table! This is a pandas data
+frame, which is similar to a data frame in R.</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/table.png">![table]</a></p>
+<p>Now let's plot a histogram for the Sepal Length column.</p>
+<p>[code lang="python" gutter="false"]# I use two brackets around 'Sepal
+Length' to force pandas to make this  </p>
+<h1>a data frame rather than just a series, which is like a numpy</h1>
+<p>array.  </p>
+<h1>The brackets here aren't necessary, but makes printing</h1>
+<p>sepal_lengths  </p>
+<h1>prettier and makes it easier for us to combine sepal_lengths with</h1>
+<p>other  </p>
+<h1>data.</h1>
+<p>sepal_lengths = iris[['Sepal Length']]</p>
+<h1>Make the plot pretty!</h1>
+<p>pd.set_option('display.mpl_style', 'default')</p>
+<p>sepal_lengths.hist()</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/quite_elegant.png">![quite_elegant]</a></p>
+<p>By this point it should be fairly obvious that ipython and pandas are
+both awesome for data analysis! They make Python a much more serious
+contender as a tool for data analysis by giving you quick and easy
+access to your data. In this simple example, the barbaric-script.py was
+18 lines of code (disregarding comments, etc) and comparatively the
+ipython notebook with pandas was only 10!</p>
+<p>For further reading, I definitely encourage you to check out Julia's
+<a href="https://github.com/jvns/pandas-cookbook">pandas cookbook</a> (presented via ipython notebooks), on which
+incidentally I'll be collaborating with her next week (eeeep)!</p>
+<p>My code for this post can be found on my <a href="https://github.com/amygdalama/ipython-pandas-whoa">GitHub</a>, and the ipython
+notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">NBViewer</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/hacker-school-day-2-goals.html" rel="bookmark" title="Permalink to Hacker School Day 2: Goals! Or, A Grasp For Sanity">Hacker School Day 2: Goals! Or, A Grasp For Sanity</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-02-12T10:02:00">
                 Wed 12 February 2014
@@ -46,54 +281,41 @@
                 By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
         </address>
 <p>In <a href="/category/hacker-school.html">Hacker School</a>. </p>
-<p>tags: <a href="/tag/github.html">github</a><a href="/tag/hacker-school.html">hacker school</a></p></footer><!-- /.post-info --><p>I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
+<p>tags: <a href="/tag/github.html">github</a><a href="/tag/hacker-school.html">hacker school</a></p></footer><!-- /.post-info -->                <p>I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
 collaborate on I felt a bit like:</p>
 <p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/allthetennisballs.gif" /></p>
 <p><em>(Credit to Hacker School alumnus Alex Beaulne for finding this perfect
 gif.)</em></p>
-<p>In an attempt to regain a bit of sanity, yesterday I prioritized setting
-goals for the batch and creating a semi-pubic to-do list. I also began
-maintaining a list of learnings about how I can better approach Hacker
-School and learning in general. My to-do list, goals, and learnings can
-be found on my <a href="https://github.com/amygdalama/hacker-school-progress">GitHub</a>, which I'll be updating at least daily.</p>
-<p>In order to determine my goals, I answered the following questions, to
-ensure that what I set out to accomplish aligned with my values and my
-motivations for attending Hacker School. These lists are ranked somewhat
-by importance, but probably aren't perfectly ordered.</p>
-<h3>What do I want to get out of Hacker School?</h3>
-<ul>
-<li>Greater confidence, honesty, self-awareness, bravery</li>
-<li>Gain expertise in Python, Data Analysis, Machine Learning (currently
-    beginner-/intermediate-level)</li>
-<li>Join a community of programmers/math nerds who will help motivate me
-    to achieve greatness</li>
-<li>Frankly, a job</li>
-</ul>
-<h3>What do I want to accomplish at Hacker School?</h3>
-<ul>
-<li>One large (1-month) project which
-    requires pulling data from many sources and applying a recommender
-    system, probably to recommend an optimal brunch spot for me, because
-    brunch is awesome. This idea is inspired by <a href="http://www.hilarymason.com/presentations-2/in-search-of-the-optimal-cheeseburger/">Hilary Mason</a></li>
-<li>A plethora of varying, small (1-day) analysis and machine learning
-    projects</li>
-<li>Blog posts galore (3-5 per week) with a focus on writing
-    tutorials/explaining benefits of various packages</li>
-<li>A successful pull request, contributing to an open source project or
-    an existing tutorial</li>
-<li>Create a Python package (maybe with functions based on Jaynes'
-    <em>Probability Theory: The Logic of Science</em>)</li>
-<li>Give a talk! (eeeep!)</li>
-<li>Revamped website possibly using Pelican/GitHub pages (nonessential,
-    not a priority)</li>
-<li>Murdered out GitHub account (a pleasant side effect of all of the
-    above)</li>
-</ul>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>In an attempt to regain ...</p>
+                <a class="readmore" href="/hacker-school-day-2-goals.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html" rel="bookmark" title="Permalink to I moved cross-country for Hacker School and I'm only slightly convinced this is Real Life">I moved cross-country for Hacker School and I'm only slightly convinced this is Real Life</a></h1>
+                </header>
+                
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-02-10T23:23:00">
+                Mon 10 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="/category/hacker-school.html">Hacker School</a>. </p>
+<p>tags: <a href="/tag/hacker-school.html">hacker school</a></p></footer><!-- /.post-info -->                <p>Or, Hacker School: Day 1.</p>
+<p>Holy Shit! I have been fairly silent over the past month because I got
+accepted to <a href="https://www.hackerschool.com/">Hacker School</a> and had to figure out the logistics of
+quitting my job, moving cross-country, and living in the most expensive
+city in the States without a proper job ...</p>
+                <a class="readmore" href="/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
         
 
  

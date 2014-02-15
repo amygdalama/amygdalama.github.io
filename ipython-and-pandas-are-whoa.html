@@ -46,7 +46,7 @@
         </abbr>
 
         <address class="vcard author">
-                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
         </address>
 <p>In <a href="/category/projects.html">Projects</a>. </p>
 <p>tags: <a href="/tag/data-analysis.html">data analysis</a><a href="/tag/hacker-school.html">hacker school</a><a href="/tag/ipython.html">ipython</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/pandas.html">pandas</a><a href="/tag/python.html">python</a></p></footer><!-- /.post-info -->      <p>In my first five months of using Python, I would create .py files and
@@ -68,15 +68,20 @@ terminal.</p>
 <p>Let's use the classic iris dataset for some simple analysis. First we
 need to do some setup. Create a directory for our project (mine is
 stored within my Projects directory that I keep in my Home directory.)
-In the terminal:</p>
-<p>[code lang="bash" gutter="false"]\$ mkdir
-\~/Projects/ipython-pandas-whoa<br />
-\$ cd \~/Projects[/code]</p>
+In the terminal:  </p>
+<div class="highlight"><pre><span class="nv">$ </span>mkdir ~/Projects/ipython-pandas-whoa  
+<span class="nv">$ </span><span class="nb">cd</span> ~/Projects
+</pre></div>
+
+
 <p>Then create a Python script and open it with a text editor (I use
 Sublime Text 2, which I've <a href="http://www.sublimetext.com/docs/2/osx_command_line.html">configured</a> to open files with the command
 <code>subl</code>.</p>
-<p>[code lang="bash" gutter="false"]\$ touch barbaric-script.py<br />
-\$ subl barbaric-script.py[/code]</p>
+<div class="highlight"><pre><span class="nv">$ </span>touch barbaric-script.py  
+<span class="nv">$ </span>subl barbaric-script.py
+</pre></div>
+
+
 <p>This should open up a blank .py file in Sublime. If you don't have
 <code>subl</code> set up, you can simply open up the blank barbaric-script.py file
 we created with the <code>touch</code> command in your text editor of choice.</p>
@@ -84,79 +89,97 @@ we created with the <code>touch</code> command in your text editor of choice.</
 We'll be using a couple standard python packages plus matplotlib.pyplot.
 If you don't have matplotlib installed, you can find installation
 instructions <a href="http://matplotlib.org/users/installing.html">here</a>.</p>
-<p>[code lang="python"]<br />
-import csv<br />
-import pprint<br />
-import urllib2</p>
-<p>import matplotlib.pyplot as plt[/code]</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">csv</span>  
+<span class="kn">import</span> <span class="nn">pprint</span>  
+<span class="kn">import</span> <span class="nn">urllib2</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+
+
 <p>To get the iris data, we'll use Python's built-in urllib2 and csv
 packages and then do some basic formatting. Let's process the dataset as
 a list of dictionaries.</p>
-<p>[code lang="python" firstline="8"]url =
-"http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data"</p>
-<p># Open data from URL as a file-like object<br />
-f = urllib2.urlopen(url)</p>
-<p># Create an empty list to store our data<br />
-parsed_data = []</p>
-<p># Read file<br />
-raw_data = csv.reader(f)</p>
-<p># Define our headers since the file doesn't contain explicit headers<br />
-# I found these headers from looking at the documentation at<br />
-#
-http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names<br />
-headers = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal
-Width', 'Class'<br />
-]</p>
-<p># Iterate through the rows in the file, and create a dictionary for
-each row<br />
-for row in raw_data:</p>
-<p># Dictionaries should have headers -> row<br />
-parsed_data.append(dict(zip(headers, row)))</p>
-<p># Delete the last row of parsed_data because it's blank<br />
-parsed_data = parsed_data[:-1]</p>
-<p># Let's see what parsed_data looks like<br />
-pprint.pprint(parsed_data[:3])[/code]</p>
+<div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&quot;</span>
+
+<span class="c"># Open data from URL as a file-like object  </span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="c"># Create an empty list to store our data  </span>
+<span class="n">parsed_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c"># Read file  </span>
+<span class="n">raw_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c"># Define our headers since the file doesn&#39;t contain explicit headers  </span>
+<span class="c"># I found these headers from looking at the documentation at  </span>
+<span class="c"># http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  </span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Sepal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Class&#39;</span>  
+    <span class="p">]</span>
+
+<span class="c"># Iterate through the rows in the file, and create a dictionary for each row  </span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="p">:</span>
+
+<span class="c"># Dictionaries should have headers -&gt; row  </span>
+<span class="n">parsed_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">row</span><span class="p">)))</span>
+
+<span class="c"># Delete the last row of parsed_data because it&#39;s blank  </span>
+<span class="n">parsed_data</span> <span class="o">=</span> <span class="n">parsed_data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c"># Let&#39;s see what parsed_data looks like  </span>
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+
+
 <p>What you should see when you execute barbaric-script.py:</p>
-<p>[code language="bash" gutter="false"]\$ python barbaric-script.py<br />
-[{'Class': 'Iris-setosa',<br />
-'Petal Length': '1.4',<br />
-'Petal Width': '0.2',<br />
-'Sepal Length': '5.1',<br />
-'Sepal Width': '3.5'},<br />
-{'Class': 'Iris-setosa',<br />
-'Petal Length': '1.4',<br />
-'Petal Width': '0.2',<br />
-'Sepal Length': '4.9',<br />
-'Sepal Width': '3.0'},<br />
-{'Class': 'Iris-setosa',<br />
-'Petal Length': '1.3',<br />
-'Petal Width': '0.2',<br />
-'Sepal Length': '4.7',<br />
-'Sepal Width': '3.2'}][/code]</p>
+<div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py  
+<span class="o">[{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
+<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.4&#39;</span>,  
+<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
+<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;5.1&#39;</span>,  
+<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.5&#39;</span><span class="o">}</span>,  
+<span class="o">{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
+<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.4&#39;</span>,  
+<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
+<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;4.9&#39;</span>,  
+<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.0&#39;</span><span class="o">}</span>,  
+<span class="o">{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
+<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.3&#39;</span>,  
+<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
+<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;4.7&#39;</span>,  
+<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.2&#39;</span><span class="o">}]</span>
+</pre></div>
+
+
 <p>Great! So we have our data formatted nicely. We have a list with
 elements corresponding to each row in the file, and the elements in the
 list are dictionaries. The keys in the dictionaries are the column
 headers, and the values are the values associated with the respective
 column header for that particular row. For example, the first
 row/observation (printed as the first dictionary out of the three listed
-above) is in the class Iris-setosa, has a Petal Length of 1.4, a Petal
-Width of 0.2, a Sepal Length of 5.1, and a Sepal Width of 3.5. Let's do
+above) is in the class <code>Iris-setosa</code>, has a Petal Length of <code>1.4</code>, a Petal
+Width of <code>0.2</code>, a Sepal Length of <code>5.1</code>, and a Sepal Width of <code>3.5</code>. Let's do
 some plotting to explore our data. We can make a histogram! Add the
 following lines to your barbaric-script.py file:</p>
-<p>[code lang="python" firstline="37"]# Let's create a list of the Sepal
-Lengths<br />
-# I'm calling float on the entries because otherwise they're stored as
-strings<br />
-sepal_lengths = [float(parsed_data[i]['Sepal Length'])<br />
-for i in range(len(parsed_data))]</p>
-<p>plt.hist(sepal_lengths, color='#348ABD', edgecolor='none')<br />
-plt.xlabel('Sepal Length')<br />
-plt.ylabel('Count')<br />
-plt.show()[/code]</p>
+<div class="highlight"><pre><span class="c"># Let&#39;s create a list of the Sepal Lengths  </span>
+<span class="c"># I&#39;m calling float on the entries because otherwise they&#39;re stored as strings  </span>
+<span class="n">sepal_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">])</span>  
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">))]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;#348ABD&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Count&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
 <p>Let's try executing our script again.</p>
-<p>[code lang="bash" gutter="false"]\$ python barbaric-script.py[/code]</p>
+<div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py
+</pre></div>
+
+
 <p>A histogram should pop up in a separate window:</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/barbaric.png"><img alt="barbaric" src="http://mathamy.files.wordpress.com/2014/02/barbaric.png" /></a></p>
+<p><img alt="alt text" src="http://mathamy.files.wordpress.com/2014/02/barbaric.png" /></p>
 <p>That's a lot of code (18 lines)! And we didn't even do anything
 complicated - just parsed our data and plotted a histogram. Also, notice
 that each time you tried to fix a bug or add a feature (like plotting
@@ -167,8 +190,8 @@ to execute, but it would be pretty annoying if our script took longer to
 run.</p>
 <p>Now let's try doing the same thing, but using pandas in an ipython
 notebook. Use the terminal to run ipython notebook:</p>
-<p>[code lang="bash" gutter="false"]\$ cd \~/Projects/ipython-pandas-whoa<br />
-\$ ipython notebook[/code]</p>
+<p>$ cd ~/Projects/ipython-pandas-whoa<br />
+$ ipython notebook</p>
 <p>This will set up a local server on your computer, which will serve the
 ipython notebooks that are in your working directory (right now you
 don't have any) to http://127.0.0.1:8888. This should automatically open
@@ -177,20 +200,20 @@ up in your browser.</p>
 ipython notebook will open up in another tab. A new cell will also open
 up. Cells are places where you can write and execute code. This is what
 a cell looks like:</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/ipythoncell.png"><img alt="ipythoncell" src="http://mathamy.files.wordpress.com/2014/02/ipythoncell.png" /></a></p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/ipythoncell.png">![ipythoncell]</a></p>
 <p>To allow matplotlib to post plots within your notebook, rather than
 opening up a separate window (like when we executed our .py script),
 type the following into the cell:</p>
-<p>[code lang="python" gutter="false"]%matplotlib inline[/code]</p>
+<p>[code lang="python" gutter="false"]%matplotlib inline</p>
 <p>Then to execute the cell, press shift+enter (which will execute the cell
 your cursor is currently in and then automatically either move to the
 next cell, if one exists, or open up a new cell). Once you press
 shift+enter, your notebook should look like:</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/secondcell.png"><img alt="secondcell" src="http://mathamy.files.wordpress.com/2014/02/secondcell.png" /></a></p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/secondcell.png">![secondcell]</a></p>
 <p>In the next cell, import the packages we'll be using, namely
 matplotlib.pyplot and pandas:</p>
 <p>[code lang="python" gutter="false"]import matplotlib.pyplot as plt<br />
-import pandas as pd[/code]</p>
+import pandas as pd</p>
 <p>Press shift+enter again to execute the code (I'm going to stop telling
 you to do this, but just assume that after each block of code you should
 press shift+enter. If you get confused about what your notebook should
@@ -200,33 +223,33 @@ parser. We can get to a easy-to-use data frame within three lines of
 code!</p>
 <p>[code lang="python" gutter="false"]url =
 "http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data"</p>
-<p># Define our headers since the url doesn't contain explicit headers<br />
-# I found these headers from looking at the documentation at<br />
-#
-http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names<br />
+<h1>Define our headers since the url doesn't contain explicit headers</h1>
+<h1>I found these headers from looking at the documentation at</h1>
+<h1></h1>
+<p>http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names<br />
 headers = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal
 Width', 'Class']<br />
-iris = pd.read_csv(url, header=None, names=headers)[/code]</p>
+iris = pd.read_csv(url, header=None, names=headers)</p>
 <p>Let's see what the data looks like.</p>
-<p>[code lang="python" gutter="false"]iris[:3][/code]</p>
+<p>[code lang="python" gutter="false"]iris[:3]</p>
 <p>You should see a beautifully formatted table! This is a pandas data
 frame, which is similar to a data frame in R.</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/table.png"><img alt="table" src="http://mathamy.files.wordpress.com/2014/02/table.png" /></a></p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/table.png">![table]</a></p>
 <p>Now let's plot a histogram for the Sepal Length column.</p>
 <p>[code lang="python" gutter="false"]# I use two brackets around 'Sepal
-Length' to force pandas to make this<br />
-# a data frame rather than just a series, which is like a numpy
-array.<br />
-# The brackets here aren't necessary, but makes printing
-sepal_lengths<br />
-# prettier and makes it easier for us to combine sepal_lengths with
-other<br />
-# data.<br />
-sepal_lengths = iris[['Sepal Length']]</p>
-<p># Make the plot pretty!<br />
-pd.set_option('display.mpl_style', 'default')</p>
-<p>sepal_lengths.hist()[/code]</p>
-<p>[![quite_elegant][]][quite_elegant]</p>
+Length' to force pandas to make this  </p>
+<h1>a data frame rather than just a series, which is like a numpy</h1>
+<p>array.  </p>
+<h1>The brackets here aren't necessary, but makes printing</h1>
+<p>sepal_lengths  </p>
+<h1>prettier and makes it easier for us to combine sepal_lengths with</h1>
+<p>other  </p>
+<h1>data.</h1>
+<p>sepal_lengths = iris[['Sepal Length']]</p>
+<h1>Make the plot pretty!</h1>
+<p>pd.set_option('display.mpl_style', 'default')</p>
+<p>sepal_lengths.hist()</p>
+<p><a href="http://mathamy.files.wordpress.com/2014/02/quite_elegant.png">![quite_elegant]</a></p>
 <p>By this point it should be fairly obvious that ipython and pandas are
 both awesome for data analysis! They make Python a much more serious
 contender as a tool for data analysis by giving you quick and easy
