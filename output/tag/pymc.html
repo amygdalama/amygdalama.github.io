@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Amy Hanlon - pymc</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/bio.html">Biography</a></li>
+                    <li><a href="/pages/endorsements.html">Endorsements</a></li>
+                    <li><a href="/pages/home.html">Home</a></li>
+                    <li><a href="/category/hacker-school.html">Hacker School</a></li>
+                    <li><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
+                    <li><a href="/category/misc.html">misc</a></li>
+                    <li><a href="/category/projects.html">Projects</a></li>
+                    <li><a href="/category/uncategorized.html">Uncategorized</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/using-pymc-to-analyze-ab-testing-data.html">Using PyMC to Analyze A/B Testing Data</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-12-24T22:23:00">
+                Tue 24 December 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+        </address>
+<p>In <a href="/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="/tag/ab-testing.html">ab testing</a><a href="/tag/bayesian-methods-for-hackers.html">bayesian methods for hackers</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/numpy.html">numpy</a><a href="/tag/pymc.html">pymc</a><a href="/tag/python.html">python</a></p>
+</footer><!-- /.post-info --><p>In Chapter 2 of <a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">Bayesian Methods for Hackers</a>, there's an example of
+Bayesian analysis of an A/B test using simulated data. I decided to play
+around with this analysis method with real A/B landing page test data
+from one of my clients.</p>
+<p>This method uses PyMC to estimate the real conversion rate for each page
+and Matplotlib to visually interpret the results.</p>
+<p>First, I import the relevant packages:</p>
+<p>[code language="python"]import numpy as np<br />
+import pymc as pm<br />
+import matplotlib.pyplot as plt[/code]</p>
+<p>My client ran a landing page test with the following results:</p>
+<p>[code language="python" firstline="5"]clicks_A = 1135<br />
+orders_A = 5<br />
+clicks_B = 1149<br />
+orders_B = 17[/code]</p>
+<p>The observed conversion rates are 44% and 1.48% for pages A and B,
+respectively, but I'd like to be confident that the true conversion rate
+of page B is higher than page A.</p>
+<p>To format this data for the analysis, I create a numpy array for each
+page with 1s representing orders and 0s representing clicks without an
+order:</p>
+<p>[code language="python" firstline="10"]data_A = np.r_[ [0] *
+(clicks_A - orders_A), [1] * orders_A ]<br />
+data_B = np.r_[ [0] * (clicks_B - orders_B), [1] * orders_B
+][/code]</p>
+<p>Next I assign distributions to my prior beliefs of \$latex
+p_{A}\$ and \$latex p_{B}\$, the unknown, true conversion rates. I
+assume, for simplicity, that the distributions are uniform (i.e. I have
+no prior knowledge of what \$latex p_{A}\$ and \$latex p_{B}\$ are).
+[Note: the rest of the code in blog post is taken from <a href="http://nbviewer.ipython.org/github/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/blob/master/Chapter2_MorePyMC/MorePyMC.ipynb">the book</a>.]</p>
+<p>[code language="python" firstline="13"][/code]</p>
+<p>[code language="python" firstline="13"]p_A = pm.Uniform('p_A',
+lower=0, upper=1)<br />
+p_B = pm.Uniform('p_B', lower=0, upper=1)[/code]</p>
+<p>Since I want to estimate the difference in true conversion rates, I need
+to define a variable <code>delta</code>, which equals <code>p_B - p_A</code>. Since, if I know
+both <code>p_A</code> and <code>p_B</code>, I can calculate <code>delta</code>, it's a deterministic
+variable. In PyMC, deterministic variables are created using a function
+with a <code>pymc.deterministic</code> wrapper:</p>
+<p>[code language="python" firstline="16"]<br />
+@pm.deterministic<br />
+def delta(p_A=p_A, p_B=p_B):<br />
+return p_B - p_A<br />
+[/code]</p>
+<p>Next I add the observed data to PyMC variables and run an inference
+algorithm (I don't understand what this code is actually doing yet - an
+explanation is coming up in Chapter 3):</p>
+<p>[code language="python" firstline="20"]obs_A = pm.Bernoulli("obs_A",
+p_A, value = data_A, observed = True)<br />
+obs_B = pm.Bernoulli("obs_B", p_B, value = data_B, observed = True)</p>
+<p>mcmc = pm.MCMC([p_A, p_B, delta, obs_A, obs_B])<br />
+mcmc.sample(20000, 1000)[/code]</p>
+<p>Then I plot the posterior distributions for the three unknowns:</p>
+<p>[code language="python" firstline="26"]<br />
+p_A_samples = mcmc.trace("p_A")[:]<br />
+p_B_samples = mcmc.trace("p_B")[:]<br />
+delta_samples = mcmc.trace("delta")[:]</p>
+<p>ax = plt.subplot(311)</p>
+<p>plt.xlim(0, .035)<br />
+plt.hist(p_A_samples, histtype='stepfilled', bins=25, alpha=0.85,<br />
+label="posterior of \$p_A\$", color="#A60628", normed=True, edgecolor
+= "none")<br />
+plt.legend(loc="upper right")<br />
+plt.title("Posterior distributions of \$p_A\$, \$p_B\$, and delta
+unknowns")</p>
+<p>ax = plt.subplot(312)</p>
+<p>plt.xlim(0, .035)<br />
+plt.hist(p_B_samples, histtype='stepfilled', bins=25, alpha=0.85,<br />
+label="posterior of \$p_B\$", color="#467821", normed=True, edgecolor
+= "none")<br />
+plt.legend(loc="upper right")</p>
+<p>ax = plt.subplot(313)<br />
+plt.ylim(0,120)<br />
+plt.hist(delta_samples, histtype='stepfilled', bins=50, alpha=0.85,<br />
+label="posterior of \$p_B\$ - \$p_A\$", color="#7A68A6",
+normed=True, edgecolor = "none")<br />
+plt.legend(loc="upper right")<br />
+plt.vlines(0, 0, 120, color="black", alpha = .5)</p>
+<p>plt.show()<br />
+[/code]</p>
+<p>[![figure_1][]][figure_1]</p>
+<p>I can also compute the probability that the true conversion rate of page
+A, \$latex p_{A}\$, is better than the true conversion rate of page
+B, \$latex p_{B}\$:</p>
+<p>[code language="python" firstline="54"]<br />
+print "Probability site A is BETTER than site B: %.3f" % \<br />
+(delta_samples \&lt; 0).mean()<br />
+print "Probability site A is WORSE than site B: %.3f" % \<br />
+(delta_samples > 0).mean()<br />
+[/code]</p>
+<p><code>Probability page A is BETTER than page B: 0.006 Probability page A is WORSE than page B: 0.994</code></p>
+<p>It's very safe to say (as long as our data was collected properly) that
+page B is better than page A, and these results come very intuitively
+from looking at the graphs.</p>
+<p>The full code can be found on my <a href="https://github.com/amygdalama/tutorials/blob/master/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/MySourceFiles/Chapter2/ab-real-data.py">GitHub</a>.</p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
+            </ol><!-- /#posts-list -->
+            </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
