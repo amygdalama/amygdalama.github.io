@@ -18,7 +18,7 @@
 /***** Global *****/
 /* Body */
 body {
-    background: url("wavecut.png");
+    background: url("noisy_grid.png");
     font-family: 'Droid Sans', sans-serif;
     font-size: 14px ;
     line-height: 1.429;
@@ -51,12 +51,12 @@ hr { border: 2px solid #EEEEEE; }
 a {outline: 0;}
 a img {border: 0px; text-decoration: none;}
 a:link, a:visited {
-	color: #7A4700;
+	color: #A60628;
 	padding: 0 1px;
 	text-decoration: underline;
 }
 a:hover, a:active {
-	background-color: #7A4700;
+	background-color: #A60628;
 	color: #fff;
 	text-decoration: none;
 	text-shadow: 1px 1px 1px #333;
@@ -87,7 +87,7 @@ ol {
 }
 
 .post-info {
-    float:right;
+    /*float:right;*/
     margin:5px;
     padding:9px;
 }
@@ -169,7 +169,7 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	}
 	#banner h1 a:hover, #banner h1 a:active {
 		background: none;
-		color: #7A4700;
+		color: #A60628;
 		text-shadow: none;
 	}
 	
@@ -299,8 +299,9 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	
 	/* Social */
 	#extras .social {
-		float: right;
+		/*float: left;*/
 		width: 175px;
+		margin: 0 20px 0 0;
 	}
 	
 	#extras div[class='social'] a {
