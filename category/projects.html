@@ -176,7 +176,7 @@ following lines to your barbaric-script.py file:</p>
 
 
 <p>A histogram should pop up in a separate window:</p>
-<p><img alt="alt text" src="http://mathamy.files.wordpress.com/2014/02/barbaric.png" /></p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /></p>
 <p>That's a lot of code (18 lines)! And we didn't even do anything
 complicated - just parsed our data and plotted a histogram. Also, notice
 that each time you tried to fix a bug or add a feature (like plotting
@@ -187,8 +187,11 @@ to execute, but it would be pretty annoying if our script took longer to
 run.</p>
 <p>Now let's try doing the same thing, but using pandas in an ipython
 notebook. Use the terminal to run ipython notebook:</p>
-<p>$ cd ~/Projects/ipython-pandas-whoa<br />
-$ ipython notebook</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> ~/Projects/ipython-pandas-whoa  
+<span class="nv">$ </span>ipython notebook
+</pre></div>
+
+
 <p>This will set up a local server on your computer, which will serve the
 ipython notebooks that are in your working directory (right now you
 don't have any) to http://127.0.0.1:8888. This should automatically open
@@ -197,20 +200,26 @@ up in your browser.</p>
 ipython notebook will open up in another tab. A new cell will also open
 up. Cells are places where you can write and execute code. This is what
 a cell looks like:</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/ipythoncell.png">![ipythoncell]</a></p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /></p>
 <p>To allow matplotlib to post plots within your notebook, rather than
 opening up a separate window (like when we executed our .py script),
 type the following into the cell:</p>
-<p>[code lang="python" gutter="false"]%matplotlib inline</p>
+<div class="highlight"><pre><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+
+
 <p>Then to execute the cell, press shift+enter (which will execute the cell
 your cursor is currently in and then automatically either move to the
 next cell, if one exists, or open up a new cell). Once you press
 shift+enter, your notebook should look like:</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/secondcell.png">![secondcell]</a></p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /></p>
 <p>In the next cell, import the packages we'll be using, namely
 matplotlib.pyplot and pandas:</p>
-<p>[code lang="python" gutter="false"]import matplotlib.pyplot as plt<br />
-import pandas as pd</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>  
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+</pre></div>
+
+
 <p>Press shift+enter again to execute the code (I'm going to stop telling
 you to do this, but just assume that after each block of code you should
 press shift+enter. If you get confused about what your notebook should
@@ -218,35 +227,40 @@ look like, look at my <a href="http://nbviewer.ipython.org/github/amygdalama/ipy
 <p>To process the iris data, we can use the built-in panda read_csv
 parser. We can get to a easy-to-use data frame within three lines of
 code!</p>
-<p>[code lang="python" gutter="false"]url =
-"http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data"</p>
-<h1>Define our headers since the url doesn't contain explicit headers</h1>
-<h1>I found these headers from looking at the documentation at</h1>
-<h1></h1>
-<p>http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names<br />
-headers = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal
-Width', 'Class']<br />
-iris = pd.read_csv(url, header=None, names=headers)</p>
+<div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&quot;</span>
+
+<span class="c"># Define our headers since the url doesn&#39;t contain explicit headers  </span>
+<span class="c"># I found these headers from looking at the documentation at  </span>
+<span class="c"># http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  </span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Sepal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Class&#39;</span><span class="p">]</span>  
+<span class="n">iris</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+</pre></div>
+
+
 <p>Let's see what the data looks like.</p>
-<p>[code lang="python" gutter="false"]iris[:3]</p>
+<div class="highlight"><pre><span class="n">iris</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+
+
 <p>You should see a beautifully formatted table! This is a pandas data
 frame, which is similar to a data frame in R.</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/table.png">![table]</a></p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /></p>
 <p>Now let's plot a histogram for the Sepal Length column.</p>
-<p>[code lang="python" gutter="false"]# I use two brackets around 'Sepal
-Length' to force pandas to make this  </p>
-<h1>a data frame rather than just a series, which is like a numpy</h1>
-<p>array.  </p>
-<h1>The brackets here aren't necessary, but makes printing</h1>
-<p>sepal_lengths  </p>
-<h1>prettier and makes it easier for us to combine sepal_lengths with</h1>
-<p>other  </p>
-<h1>data.</h1>
-<p>sepal_lengths = iris[['Sepal Length']]</p>
-<h1>Make the plot pretty!</h1>
-<p>pd.set_option('display.mpl_style', 'default')</p>
-<p>sepal_lengths.hist()</p>
-<p><a href="http://mathamy.files.wordpress.com/2014/02/quite_elegant.png">![quite_elegant]</a></p>
+<div class="highlight"><pre><span class="c"># I use two brackets around &#39;Sepal Length&#39; to force pandas to make this  </span>
+<span class="c"># a data frame rather than just a series, which is like a numpy array.  </span>
+<span class="c"># The brackets here aren&#39;t necessary, but makes printing sepal_lengths  </span>
+<span class="c"># prettier and makes it easier for us to combine sepal_lengths with other  </span>
+<span class="c"># data.  </span>
+<span class="n">sepal_lengths</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[[</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">]]</span>
+
+<span class="c"># Make the plot pretty!  </span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">&#39;display.mpl_style&#39;</span><span class="p">,</span> <span class="s">&#39;default&#39;</span><span class="p">)</span>
+
+<span class="n">sepal_lengths</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/quite_elegant.png" /></p>
 <p>By this point it should be fairly obvious that ipython and pandas are
 both awesome for data analysis! They make Python a much more serious
 contender as a tool for data analysis by giving you quick and easy
@@ -278,7 +292,7 @@ notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amy
         </abbr>
 
         <address class="vcard author">
-                By <a class="url fn" href="/author/amygdalama.html">amygdalama</a>
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
         </address>
 <p>In <a href="/category/projects.html">Projects</a>. </p>
 <p>tags: <a href="/tag/ab-testing.html">ab testing</a><a href="/tag/bayesian-methods-for-hackers.html">bayesian methods for hackers</a><a href="/tag/matplotlib.html">matplotlib</a><a href="/tag/numpy.html">numpy</a><a href="/tag/pymc.html">pymc</a><a href="/tag/python.html">python</a></p></footer><!-- /.post-info -->                <p>In Chapter 2 of <a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">Bayesian Methods for Hackers</a>, there's an example of
