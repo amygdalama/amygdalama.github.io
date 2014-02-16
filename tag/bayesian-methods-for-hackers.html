@@ -145,16 +145,23 @@ explanation is coming up in Chapter 3):</p>
 </pre></div>
 
 
-<p><a href="http://mathamy.files.wordpress.com/2013/12/figure_11.png"><img alt="figure_1" src="http://mathamy.files.wordpress.com/2013/12/figure_11.png" /></a></p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/pymc_posteriors.png" /></p>
 <p>I can also compute the probability that the true conversion rate of page
-A, $latex p_{A}$, is better than the true conversion rate of page
-B, $latex p_{B}$:</p>
-<p>[code language="python" firstline="54"]<br />
-print "Probability site A is BETTER than site B: %.3f" % <br />
-(delta_samples &lt; 0).mean()<br />
-print "Probability site A is WORSE than site B: %.3f" % <br />
-(delta_samples &gt; 0).mean()  </p>
-<p><code>Probability page A is BETTER than page B: 0.006 Probability page A is WORSE than page B: 0.994</code></p>
+A, <code>p_A</code>, is better than the true conversion rate of page
+B, <code>p_A</code>:</p>
+<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Probability site A is BETTER than site B: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span>   
+<span class="p">(</span><span class="n">delta_samples</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  
+<span class="k">print</span> <span class="s">&quot;Probability site A is WORSE than site B: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span>   
+<span class="p">(</span><span class="n">delta_samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+
+
+<p>This should print out:  </p>
+<div class="highlight"><pre>Probability page A is BETTER than page B: 0.006  
+Probability page A is WORSE than page B: 0.994
+</pre></div>
+
+
 <p>It's very safe to say (as long as our data was collected properly) that
 page B is better than page A, and these results come very intuitively
 from looking at the graphs.</p>
