@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
         <title>ipython and pandas are whoa!</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+=======
+        <title>ipython and pandas are whoa!</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://amygdalama.github.io/theme/css/main.css" type="text/css" />
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
    
 
         <!--[if IE]>
                 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
         <!--[if lte IE 7]>
+<<<<<<< HEAD
                 <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
                 <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
 
         <!--[if lt IE 7]>
                 <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
+=======
+                <link rel="stylesheet" type="text/css" media="all" href="http://amygdalama.github.io/css/ie.css"/>
+                <script src="http://amygdalama.github.io/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://amygdalama.github.io/css/ie6.css"/><![endif]-->
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
+<<<<<<< HEAD
                 <h1><a href="">Amy Hanlon </a></h1>
                 <nav><ul>
                     <li><a href="/pages/bio.html">Biography</a></li>
@@ -28,6 +43,16 @@
                     <li ><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
                     <li class="active"><a href="/category/projects.html">Projects</a></li>
                     <li ><a href="/category/uncategorized.html">Uncategorized</a></li>
+=======
+                <h1><a href="http://amygdalama.github.io">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="http://amygdalama.github.io/pages/bio.html">Biography</a></li>
+                    <li><a href="http://amygdalama.github.io/pages/endorsements.html">Endorsements</a></li>
+                    <li ><a href="http://amygdalama.github.io/category/hacker-school.html">Hacker School</a></li>
+                    <li ><a href="http://amygdalama.github.io/category/little-eureka-moments.html">Little Eureka Moments</a></li>
+                    <li class="active"><a href="http://amygdalama.github.io/category/projects.html">Projects</a></li>
+                    <li ><a href="http://amygdalama.github.io/category/uncategorized.html">Uncategorized</a></li>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
@@ -35,7 +60,11 @@
     <header>
       <h1 class="entry-title">
         <a href="ipython-and-pandas-are-whoa.html" rel="bookmark"
+<<<<<<< HEAD
            title="Permalink to ipython and pandas are whoa!">ipython and pandas are whoa!</a></h1>
+=======
+           title="Permalink to ipython and pandas are whoa!">ipython and pandas are&nbsp;whoa!</a></h1>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
     </header>
 
     <div class="entry-content">
@@ -45,6 +74,7 @@
         </abbr>
 
         <address class="vcard author">
+<<<<<<< HEAD
                 By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
         </address>
 <p>In <a href="/category/projects.html">Projects</a>. </p>
@@ -68,25 +98,62 @@ terminal.</p>
 need to do some setup. Create a directory for our project (mine is
 stored within my Projects directory that I keep in my Home directory.)
 In the terminal:  </p>
+=======
+                By <a class="url fn" href="http://amygdalama.github.io/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="http://amygdalama.github.io/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="http://amygdalama.github.io/tag/data-analysis.html">data analysis</a><a href="http://amygdalama.github.io/tag/hacker-school.html">hacker school</a><a href="http://amygdalama.github.io/tag/ipython.html">ipython</a><a href="http://amygdalama.github.io/tag/matplotlib.html">matplotlib</a><a href="http://amygdalama.github.io/tag/pandas.html">pandas</a><a href="http://amygdalama.github.io/tag/python.html">python</a></p></footer><!-- /.post-info -->      <p>In my first five months of using Python, I would create .py files and
+then execute them in the terminal, like the loyal follower of <a href="http://learnpythonthehardway.org/book/"><span class="caps">LPTHW</span></a>
+that I am. While it&#8217;s certainly necessary to be able to write Python
+scripts and execute them from the terminal, I&#8217;ve learned that this
+workflow isn&#8217;t the best way to explore data in&nbsp;Python.</p>
+<p>I initially converted to Python from R, and since have missed the
+interactiveness of working within RStudio (you don&#8217;t have to re-run your
+entire code every time you make a change and want to view the results)
+and how R allows you to so quickly get to your data with data frames
+built straight from text files. Enter: <a href="http://ipython.org/">ipython</a> and <a href="http://pandas.pydata.org/">pandas</a>. (Go
+to their respective sites for installation&nbsp;instructions.)</p>
+<p>Julia Evans has a fantastic <a href="https://github.com/jvns/pandas-cookbook">tutorial</a> on how to use pandas in an
+ipython notebook. Here, I&#8217;d like to explore the differences between
+doing data analysis using ipython notebook and pandas versus writing .py
+scripts using mainly standard Python packages and executing via the&nbsp;terminal.</p>
+<p>Let&#8217;s use the classic iris dataset for some simple analysis. First we
+need to do some setup. Create a directory for our project (mine is
+stored within my Projects directory that I keep in my Home directory.)
+In the&nbsp;terminal:  </p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="nv">$ </span>mkdir ~/Projects/ipython-pandas-whoa  
 <span class="nv">$ </span><span class="nb">cd</span> ~/Projects
 </pre></div>
 
 
 <p>Then create a Python script and open it with a text editor (I use
+<<<<<<< HEAD
 Sublime Text 2, which I've <a href="http://www.sublimetext.com/docs/2/osx_command_line.html">configured</a> to open files with the command
+=======
+Sublime Text 2, which I&#8217;ve <a href="http://www.sublimetext.com/docs/2/osx_command_line.html">configured</a> to open files with the command
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <code>subl</code>.</p>
 <div class="highlight"><pre><span class="nv">$ </span>touch barbaric-script.py  
 <span class="nv">$ </span>subl barbaric-script.py
 </pre></div>
 
 
+<<<<<<< HEAD
 <p>This should open up a blank .py file in Sublime. If you don't have
 <code>subl</code> set up, you can simply open up the blank barbaric-script.py file
 we created with the <code>touch</code> command in your text editor of choice.</p>
 <p>In the barbaric-script.py file, let's import the necessary packages.
 We'll be using a couple standard python packages plus matplotlib.pyplot.
 If you don't have matplotlib installed, you can find installation
+=======
+<p>This should open up a blank .py file in Sublime. If you don&#8217;t have
+<code>subl</code> set up, you can simply open up the blank barbaric-script.py file
+we created with the <code>touch</code> command in your text editor of&nbsp;choice.</p>
+<p>In the barbaric-script.py file, let&#8217;s import the necessary packages.
+We&#8217;ll be using a couple standard python packages plus matplotlib.pyplot.
+If you don&#8217;t have matplotlib installed, you can find installation
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 instructions <a href="http://matplotlib.org/users/installing.html">here</a>.</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">csv</span>  
 <span class="kn">import</span> <span class="nn">pprint</span>  
@@ -96,9 +163,15 @@ instructions <a href="http://matplotlib.org/users/installing.html">here</a>.</p
 </pre></div>
 
 
+<<<<<<< HEAD
 <p>To get the iris data, we'll use Python's built-in urllib2 and csv
 packages and then do some basic formatting. Let's process the dataset as
 a list of dictionaries.</p>
+=======
+<p>To get the iris data, we&#8217;ll use Python&#8217;s built-in urllib2 and csv
+packages and then do some basic formatting. Let&#8217;s process the dataset as
+a list of&nbsp;dictionaries.</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&quot;</span>
 
 <span class="c"># Open data from URL as a file-like object  </span>
@@ -130,7 +203,11 @@ a list of dictionaries.</p>
 </pre></div>
 
 
+<<<<<<< HEAD
 <p>What you should see when you execute barbaric-script.py:</p>
+=======
+<p>What you should see when you execute&nbsp;barbaric-script.py:</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py  
 <span class="o">[{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
 <span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.4&#39;</span>,  
@@ -157,9 +234,15 @@ headers, and the values are the values associated with the respective
 column header for that particular row. For example, the first
 row/observation (printed as the first dictionary out of the three listed
 above) is in the class <code>Iris-setosa</code>, has a Petal Length of <code>1.4</code>, a Petal
+<<<<<<< HEAD
 Width of <code>0.2</code>, a Sepal Length of <code>5.1</code>, and a Sepal Width of <code>3.5</code>. Let's do
 some plotting to explore our data. We can make a histogram! Add the
 following lines to your barbaric-script.py file:</p>
+=======
+Width of <code>0.2</code>, a Sepal Length of <code>5.1</code>, and a Sepal Width of <code>3.5</code>. Let&#8217;s do
+some plotting to explore our data. We can make a histogram! Add the
+following lines to your barbaric-script.py&nbsp;file:</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="c"># Let&#39;s create a list of the Sepal Lengths  </span>
 <span class="c"># I&#39;m calling float on the entries because otherwise they&#39;re stored as strings  </span>
 <span class="n">sepal_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">])</span>  
@@ -172,11 +255,16 @@ following lines to your barbaric-script.py file:</p>
 </pre></div>
 
 
+<<<<<<< HEAD
 <p>Let's try executing our script again.</p>
+=======
+<p>Let&#8217;s try executing our script&nbsp;again.</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py
 </pre></div>
 
 
+<<<<<<< HEAD
 <p>A histogram should pop up in a separate window:</p>
 <p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /></p>
 <p>That's a lot of code (18 lines)! And we didn't even do anything
@@ -189,6 +277,19 @@ to execute, but it would be pretty annoying if our script took longer to
 run.</p>
 <p>Now let's try doing the same thing, but using pandas in an ipython
 notebook. Use the terminal to run ipython notebook:</p>
+=======
+<p>A histogram should pop up in a separate&nbsp;window:</p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /></p>
+<p>That&#8217;s a lot of code (18 lines)! And we didn&#8217;t even do anything
+complicated - just parsed our data and plotted a histogram. Also, notice
+that each time you tried to fix a bug or add a feature (like plotting
+the histogram), you had to execute the entire script again, rather than
+just the piece where you fixed the bug. That doesn&#8217;t matter too much
+since our data is fairly small and the script doesn&#8217;t require much time
+to execute, but it would be pretty annoying if our script took longer to&nbsp;run.</p>
+<p>Now let&#8217;s try doing the same thing, but using pandas in an ipython
+notebook. Use the terminal to run ipython&nbsp;notebook:</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> ~/Projects/ipython-pandas-whoa  
 <span class="nv">$ </span>ipython notebook
 </pre></div>
@@ -196,6 +297,7 @@ notebook. Use the terminal to run ipython notebook:</p>
 
 <p>This will set up a local server on your computer, which will serve the
 ipython notebooks that are in your working directory (right now you
+<<<<<<< HEAD
 don't have any) to http://127.0.0.1:8888. This should automatically open
 up in your browser.</p>
 <p>In the tab that opens in your browser, click "New Notebook". A new
@@ -206,6 +308,18 @@ a cell looks like:</p>
 <p>To allow matplotlib to post plots within your notebook, rather than
 opening up a separate window (like when we executed our .py script),
 type the following into the cell:</p>
+=======
+don&#8217;t have any) to http://127.0.0.1:8888. This should automatically open
+up in your&nbsp;browser.</p>
+<p>In the tab that opens in your browser, click &#8220;New Notebook&#8221;. A new
+ipython notebook will open up in another tab. A new cell will also open
+up. Cells are places where you can write and execute code. This is what
+a cell looks&nbsp;like:</p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /></p>
+<p>To allow matplotlib to post plots within your notebook, rather than
+opening up a separate window (like when we executed our .py script),
+type the following into the&nbsp;cell:</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 </pre></div>
 
@@ -213,22 +327,37 @@ type the following into the cell:</p>
 <p>Then to execute the cell, press shift+enter (which will execute the cell
 your cursor is currently in and then automatically either move to the
 next cell, if one exists, or open up a new cell). Once you press
+<<<<<<< HEAD
 shift+enter, your notebook should look like:</p>
 <p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /></p>
 <p>In the next cell, import the packages we'll be using, namely
 matplotlib.pyplot and pandas:</p>
+=======
+shift+enter, your notebook should look&nbsp;like:</p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /></p>
+<p>In the next cell, import the packages we&#8217;ll be using, namely
+matplotlib.pyplot and&nbsp;pandas:</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>  
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 </pre></div>
 
 
+<<<<<<< HEAD
 <p>Press shift+enter again to execute the code (I'm going to stop telling
+=======
+<p>Press shift+enter again to execute the code (I&#8217;m going to stop telling
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 you to do this, but just assume that after each block of code you should
 press shift+enter. If you get confused about what your notebook should
 look like, look at my <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">example notebook</a>.)</p>
 <p>To process the iris data, we can use the built-in panda read_csv
+<<<<<<< HEAD
 parser. We can get to a easy-to-use data frame within three lines of
 code!</p>
+=======
+parser. We can get to a easy-to-use data frame within three lines of&nbsp;code!</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&quot;</span>
 
 <span class="c"># Define our headers since the url doesn&#39;t contain explicit headers  </span>
@@ -239,15 +368,25 @@ code!</p>
 </pre></div>
 
 
+<<<<<<< HEAD
 <p>Let's see what the data looks like.</p>
+=======
+<p>Let&#8217;s see what the data looks&nbsp;like.</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">iris</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
 </pre></div>
 
 
 <p>You should see a beautifully formatted table! This is a pandas data
+<<<<<<< HEAD
 frame, which is similar to a data frame in R.</p>
 <p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /></p>
 <p>Now let's plot a histogram for the Sepal Length column.</p>
+=======
+frame, which is similar to a data frame in&nbsp;R.</p>
+<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /></p>
+<p>Now let&#8217;s plot a histogram for the Sepal Length&nbsp;column.</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="c"># I use two brackets around &#39;Sepal Length&#39; to force pandas to make this  </span>
 <span class="c"># a data frame rather than just a series, which is like a numpy array.  </span>
 <span class="c"># The brackets here aren&#39;t necessary, but makes printing sepal_lengths  </span>
@@ -268,10 +407,17 @@ both awesome for data analysis! They make Python a much more serious
 contender as a tool for data analysis by giving you quick and easy
 access to your data. In this simple example, the barbaric-script.py was
 18 lines of code (disregarding comments, etc) and comparatively the
+<<<<<<< HEAD
 ipython notebook with pandas was only 10!</p>
 <p>For further reading, I definitely encourage you to check out Julia's
 <a href="https://github.com/jvns/pandas-cookbook">pandas cookbook</a> (presented via ipython notebooks), on which
 incidentally I'll be collaborating with her next week (eeeep)!</p>
+=======
+ipython notebook with pandas was only&nbsp;10!</p>
+<p>For further reading, I definitely encourage you to check out Julia&#8217;s
+<a href="https://github.com/jvns/pandas-cookbook">pandas cookbook</a> (presented via ipython notebooks), on which
+incidentally I&#8217;ll be collaborating with her next week&nbsp;(eeeep)!</p>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <p>My code for this post can be found on my <a href="https://github.com/amygdalama/ipython-pandas-whoa">GitHub</a>, and the ipython
 notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">NBViewer</a>.</p>
     </div><!-- /.entry-content -->
@@ -279,6 +425,7 @@ notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amy
   </article>
 </section>
         <section id="extras" class="body">
+<<<<<<< HEAD
                 <div class="blogroll">
                         <h2>blogroll</h2>
                         <ul>
@@ -288,12 +435,18 @@ notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amy
                             <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
+=======
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
                 <div class="social">
                         <h2>social</h2>
                         <ul>
                             
                             <li><a href="https://github.com/amygdalama">github</a></li>
                             <li><a href="https://twitter.com/amygdalama">twitter</a></li>
+<<<<<<< HEAD
+=======
+                            <li><a href="http://www.linkedin.com/in/amyehanlon">linkedin</a></li>
+>>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
