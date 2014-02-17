@@ -3,36 +3,23 @@
 <head>
         <title>Amy Hanlon - numpy</title>
         <meta charset="utf-8" />
-<<<<<<< HEAD
         <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-=======
-        <link rel="stylesheet" href="http://amygdalama.github.io/theme/css/main.css" type="text/css" />
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
    
 
         <!--[if IE]>
                 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
         <!--[if lte IE 7]>
-<<<<<<< HEAD
                 <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
                 <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
 
         <!--[if lt IE 7]>
                 <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
-=======
-                <link rel="stylesheet" type="text/css" media="all" href="http://amygdalama.github.io/css/ie.css"/>
-                <script src="http://amygdalama.github.io/js/IE8.js" type="text/javascript"></script><![endif]-->
-
-        <!--[if lt IE 7]>
-                <link rel="stylesheet" type="text/css" media="all" href="http://amygdalama.github.io/css/ie6.css"/><![endif]-->
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-<<<<<<< HEAD
                 <h1><a href="">Amy Hanlon </a></h1>
                 <nav><ul>
                     <li><a href="/pages/bio.html">Biography</a></li>
@@ -41,16 +28,6 @@
                     <li ><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
                     <li ><a href="/category/projects.html">Projects</a></li>
                     <li ><a href="/category/uncategorized.html">Uncategorized</a></li>
-=======
-                <h1><a href="http://amygdalama.github.io">Amy Hanlon </a></h1>
-                <nav><ul>
-                    <li><a href="http://amygdalama.github.io/pages/bio.html">Biography</a></li>
-                    <li><a href="http://amygdalama.github.io/pages/endorsements.html">Endorsements</a></li>
-                    <li ><a href="http://amygdalama.github.io/category/hacker-school.html">Hacker School</a></li>
-                    <li ><a href="http://amygdalama.github.io/category/little-eureka-moments.html">Little Eureka Moments</a></li>
-                    <li ><a href="http://amygdalama.github.io/category/projects.html">Projects</a></li>
-                    <li ><a href="http://amygdalama.github.io/category/uncategorized.html">Uncategorized</a></li>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
                 </ul></nav>
         </header><!-- /#banner -->
         
@@ -58,18 +35,13 @@
 
             <aside id="featured" class="body">
                 <article>
-<<<<<<< HEAD
                     <h1 class="entry-title"><a href="/using-pymc-to-analyze-ab-testing-data.html">Using PyMC to Analyze A/B Testing Data</a></h1> 
-=======
-                    <h1 class="entry-title"><a href="http://amygdalama.github.io/using-pymc-to-analyze-ab-testing-data.html">Using PyMC to Analyze A/B Testing&nbsp;Data</a></h1> 
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <footer class="post-info">
         <abbr class="published" title="2013-12-24T22:23:00">
                 Tue 24 December 2013
         </abbr>
 
         <address class="vcard author">
-<<<<<<< HEAD
                 By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
         </address>
 <p>In <a href="/category/projects.html">Projects</a>. </p>
@@ -80,29 +52,13 @@ from one of my clients.</p>
 <p>This method uses PyMC to estimate the real conversion rate for each page
 and Matplotlib to visually interpret the results.</p>
 <p>First, I import the relevant packages:</p>
-=======
-                By <a class="url fn" href="http://amygdalama.github.io/author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
-<p>In <a href="http://amygdalama.github.io/category/projects.html">Projects</a>. </p>
-<p>tags: <a href="http://amygdalama.github.io/tag/ab-testing.html">ab testing</a><a href="http://amygdalama.github.io/tag/matplotlib.html">matplotlib</a><a href="http://amygdalama.github.io/tag/numpy.html">numpy</a><a href="http://amygdalama.github.io/tag/pymc.html">pymc</a><a href="http://amygdalama.github.io/tag/python.html">python</a></p></footer><!-- /.post-info --><p>In Chapter 2 of <a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">Bayesian Methods for Hackers</a>, there&#8217;s an example of
-Bayesian analysis of an A/B test using simulated data. I decided to play
-around with this analysis method with real A/B landing page test data
-from one of my&nbsp;clients.</p>
-<p>This method uses PyMC to estimate the real conversion rate for each page
-and Matplotlib to visually interpret the&nbsp;results.</p>
-<p>First, I import the relevant&nbsp;packages:</p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>  
 <span class="kn">import</span> <span class="nn">pymc</span> <span class="kn">as</span> <span class="nn">pm</span>  
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 </pre></div>
 
 
-<<<<<<< HEAD
 <p>My client ran a landing page test with the following results:</p>
-=======
-<p>My client ran a landing page test with the following&nbsp;results:</p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">clicks_A</span> <span class="o">=</span> <span class="mi">1135</span>  
 <span class="n">orders_A</span> <span class="o">=</span> <span class="mi">5</span>  
 <span class="n">clicks_B</span> <span class="o">=</span> <span class="mi">1149</span>  
@@ -111,18 +67,11 @@ and Matplotlib to visually interpret the&nbsp;results.</p>
 
 
 <p>The observed conversion rates are 44% and 1.48% for pages A and B,
-<<<<<<< HEAD
 respectively, but I'd like to be confident that the true conversion rate
 of page B is higher than page A.</p>
 <p>To format this data for the analysis, I create a numpy array for each
 page with 1s representing orders and 0s representing clicks without an
 order:</p>
-=======
-respectively, but I&#8217;d like to be confident that the true conversion rate
-of page B is higher than page&nbsp;A.</p>
-<p>To format this data for the analysis, I create a numpy array for each
-page with 1s representing orders and 0s representing clicks without an&nbsp;order:</p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">data_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">clicks_A</span> <span class="o">-</span> <span class="n">orders_A</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">orders_A</span><span class="p">]</span>  
 <span class="n">data_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">clicks_B</span> <span class="o">-</span> <span class="n">orders_B</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">orders_B</span><span class="p">]</span>
 </pre></div>
@@ -130,13 +79,8 @@ page with 1s representing orders and 0s representing clicks without an&nbsp;orde
 
 <p>Next I assign distributions to my prior beliefs of <code>p_A</code> and <code>p_B</code>, the unknown, true conversion rates. I
 assume, for simplicity, that the distributions are uniform (i.e. I have
-<<<<<<< HEAD
 no prior knowledge of what <code>p_A</code> and 'p_B' are).
 [Note: the rest of the code in blog post is taken from [the book].</p>
-=======
-no prior knowledge of what <code>p_A</code> and &#8217;p_B&#8217; are).
-[Note: the rest of the code in blog post is taken from [the&nbsp;book].</p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">p_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s">&#39;p_A&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  
 <span class="n">p_B</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s">&#39;p_B&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -144,11 +88,7 @@ no prior knowledge of what <code>p_A</code> and &#8217;p_B&#8217; are).
 
 <p>Since I want to estimate the difference in true conversion rates, I need
 to define a variable <code>delta</code>, which equals <code>p_B - p_A</code>. Since, if I know
-<<<<<<< HEAD
 both <code>p_A</code> and <code>p_B</code>, I can calculate <code>delta</code>, it's a deterministic
-=======
-both <code>p_A</code> and <code>p_B</code>, I can calculate <code>delta</code>, it&#8217;s a deterministic
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 variable. In PyMC, deterministic variables are created using a function
 with a <code>pymc.deterministic</code> wrapper:</p>
 <div class="highlight"><pre><span class="nd">@pm.deterministic</span>  
@@ -158,13 +98,8 @@ with a <code>pymc.deterministic</code> wrapper:</p>
 
 
 <p>Next I add the observed data to PyMC variables and run an inference
-<<<<<<< HEAD
 algorithm (I don't understand what this code is actually doing yet - an
 explanation is coming up in Chapter 3):</p>
-=======
-algorithm (I don&#8217;t understand what this code is actually doing yet - an
-explanation is coming up in Chapter&nbsp;3):</p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">obs_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="s">&quot;obs_A&quot;</span><span class="p">,</span>
 <span class="n">p_A</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">data_A</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>  
 <span class="n">obs_B</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="s">&quot;obs_B&quot;</span><span class="p">,</span> <span class="n">p_B</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">data_B</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
@@ -174,11 +109,7 @@ explanation is coming up in Chapter&nbsp;3):</p>
 </pre></div>
 
 
-<<<<<<< HEAD
 <p>Then I plot the posterior distributions for the three unknowns:</p>
-=======
-<p>Then I plot the posterior distributions for the three&nbsp;unknowns:</p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre><span class="n">p_A_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;p_A&quot;</span><span class="p">)[:]</span>  
 <span class="n">p_B_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;p_B&quot;</span><span class="p">)[:]</span>  
 <span class="n">delta_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;delta&quot;</span><span class="p">)[:]</span>
@@ -224,25 +155,15 @@ B, <code>p_A</code>:</p>
 </pre></div>
 
 
-<<<<<<< HEAD
 <p>This should print out:  </p>
-=======
-<p>This should print&nbsp;out:  </p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <div class="highlight"><pre>Probability page A is BETTER than page B: 0.006  
 Probability page A is WORSE than page B: 0.994
 </pre></div>
 
 
-<<<<<<< HEAD
 <p>It's very safe to say (as long as our data was collected properly) that
 page B is better than page A, and these results come very intuitively
 from looking at the graphs.</p>
-=======
-<p>It&#8217;s very safe to say (as long as our data was collected properly) that
-page B is better than page A, and these results come very intuitively
-from looking at the&nbsp;graphs.</p>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
 <p>The full code can be found on my <a href="https://github.com/amygdalama/tutorials/blob/master/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/MySourceFiles/Chapter2/ab-real-data.py">GitHub</a>.</p>                </article>
 <p class="paginator">
     Page 1 / 1
@@ -251,7 +172,6 @@ from looking at the&nbsp;graphs.</p>
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
         <section id="extras" class="body">
-<<<<<<< HEAD
                 <div class="blogroll">
                         <h2>blogroll</h2>
                         <ul>
@@ -261,18 +181,12 @@ from looking at the&nbsp;graphs.</p>
                             <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
-=======
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
                 <div class="social">
                         <h2>social</h2>
                         <ul>
                             
                             <li><a href="https://github.com/amygdalama">github</a></li>
                             <li><a href="https://twitter.com/amygdalama">twitter</a></li>
-<<<<<<< HEAD
-=======
-                            <li><a href="http://www.linkedin.com/in/amyehanlon">linkedin</a></li>
->>>>>>> 5915fb3e8ba895ee7ad6efa46b3ce6f45e978bdc
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
