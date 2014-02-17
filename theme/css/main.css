@@ -36,10 +36,10 @@ h5 {font-size: 1.143em}	/* 16px */
 h6 {font-size: 1em}		/* 14px */
 
 h1, h2, h3, h4, h5, h6 {
-	font-weight: 400;
+	font-weight: 700;
 	line-height: 1.1;
 	margin-bottom: .8em;
-	font-family: 'Lobster', cursive;
+	font-family: 'Droid Sans', sans-serif;
 	
 }
 
@@ -59,7 +59,7 @@ a:hover, a:active {
 	background-color: #C74451;
 	color: #fff;
 	text-decoration: none;
-	text-shadow: 1px 1px 1px #333;
+	text-shadow: none;
 }
 
 h1 a:hover {
@@ -163,7 +163,7 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 }
 
 	/* Banner */
-	#banner h1 {font-size: 3.571em; line-height: 0;}
+	#banner h1 {font-family: 'Lobster', cursive; font-size: 3.571em; line-height: 0;}
 	#banner h1 a:link, #banner h1 a:visited {
 		color: #000305;
 		display: block;
@@ -282,6 +282,7 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	font-size: 1.429em;
 	margin-bottom: .25em;
 	padding: 0 3px;
+	font-family: 'Lobster', cursive;
 }
 
 #extras a:link, #extras a:visited {
@@ -304,7 +305,7 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	
 	/* Social */
 	#extras .social {
-		float: right;
+		text-align: left;
 		width: 175px;
 	}
 	
@@ -379,15 +380,25 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 	font-size: 3em;
 	font-weight: 900; 
 	margin-bottom: 10px; 
-	margin-top: 0;}
+	margin-top: 0;
+	color: #000305;}
 
-.entry-title a:link, .entry-title a:visited {text-decoration: none; color: #333;}
+.entry-title a:link, .entry-title a:visited {text-decoration: none; color: #000305;}
 .entry-title a:visited {background-color: #fff;}
 
 .entry-title a:hover{
 	text-decoration: none;
 	text-shadow: none;
 	color: #C74451;
+}
+
+.page-title {font-family: "Lobster", "cursive"; 
+	font-size: 3em;
+	font-weight: 900; 
+	margin-bottom: 10px; 
+	margin-top: 0;
+	color: #000305;
+
 }
 
 .other-articles {

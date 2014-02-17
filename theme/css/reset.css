@@ -25,6 +25,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 
 body {line-height: 1;}
+address { font-style: normal;}
 
 ol, ul {list-style: none;}
 
