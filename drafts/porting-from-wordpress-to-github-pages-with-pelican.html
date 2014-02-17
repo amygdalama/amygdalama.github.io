@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Porting WordPress Blog to GitHub Pages using Pelican</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+   
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
+                <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/bio.html">Biography</a></li>
+                    <li><a href="/pages/endorsements.html">Endorsements</a></li>
+                    <li ><a href="/category/hacker-school.html">Hacker School</a></li>
+                    <li ><a href="/category/little-eureka-moments.html">Little Eureka Moments</a></li>
+                    <li class="active"><a href="/category/projects.html">Projects</a></li>
+                    <li ><a href="/category/uncategorized.html">Uncategorized</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="porting-from-wordpress-to-github-pages-with-pelican.html" rel="bookmark"
+           title="Permalink to Porting WordPress Blog to GitHub Pages using Pelican">Porting WordPress Blog to GitHub Pages using Pelican</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-02-15T00:00:00">
+                Sat 15 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="/category/projects.html">Projects</a>. </p>
+<p>tags: <a href="/tag/pelican.html">pelican</a><a href="/tag/blogging.html">blogging</a><a href="/tag/wordpress.html">wordpress</a><a href="/tag/github-pages.html">github-pages</a><a href="/tag/markdown.html">markdown</a></p></footer><!-- /.post-info -->      <p>Creating a website hosted on GitHub pages using Pelican, with content ported from Wordpress.</p>
+<ol>
+<li>Initial GitHub setup: http://pages.github.com/</li>
+<li>Only create the repository. Don't set up .git on your local computer yet because you'll need to set it up in the output folder that Pelican generates that houses your .html</li>
+<li>Initial Pelican setup in a virtualenv: http://docs.getpelican.com/en/3.3.0/getting_started.html</li>
+<li>
+<p>run quickstart  </p>
+<p>:::bash
+(blog)amygdalama.github.io $ pelican-quickstart<br />
+Welcome to pelican-quickstart v3.3.0.  </p>
+<p>This script will help you create a new Pelican-based website.  </p>
+<p>Please answer the following questions so this script can generate the files needed by Pelican.  </p>
+<blockquote>
+<p>Where do you want to create your new web site? [.] .<br />
+What will be the title of this web site? Amy Hanlon<br />
+Who will be the author of this web site? Amy Hanlon<br />
+What will be the default language of this web site? [en] en<br />
+Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) y<br />
+What is your URL prefix? (see above example; no trailing slash) http://amygdalama.github.io<br />
+Do you want to enable article pagination? (Y/n) y<br />
+How many articles per page do you want? [10]<br />
+Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) y<br />
+Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n) y<br />
+Do you want to upload your website using FTP? (y/N) n<br />
+Do you want to upload your website using SSH? (y/N) n<br />
+Do you want to upload your website using Dropbox? (y/N) n<br />
+Do you want to upload your website using S3? (y/N) n<br />
+Do you want to upload your website using Rackspace Cloud Files? (y/N) n<br />
+Done. Your new project is available at /Users/amyhanlon/Projects/amygdalama.github.io<br />
+(blog)amygdalama.github.io $ ls<br />
+Makefile        develop_server.sh   how-to.md       pelicanconf.py<br />
+content         fabfile.py      output          publishconf.py</p>
+</blockquote>
+</li>
+<li>
+<p>Create a folders for static pages (i.e. About Me, Contact, etc) and images</p>
+<p>:::bash
+(blog)amygdalama.github.io [master <em>%] $ cd content/
+(blog)content [master </em>] $ ls
+(blog)content [master <em>] $ mkdir pages
+(blog)content [master </em>] $ ls
+pages
+(blog)content [master <em>] $ mkdir images
+(blog)content [master </em>] $ ls
+images  pages</p>
+</li>
+<li>
+<p>Export your WordPress blog to a .xml file by going to Dashboard &gt; Tools &gt; Export. I'm anal and saved this file and an archive in my amygdalama.github.io folder.</p>
+<p>:::bash
+(blog)amygdalama.github.io [master <em>%] $ cd ~/Projects/amygdalama.github.io/
+(blog)amygdalama.github.io [master </em>%] $ mkdir wordpress-archive
+(blog)amygdalama.github.io [master <em>%] $ mv ~/Downloads/amyhanlon.wordpress.2014-02-15.xml wordpress-archive/archive.xml
+(blog)amygdalama.github.io [master </em>%] $ cd wordpress-archive/
+(blog)wordpress-archive [master *%] $ ls
+archive.xml</p>
+</li>
+<li>
+<p>Convert this .xml file to a collection of .md files using the <code>pelican-import</code> command.</p>
+<p>:::bash
+(blog)wordpress-archive [master *%] $ pelican-import --wpfile -o output -m markdown archive.xml
+output/bio.md
+output/endorsements.md
+output/visualizing-social-circles-using-facebook-data.md
+output/homebrew-path-pythonpath.md
+output/adventures-in-miami-bullish-conference-2013.md
+output/home.md
+WARNING: Post "No title [92]" is lacking a proper title
+output/92.md
+WARNING: Post "No title [94]" is lacking a proper title
+output/94.md
+WARNING: Post "No title [95]" is lacking a proper title
+output/95.md
+output/using-pymc-to-analyze-ab-testing-data.md
+output/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.md
+output/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.md
+output/hacker-school-day-2-goals.md
+output/ipython-and-pandas-are-whoa.md</p>
+</li>
+</ol>
+<p>Move these .md files to the content folder that was created when you ran pelican-quickstart.</p>
+<div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span>amygdalama.github.io <span class="o">[</span>master *%<span class="o">]</span> <span class="nv">$ </span>cp wordpress-archive/output/* content
+</pre></div>
+
+
+<p>Move the .md files intended to be pages (e.g. Bio, About Me, Contact, Resume pages) to the content/pages directory.</p>
+<p>You'll need to <em>manually</em> export all of the images you've been hosting on WordPress. Make a folder for images within your content directory and save the images there.</p>
+<p>(blog)$ mkdir content/images</p>
+<p>Generate your site!</p>
+<div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span>amygdalama.github.io <span class="o">[</span>master *%<span class="o">]</span> <span class="nv">$ </span>pelican content
+WARNING: Empty alt attribute <span class="k">for </span>image screen-shot-2013-11-26-at-9-04-50-pm.png?w<span class="o">=</span>300<span class="s2">&quot; title=&quot;</span>facebook-graph in /Users/amyhanlon/Projects/amygdalama.github.io/content/visualizing-social-circles-using-facebook-data.md
+WARNING: Empty alt attribute <span class="k">for </span>image screen-shot-2013-11-26-at-9-04-50-pm.png?w<span class="o">=</span>300<span class="s2">&quot; title=&quot;</span>facebook-graph in /Users/amyhanlon/Projects/amygdalama.github.io/content/visualizing-social-circles-using-facebook-data.md
+Done: Processed 11 articles and 3 pages in 0.56 seconds.
+<span class="o">(</span>blog<span class="o">)</span>amygdalama.github.io <span class="o">[</span>master *%<span class="o">]</span> <span class="nv">$ </span>ls output
+92.html
+94.html
+95.html
+adventures-in-miami-bullish-conference-2013.html
+archives.html
+author
+authors.html
+bio.html
+categories.html
+category
+endorsements.html
+hacker-school-day-2-goals.html
+home.html
+homebrew-path-pythonpath.html
+i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html
+index.html
+index2.html
+ipython-and-pandas-are-whoa.html
+pages
+tag
+tags.html
+theme
+using-pymc-to-analyze-ab-testing-data.html
+visualizing-social-circles-using-facebook-data.html
+wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html
+<span class="o">(</span>blog<span class="o">)</span>amygdalama.github.io <span class="o">[</span>master *%<span class="o">]</span> <span class="nv">$ </span><span class="nb">cd </span>output <span class="o">&amp;&amp;</span> python -m SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:34:52<span class="o">]</span> <span class="s2">&quot;GET / HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:34:52<span class="o">]</span> <span class="s2">&quot;GET /theme/css/main.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:34:53<span class="o">]</span> <span class="s2">&quot;GET /theme/css/reset.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:34:53<span class="o">]</span> <span class="s2">&quot;GET /theme/css/pygment.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:34:53<span class="o">]</span> <span class="s2">&quot;GET /theme/css/typogrify.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:34:53<span class="o">]</span> code 404, message File not found
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:34:53<span class="o">]</span> <span class="s2">&quot;GET /favicon.ico HTTP/1.1&quot;</span> 404 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:29<span class="o">]</span> <span class="s2">&quot;GET /hacker-school-day-2-goals.html HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:29<span class="o">]</span> <span class="s2">&quot;GET /theme/css/main.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:29<span class="o">]</span> <span class="s2">&quot;GET /theme/css/reset.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:29<span class="o">]</span> <span class="s2">&quot;GET /theme/css/pygment.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:29<span class="o">]</span> <span class="s2">&quot;GET /theme/css/typogrify.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:35<span class="o">]</span> <span class="s2">&quot;GET /category/little-eureka-moments.html HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:43<span class="o">]</span> <span class="s2">&quot;GET /pages/bio.html HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:58<span class="o">]</span> <span class="s2">&quot;GET /pages/home.html HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:58<span class="o">]</span> <span class="s2">&quot;GET /theme/css/main.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:58<span class="o">]</span> <span class="s2">&quot;GET /theme/css/reset.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:58<span class="o">]</span> <span class="s2">&quot;GET /theme/css/pygment.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:35:58<span class="o">]</span> <span class="s2">&quot;GET /theme/css/typogrify.css HTTP/1.1&quot;</span> 200 -
+127.0.0.1 - - <span class="o">[</span>14/Feb/2014 19:36:02<span class="o">]</span> <span class="s2">&quot;GET / HTTP/1.1&quot;</span> 200 -
+</pre></div>
+
+
+<p>This will locally host your site at http://localhost:8000/. Navigate there in your browser and you can preview your site!</p>
+<p>Initialize a .git in the output folder that Pelican created. Then add the GitHub repo you created as a remote:</p>
+<div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span><span class="nv">$ </span><span class="nb">cd </span>output
+<span class="o">(</span>blog<span class="o">)</span><span class="nv">$ </span>git init
+<span class="o">(</span>blog<span class="o">)</span><span class="nv">$ </span>git remote add origin https://github.com/amygdalama/amygdalama.github.io
+</pre></div>
+
+
+<p>Commit all the files in the output folder, and then push your commits to GitHub</p>
+<div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span><span class="nv">$ </span>git add --all
+<span class="o">(</span>blog<span class="o">)</span><span class="nv">$ </span>git commit -m <span class="s2">&quot;initial commit&quot;</span>
+<span class="o">(</span>blog<span class="o">)</span><span class="nv">$ </span>git push origin master
+</pre></div>
+
+
+<p>Within about 10 minutes, your site should be up and working!</p>
+<p>Clone the available themes and pick one! The themes are listed here https://github.com/getpelican/pelican-themes and most of them have screenshots for easy viewing.</p>
+<div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span> blog<span class="nv">$ </span>git clone https://github.com/getpelican/pelican-themes.git
+</pre></div>
+
+
+<p>I'm interested in looking at the following themes:
+<em> gum - good! bolder titles? header image? no tag cloud
+</em> pelican-bootstrap3 - close but not quite, no tag cloud, would have to change header format
+* subtle - ooh! nice! might want to switch title headers to a font easier to read</p>
+<p>To install themes, I created a themes folder within my blog folder</p>
+<div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span> blog<span class="nv">$ </span>mkdir themes
+<span class="o">(</span>blog<span class="o">)</span> blog<span class="nv">$ </span><span class="nb">cd </span>themes
+<span class="o">(</span>blog<span class="o">)</span> blog<span class="nv">$ </span>git clone git://github.com/alexex/bootlex.git
+<span class="o">(</span>blog<span class="o">)</span> blog<span class="nv">$ </span>ls
+bootlex
+</pre></div>
+
+
+<p>Do this will all the themes you want to test out, and then run pelican-themes:</p>
+<div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span> blog<span class="nv">$ </span>pelican-themes --install themes/*
+</pre></div>
+
+
+<p>Things you'll probably have to fix:</p>
+<ul>
+<li>
+<p>Image links - Since your posts previously linked to images you were hosting on WordPress, you'll need to update the URLs for your images to <em>raw</em> GitHub links.</p>
+</li>
+<li>
+<p>Your source code probably needs re-formatting.</p>
+</li>
+</ul>
+<p>Questions!
+<em> Header image?
+</em> Links to articles turn white after hovering
+* Main Nav - get rid of a bunch of the links
+  * Home
+  * Biography
+  * Projects
+  * Hacker School
+  * Endorsements
+  * Add tag cloud to right of all pages</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            
+                            <li><a href="https://github.com/amygdalama">github</a></li>
+                            <li><a href="https://twitter.com/amygdalama">twitter</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
