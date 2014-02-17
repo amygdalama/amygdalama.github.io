@@ -12,13 +12,13 @@
 @import url("pygment.css");
 @import url("typogrify.css");
 @import url(http://fonts.googleapis.com/css?family=Lobster);
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
 
 
 /***** Global *****/
 /* Body */
 body {
-    background: url("wavecut.png");
+    background: url("noisy_grid.png");
     font-family: 'Droid Sans', sans-serif;
     font-size: 14px ;
     line-height: 1.429;
@@ -51,12 +51,12 @@ hr { border: 2px solid #EEEEEE; }
 a {outline: 0;}
 a img {border: 0px; text-decoration: none;}
 a:link, a:visited {
-	color: #7A4700;
+	color: #C74451;
 	padding: 0 1px;
 	text-decoration: underline;
 }
 a:hover, a:active {
-	background-color: #7A4700;
+	background-color: #C74451;
 	color: #fff;
 	text-decoration: none;
 	text-shadow: 1px 1px 1px #333;
@@ -87,13 +87,18 @@ ol {
 }
 
 .post-info {
-    float:right;
-    margin:5px;
-    padding:9px;
+    /*float:right;*/
+    /*margin:5px;*/
+    padding-bottom:1em;
+    padding-top:1em;
 }
 
 .post-info p{
     margin-bottom: 1px;
+}
+
+.summary-tags {
+	margin-left: 190px;
 }
 
 .readmore { float: right }
@@ -169,7 +174,7 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	}
 	#banner h1 a:hover, #banner h1 a:active {
 		background: none;
-		color: #7A4700;
+		color: #C74451;
 		text-shadow: none;
 	}
 	
@@ -369,9 +374,44 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 #content > .hentry {padding: 1em 0;}
 .hentry img{display : none ;}
-.entry-title {font-size: 3em; margin-bottom: 10px; margin-top: 0;}
+
+.entry-title {font-family: "Droid Sans", "sans-serif"; 
+	font-size: 3em;
+	font-weight: 900; 
+	margin-bottom: 10px; 
+	margin-top: 0;}
+
 .entry-title a:link, .entry-title a:visited {text-decoration: none; color: #333;}
 .entry-title a:visited {background-color: #fff;}
+
+.entry-title a:hover{
+	text-decoration: none;
+	text-shadow: none;
+	color: #C74451;
+}
+
+.other-articles {
+	font-size: 3em;
+}
+
+.hentry h1 {
+	font-family: "Droid Sans", "sans-serif";
+	text-decoration: none;
+	font-weight: 900;
+	color: #333;
+}
+
+.hentry h1 a {
+	text-decoration: none;
+	color: #333;
+	font-weight: 900;
+}
+
+.hentry h1 a:hover{
+	text-decoration: none;
+	text-shadow: none;
+	color: #C74451;
+}
 
 .hentry .post-info * {font-style: normal;}
 
