@@ -159,7 +159,11 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 *****************/
 #banner {
 	margin: 0 auto;
-	padding: 2.5em 0 0 0;
+	padding: 2.5em 0 155px 0;
+	background-image:url(https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/header.png);
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: 0 115px;
 }
 
 	/* Banner */
@@ -403,6 +407,7 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 
 .other-articles {
 	font-size: 3em;
+	font-family: "Lobster", cursive;
 }
 
 .hentry h1 {
