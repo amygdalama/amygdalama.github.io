@@ -30,3 +30,5 @@ THEME = "pelican-themes/subtle"
 
 # This setting doesn't work
 DISPLAY_CATEGORIES_ON_MENU = False
+
+OUTPUT_PATH = '.'
