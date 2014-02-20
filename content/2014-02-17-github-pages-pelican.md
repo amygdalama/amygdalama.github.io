@@ -1,13 +1,41 @@
 Title: Porting WordPress Blog to GitHub Pages using Pelican
-Date: 2014-02-15
+Date: 2014-02-19
 Category: Projects
 Tags: pelican, blogging, wordpress, github-pages, markdown
 Slug: porting-from-wordpress-to-github-pages-with-pelican
 Author: Amy Hanlon
-Summary: How I ported my content from my WordPress-hosted blog to GitHub Pages using Pelican.
-Status: draft
+Status: Draft
 
-Creating a website hosted on GitHub pages using Pelican, with content ported from Wordpress.
+Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another ([GitHub Pages])(http://pages.github.com/) and attempting to learn enough CSS and [Jinja](http://jinja.pocoo.org/) to handle setting up my site using [Pelican](http://docs.getpelican.com/en/3.3.0/). I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.
+
+The great part about this whole process is that with Pelican, I can write my blog posts and pages in [Markdown](http://daringfireball.net/projects/markdown/) (about which I also knew nothing until last week, but it's *wonderfully easy to learn*.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.
+
+There's a plethora of material online on Pelican and GitHub pages, but it all presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others, particularly those without a convenient 2-bottles-for-$10-special make this transition with less misery.
+
+##The Process:
+
+###Required Packages
+
+###GitHub Pages Setup
+* Create GitHub repo following [these instructions](http://pages.github.com/)
+
+###Exporting Existing Content
+**You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages**  
+
+* Exporting my WordPress content to XML
+* Imperfectly converting the XML to Markdown using Pelican
+* Manually editing the Markdown output
+
+###Locally Hosting Site
+
+###Posting Site to GitHub
+
+##Customization
+
+* Posting Pelican output HTML to GitHub
+7. Choosing a [Pelican theme]
+8. Customizing the Pelican theme
+9. 
 
 1. Initial GitHub setup: http://pages.github.com/
   * Only create the repository. Don't set up .git on your local computer yet because you'll need to set it up in the output folder that Pelican generates that houses your .html
