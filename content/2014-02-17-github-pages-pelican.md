@@ -4,7 +4,7 @@ Category: Projects
 Tags: pelican, blogging, wordpress, github-pages, markdown
 Slug: porting-from-wordpress-to-github-pages-with-pelican
 Author: Amy Hanlon
-Status: Draft
+Status: draft
 
 Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another ([GitHub Pages])(http://pages.github.com/) and attempting to learn enough CSS and [Jinja](http://jinja.pocoo.org/) to handle setting up my site using [Pelican](http://docs.getpelican.com/en/3.3.0/). I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.
 

@@ -40,8 +40,8 @@
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2014-02-15T00:00:00">
-                Sat 15 February 2014
+        <abbr class="published" title="2014-02-19T00:00:00">
+                Wed 19 February 2014
         </abbr>
 
         <address class="vcard author">
@@ -50,9 +50,33 @@
 <p>In <a href="../category/projects.html">Projects</a> </p>
 
 
-</footer><!-- /.post-info -->      <p>Creating a website hosted on GitHub pages using Pelican, with content ported from Wordpress.</p>
-<ol>
-<li>Initial GitHub setup: http://pages.github.com/</li>
+</footer><!-- /.post-info -->      <p>Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another ([GitHub Pages])(http://pages.github.com/) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
+<p>The great part about this whole process is that with Pelican, I can write my blog posts and pages in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> (about which I also knew nothing until last week, but it's <em>wonderfully easy to learn</em>.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.</p>
+<p>There's a plethora of material online on Pelican and GitHub pages, but it all presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others, particularly those without a convenient 2-bottles-for-$10-special make this transition with less misery.</p>
+<h2>The Process:</h2>
+<h3>Required Packages</h3>
+<h3>GitHub Pages Setup</h3>
+<ul>
+<li>Create GitHub repo following <a href="http://pages.github.com/">these instructions</a></li>
+</ul>
+<h3>Exporting Existing Content</h3>
+<p><strong>You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages</strong>  </p>
+<ul>
+<li>Exporting my WordPress content to XML</li>
+<li>Imperfectly converting the XML to Markdown using Pelican</li>
+<li>Manually editing the Markdown output</li>
+</ul>
+<h3>Locally Hosting Site</h3>
+<h3>Posting Site to GitHub</h3>
+<h2>Customization</h2>
+<ul>
+<li>Posting Pelican output HTML to GitHub</li>
+<li>Choosing a [Pelican theme]</li>
+<li>Customizing the Pelican theme</li>
+<li></li>
+<li>
+<p>Initial GitHub setup: http://pages.github.com/</p>
+</li>
 <li>Only create the repository. Don't set up .git on your local computer yet because you'll need to set it up in the output folder that Pelican generates that houses your .html</li>
 <li>Initial Pelican setup in a virtualenv: http://docs.getpelican.com/en/3.3.0/getting_started.html</li>
 <li>
@@ -128,7 +152,7 @@ output/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-th
 output/hacker-school-day-2-goals.md
 output/ipython-and-pandas-are-whoa.md</p>
 </li>
-</ol>
+</ul>
 <p>Move these .md files to the content folder that was created when you ran pelican-quickstart.</p>
 <div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span>amygdalama.github.io <span class="o">[</span>master *%<span class="o">]</span> <span class="nv">$ </span>cp wordpress-archive/output/* content
 </pre></div>
