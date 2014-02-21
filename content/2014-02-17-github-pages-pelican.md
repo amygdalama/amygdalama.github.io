@@ -8,31 +8,102 @@ Status: draft
 
 Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another ([GitHub Pages])(http://pages.github.com/) and attempting to learn enough CSS and [Jinja](http://jinja.pocoo.org/) to handle setting up my site using [Pelican](http://docs.getpelican.com/en/3.3.0/). I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.
 
-The great part about this whole process is that with Pelican, I can write my blog posts and pages in [Markdown](http://daringfireball.net/projects/markdown/) (about which I also knew nothing until last week, but it's *wonderfully easy to learn*.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.
+The great part about this whole process is that with Pelican, I can write my blog posts and pages in [Markdown](http://daringfireball.net/projects/markdown/) (about which I also knew little until last week, but it's *wonderfully easy to learn*.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.
 
-There's a plethora of material online on Pelican and GitHub pages, but it all presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others, particularly those without a convenient 2-bottles-for-$10-special make this transition with less misery.
+There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others, particularly those without a convenient 2-bottles-for-$10-special, make this transition with less misery.
 
-##The Process:
+####GitHub Pages Setup
 
-###Required Packages
+1. Create GitHub repo following the [GitHub Pages instructions](http://pages.github.com/) (the first step only!)
 
-###GitHub Pages Setup
-* Create GitHub repo following [these instructions](http://pages.github.com/)
+*A note on GitHub Pages:* I believe your HTML files (particularly your index.html file) must be in the *main directory* of your git repo for this to work. This will be important later, specifically when you're organizing your site content on your local computer and when you're pushing your content to GitHub.
 
-###Exporting Existing Content
-**You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages**  
+####Pelican Setup
 
-* Exporting my WordPress content to XML
-* Imperfectly converting the XML to Markdown using Pelican
-* Manually editing the Markdown output
+1. **Install necessary [packages](http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican)**
 
-###Locally Hosting Site
+2. **Run Pelican [quick-start](http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog)**
 
-###Posting Site to GitHub
+This will probably ask you lots of questions that seem foreign. These questions will set up some configuration files that you can later edit with your preferred [settings](http://docs.getpelican.com/en/3.1.1/settings.html). As an example, here's how I answered:
 
-##Customization
+  	:::bash
+	> Where do you want to create your new web site? [.]  
+	> What will be the title of this web site? Amy Hanlon  
+	> Who will be the author of this web site? Amy Hanlon  
+	> What will be the default language of this web site? [en]   
+	> Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) y  
+	> What is your URL prefix? (see above example; no trailing slash) http://amygdalama.github.io  
+	> Do you want to enable article pagination? (Y/n) y  
+	> How many articles per page do you want? [10]  
+	> Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) y  
+	> Do you want an auto-reload & simpleHTTP script to assist with theme and site development? (Y/n) y  
+	> Do you want to upload your website using FTP? (y/N) n  
+	> Do you want to upload your website using SSH? (y/N) n  
+	> Do you want to upload your website using Dropbox? (y/N) n  
+	> Do you want to upload your website using S3? (y/N) n  
+	> Do you want to upload your website using Rackspace Cloud Files? (y/N) n  
 
-* Posting Pelican output HTML to GitHub
+Now if you type the `tree` command within your blog's main directory, you should see:
+
+  	:::bash
+  	$ tree
+	.
+	├── Makefile
+	├── content
+	├── develop_server.sh
+	├── fabfile.py
+	├── output
+	├── pelicanconf.py
+	└── publishconf.py
+
+If you don't have `tree`, you should! It's neat. `brew install tree`. If you're on OSX and don't have [Homebrew](http://brew.sh/), you should! It's neat.
+
+I'll briefly explain each of these files/directories:
+
+	* `Makefile` tells the command `make` what to do. This file defines commands like `make devserver`. More information on `make` can be found [here](http://www.gnu.org/software/make/manual/make.html). I'll cover more on how to use this command for developing your site in the **Basic Workflow** section.
+
+	* `content` is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within `content`:
+
+		:::bash
+		$ mkdir content/pages
+		$ mkdir content/images
+
+	Pelican by default is configured to know that your pages (i.e. non-temporal pages like About Me, Contact, etc) are found within this `pages` directory and that images are found within the `images` directory.  
+
+	* `develop_server.sh` is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to http://localhost:8000).
+
+	* `fabfile.py` is a configuration file for [Fabric](http://docs.fabfile.org/en/1.8/) which allows you to generate your site using the `fab` command. You'll need to `pip install fabric` if you want to use it. Alternatively you can just use `make`.
+
+	* `output` is, by default, where Pelican will store your HTML files when you run `pelican content`. This can cause issues which I describe in the section **Integrating with GitHub**.
+
+	* `pelicanconf.py` houses your Pelican configuration [settings](http://docs.getpelican.com/en/3.3.0/settings.html).
+
+	* `publishconf.py` is like `pelicanconf.py` in that it houses Pelican configuration settings, but is not intended to be used for local development. The reasoning behind having two separate files is described in [this Stack Overflow answer](http://stackoverflow.com/a/20845195).
+
+####Exporting Existing Content
+
+This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  
+
+* [Export WordPress content to XML](http://en.blog.wordpress.com/2006/06/12/xml-import-export/)
+* [Imperfectly convert the XML to Markdown using Pelican](http://docs.getpelican.com/en/3.1.1/importer.html)
+* Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing)
+
+###Organizing Your Content
+* Make a directory for your website, and a directory within it called `content`, which is where Pelican by default looks for your Markdown files. I did:
+  
+  	:::bash
+  	$ mkdir ~/Projects/blog
+  	$ mkdir ~/Projects/blog/content
+
+* If you exported content from an existing blog/website, move the Markdown files to this `content` directory.
+
+####Pelican Themes
+
+####Customization
+
+####Basic Workflow
+
+* Posting Pelican Output HTML to GitHub
 7. Choosing a [Pelican theme]
 8. Customizing the Pelican theme
 9. 
