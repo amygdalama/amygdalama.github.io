@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="amygdalama.github.io/" rel="alternate"></link><link href="amygdalama.github.io/feeds/projects.atom.xml" rel="self"></link><id>amygdalama.github.io/</id><updated>2014-02-22T00:00:00-05:00</updated><entry><title>Migrating to GitHub Pages using Pelican</title><link href="amygdalama.github.io/migrating-to-github-pages-using-pelican.html" rel="alternate"></link><updated>2014-02-22T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-22:migrating-to-github-pages-using-pelican.html</id><summary type="html">&lt;p&gt;Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (&lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt;) and attempting to learn enough CSS and &lt;a href="http://jinja.pocoo.org/"&gt;Jinja&lt;/a&gt; to handle setting up my site using &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.&lt;/p&gt;
+&lt;p&gt;The great part about this whole process is that with Pelican, I can write my blog posts and pages in &lt;a href="http://daringfireball.net/projects/markdown/"&gt;Markdown&lt;/a&gt; (about which I also knew little until last week, but it's &lt;em&gt;wonderfully easy to learn&lt;/em&gt;.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.&lt;/p&gt;
+&lt;p&gt;There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others make this transition with less misery.&lt;/p&gt;
+&lt;h2&gt;GitHub Pages Setup&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Create GitHub repo following the &lt;a href="http://pages.github.com/"&gt;GitHub Pages instructions&lt;/a&gt; (the first step only!)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;A note on GitHub Pages:&lt;/em&gt; I believe your HTML files (particularly your index.html file) must be in the &lt;em&gt;main directory&lt;/em&gt; of your git repo for this to work. This will be important later. More detail is given in the &lt;strong&gt;Posting to GitHub&lt;/strong&gt; section.&lt;/p&gt;
+&lt;h2&gt;Pelican Setup&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Install necessary &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican"&gt;packages&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Run Pelican &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog"&gt;quickstart&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred &lt;a href="http://docs.getpelican.com/en/3.1.1/settings.html"&gt;settings&lt;/a&gt;. As an example, here's how I answered (I put my responses on separate lines starting with &lt;code&gt;&amp;gt;&lt;/code&gt; to make this easier to read):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; pelican-quickstart
+&lt;span class="go"&gt;Where do you want to create your new web site? [.]  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="go"&gt;What will be the title of this web site?  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
+&lt;span class="go"&gt;Who will be the author of this web site?  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
+&lt;span class="go"&gt;What will be the default language of this web site? [en]  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; 
+&lt;span class="go"&gt;Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;What is your URL prefix? (see above example; no trailing slash) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; http://amygdalama.github.io  
+&lt;span class="go"&gt;Do you want to enable article pagination? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;How many articles per page do you want? [10] &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="go"&gt;Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;Do you want to upload your website using FTP? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using SSH? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using Dropbox? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using S3? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using Rackspace Cloud Files? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now if you type the &lt;code&gt;tree&lt;/code&gt; command within your blog's main directory, you should see:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;tree
+.
+├── Makefile
+├── content
+├── develop_server.sh
+├── fabfile.py
+├── output
+├── pelicanconf.py
+└── publishconf.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you don't have &lt;code&gt;tree&lt;/code&gt;, you should! It's neat. &lt;code&gt;brew install tree&lt;/code&gt;. If you're on OSX and don't have &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt;, you should! It's neat.&lt;/p&gt;
+&lt;p&gt;I'll briefly explain each of these files/directories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Makefile&lt;/code&gt; tells the command &lt;code&gt;make&lt;/code&gt; what to do. This file defines commands like &lt;code&gt;make devserver&lt;/code&gt;. More information on &lt;code&gt;make&lt;/code&gt; can be found &lt;a href="http://www.gnu.org/software/make/manual/make.html"&gt;here&lt;/a&gt;. I'll cover more on how to use this command for developing your site in the &lt;strong&gt;Generating Your Site&lt;/strong&gt; section.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;content&lt;/code&gt; is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within &lt;code&gt;content&lt;/code&gt;:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/pages
+&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/images
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this &lt;code&gt;pages&lt;/code&gt; directory and that images are found within the &lt;code&gt;images&lt;/code&gt; directory.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;develop_server.sh&lt;/code&gt; is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;fabfile.py&lt;/code&gt; is a configuration file for &lt;a href="http://docs.fabfile.org/en/1.8/"&gt;Fabric&lt;/a&gt; which allows you to generate your site using the &lt;code&gt;fab&lt;/code&gt; command. You'll need to &lt;code&gt;pip install fabric&lt;/code&gt; if you want to use it. Alternatively you can just use &lt;code&gt;make&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;output&lt;/code&gt; is, by default, where Pelican will store your HTML files when you run &lt;code&gt;pelican content&lt;/code&gt;. This can cause issues which I describe in the section &lt;strong&gt;Posting to GitHub&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pelicanconf.py&lt;/code&gt; houses your Pelican configuration &lt;a href="http://docs.getpelican.com/en/3.3.0/settings.html"&gt;settings&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;publishconf.py&lt;/code&gt; is like &lt;code&gt;pelicanconf.py&lt;/code&gt; in that it houses Pelican configuration settings, but is not intended to be used for local development. The reasoning behind having two separate files is described in &lt;a href="http://stackoverflow.com/a/20845195"&gt;this Stack Overflow answer&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Exporting Existing Content&lt;/h2&gt;
+&lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/"&gt;Export WordPress content to XML&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://docs.getpelican.com/en/3.1.1/importer.html"&gt;Imperfectly convert the XML to Markdown using Pelican&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Manually export your images from your WordPress Media Library (I know. This sucks.) Move these images to &lt;code&gt;content/images&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing).&lt;/li&gt;
+&lt;li&gt;Move your Markdown files to the &lt;code&gt;content&lt;/code&gt; directory within your website's main directory. Content intended to be static pages (i.e. About Me, Contact, etc) should go in the &lt;code&gt;content/pages&lt;/code&gt; directory. Articles/blog posts should go in the &lt;code&gt;content&lt;/code&gt; directory.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Pelican Themes&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Clone the available &lt;a href="https://github.com/getpelican/pelican-themes"&gt;Pelican Themes&lt;/a&gt; into your blog's main directory.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/getpelican/pelican-themes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Choose a theme you'd like to use. Pelican by default comes with the notmyidea and simple themes. Most other themes have a sample image in the pelican-themes repo to help you decide.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;After you've chosen a theme, set the THEME variable in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file to the absolute or relative path to the theme. For example, I'm using the subtle theme and added this line to my &lt;code&gt;pelicanconf.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;pelican-themes/subtle&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This method is better than using &lt;code&gt;pelican-themes&lt;/code&gt; as described &lt;a href="http://docs.getpelican.com/en/3.3.0/pelican-themes.html"&gt;here&lt;/a&gt;, because it ensures that the Pelican HTML output will reflect any changes you make to the theme (without having to re-install the theme by running the &lt;code&gt;pelican-themes&lt;/code&gt; command).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Customization&lt;/h2&gt;
+&lt;p&gt;All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the &lt;code&gt;main.css&lt;/code&gt; file found in your theme's directory. For example, I've made many edits to the file &lt;code&gt;pelican-themes/subtle/static/css/main.css&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. &lt;/p&gt;
+&lt;p&gt;There should also be HTML files that serve as templates for specific types of pages. For example, &lt;code&gt;article.html&lt;/code&gt; defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.&lt;/p&gt;
+&lt;p&gt;If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.&lt;/p&gt;
+&lt;h2&gt;Generating Your Site&lt;/h2&gt;
+&lt;p&gt;Once you have markdown files in your &lt;code&gt;content&lt;/code&gt; folder, navigate to your blog's main directory and run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
+&lt;span class="nv"&gt;$ &lt;/span&gt;make devserver
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;make devserver&lt;/code&gt; does a number of things: first it runs the &lt;code&gt;pelican&lt;/code&gt; command on your &lt;code&gt;content&lt;/code&gt; folder to generate HTML for your site using the theme you specify in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file, and serves your site locally at &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;. &lt;code&gt;make devserver&lt;/code&gt; will also automatically regenerate your site (i.e. run &lt;code&gt;pelican&lt;/code&gt; on &lt;code&gt;content&lt;/code&gt; every time you save a change to a content, configuration, or theme file! Just refresh the page in your browser, and you should immediately see the changes. If this doesn't work, it's probably due to the settings you have in your configuration files (&lt;code&gt;pelicanconf.py&lt;/code&gt;, &lt;code&gt;Makefile&lt;/code&gt;, and/or &lt;code&gt;develop_server.sh&lt;/code&gt;).&lt;/p&gt;
+&lt;h2&gt;Posting to GitHub&lt;/h2&gt;
+&lt;p&gt;Recall that you need a repository on GitHub named &lt;em&gt;username.github.io&lt;/em&gt; (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).&lt;/p&gt;
+&lt;p&gt;It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!&lt;/p&gt;
+&lt;p&gt;However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the &lt;code&gt;output&lt;/code&gt; folder (recall that Pelican by default saves the HTML it generates in this folder).&lt;/p&gt;
+&lt;p&gt;The best solution I've come up with so far (and please email me if you know of a better solution!) is to create two separate repositories - one inside the &lt;code&gt;output&lt;/code&gt; directory where Pelican generates your HTML (this repo should have &lt;em&gt;username.github.io&lt;/em&gt; on GitHub as a remote), and another in your blog's main directory with your source Markdown files (in &lt;code&gt;content&lt;/code&gt;), theme, and configuration files (this repo should have a different remote on GitHub).&lt;/p&gt;
+&lt;p&gt;In the terminal, move to the &lt;code&gt;output&lt;/code&gt; directory, and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called &lt;em&gt;username.github.io&lt;/em&gt;), add all the files you want to commit, commit, and push changes to the remote repository.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output
+&lt;span class="nv"&gt;$ &lt;/span&gt;git init
+&lt;span class="nv"&gt;$ &lt;/span&gt;git remote add origin https://github.com/username/username.github.io.git
+&lt;span class="nv"&gt;$ &lt;/span&gt;git add --all
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -m &lt;span class="s2"&gt;&amp;quot;commit message&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you use this method, you'll want to change the following setting to &lt;code&gt;False&lt;/code&gt; in your &lt;code&gt;publishconf.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;DELETE_OUTPUT_DIRECTORY&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Otherwise if you use the &lt;code&gt;publishconf.py&lt;/code&gt; file as your settings file when running the &lt;code&gt;pelican&lt;/code&gt; command, you'll delete your git repo!&lt;/p&gt;
+&lt;p&gt;You'll also need to set up another repository for your source content, configuration files, and theme. I added a .gitignore to this repo to ignore the files in the output folder.&lt;/p&gt;
+&lt;p&gt;Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)&lt;/p&gt;
+&lt;h2&gt;Custom Domain Setup&lt;/h2&gt;
+&lt;p&gt;If you have your own domain name that you'd like to use instead of &lt;em&gt;username.github.io&lt;/em&gt;, you'll need to follow &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Fin&lt;/h2&gt;
+&lt;p&gt;Feel free to poke around my blog's &lt;a href="https://github.com/amygdalama/blog-source"&gt;GitHub&lt;/a&gt; &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;repos&lt;/a&gt; (beware: there are unpublished draft posts in there). My configuration files in particular might be useful to you.&lt;/p&gt;
+&lt;p&gt;If any of you Hacker Schoolers have trouble migrating your blog, I'd be happy to help!&lt;/p&gt;</summary><category term="pelican"></category><category term="blogging"></category><category term="wordpress"></category><category term="github-pages"></category><category term="markdown"></category></entry><entry><title>ipython and pandas are whoa!</title><link href="amygdalama.github.io/ipython-and-pandas-are-whoa.html" rel="alternate"></link><updated>2014-02-14T15:52:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-14:ipython-and-pandas-are-whoa.html</id><summary type="html">&lt;p&gt;In my first five months of using Python, I would create .py files and
+then execute them in the terminal, like the loyal follower of &lt;a href="http://learnpythonthehardway.org/book/"&gt;LPTHW&lt;/a&gt;
+that I am. While it's certainly necessary to be able to write Python
+scripts and execute them from the terminal, I've learned that this
+workflow isn't the best way to explore data in Python.&lt;/p&gt;
+&lt;p&gt;I initially converted to Python from R, and since have missed the
+interactiveness of working within RStudio (you don't have to re-run your
+entire code every time you make a change and want to view the results)
+and how R allows you to so quickly get to your data with data frames
+built straight from text files. Enter: &lt;a href="http://ipython.org/"&gt;ipython&lt;/a&gt; and &lt;a href="http://pandas.pydata.org/"&gt;pandas&lt;/a&gt;. (Go
+to their respective sites for installation instructions.)&lt;/p&gt;
+&lt;p&gt;Julia Evans has a fantastic &lt;a href="https://github.com/jvns/pandas-cookbook"&gt;tutorial&lt;/a&gt; on how to use pandas in an
+ipython notebook. Here, I'd like to explore the differences between
+doing data analysis using ipython notebook and pandas versus writing .py
+scripts using mainly standard Python packages and executing via the
+terminal.&lt;/p&gt;
+&lt;p&gt;Let's use the classic iris dataset for some simple analysis. First we
+need to do some setup. Create a directory for our project (mine is
+stored within my Projects directory that I keep in my Home directory.)
+In the terminal:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir ~/Projects/ipython-pandas-whoa  
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then create a Python script and open it with a text editor (I use
+Sublime Text 2, which I've &lt;a href="http://www.sublimetext.com/docs/2/osx_command_line.html"&gt;configured&lt;/a&gt; to open files with the command
+&lt;code&gt;subl&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;touch barbaric-script.py  
+&lt;span class="nv"&gt;$ &lt;/span&gt;subl barbaric-script.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This should open up a blank .py file in Sublime. If you don't have
+&lt;code&gt;subl&lt;/code&gt; set up, you can simply open up the blank barbaric-script.py file
+we created with the &lt;code&gt;touch&lt;/code&gt; command in your text editor of choice.&lt;/p&gt;
+&lt;p&gt;In the barbaric-script.py file, let's import the necessary packages.
+We'll be using a couple standard python packages plus matplotlib.pyplot.
+If you don't have matplotlib installed, you can find installation
+instructions &lt;a href="http://matplotlib.org/users/installing.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pprint&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;urllib2&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To get the iris data, we'll use Python's built-in urllib2 and csv
+packages and then do some basic formatting. Let's process the dataset as
+a list of dictionaries.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Open data from URL as a file-like object  &lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;urllib2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Create an empty list to store our data  &lt;/span&gt;
+&lt;span class="n"&gt;parsed_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Read file  &lt;/span&gt;
+&lt;span class="n"&gt;raw_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Define our headers since the file doesn&amp;#39;t contain explicit headers  &lt;/span&gt;
+&lt;span class="c"&gt;# I found these headers from looking at the documentation at  &lt;/span&gt;
+&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  &lt;/span&gt;
+&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;  
+    &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Iterate through the rows in the file, and create a dictionary for each row  &lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;raw_data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="c"&gt;# Dictionaries should have headers -&amp;gt; row  &lt;/span&gt;
+&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="c"&gt;# Delete the last row of parsed_data because it&amp;#39;s blank  &lt;/span&gt;
+&lt;span class="n"&gt;parsed_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Let&amp;#39;s see what parsed_data looks like  &lt;/span&gt;
+&lt;span class="n"&gt;pprint&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pprint&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;What you should see when you execute barbaric-script.py:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;python barbaric-script.py  
+&lt;span class="o"&gt;[{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.4&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;5.1&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.5&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,  
+&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.4&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;4.9&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.0&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,  
+&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.3&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;4.7&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.2&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Great! So we have our data formatted nicely. We have a list with
+elements corresponding to each row in the file, and the elements in the
+list are dictionaries. The keys in the dictionaries are the column
+headers, and the values are the values associated with the respective
+column header for that particular row. For example, the first
+row/observation (printed as the first dictionary out of the three listed
+above) is in the class &lt;code&gt;Iris-setosa&lt;/code&gt;, has a Petal Length of &lt;code&gt;1.4&lt;/code&gt;, a Petal
+Width of &lt;code&gt;0.2&lt;/code&gt;, a Sepal Length of &lt;code&gt;5.1&lt;/code&gt;, and a Sepal Width of &lt;code&gt;3.5&lt;/code&gt;. Let's do
+some plotting to explore our data. We can make a histogram! Add the
+following lines to your barbaric-script.py file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Let&amp;#39;s create a list of the Sepal Lengths  &lt;/span&gt;
+&lt;span class="c"&gt;# I&amp;#39;m calling float on the entries because otherwise they&amp;#39;re stored as strings  &lt;/span&gt;
+&lt;span class="n"&gt;sepal_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;  
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sepal_lengths&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;#348ABD&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;edgecolor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;none&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's try executing our script again.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;python barbaric-script.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A histogram should pop up in a separate window:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /&gt;&lt;/p&gt;
+&lt;p&gt;That's a lot of code (18 lines)! And we didn't even do anything
+complicated - just parsed our data and plotted a histogram. Also, notice
+that each time you tried to fix a bug or add a feature (like plotting
+the histogram), you had to execute the entire script again, rather than
+just the piece where you fixed the bug. That doesn't matter too much
+since our data is fairly small and the script doesn't require much time
+to execute, but it would be pretty annoying if our script took longer to
+run.&lt;/p&gt;
+&lt;p&gt;Now let's try doing the same thing, but using pandas in an ipython
+notebook. Use the terminal to run ipython notebook:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/ipython-pandas-whoa  
+&lt;span class="nv"&gt;$ &lt;/span&gt;ipython notebook
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This will set up a local server on your computer, which will serve the
+ipython notebooks that are in your working directory (right now you
+don't have any) to http://127.0.0.1:8888. This should automatically open
+up in your browser.&lt;/p&gt;
+&lt;p&gt;In the tab that opens in your browser, click "New Notebook". A new
+ipython notebook will open up in another tab. A new cell will also open
+up. Cells are places where you can write and execute code. This is what
+a cell looks like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;To allow matplotlib to post plots within your notebook, rather than
+opening up a separate window (like when we executed our .py script),
+type the following into the cell:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then to execute the cell, press shift+enter (which will execute the cell
+your cursor is currently in and then automatically either move to the
+next cell, if one exists, or open up a new cell). Once you press
+shift+enter, your notebook should look like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;In the next cell, import the packages we'll be using, namely
+matplotlib.pyplot and pandas:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Press shift+enter again to execute the code (I'm going to stop telling
+you to do this, but just assume that after each block of code you should
+press shift+enter. If you get confused about what your notebook should
+look like, look at my &lt;a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb"&gt;example notebook&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;To process the iris data, we can use the built-in panda read_csv
+parser. We can get to a easy-to-use data frame within three lines of
+code!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Define our headers since the url doesn&amp;#39;t contain explicit headers  &lt;/span&gt;
+&lt;span class="c"&gt;# I found these headers from looking at the documentation at  &lt;/span&gt;
+&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  &lt;/span&gt;
+&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
+&lt;span class="n"&gt;iris&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's see what the data looks like.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;iris&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You should see a beautifully formatted table! This is a pandas data
+frame, which is similar to a data frame in R.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Now let's plot a histogram for the Sepal Length column.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# I use two brackets around &amp;#39;Sepal Length&amp;#39; to force pandas to make this  &lt;/span&gt;
+&lt;span class="c"&gt;# a data frame rather than just a series, which is like a numpy array.  &lt;/span&gt;
+&lt;span class="c"&gt;# The brackets here aren&amp;#39;t necessary, but makes printing sepal_lengths  &lt;/span&gt;
+&lt;span class="c"&gt;# prettier and makes it easier for us to combine sepal_lengths with other  &lt;/span&gt;
+&lt;span class="c"&gt;# data.  &lt;/span&gt;
+&lt;span class="n"&gt;sepal_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;iris&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Make the plot pretty!  &lt;/span&gt;
+&lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_option&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;display.mpl_style&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;sepal_lengths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/quite_elegant.png" /&gt;&lt;/p&gt;
+&lt;p&gt;By this point it should be fairly obvious that ipython and pandas are
+both awesome for data analysis! They make Python a much more serious
+contender as a tool for data analysis by giving you quick and easy
+access to your data. In this simple example, the barbaric-script.py was
+18 lines of code (disregarding comments, etc) and comparatively the
+ipython notebook with pandas was only 10!&lt;/p&gt;
+&lt;p&gt;For further reading, I definitely encourage you to check out Julia's
+&lt;a href="https://github.com/jvns/pandas-cookbook"&gt;pandas cookbook&lt;/a&gt; (presented via ipython notebooks), on which
+incidentally I'll be collaborating with her next week (eeeep)!&lt;/p&gt;
+&lt;p&gt;My code for this post can be found on my &lt;a href="https://github.com/amygdalama/ipython-pandas-whoa"&gt;GitHub&lt;/a&gt;, and the ipython
+notebook can be easily viewed on &lt;a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb"&gt;NBViewer&lt;/a&gt;.&lt;/p&gt;</summary><category term="data analysis"></category><category term="hacker school"></category><category term="ipython"></category><category term="matplotlib"></category><category term="pandas"></category><category term="python"></category></entry><entry><title>Using PyMC to Analyze A/B Testing Data</title><link href="amygdalama.github.io/using-pymc-to-analyze-ab-testing-data.html" rel="alternate"></link><updated>2013-12-24T22:23:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2013-12-24:using-pymc-to-analyze-ab-testing-data.html</id><summary type="html">&lt;p&gt;In Chapter 2 of &lt;a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers"&gt;Bayesian Methods for Hackers&lt;/a&gt;, there's an example of
+Bayesian analysis of an A/B test using simulated data. I decided to play
+around with this analysis method with real A/B landing page test data
+from one of my clients.&lt;/p&gt;
+&lt;p&gt;This method uses PyMC to estimate the real conversion rate for each page
+and Matplotlib to visually interpret the results.&lt;/p&gt;
+&lt;p&gt;First, I import the relevant packages:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pymc&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pm&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;My client ran a landing page test with the following results:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;clicks_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1135&lt;/span&gt;  
+&lt;span class="n"&gt;orders_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;  
+&lt;span class="n"&gt;clicks_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1149&lt;/span&gt;  
+&lt;span class="n"&gt;orders_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;17&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The observed conversion rates are 44% and 1.48% for pages A and B,
+respectively, but I'd like to be confident that the true conversion rate
+of page B is higher than page A.&lt;/p&gt;
+&lt;p&gt;To format this data for the analysis, I create a numpy array for each
+page with 1s representing orders and 0s representing clicks without an
+order:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;r_&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;clicks_A&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;orders_A&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;orders_A&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
+&lt;span class="n"&gt;data_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;r_&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;clicks_B&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;orders_B&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;orders_B&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next I assign distributions to my prior beliefs of &lt;code&gt;p_A&lt;/code&gt; and &lt;code&gt;p_B&lt;/code&gt;, the unknown, true conversion rates. I
+assume, for simplicity, that the distributions are uniform (i.e. I have
+no prior knowledge of what &lt;code&gt;p_A&lt;/code&gt; and 'p_B' are).
+[Note: the rest of the code in blog post is taken from [the book].&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;p_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Uniform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;p_A&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;p_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Uniform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;p_B&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Since I want to estimate the difference in true conversion rates, I need
+to define a variable &lt;code&gt;delta&lt;/code&gt;, which equals &lt;code&gt;p_B - p_A&lt;/code&gt;. Since, if I know
+both &lt;code&gt;p_A&lt;/code&gt; and &lt;code&gt;p_B&lt;/code&gt;, I can calculate &lt;code&gt;delta&lt;/code&gt;, it's a deterministic
+variable. In PyMC, deterministic variables are created using a function
+with a &lt;code&gt;pymc.deterministic&lt;/code&gt; wrapper:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nd"&gt;@pm.deterministic&lt;/span&gt;  
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;delta&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;p_A&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next I add the observed data to PyMC variables and run an inference
+algorithm (I don't understand what this code is actually doing yet - an
+explanation is coming up in Chapter 3):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;obs_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Bernoulli&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;obs_A&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;observed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;obs_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Bernoulli&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;obs_B&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data_B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;observed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;mcmc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MCMC&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delta&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;obs_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;obs_B&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;  
+&lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then I plot the posterior distributions for the three unknowns:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;p_A_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;p_A&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[:]&lt;/span&gt;  
+&lt;span class="n"&gt;p_B_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;p_B&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[:]&lt;/span&gt;  
+&lt;span class="n"&gt;delta_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;delta&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[:]&lt;/span&gt;
+
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;311&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mo"&gt;035&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_A_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;histtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stepfilled&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;25&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.85&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+&lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;posterior of $p_A$&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#A60628&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;normed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+&lt;span class="n"&gt;edgecolor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;none&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;legend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;upper right&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Posterior distributions of $p_A$, $p_B$, and delta&lt;/span&gt;
+&lt;span class="n"&gt;unknowns&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;)&lt;/span&gt;
+
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;312&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mo"&gt;035&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_B_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;histtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stepfilled&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;25&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.85&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;posterior of $p_B$&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#467821&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;normed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;edgecolor&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;none&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;legend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;upper right&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;313&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;120&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;histtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stepfilled&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.85&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;posterior of $p_B$ - $p_A$&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#7A68A6&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;normed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;edgecolor&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;none&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;legend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;upper right&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vlines&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;120&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;black&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/pymc_posteriors.png" /&gt;&lt;/p&gt;
+&lt;p&gt;I can also compute the probability that the true conversion rate of page
+A, &lt;code&gt;p_A&lt;/code&gt;, is better than the true conversion rate of page
+B, &lt;code&gt;p_A&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Probability site A is BETTER than site B: &lt;/span&gt;&lt;span class="si"&gt;%.3f&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;   
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_samples&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Probability site A is WORSE than site B: &lt;/span&gt;&lt;span class="si"&gt;%.3f&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;   
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_samples&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This should print out:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Probability page A is BETTER than page B: 0.006  
+Probability page A is WORSE than page B: 0.994
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It's very safe to say (as long as our data was collected properly) that
+page B is better than page A, and these results come very intuitively
+from looking at the graphs.&lt;/p&gt;
+&lt;p&gt;The full code can be found on my &lt;a href="https://github.com/amygdalama/tutorials/blob/master/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/MySourceFiles/Chapter2/ab-real-data.py"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</summary><category term="ab testing"></category><category term="matplotlib"></category><category term="numpy"></category><category term="pymc"></category><category term="python"></category></entry><entry><title>Visualizing Social Circles Using Facebook Data</title><link href="amygdalama.github.io/visualizing-social-circles-using-facebook-data.html" rel="alternate"></link><updated>2013-11-26T23:07:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2013-11-26:visualizing-social-circles-using-facebook-data.html</id><summary type="html">&lt;p&gt;Intrigued by David Smith's &lt;a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html"&gt;Facebook friends network analysis&lt;/a&gt; using
+the Rfacebook package, I decided to try it out on my own group of
+friends, to see if my social circles are clique-y ala &lt;a href="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/nshs.jpg"&gt;North Shore High
+School&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/fb-network.png" /&gt;&lt;/p&gt;
+&lt;p&gt;It turns out the social circles in my network were visualized almost
+perfectly! The smallest group to the far right of the graph contains
+family members, the large group at the top contains current co-workers,
+and the large group at the bottom contains friends in the Austin cyclist
+scene. Other clusters are friends from high school, friends from
+college, and bar friends. The most isolated group is my family. The
+groups with the most connections to each other are my current coworkers,
+cyclists, and bar friends, which makes sense, because they are roughly
+in the same age group and live (or have lived) in Austin, a fairly
+connected city. Now I'm wondering how to get the data to see if Austin
+really is more connected than other cities or if it's just in our
+collective imagination.&lt;/p&gt;
+&lt;p&gt;Thanks to David for the &lt;a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html"&gt;tutorial&lt;/a&gt; on
+graphing social networks and to Julianhi for his &lt;a href="http://thinktostart.wordpress.com/2013/11/19/analyzing-facebook-with-r/"&gt;tutorial&lt;/a&gt; on setting
+up Rfacebook.&lt;/p&gt;</summary><category term="igraph"></category><category term="r"></category><category term="rfacebook"></category><category term="networks"></category></entry></feed>

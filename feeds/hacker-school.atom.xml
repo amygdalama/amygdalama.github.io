@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="amygdalama.github.io/" rel="alternate"></link><link href="amygdalama.github.io/feeds/hacker-school.atom.xml" rel="self"></link><id>amygdalama.github.io/</id><updated>2014-02-12T10:02:00-05:00</updated><entry><title>Hacker School Day 2: Goals! Or, A Grasp For Sanity</title><link href="amygdalama.github.io/hacker-school-day-2-goals.html" rel="alternate"></link><updated>2014-02-12T10:02:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-12:hacker-school-day-2-goals.html</id><summary type="html">&lt;p&gt;I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
+collaborate on I felt a bit like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/allthetennisballs.gif" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(Credit to Hacker School alumnus Alex Beaulne for finding this perfect
+gif.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;In an attempt to regain a bit of sanity, yesterday I prioritized setting
+goals for the batch and creating a semi-pubic to-do list. I also began
+maintaining a list of learnings about how I can better approach Hacker
+School and learning in general. My to-do list, goals, and learnings can
+be found on my &lt;a href="https://github.com/amygdalama/hacker-school-progress"&gt;GitHub&lt;/a&gt;, which I'll be updating at least daily.&lt;/p&gt;
+&lt;p&gt;In order to determine my goals, I answered the following questions, to
+ensure that what I set out to accomplish aligned with my values and my
+motivations for attending Hacker School. These lists are ranked somewhat
+by importance, but probably aren't perfectly ordered.&lt;/p&gt;
+&lt;h3&gt;What do I want to get out of Hacker School?&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Greater confidence, honesty, self-awareness, bravery&lt;/li&gt;
+&lt;li&gt;Gain expertise in Python, Data Analysis, Machine Learning (currently
+    beginner-/intermediate-level)&lt;/li&gt;
+&lt;li&gt;Join a community of programmers/math nerds who will help motivate me
+    to achieve greatness&lt;/li&gt;
+&lt;li&gt;Frankly, a job&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;What do I want to accomplish at Hacker School?&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;One large (1-month) project which
+    requires pulling data from many sources and applying a recommender
+    system, probably to recommend an optimal brunch spot for me, because
+    brunch is awesome. This idea is inspired by &lt;a href="http://www.hilarymason.com/presentations-2/in-search-of-the-optimal-cheeseburger/"&gt;Hilary Mason&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;A plethora of varying, small (1-day) analysis and machine learning
+    projects&lt;/li&gt;
+&lt;li&gt;Blog posts galore (3-5 per week) with a focus on writing
+    tutorials/explaining benefits of various packages&lt;/li&gt;
+&lt;li&gt;A successful pull request, contributing to an open source project or
+    an existing tutorial&lt;/li&gt;
+&lt;li&gt;Create a Python package (maybe with functions based on Jaynes'
+    &lt;em&gt;Probability Theory: The Logic of Science&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;Give a talk! (eeeep!)&lt;/li&gt;
+&lt;li&gt;Revamped website possibly using Pelican/GitHub pages (nonessential,
+    not a priority)&lt;/li&gt;
+&lt;li&gt;Murdered out GitHub account (a pleasant side effect of all of the
+    above)&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="github"></category><category term="hacker school"></category></entry><entry><title>I moved cross-country for Hacker School and I'm only slightly convinced this is Real Life</title><link href="amygdalama.github.io/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html" rel="alternate"></link><updated>2014-02-10T23:23:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-10:i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-this-is-real-life.html</id><summary type="html">&lt;p&gt;Or, Hacker School: Day 1.&lt;/p&gt;
+&lt;p&gt;Holy Shit! I have been fairly silent over the past month because I got
+accepted to &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt; and had to figure out the logistics of
+quitting my job, moving cross-country, and living in the most expensive
+city in the States without a proper job for at least 3 months.&lt;/p&gt;
+&lt;p&gt;So allow me to re-iterate: Holy Shit! And somehow I did it and I'm alive
+but not entirely certain it's not all just a dream.&lt;/p&gt;
+&lt;p&gt;Today was the first day of a possibly insane but probably brilliant
+adventure. Hacker School is self-described as a writers' retreat for
+programmers. I've heard other Hacker Schoolers struggle to explain it as
+a day spa for programmers, a hippie commune programming cult (okay, that
+one was me), not a school, not necessarily for &lt;a href="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/hackers-movie.jpg"&gt;these&lt;/a&gt; kind of
+Hackers, and more. The Hacker School founders and facilitators have
+written extensively about what Hacker School is and is not, so dig into
+their blog if you're curious. It's difficult to define, and they do a
+much better job than I do.&lt;/p&gt;
+&lt;p&gt;For the first day, I dedicated a good hour to getting my computer set up
+properly (if you've seen my &lt;a href="http://mathamy.com/2013/12/27/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm/"&gt;wget&lt;/a&gt; posts, you'll know this
+is something I've struggled with in the past). Then I had my first
+attempt at pair programming in which I explained a few cool things about
+&lt;a href="http://scikit-learn.org/"&gt;scikit-learn&lt;/a&gt; to another Hacker Schooler who had never used it
+before. In turn she showed me some regression modeling in R.&lt;/p&gt;
+&lt;p&gt;I also got to play with HS's resident Apple II. One of the other Hacker
+Schoolers wrote a simple for loop to print out "DONG" 100 times. Why
+would you do anything else?&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/appleiidong.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;I am supremely honored and excited as Hell to be at Hacker School. For
+the next three months, I will be surrounded by intellectually curious
+nerds who are more thoughtful and self-aware than most people I know. I
+hope I am brave and honest enough to confront the gaps in my knowledge,
+ask questions, seek help, and ultimately get the most out of what will
+be some of the most formidable months of my life. Which reminds me of
+the Bene Gesserit litany:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;I must not fear. Fear is the mind-killer. Fear is the little-death
+that brings total obliteration. I will face my fear. I will permit it
+to pass over me and through me. And when it has gone past me I will
+turn to see fears path. Where the fear has gone there will be
+nothing... Only I will remain.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</summary><category term="hacker school"></category></entry></feed>

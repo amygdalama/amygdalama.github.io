@@ -203,6 +203,12 @@
 </pre></div>
 
 
+<p>If you use this method, you'll want to change the following setting to <code>False</code> in your <code>publishconf.py</code> file:</p>
+<div class="highlight"><pre><span class="n">DELETE_OUTPUT_DIRECTORY</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+
+
+<p>Otherwise if you use the <code>publishconf.py</code> file as your settings file when running the <code>pelican</code> command, you'll delete your git repo!</p>
 <p>You'll also need to set up another repository for your source content, configuration files, and theme. I added a .gitignore to this repo to ignore the files in the output folder.</p>
 <p>Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)</p>
 <h2>Custom Domain Setup</h2>

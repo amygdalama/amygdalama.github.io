@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="amygdalama.github.io/" rel="alternate"></link><link href="amygdalama.github.io/feeds/little-eureka-moments.atom.xml" rel="self"></link><id>amygdalama.github.io/</id><updated>2013-12-27T01:08:00-05:00</updated><entry><title>wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm</title><link href="amygdalama.github.io/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html" rel="alternate"></link><updated>2013-12-27T01:08:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2013-12-27:wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html</id><summary type="html">&lt;p&gt;For the past four months I've been using Anaconda's Python distribution
+on my Macbook, which has been great (except for &lt;a href="http://mathamy.com/2013/12/02/homebrew-path-pythonpath/"&gt;Part 1&lt;/a&gt; of what has
+now become a series), until I wanted to play with virtualenv. Apparently
+Anaconda does not work well with virtualenv and suggests using its own
+conda virtual environments and I don't take well to The Man telling me I
+can't do something I want to do. So of course my reaction was to
+&lt;code&gt;rm -rf /anaconda&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now I'm building my Python stack back from the ground up, and I've
+decided to try out a &lt;a href="https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python"&gt;brewed&lt;/a&gt; Python. I've been following &lt;a href="http://www.lowindata.com/2013/installing-scientific-python-on-mac-os-x/"&gt;these&lt;/a&gt;
+very elegant instructions to set up numpy, scipy, etc, on OSX, and it
+worked flawlessly! Until matplotlib! I had all of the dependencies
+(freetype, which I installed via Homebrew, zlib, and libpng), but I kept
+getting thrown this error:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fatal error: &lt;span class="s1"&gt;&amp;#39;freetype/config/ftheader.h&amp;#39;&lt;/span&gt; file not found
+
+&lt;span class="c"&gt;#include &amp;lt;freetype/config/ftheader.h&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I finally found &lt;a href="http://stackoverflow.com/questions/1477144/compile-matplotlib-for-python-on-snow-leopard"&gt;this&lt;/a&gt; StackOverflow discussion with the suggestion to
+type this into the terminal (for brewed python):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ln -s /usr/local/include/freetype2/ /usr/include/freetype
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And then &lt;code&gt;sudo pip install matplotlib&lt;/code&gt; worked! I don't rigorously
+understand this magic, but based on my research this creates a symbolic
+link from &lt;code&gt;/usr/include/freetype&lt;/code&gt; to &lt;code&gt;/usr/local/include/freetype2&lt;/code&gt;
+(the brewed freetype). I'm guessing that matplotlib by default was
+looking for freetype in &lt;code&gt;/usr/include/freetype&lt;/code&gt;, but it wasn't there
+since Homebrew installs everything in &lt;code&gt;/usr/local&lt;/code&gt;. So, creating the
+symbolic link allowed matplotlib to find freetype. In moments like these
+I'm like 'Yer a wizard, Harry.'&lt;/p&gt;</summary><category term="homebrew"></category><category term="matplotlib"></category><category term="osx"></category><category term="python"></category></entry><entry><title>wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</title><link href="amygdalama.github.io/homebrew-path-pythonpath.html" rel="alternate"></link><updated>2013-12-02T21:48:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2013-12-02:homebrew-path-pythonpath.html</id><summary type="html">&lt;p&gt;About a week ago, I installed &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; on my OSX, mostly because I wanted to use Unix's &lt;code&gt;wget&lt;/code&gt; command (It's like Unix's &lt;a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter"&gt;accio&lt;/a&gt;! &lt;code&gt;wget horcrux&lt;/code&gt;. &lt;code&gt;wget firebolt&lt;/code&gt;.)&lt;/p&gt;
+&lt;p&gt;Unfortunately, doing so installed a new version of python on my machine and switched the &lt;code&gt;PATH&lt;/code&gt; and &lt;code&gt;PYTHONPATH&lt;/code&gt; away from my &lt;a href="https://store.continuum.io/cshop/anaconda/"&gt;Anaconda&lt;/a&gt; version of python (which is the version I use and that houses all of my beloved installed packages). After hours of
+struggle, I figured out how to solve this problem.&lt;/p&gt;
+&lt;p&gt;First, to see if you have this problem, type in the terminal:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt; -a python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Which will give you output looking something like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt; -a python  
+python is /usr/local/bin/python  
+python is //anaconda/bin/python  
+python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python  
+python is //anaconda/bin/python  
+python is //anaconda/bin/python  
+python is /usr/bin/python  
+python is /usr/local/bin/python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is a hierarchical list of the pythons installed on your machine.
+The python that you actually want executed when you type &lt;code&gt;python&lt;/code&gt; into
+the terminal should be at the top of the list. In my situation,
+ &lt;code&gt;//anaconda/bin/python&lt;/code&gt; is my preferred python. To get this version to
+the top of the list, you need to edit your &lt;code&gt;PATH&lt;/code&gt;, which tells your
+machine the directory to find &lt;code&gt;python&lt;/code&gt; when you type it in the terminal.&lt;/p&gt;
+&lt;p&gt;Similarly, you'll probably need to update your &lt;code&gt;PYTHONPATH&lt;/code&gt;, which tells
+python where to look for modules to import. To see where python is
+currently looking for modules, run &lt;code&gt;python&lt;/code&gt; in your terminal and type the
+following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;  
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As output, python will print out a list of the directories where it
+looks for modules:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;  
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;  
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/setuptools-1.3-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/pip-1.4.1-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;/Users/amyhanlon&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python27.zip&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;/Library/Python/2.7/site-packages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To fix this problem, use the terminal to open the hidden file called
+&lt;code&gt;~/.bash_profile&lt;/code&gt; which exists in your home directory (the &lt;code&gt;~&lt;/code&gt; symbolizes your home directory). I opened
+this file with TextWrangler, but you can replace 'TextWrangler' in the
+command with whichever text editing program you use (the default OSX
+text editor is TextEdit).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;open -a TextWrangler ~/.bash_profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The file contents should look something like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Setting `PATH` for Python 2.7  &lt;/span&gt;
+&lt;span class="c"&gt;# The original version is saved in .bash_profile.pysave  &lt;/span&gt;
+&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&amp;quot;&lt;/span&gt;  
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;PATH&lt;span class="sb"&gt;`&lt;/span&gt;  
+&lt;span class="c"&gt;# added by Anaconda 1.7.0 installer  &lt;/span&gt;
+&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;//anaconda/bin:$PATH&amp;quot;&lt;/span&gt;  
+&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/bin:&lt;span class="nv"&gt;$PATH&lt;/span&gt;  
+&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;PYTHONPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The last PATH= and PYTHONPATH= lines should be directed to the Anaconda
+location of python, and in this case they aren't. To fix this, comment
+out or delete lines that incorrectly assign the &lt;code&gt;PATH&lt;/code&gt; and &lt;code&gt;PYTHONPATH&lt;/code&gt; variables, and
+add lines that assign the correct variables. After making edits, my file looks like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Setting PATH for Python 2.7  &lt;/span&gt;
+&lt;span class="c"&gt;# The original version is saved in .bash_profile.pysave  &lt;/span&gt;
+&lt;span class="c"&gt;#&lt;/span&gt;
+&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&amp;quot;&lt;/span&gt;  
+&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;//anaconda/bin:${PATH}&amp;quot;&lt;/span&gt;  
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;PATH&lt;span class="sb"&gt;`&lt;/span&gt;  
+&lt;span class="c"&gt;# added by Anaconda 1.7.0 installer  &lt;/span&gt;
+&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;//anaconda/bin:$PATH&amp;quot;&lt;/span&gt;  
+&lt;span class="c"&gt;# export PATH=/usr/local/bin:$PATH  &lt;/span&gt;
+&lt;span class="c"&gt;# export&lt;/span&gt;
+&lt;span class="nv"&gt;PYTHONPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&amp;quot;&lt;/span&gt;  
+&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;PYTHONPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;//anaconda/lib/python2.7/site-packages:$PYTHONPATH&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Save the file. Then, in the terminal (after exiting python), source the
+file, and see if you've fixed the &lt;code&gt;PATH&lt;/code&gt; and &lt;code&gt;PYTHONPATH&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; ~/.bash_profile  
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt; -a python
+python is //anaconda/bin/python  
+python is //anaconda/bin/python  
+python is /usr/local/bin/python  
+python is //anaconda/bin/python  
+python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python  
+python is //anaconda/bin/python  
+python is //anaconda/bin/python  
+python is /usr/bin/python  
+python is /usr/local/bin/python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you should see the Anaconda python (or your preferable python) at
+the top of the list in the output.&lt;/p&gt;
+&lt;p&gt;Check your &lt;code&gt;PYTHONPATH&lt;/code&gt; in the python interpreter by using the same method as before:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;  
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;  
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/gspread-0.1.0-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/fuzzywuzzy-0.2-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/inflect-0.2.4-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/beautifulsoup4-4.3.2-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/pyicloud-0.3.0-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/foursquare-20130707-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/poster-0.8.1-py2.7.egg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;/Users/amyhanlon&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python27.zip&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/plat-darwin&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/plat-mac&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/plat-mac/lib-scriptpackages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/lib-tk&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/lib-old&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/lib-dynload&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/PIL&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;//anaconda/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now the terminal is using my Anaconda version of python and is looking
+in the Anaconda library for my packages! Viola!&lt;/p&gt;</summary><category term="anaconda"></category><category term="homebrew"></category><category term="osx"></category><category term="python"></category><category term="unix"></category></entry></feed>
