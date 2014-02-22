@@ -3,7 +3,7 @@ import fabric.contrib.project as project
 import os
 
 # Local path configuration (can be absolute or relative to fabfile)
-env.deploy_path = 'output'
+env.deploy_path = '.'
 DEPLOY_PATH = env.deploy_path
 
 # Remote server configuration

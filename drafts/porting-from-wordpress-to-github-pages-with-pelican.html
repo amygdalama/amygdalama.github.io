@@ -50,39 +50,53 @@
 <p>In <a href="../category/projects.html">Projects</a> </p>
 
 
-</footer><!-- /.post-info -->      <p>Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another ([GitHub Pages])(http://pages.github.com/) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
+</footer><!-- /.post-info -->      <p>Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (<a href="http://pages.github.com/">GitHub Pages</a>) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
 <p>The great part about this whole process is that with Pelican, I can write my blog posts and pages in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> (about which I also knew little until last week, but it's <em>wonderfully easy to learn</em>.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.</p>
 <p>There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others, particularly those without a convenient 2-bottles-for-$10-special, make this transition with less misery.</p>
-<h4>GitHub Pages Setup</h4>
+<h2>GitHub Pages Setup</h2>
 <ol>
 <li>Create GitHub repo following the <a href="http://pages.github.com/">GitHub Pages instructions</a> (the first step only!)</li>
 </ol>
 <p><em>A note on GitHub Pages:</em> I believe your HTML files (particularly your index.html file) must be in the <em>main directory</em> of your git repo for this to work. This will be important later, specifically when you're organizing your site content on your local computer and when you're pushing your content to GitHub.</p>
-<h4>Pelican Setup</h4>
+<h2>Pelican Setup</h2>
 <ol>
 <li>
-<p><strong>Install necessary <a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican">packages</a></strong></p>
+<p>Install necessary <a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican">packages</a></p>
 </li>
 <li>
-<p><strong>Run Pelican <a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog">quick-start</a></strong></p>
-</li>
-</ol>
-<p>This will probably ask you lots of questions that seem foreign. These questions will set up some configuration files that you can later edit with your preferred <a href="http://docs.getpelican.com/en/3.1.1/settings.html">settings</a>. As an example, here's how I answered:</p>
-<div class="highlight"><pre>&gt; Where <span class="k">do </span>you want to create your new web site? <span class="o">[</span>.<span class="o">]</span>  
-&gt; What will be the title of this web site? Amy Hanlon  
-&gt; Who will be the author of this web site? Amy Hanlon  
-&gt; What will be the default language of this web site? <span class="o">[</span>en<span class="o">]</span>   
-&gt; Do you want to specify a URL prefix? e.g., http://example.com   <span class="o">(</span>Y/n<span class="o">)</span> y  
-&gt; What is your URL prefix? <span class="o">(</span>see above example; no trailing slash<span class="o">)</span> http://amygdalama.github.io  
-&gt; Do you want to <span class="nb">enable </span>article pagination? <span class="o">(</span>Y/n<span class="o">)</span> y  
-&gt; How many articles per page <span class="k">do </span>you want? <span class="o">[</span>10<span class="o">]</span>  
-&gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? <span class="o">(</span>Y/n<span class="o">)</span> y  
-&gt; Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? <span class="o">(</span>Y/n<span class="o">)</span> y  
-&gt; Do you want to upload your website using FTP? <span class="o">(</span>y/N<span class="o">)</span> n  
-&gt; Do you want to upload your website using SSH? <span class="o">(</span>y/N<span class="o">)</span> n  
-&gt; Do you want to upload your website using Dropbox? <span class="o">(</span>y/N<span class="o">)</span> n  
-&gt; Do you want to upload your website using S3? <span class="o">(</span>y/N<span class="o">)</span> n  
-&gt; Do you want to upload your website using Rackspace Cloud Files? <span class="o">(</span>y/N<span class="o">)</span> n
+<p>Run Pelican <a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog">quickstart</a></p>
+<p>This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred <a href="http://docs.getpelican.com/en/3.1.1/settings.html">settings</a>. As an example, here's how I answered (I put my responses on separate lines starting with <code>&gt;</code> to make this easier to read):</p>
+<div class="highlight"><pre><span class="gp">$</span> pelican-quickstart
+<span class="go">Where do you want to create your new web site? [.]  </span>
+<span class="gp">&gt;</span>  
+<span class="go">What will be the title of this web site?  </span>
+<span class="gp">&gt;</span> Amy Hanlon  
+<span class="go">Who will be the author of this web site?  </span>
+<span class="gp">&gt;</span> Amy Hanlon  
+<span class="go">What will be the default language of this web site? [en]  </span>
+<span class="gp">&gt;</span> 
+<span class="go">Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">What is your URL prefix? (see above example; no trailing slash) </span>
+<span class="gp">&gt;</span> http://amygdalama.github.io  
+<span class="go">Do you want to enable article pagination? (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">How many articles per page do you want? [10] </span>
+<span class="gp">&gt;</span>  
+<span class="go">Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">Do you want to upload your website using FTP? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using SSH? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using Dropbox? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using S3? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using Rackspace Cloud Files? (y/N) </span>
+<span class="gp">&gt;</span> n
 </pre></div>
 
 
@@ -101,111 +115,121 @@
 
 <p>If you don't have <code>tree</code>, you should! It's neat. <code>brew install tree</code>. If you're on OSX and don't have <a href="http://brew.sh/">Homebrew</a>, you should! It's neat.</p>
 <p>I'll briefly explain each of these files/directories:</p>
-<div class="highlight"><pre><span class="o">*</span> <span class="err">`</span><span class="n">Makefile</span><span class="err">`</span> <span class="n">tells</span> <span class="n">the</span> <span class="n">command</span> <span class="err">`</span><span class="n">make</span><span class="err">`</span> <span class="n">what</span> <span class="n">to</span> <span class="k">do</span><span class="p">.</span> <span class="n">This</span> <span class="n">file</span> <span class="n">defines</span> <span class="n">commands</span> <span class="n">like</span> <span class="err">`</span><span class="n">make</span> <span class="n">devserver</span><span class="err">`</span><span class="p">.</span> <span class="n">More</span> <span class="n">information</span> <span class="n">on</span> <span class="err">`</span><span class="n">make</span><span class="err">`</span> <span class="n">can</span> <span class="n">be</span> <span class="n">found</span> <span class="p">[</span><span class="n">here</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//www.gnu.org/software/make/manual/make.html). I&#39;ll cover more on how to use this command for developing your site in the **Basic Workflow** section.</span>
-
-<span class="o">*</span> <span class="err">`</span><span class="n">content</span><span class="err">`</span> <span class="n">is</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">that</span> <span class="n">should</span> <span class="n">house</span> <span class="n">all</span> <span class="n">of</span> <span class="n">your</span> <span class="n">Markdown</span> <span class="n">files</span><span class="p">.</span> <span class="n">Pelican</span> <span class="n">assumes</span> <span class="n">that</span> <span class="n">your</span> <span class="n">articles</span><span class="o">/</span><span class="n">blog</span> <span class="n">posts</span> <span class="n">will</span> <span class="n">be</span> <span class="n">inside</span> <span class="n">this</span> <span class="n">directory</span><span class="p">.</span> <span class="n">Additionally</span><span class="p">,</span> <span class="n">there</span> <span class="n">are</span> <span class="n">some</span> <span class="n">special</span> <span class="n">directories</span> <span class="n">you</span> <span class="n">should</span> <span class="n">create</span> <span class="n">within</span> <span class="err">`</span><span class="n">content</span><span class="err">`</span><span class="o">:</span>
-
-    <span class="o">:::</span><span class="n">bash</span>
-    <span class="err">$</span> <span class="n">mkdir</span> <span class="n">content</span><span class="o">/</span><span class="n">pages</span>
-    <span class="err">$</span> <span class="n">mkdir</span> <span class="n">content</span><span class="o">/</span><span class="n">images</span>
-
-<span class="n">Pelican</span> <span class="n">by</span> <span class="k">default</span> <span class="n">is</span> <span class="n">configured</span> <span class="n">to</span> <span class="n">know</span> <span class="n">that</span> <span class="n">your</span> <span class="n">pages</span> <span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">e</span><span class="p">.</span> <span class="n">non</span><span class="o">-</span><span class="n">temporal</span> <span class="n">pages</span> <span class="n">like</span> <span class="n">About</span> <span class="n">Me</span><span class="p">,</span> <span class="n">Contact</span><span class="p">,</span> <span class="n">etc</span><span class="p">)</span> <span class="n">are</span> <span class="n">found</span> <span class="n">within</span> <span class="n">this</span> <span class="err">`</span><span class="n">pages</span><span class="err">`</span> <span class="n">directory</span> <span class="n">and</span> <span class="n">that</span> <span class="n">images</span> <span class="n">are</span> <span class="n">found</span> <span class="n">within</span> <span class="n">the</span> <span class="err">`</span><span class="n">images</span><span class="err">`</span> <span class="n">directory</span><span class="p">.</span>
-
-<span class="o">*</span> <span class="err">`</span><span class="n">develop_server</span><span class="p">.</span><span class="n">sh</span><span class="err">`</span> <span class="n">is</span> <span class="n">a</span> <span class="n">bash</span> <span class="n">script</span> <span class="n">that</span> <span class="n">I</span> <span class="n">believe</span> <span class="n">handles</span> <span class="n">serving</span> <span class="n">your</span> <span class="n">site</span> <span class="n">locally</span> <span class="n">during</span> <span class="n">development</span> <span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">e</span><span class="p">.</span> <span class="n">it</span> <span class="n">serves</span> <span class="n">your</span> <span class="n">site</span> <span class="n">to</span> <span class="n">http</span><span class="o">:</span><span class="c1">//localhost:8000).</span>
-
-<span class="o">*</span> <span class="err">`</span><span class="n">fabfile</span><span class="p">.</span><span class="n">py</span><span class="err">`</span> <span class="n">is</span> <span class="n">a</span> <span class="n">configuration</span> <span class="n">file</span> <span class="k">for</span> <span class="p">[</span><span class="n">Fabric</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//docs.fabfile.org/en/1.8/) which allows you to generate your site using the `fab` command. You&#39;ll need to `pip install fabric` if you want to use it. Alternatively you can just use `make`.</span>
-
-<span class="o">*</span> <span class="err">`</span><span class="n">output</span><span class="err">`</span> <span class="n">is</span><span class="p">,</span> <span class="n">by</span> <span class="k">default</span><span class="p">,</span> <span class="n">where</span> <span class="n">Pelican</span> <span class="n">will</span> <span class="n">store</span> <span class="n">your</span> <span class="n">HTML</span> <span class="n">files</span> <span class="n">when</span> <span class="n">you</span> <span class="n">run</span> <span class="err">`</span><span class="n">pelican</span> <span class="n">content</span><span class="err">`</span><span class="p">.</span> <span class="n">This</span> <span class="n">can</span> <span class="n">cause</span> <span class="n">issues</span> <span class="n">which</span> <span class="n">I</span> <span class="n">describe</span> <span class="n">in</span> <span class="n">the</span> <span class="n">section</span> <span class="o">**</span><span class="n">Integrating</span> <span class="n">with</span> <span class="n">GitHub</span><span class="o">**</span><span class="p">.</span>
-
-<span class="o">*</span> <span class="err">`</span><span class="n">pelicanconf</span><span class="p">.</span><span class="n">py</span><span class="err">`</span> <span class="n">houses</span> <span class="n">your</span> <span class="n">Pelican</span> <span class="n">configuration</span> <span class="p">[</span><span class="n">settings</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//docs.getpelican.com/en/3.3.0/settings.html).</span>
-
-<span class="o">*</span> <span class="err">`</span><span class="n">publishconf</span><span class="p">.</span><span class="n">py</span><span class="err">`</span> <span class="n">is</span> <span class="n">like</span> <span class="err">`</span><span class="n">pelicanconf</span><span class="p">.</span><span class="n">py</span><span class="err">`</span> <span class="n">in</span> <span class="n">that</span> <span class="n">it</span> <span class="n">houses</span> <span class="n">Pelican</span> <span class="n">configuration</span> <span class="n">settings</span><span class="p">,</span> <span class="n">but</span> <span class="n">is</span> <span class="n">not</span> <span class="n">intended</span> <span class="n">to</span> <span class="n">be</span> <span class="n">used</span> <span class="k">for</span> <span class="n">local</span> <span class="n">development</span><span class="p">.</span> <span class="n">The</span> <span class="n">reasoning</span> <span class="n">behind</span> <span class="n">having</span> <span class="n">two</span> <span class="n">separate</span> <span class="n">files</span> <span class="n">is</span> <span class="n">described</span> <span class="n">in</span> <span class="p">[</span><span class="n">this</span> <span class="n">Stack</span> <span class="n">Overflow</span> <span class="n">answer</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//stackoverflow.com/a/20845195).</span>
+<ul>
+<li>
+<p><code>Makefile</code> tells the command <code>make</code> what to do. This file defines commands like <code>make devserver</code>. More information on <code>make</code> can be found <a href="http://www.gnu.org/software/make/manual/make.html">here</a>. I'll cover more on how to use this command for developing your site in the <strong>Generating Your Site</strong> section.</p>
+</li>
+<li>
+<p><code>content</code> is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within <code>content</code>:  </p>
+<div class="highlight"><pre><span class="nv">$ </span>mkdir content/pages
+<span class="nv">$ </span>mkdir content/images
 </pre></div>
 
 
-<h4>Exporting Existing Content</h4>
+<p>Pelican by default is configured to know that your pages (i.e. non-temporal pages like About Me, Contact, etc) are found within this <code>pages</code> directory and that images are found within the <code>images</code> directory.  </p>
+</li>
+<li>
+<p><code>develop_server.sh</code> is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to http://localhost:8000).</p>
+</li>
+<li>
+<p><code>fabfile.py</code> is a configuration file for <a href="http://docs.fabfile.org/en/1.8/">Fabric</a> which allows you to generate your site using the <code>fab</code> command. You'll need to <code>pip install fabric</code> if you want to use it. Alternatively you can just use <code>make</code>.</p>
+</li>
+<li>
+<p><code>output</code> is, by default, where Pelican will store your HTML files when you run <code>pelican content</code>. This can cause issues which I describe in the section <strong>Integrating with GitHub</strong>.</p>
+</li>
+<li>
+<p><code>pelicanconf.py</code> houses your Pelican configuration <a href="http://docs.getpelican.com/en/3.3.0/settings.html">settings</a>.</p>
+</li>
+<li>
+<p><code>publishconf.py</code> is like <code>pelicanconf.py</code> in that it houses Pelican configuration settings, but is not intended to be used for local development. The reasoning behind having two separate files is described in <a href="http://stackoverflow.com/a/20845195">this Stack Overflow answer</a>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2>Exporting Existing Content</h2>
 <p>This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  </p>
-<ul>
+<ol>
 <li><a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/">Export WordPress content to XML</a></li>
 <li><a href="http://docs.getpelican.com/en/3.1.1/importer.html">Imperfectly convert the XML to Markdown using Pelican</a></li>
-<li>Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing)</li>
-</ul>
-<h3>Organizing Your Content</h3>
+<li>Manually export your images from your WordPress Media Library (I know. This sucks.) Move these images to <code>content/images</code>.</li>
+<li>Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing).</li>
+<li>Move your Markdown files to the <code>content</code> directory within your website's main directory. Content intended to be non-temporal pages (i.e. About Me, Contact, etc) should go in the <code>content/pages</code> directory. Articles/blog posts should go in the <code>content</code> directory.</li>
+</ol>
+<h2>Pelican Themes</h2>
+<ol>
+<li>
+<p>Clone the available <a href="https://github.com/getpelican/pelican-themes">Pelican Themes</a> into your blog's main directory.</p>
+<div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/getpelican/pelican-themes
+</pre></div>
+
+
+</li>
+<li>
+<p>Choose a theme you'd like to use. Pelican by default comes with the notmyidea and simple themes. Most other themes have a sample image in the pelican-themes repo to help you decide.</p>
+</li>
+<li>
+<p>After you've chosen a theme, set the THEME variable in your <code>pelicanconf.py</code> file to the absolute or relative path to the theme. For example, I'm using the subtle theme and added this line to my <code>pelicanconf.py</code> file:</p>
+<div class="highlight"><pre><span class="n">THEME</span> <span class="o">=</span> <span class="s">&quot;pelican-themes/subtle&quot;</span>
+</pre></div>
+
+
+<p>I recommend using an absolute or relative path to the theme, rather than using <code>pelican-themes --install subtle</code>. This ensures that Pelican HTML output will reflect any changes you make to the theme.</p>
+</li>
+</ol>
+<h2>Customization</h2>
+<p>All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the <code>main.css</code> file found in your theme's directory. For example, I've made many edits to the file <code>pelican-themes/subtle/static/css/main.css</code>.</p>
+<p>Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the <code>templates</code> folder within your theme. There will usually be a <code>base.html</code> file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. </p>
+<p>There should also be HTML files that serve as templates for specific types of pages. For example, <code>article.html</code> defines the basic structure for your articles/blog posts. If you want to change whether the author, date, tags, etc, display above article content, you should look there.</p>
+<p>If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but note that changes you make to the code in your browser will not be reflected in your source files.</p>
+<h2>Generating Your Site</h2>
+<p>Once you have markdown files in your <code>content</code> folder, you can run <code>pelican</code> on those files to generate HTML for your site using the theme you specify in your <code>pelicanconf.py</code> file:</p>
+<div class="highlight"><pre><span class="nv">$ </span>pelican content
+</pre></div>
+
+
+<h2>Posting to GitHub</h2>
+<p>Recall that you need a repository on GitHub named <em>username.github.io</em> (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).</p>
+<p>It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!</p>
+<p>However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the <code>output</code> folder (recall that Pelican by default saves the HTML it generates in this folder).</p>
+<p>There seem to be two solutions for this problem:</p>
+<ol>
+<li>Create two separate repositories - one inside the <code>output</code> directory where Pelican generates your HTML (this repo should have <em>username.github.io</em> on GitHub as a remote), and another in your blog's main directory with your source Markdown files (in <code>content</code>), theme, and configuration files (this repo should have a different remote on GitHub).</li>
+<li>
+<p>Create a single repository in your blog's main directory that houses everything (this repo should have <em>username.github.io</em> on GitHub as a remote), and edit Pelican's settings to create output in your blog's main directory rather than within the <code>output</code> subdirectory.</p>
+<p>To change Pelican's output settings, you'll need to edit these files:  </p>
 <ul>
 <li>
-<p>Make a directory for your website, and a directory within it called <code>content</code>, which is where Pelican by default looks for your Markdown files. I did:</p>
-<p>:::bash
-$ mkdir ~/Projects/blog
-$ mkdir ~/Projects/blog/content</p>
+<p><code>pelicanconf.py</code> - change your <code>OUTPUT</code> settings variable</p>
+<div class="highlight"><pre><span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span>
+</pre></div>
+
+
 </li>
 <li>
-<p>If you exported content from an existing blog/website, move the Markdown files to this <code>content</code> directory.</p>
+<p><code>publishconf.py</code> - change your <code>DELETE_OUTPUT_DIRECTORY</code> variable</p>
+<div class="highlight"><pre><span class="n">DELETE_OUTPUT_DIRECTORY</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+
+
+</li>
+<li>
+<p><code>Makefile</code> and <code>develop_server.sh</code>- change your <code>OUTPUTDIR</code></p>
+<div class="highlight"><pre><span class="n">OUTPUTDIR</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="n">BASEDIR</span><span class="p">)</span>
+</pre></div>
+
+
 </li>
 </ul>
-<h4>Pelican Themes</h4>
-<h4>Customization</h4>
-<h4>Basic Workflow</h4>
-<ul>
-<li>Posting Pelican Output HTML to GitHub</li>
-<li>Choosing a [Pelican theme]</li>
-<li>Customizing the Pelican theme</li>
-<li></li>
-<li>
-<p>Initial GitHub setup: http://pages.github.com/</p>
 </li>
-<li>Only create the repository. Don't set up .git on your local computer yet because you'll need to set it up in the output folder that Pelican generates that houses your .html</li>
-<li>Initial Pelican setup in a virtualenv: http://docs.getpelican.com/en/3.3.0/getting_started.html</li>
-<li>
-<p>run quickstart  </p>
-<p>:::bash
-(blog)amygdalama.github.io $ pelican-quickstart<br />
-Welcome to pelican-quickstart v3.3.0.  </p>
-<p>This script will help you create a new Pelican-based website.  </p>
-<p>Please answer the following questions so this script can generate the files needed by Pelican.  </p>
-<blockquote>
-<p>Where do you want to create your new web site? [.] .<br />
-What will be the title of this web site? Amy Hanlon<br />
-Who will be the author of this web site? Amy Hanlon<br />
-What will be the default language of this web site? [en] en<br />
-Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) y<br />
-What is your URL prefix? (see above example; no trailing slash) http://amygdalama.github.io<br />
-Do you want to enable article pagination? (Y/n) y<br />
-How many articles per page do you want? [10]<br />
-Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) y<br />
-Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n) y<br />
-Do you want to upload your website using FTP? (y/N) n<br />
-Do you want to upload your website using SSH? (y/N) n<br />
-Do you want to upload your website using Dropbox? (y/N) n<br />
-Do you want to upload your website using S3? (y/N) n<br />
-Do you want to upload your website using Rackspace Cloud Files? (y/N) n<br />
-Done. Your new project is available at /Users/amyhanlon/Projects/amygdalama.github.io<br />
-(blog)amygdalama.github.io $ ls<br />
-Makefile        develop_server.sh   how-to.md       pelicanconf.py<br />
-content         fabfile.py      output          publishconf.py</p>
-</blockquote>
-</li>
-<li>
-<p>Create a folders for static pages (i.e. About Me, Contact, etc) and images</p>
-<p>:::bash
-(blog)amygdalama.github.io [master <em>%] $ cd content/
-(blog)content [master </em>] $ ls
-(blog)content [master <em>] $ mkdir pages
-(blog)content [master </em>] $ ls
-pages
-(blog)content [master <em>] $ mkdir images
-(blog)content [master </em>] $ ls
-images  pages</p>
-</li>
-<li>
-<p>Export your WordPress blog to a .xml file by going to Dashboard &gt; Tools &gt; Export. I'm anal and saved this file and an archive in my amygdalama.github.io folder.</p>
-<p>:::bash
-(blog)amygdalama.github.io [master <em>%] $ cd ~/Projects/amygdalama.github.io/
-(blog)amygdalama.github.io [master </em>%] $ mkdir wordpress-archive
-(blog)amygdalama.github.io [master <em>%] $ mv ~/Downloads/amyhanlon.wordpress.2014-02-15.xml wordpress-archive/archive.xml
-(blog)amygdalama.github.io [master </em>%] $ cd wordpress-archive/
-(blog)wordpress-archive [master *%] $ ls
-archive.xml</p>
-</li>
+</ol>
+<p>I decided to go with #2, but if there's a more elegant solution to this problem, please let me know!</p>
+<p>Usually I'll start working on a blog post by writing it up in a Markdown file locally on my computer, setting its status as draft by including <code>Status: draft</code> in the metadata and then previewing it with the following command (within the main directory of my blog):</p>
+<div class="highlight"><pre><span class="nv">$ </span>make devserver
+</pre></div>
+
+
+<p>This command runs <code>pelican content</code> locally at the address <a href="http://localhost:8000">http://localhost:8000</a>. Your draft pages will be available at addresses like http://localhost:8000/drafts/posts-slug-here.</p>
+<ol>
 <li>
 <p>Convert this .xml file to a collection of .md files using the <code>pelican-import</code> command.</p>
 <p>:::bash
@@ -228,7 +252,7 @@ output/i-moved-cross-country-for-hacker-school-and-im-only-slightly-convinced-th
 output/hacker-school-day-2-goals.md
 output/ipython-and-pandas-are-whoa.md</p>
 </li>
-</ul>
+</ol>
 <p>Move these .md files to the content folder that was created when you ran pelican-quickstart.</p>
 <div class="highlight"><pre><span class="o">(</span>blog<span class="o">)</span>amygdalama.github.io <span class="o">[</span>master *%<span class="o">]</span> <span class="nv">$ </span>cp wordpress-archive/output/* content
 </pre></div>
