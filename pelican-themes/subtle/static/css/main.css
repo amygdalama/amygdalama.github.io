@@ -252,7 +252,7 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 }
 #featured figure img {display: block; float: right;}
 
-#featured h2 {color: #C74451; font-size: 1.714em; margin-bottom: 0.333em;}
+#featured h2 {color: #000305; font-size: 1.714em; margin-bottom: 0.333em;}
 #featured h3 {font-size: 1.429em; margin-bottom: .5em;}
 
 #featured h3 a:link, #featured h3 a:visited {color: #000305; text-decoration: none;}
@@ -381,9 +381,9 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 .hentry img{display : none ;}
 
 .entry-title {font-family: "Droid Sans", "sans-serif"; 
-	font-size: 3em;
+	font-size: 2.5em;
 	font-weight: 900; 
-	margin-bottom: 10px; 
+	margin-bottom: 0px; 
 	margin-top: 0;
 	color: #000305;}
 

@@ -26,7 +26,6 @@
                     <li><a href="..">Home</a></li>
                     <li><a href="../pages/bio.html">Biography</a></li>
                     <li><a href="../pages/contact.html">Contact</a></li>
-                    <li><a href="../pages/endorsements.html">Endorsements</a></li>
                 </ul></nav>
 
         </header><!-- /#banner -->
@@ -35,7 +34,234 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../ipython-and-pandas-are-whoa.html">ipython and pandas are whoa!</a></h1> 
+                    <h1 class="entry-title"><a href="../migrating-to-github-pages-using-pelican.html">Migrating to GitHub Pages using Pelican</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-02-22T00:00:00">
+                Sat 22 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p>In <a href="../category/projects.html">Projects</a> </p>
+
+
+</footer><!-- /.post-info --><p>Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (<a href="http://pages.github.com/">GitHub Pages</a>) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
+<p>The great part about this whole process is that with Pelican, I can write my blog posts and pages in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> (about which I also knew little until last week, but it's <em>wonderfully easy to learn</em>.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.</p>
+<p>There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others, particularly those without a convenient 2-bottles-for-$10-special, make this transition with less misery.</p>
+<h2>GitHub Pages Setup</h2>
+<ol>
+<li>Create GitHub repo following the <a href="http://pages.github.com/">GitHub Pages instructions</a> (the first step only!)</li>
+</ol>
+<p><em>A note on GitHub Pages:</em> I believe your HTML files (particularly your index.html file) must be in the <em>main directory</em> of your git repo for this to work. This will be important later. More detail is given in the <strong>Posting to GitHub</strong> section.</p>
+<h2>Pelican Setup</h2>
+<ol>
+<li>
+<p>Install necessary <a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican">packages</a></p>
+</li>
+<li>
+<p>Run Pelican <a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog">quickstart</a></p>
+<p>This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred <a href="http://docs.getpelican.com/en/3.1.1/settings.html">settings</a>. As an example, here's how I answered (I put my responses on separate lines starting with <code>&gt;</code> to make this easier to read):</p>
+<div class="highlight"><pre><span class="gp">$</span> pelican-quickstart
+<span class="go">Where do you want to create your new web site? [.]  </span>
+<span class="gp">&gt;</span>  
+<span class="go">What will be the title of this web site?  </span>
+<span class="gp">&gt;</span> Amy Hanlon  
+<span class="go">Who will be the author of this web site?  </span>
+<span class="gp">&gt;</span> Amy Hanlon  
+<span class="go">What will be the default language of this web site? [en]  </span>
+<span class="gp">&gt;</span> 
+<span class="go">Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">What is your URL prefix? (see above example; no trailing slash) </span>
+<span class="gp">&gt;</span> http://amygdalama.github.io  
+<span class="go">Do you want to enable article pagination? (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">How many articles per page do you want? [10] </span>
+<span class="gp">&gt;</span>  
+<span class="go">Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n) </span>
+<span class="gp">&gt;</span> y  
+<span class="go">Do you want to upload your website using FTP? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using SSH? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using Dropbox? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using S3? (y/N) </span>
+<span class="gp">&gt;</span> n  
+<span class="go">Do you want to upload your website using Rackspace Cloud Files? (y/N) </span>
+<span class="gp">&gt;</span> n
+</pre></div>
+
+
+<p>Now if you type the <code>tree</code> command within your blog's main directory, you should see:</p>
+<div class="highlight"><pre><span class="nv">$ </span>tree
+.
+├── Makefile
+├── content
+├── develop_server.sh
+├── fabfile.py
+├── output
+├── pelicanconf.py
+└── publishconf.py
+</pre></div>
+
+
+<p>If you don't have <code>tree</code>, you should! It's neat. <code>brew install tree</code>. If you're on OSX and don't have <a href="http://brew.sh/">Homebrew</a>, you should! It's neat.</p>
+<p>I'll briefly explain each of these files/directories:</p>
+<ul>
+<li>
+<p><code>Makefile</code> tells the command <code>make</code> what to do. This file defines commands like <code>make devserver</code>. More information on <code>make</code> can be found <a href="http://www.gnu.org/software/make/manual/make.html">here</a>. I'll cover more on how to use this command for developing your site in the <strong>Generating Your Site</strong> section.</p>
+</li>
+<li>
+<p><code>content</code> is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within <code>content</code>:  </p>
+<div class="highlight"><pre><span class="nv">$ </span>mkdir content/pages
+<span class="nv">$ </span>mkdir content/images
+</pre></div>
+
+
+<p>Pelican by default is configured to know that your pages (i.e. non-temporal pages like About Me, Contact, etc) are found within this <code>pages</code> directory and that images are found within the <code>images</code> directory.  </p>
+</li>
+<li>
+<p><code>develop_server.sh</code> is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to http://localhost:8000).</p>
+</li>
+<li>
+<p><code>fabfile.py</code> is a configuration file for <a href="http://docs.fabfile.org/en/1.8/">Fabric</a> which allows you to generate your site using the <code>fab</code> command. You'll need to <code>pip install fabric</code> if you want to use it. Alternatively you can just use <code>make</code>.</p>
+</li>
+<li>
+<p><code>output</code> is, by default, where Pelican will store your HTML files when you run <code>pelican content</code>. This can cause issues which I describe in the section <strong>Integrating with GitHub</strong>.</p>
+</li>
+<li>
+<p><code>pelicanconf.py</code> houses your Pelican configuration <a href="http://docs.getpelican.com/en/3.3.0/settings.html">settings</a>.</p>
+</li>
+<li>
+<p><code>publishconf.py</code> is like <code>pelicanconf.py</code> in that it houses Pelican configuration settings, but is not intended to be used for local development. The reasoning behind having two separate files is described in <a href="http://stackoverflow.com/a/20845195">this Stack Overflow answer</a>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2>Exporting Existing Content</h2>
+<p>This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  </p>
+<ol>
+<li><a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/">Export WordPress content to XML</a></li>
+<li><a href="http://docs.getpelican.com/en/3.1.1/importer.html">Imperfectly convert the XML to Markdown using Pelican</a></li>
+<li>Manually export your images from your WordPress Media Library (I know. This sucks.) Move these images to <code>content/images</code>.</li>
+<li>Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing).</li>
+<li>Move your Markdown files to the <code>content</code> directory within your website's main directory. Content intended to be non-temporal pages (i.e. About Me, Contact, etc) should go in the <code>content/pages</code> directory. Articles/blog posts should go in the <code>content</code> directory.</li>
+</ol>
+<h2>Pelican Themes</h2>
+<ol>
+<li>
+<p>Clone the available <a href="https://github.com/getpelican/pelican-themes">Pelican Themes</a> into your blog's main directory.</p>
+<div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/getpelican/pelican-themes
+</pre></div>
+
+
+</li>
+<li>
+<p>Choose a theme you'd like to use. Pelican by default comes with the notmyidea and simple themes. Most other themes have a sample image in the pelican-themes repo to help you decide.</p>
+</li>
+<li>
+<p>After you've chosen a theme, set the THEME variable in your <code>pelicanconf.py</code> file to the absolute or relative path to the theme. For example, I'm using the subtle theme and added this line to my <code>pelicanconf.py</code> file:</p>
+<div class="highlight"><pre><span class="n">THEME</span> <span class="o">=</span> <span class="s">&quot;pelican-themes/subtle&quot;</span>
+</pre></div>
+
+
+<p>I recommend using an absolute or relative path to the theme, rather than using <code>pelican-themes --install subtle</code>. This ensures that Pelican HTML output will reflect any changes you make to the theme.</p>
+</li>
+</ol>
+<h2>Customization</h2>
+<p>All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the <code>main.css</code> file found in your theme's directory. For example, I've made many edits to the file <code>pelican-themes/subtle/static/css/main.css</code>.</p>
+<p>Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the <code>templates</code> folder within your theme. There will usually be a <code>base.html</code> file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. </p>
+<p>There should also be HTML files that serve as templates for specific types of pages. For example, <code>article.html</code> defines the basic structure for your articles/blog posts. If you want to change whether the author, date, tags, etc, display above article content, you should look there.</p>
+<p>If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but note that changes you make to the code in your browser will not be reflected in your source files.</p>
+<h2>Generating Your Site</h2>
+<p>Once you have markdown files in your <code>content</code> folder, you can run <code>make devserver</code>, which does a number of things: it runs the <code>pelican</code> command on your <code>content</code> folder to generate HTML for your site using the theme you specify in your <code>pelicanconf.py</code> file, and serves your site locally at <a href="http://localhost:8000">http://localhost:8000</a>. <code>make devserver</code> will also automatically regenerate your site every time you save a change to a content, configuration, or theme file! Just refresh the page in your browser, and you should immediately see the changes.</p>
+<h2>Posting to GitHub</h2>
+<p>Recall that you need a repository on GitHub named <em>username.github.io</em> (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).</p>
+<p>It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!</p>
+<p>However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the <code>output</code> folder (recall that Pelican by default saves the HTML it generates in this folder).</p>
+<p>There seem to be two solutions for this problem:</p>
+<ol>
+<li>Create two separate repositories - one inside the <code>output</code> directory where Pelican generates your HTML (this repo should have <em>username.github.io</em> on GitHub as a remote), and another in your blog's main directory with your source Markdown files (in <code>content</code>), theme, and configuration files (this repo should have a different remote on GitHub).</li>
+<li>
+<p>Create a single repository in your blog's main directory that houses everything (this repo should have <em>username.github.io</em> on GitHub as a remote), and edit Pelican's settings to create output in your blog's main directory rather than within the <code>output</code> subdirectory.</p>
+<p>To change Pelican's output settings, you'll need to edit these files:  </p>
+<ul>
+<li>
+<p><code>pelicanconf.py</code> - change your <code>OUTPUT</code> settings variable</p>
+<div class="highlight"><pre><span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span>
+</pre></div>
+
+
+</li>
+<li>
+<p><code>publishconf.py</code> - change your <code>DELETE_OUTPUT_DIRECTORY</code> variable</p>
+<div class="highlight"><pre><span class="n">DELETE_OUTPUT_DIRECTORY</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+
+
+</li>
+<li>
+<p><code>Makefile</code> and <code>develop_server.sh</code>- change your <code>OUTPUTDIR</code></p>
+<div class="highlight"><pre><span class="nv">OUTPUTDIR</span><span class="o">=</span><span class="k">$(</span>BASEDIR<span class="k">)</span>
+</pre></div>
+
+
+</li>
+</ul>
+<p>I decided to go with this option, but <strong>DANGER!</strong> If you go with #2, <strong><em>do not use the command <code>make clean</code></em></strong>! It will delete everything in your blog's main directory! To make super sure this command never gets executed, you can comment out its definition in your <code>Makefile</code>:</p>
+<div class="highlight"><pre><span class="c"># clean:</span>
+<span class="c">#   [ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)</span>
+</pre></div>
+
+
+</li>
+</ol>
+<p>If you know of a more elegant solution to this problem, please email me!</p>
+<p>In the terminal, move to the directory you're choosing to house your git repo (either the <code>output</code> directory or your blog's main directory), and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called <em>username.github.io</em>), add all the files you want to commit, commit, and push changes to the remote repository.</p>
+<div class="highlight"><pre><span class="nv">$ </span>git init
+<span class="nv">$ </span>git remote add origin https://github.com/username/username.github.io.git
+<span class="nv">$ </span>git add --all
+<span class="nv">$ </span>git commit -m <span class="s2">&quot;commit message&quot;</span>
+<span class="nv">$ </span>git push origin master
+</pre></div>
+
+
+<p>If you're going with option #1, you'll also need to set up another repository for your content, configuration files, and theme.</p>
+<p>Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)</p>
+<h2>Custom Domain Setup</h2>
+<p>If you have your own domain name that you'd like to use instead of <em>username.github.io</em>, you'll need to follow <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">these instructions</a>.</p>
+<h2>Fin</h2>
+<p>Feel free to poke around my blog's <a href="https://github.com/amygdalama/amygdalama.github.io">GitHub repo</a> (beware: there are unpublished draft posts in there). My configuration files in particular might be useful to you.</p>
+<p>If any of you Hacker Schoolers have trouble migrating your blog, I'd be happy to help!</p>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="../tag/pelican.html">pelican</a>
+           <a href="../tag/blogging.html">blogging</a>
+           <a href="../tag/wordpress.html">wordpress</a>
+           <a href="../tag/github-pages.html">github-pages</a>
+           <a href="../tag/markdown.html">markdown</a>
+    <!-- </p> -->
+    
+</p>
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class= "other-articles">Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="../ipython-and-pandas-are-whoa.html" rel="bookmark" title="Permalink to ipython and pandas are whoa!">ipython and pandas are whoa!</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-02-14T15:52:00">
                 Fri 14 February 2014
@@ -47,233 +273,12 @@
 <p>In <a href="../category/projects.html">Projects</a> </p>
 
 
-</footer><!-- /.post-info --><p>In my first five months of using Python, I would create .py files and
+</footer><!-- /.post-info -->                <p>In my first five months of using Python, I would create .py files and
 then execute them in the terminal, like the loyal follower of <a href="http://learnpythonthehardway.org/book/">LPTHW</a>
 that I am. While it's certainly necessary to be able to write Python
-scripts and execute them from the terminal, I've learned that this
-workflow isn't the best way to explore data in Python.</p>
-<p>I initially converted to Python from R, and since have missed the
-interactiveness of working within RStudio (you don't have to re-run your
-entire code every time you make a change and want to view the results)
-and how R allows you to so quickly get to your data with data frames
-built straight from text files. Enter: <a href="http://ipython.org/">ipython</a> and <a href="http://pandas.pydata.org/">pandas</a>. (Go
-to their respective sites for installation instructions.)</p>
-<p>Julia Evans has a fantastic <a href="https://github.com/jvns/pandas-cookbook">tutorial</a> on how to use pandas in an
-ipython notebook. Here, I'd like to explore the differences between
-doing data analysis using ipython notebook and pandas versus writing .py
-scripts using mainly standard Python packages and executing via the
-terminal.</p>
-<p>Let's use the classic iris dataset for some simple analysis. First we
-need to do some setup. Create a directory for our project (mine is
-stored within my Projects directory that I keep in my Home directory.)
-In the terminal:  </p>
-<div class="highlight"><pre><span class="nv">$ </span>mkdir ~/Projects/ipython-pandas-whoa  
-<span class="nv">$ </span><span class="nb">cd</span> ~/Projects
-</pre></div>
-
-
-<p>Then create a Python script and open it with a text editor (I use
-Sublime Text 2, which I've <a href="http://www.sublimetext.com/docs/2/osx_command_line.html">configured</a> to open files with the command
-<code>subl</code>.</p>
-<div class="highlight"><pre><span class="nv">$ </span>touch barbaric-script.py  
-<span class="nv">$ </span>subl barbaric-script.py
-</pre></div>
-
-
-<p>This should open up a blank .py file in Sublime. If you don't have
-<code>subl</code> set up, you can simply open up the blank barbaric-script.py file
-we created with the <code>touch</code> command in your text editor of choice.</p>
-<p>In the barbaric-script.py file, let's import the necessary packages.
-We'll be using a couple standard python packages plus matplotlib.pyplot.
-If you don't have matplotlib installed, you can find installation
-instructions <a href="http://matplotlib.org/users/installing.html">here</a>.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">csv</span>  
-<span class="kn">import</span> <span class="nn">pprint</span>  
-<span class="kn">import</span> <span class="nn">urllib2</span>
-
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-</pre></div>
-
-
-<p>To get the iris data, we'll use Python's built-in urllib2 and csv
-packages and then do some basic formatting. Let's process the dataset as
-a list of dictionaries.</p>
-<div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&quot;</span>
-
-<span class="c"># Open data from URL as a file-like object  </span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-
-<span class="c"># Create an empty list to store our data  </span>
-<span class="n">parsed_data</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="c"># Read file  </span>
-<span class="n">raw_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-<span class="c"># Define our headers since the file doesn&#39;t contain explicit headers  </span>
-<span class="c"># I found these headers from looking at the documentation at  </span>
-<span class="c"># http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  </span>
-<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Sepal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Class&#39;</span>  
-    <span class="p">]</span>
-
-<span class="c"># Iterate through the rows in the file, and create a dictionary for each row  </span>
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="p">:</span>
-
-<span class="c"># Dictionaries should have headers -&gt; row  </span>
-<span class="n">parsed_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">row</span><span class="p">)))</span>
-
-<span class="c"># Delete the last row of parsed_data because it&#39;s blank  </span>
-<span class="n">parsed_data</span> <span class="o">=</span> <span class="n">parsed_data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="c"># Let&#39;s see what parsed_data looks like  </span>
-<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
-</pre></div>
-
-
-<p>What you should see when you execute barbaric-script.py:</p>
-<div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py  
-<span class="o">[{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
-<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.4&#39;</span>,  
-<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
-<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;5.1&#39;</span>,  
-<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.5&#39;</span><span class="o">}</span>,  
-<span class="o">{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
-<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.4&#39;</span>,  
-<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
-<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;4.9&#39;</span>,  
-<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.0&#39;</span><span class="o">}</span>,  
-<span class="o">{</span><span class="s1">&#39;Class&#39;</span>: <span class="s1">&#39;Iris-setosa&#39;</span>,  
-<span class="s1">&#39;Petal Length&#39;</span>: <span class="s1">&#39;1.3&#39;</span>,  
-<span class="s1">&#39;Petal Width&#39;</span>: <span class="s1">&#39;0.2&#39;</span>,  
-<span class="s1">&#39;Sepal Length&#39;</span>: <span class="s1">&#39;4.7&#39;</span>,  
-<span class="s1">&#39;Sepal Width&#39;</span>: <span class="s1">&#39;3.2&#39;</span><span class="o">}]</span>
-</pre></div>
-
-
-<p>Great! So we have our data formatted nicely. We have a list with
-elements corresponding to each row in the file, and the elements in the
-list are dictionaries. The keys in the dictionaries are the column
-headers, and the values are the values associated with the respective
-column header for that particular row. For example, the first
-row/observation (printed as the first dictionary out of the three listed
-above) is in the class <code>Iris-setosa</code>, has a Petal Length of <code>1.4</code>, a Petal
-Width of <code>0.2</code>, a Sepal Length of <code>5.1</code>, and a Sepal Width of <code>3.5</code>. Let's do
-some plotting to explore our data. We can make a histogram! Add the
-following lines to your barbaric-script.py file:</p>
-<div class="highlight"><pre><span class="c"># Let&#39;s create a list of the Sepal Lengths  </span>
-<span class="c"># I&#39;m calling float on the entries because otherwise they&#39;re stored as strings  </span>
-<span class="n">sepal_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">])</span>  
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">))]</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;#348ABD&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Count&#39;</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-
-
-<p>Let's try executing our script again.</p>
-<div class="highlight"><pre><span class="nv">$ </span>python barbaric-script.py
-</pre></div>
-
-
-<p>A histogram should pop up in a separate window:</p>
-<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /></p>
-<p>That's a lot of code (18 lines)! And we didn't even do anything
-complicated - just parsed our data and plotted a histogram. Also, notice
-that each time you tried to fix a bug or add a feature (like plotting
-the histogram), you had to execute the entire script again, rather than
-just the piece where you fixed the bug. That doesn't matter too much
-since our data is fairly small and the script doesn't require much time
-to execute, but it would be pretty annoying if our script took longer to
-run.</p>
-<p>Now let's try doing the same thing, but using pandas in an ipython
-notebook. Use the terminal to run ipython notebook:</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> ~/Projects/ipython-pandas-whoa  
-<span class="nv">$ </span>ipython notebook
-</pre></div>
-
-
-<p>This will set up a local server on your computer, which will serve the
-ipython notebooks that are in your working directory (right now you
-don't have any) to http://127.0.0.1:8888. This should automatically open
-up in your browser.</p>
-<p>In the tab that opens in your browser, click "New Notebook". A new
-ipython notebook will open up in another tab. A new cell will also open
-up. Cells are places where you can write and execute code. This is what
-a cell looks like:</p>
-<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /></p>
-<p>To allow matplotlib to post plots within your notebook, rather than
-opening up a separate window (like when we executed our .py script),
-type the following into the cell:</p>
-<div class="highlight"><pre><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-</pre></div>
-
-
-<p>Then to execute the cell, press shift+enter (which will execute the cell
-your cursor is currently in and then automatically either move to the
-next cell, if one exists, or open up a new cell). Once you press
-shift+enter, your notebook should look like:</p>
-<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /></p>
-<p>In the next cell, import the packages we'll be using, namely
-matplotlib.pyplot and pandas:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>  
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-</pre></div>
-
-
-<p>Press shift+enter again to execute the code (I'm going to stop telling
-you to do this, but just assume that after each block of code you should
-press shift+enter. If you get confused about what your notebook should
-look like, look at my <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">example notebook</a>.)</p>
-<p>To process the iris data, we can use the built-in panda read_csv
-parser. We can get to a easy-to-use data frame within three lines of
-code!</p>
-<div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&quot;</span>
-
-<span class="c"># Define our headers since the url doesn&#39;t contain explicit headers  </span>
-<span class="c"># I found these headers from looking at the documentation at  </span>
-<span class="c"># http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  </span>
-<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Sepal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Length&#39;</span><span class="p">,</span> <span class="s">&#39;Petal Width&#39;</span><span class="p">,</span> <span class="s">&#39;Class&#39;</span><span class="p">]</span>  
-<span class="n">iris</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-</pre></div>
-
-
-<p>Let's see what the data looks like.</p>
-<div class="highlight"><pre><span class="n">iris</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
-</pre></div>
-
-
-<p>You should see a beautifully formatted table! This is a pandas data
-frame, which is similar to a data frame in R.</p>
-<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /></p>
-<p>Now let's plot a histogram for the Sepal Length column.</p>
-<div class="highlight"><pre><span class="c"># I use two brackets around &#39;Sepal Length&#39; to force pandas to make this  </span>
-<span class="c"># a data frame rather than just a series, which is like a numpy array.  </span>
-<span class="c"># The brackets here aren&#39;t necessary, but makes printing sepal_lengths  </span>
-<span class="c"># prettier and makes it easier for us to combine sepal_lengths with other  </span>
-<span class="c"># data.  </span>
-<span class="n">sepal_lengths</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[[</span><span class="s">&#39;Sepal Length&#39;</span><span class="p">]]</span>
-
-<span class="c"># Make the plot pretty!  </span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">&#39;display.mpl_style&#39;</span><span class="p">,</span> <span class="s">&#39;default&#39;</span><span class="p">)</span>
-
-<span class="n">sepal_lengths</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
-</pre></div>
-
-
-<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/quite_elegant.png" /></p>
-<p>By this point it should be fairly obvious that ipython and pandas are
-both awesome for data analysis! They make Python a much more serious
-contender as a tool for data analysis by giving you quick and easy
-access to your data. In this simple example, the barbaric-script.py was
-18 lines of code (disregarding comments, etc) and comparatively the
-ipython notebook with pandas was only 10!</p>
-<p>For further reading, I definitely encourage you to check out Julia's
-<a href="https://github.com/jvns/pandas-cookbook">pandas cookbook</a> (presented via ipython notebooks), on which
-incidentally I'll be collaborating with her next week (eeeep)!</p>
-<p>My code for this post can be found on my <a href="https://github.com/amygdalama/ipython-pandas-whoa">GitHub</a>, and the ipython
-notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb">NBViewer</a>.</p>
-                    <p>    <!-- <p> -->
+scripts and execute them from the terminal, I've learned ...</p>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="../tag/data-analysis.html">data analysis</a>
            <a href="../tag/hacker-school.html">hacker school</a>
@@ -283,13 +288,13 @@ notebook can be easily viewed on <a href="http://nbviewer.ipython.org/github/amy
            <a href="../tag/python.html">python</a>
     <!-- </p> -->
     
-</p>
-                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class= "other-articles">Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <a class="readmore" href="../ipython-and-pandas-are-whoa.html">read more</a>
+            </p>
+                </div><!-- /.entry-content -->
+            </article></li>
         
 
  

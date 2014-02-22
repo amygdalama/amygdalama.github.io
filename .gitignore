@@ -1,1 +1,2 @@
-theme/*
+*.pid
+*.pyc

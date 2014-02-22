@@ -2,6 +2,7 @@ Title: Endorsements
 Date: 2012-10-05 22:00
 Author: Amy Hanlon
 Slug: endorsements
+Status: draft
 
 > Amy is what I would call a professional badass. I was lucky
 > enough to have Amy as a teacher, mentor, coworker and friend while

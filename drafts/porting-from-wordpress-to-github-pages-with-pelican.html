@@ -26,7 +26,6 @@
                     <li><a href="..">Home</a></li>
                     <li><a href="../pages/bio.html">Biography</a></li>
                     <li><a href="../pages/contact.html">Contact</a></li>
-                    <li><a href="../pages/endorsements.html">Endorsements</a></li>
                 </ul></nav>
 
         </header><!-- /#banner -->
@@ -40,8 +39,8 @@
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2014-02-19T00:00:00">
-                Wed 19 February 2014
+        <abbr class="published" title="2014-02-22T00:00:00">
+                Sat 22 February 2014
         </abbr>
 
         <address class="vcard author">
@@ -50,7 +49,7 @@
 <p>In <a href="../category/projects.html">Projects</a> </p>
 
 
-</footer><!-- /.post-info -->      <p>Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (<a href="http://pages.github.com/">GitHub Pages</a>) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
+</footer><!-- /.post-info -->      <p>Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (<a href="http://pages.github.com/">GitHub Pages</a>) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
 <p>The great part about this whole process is that with Pelican, I can write my blog posts and pages in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> (about which I also knew little until last week, but it's <em>wonderfully easy to learn</em>.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.</p>
 <p>There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others, particularly those without a convenient 2-bottles-for-$10-special, make this transition with less misery.</p>
 <h2>GitHub Pages Setup</h2>
@@ -182,11 +181,7 @@
 <p>There should also be HTML files that serve as templates for specific types of pages. For example, <code>article.html</code> defines the basic structure for your articles/blog posts. If you want to change whether the author, date, tags, etc, display above article content, you should look there.</p>
 <p>If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but note that changes you make to the code in your browser will not be reflected in your source files.</p>
 <h2>Generating Your Site</h2>
-<p>Once you have markdown files in your <code>content</code> folder, you can run <code>pelican</code> on those files to generate HTML for your site using the theme you specify in your <code>pelicanconf.py</code> file:</p>
-<div class="highlight"><pre><span class="nv">$ </span>pelican content
-</pre></div>
-
-
+<p>Once you have markdown files in your <code>content</code> folder, you can run <code>make devserver</code>, which does a number of things: it runs the <code>pelican</code> on your <code>content</code> folder to generate HTML for your site using the theme you specify in your <code>pelicanconf.py</code> file, and serves your site locally at <a href="http://localhost:8000">http://localhost:8000</a>. <code>make devserver</code> will also automatically regenerate your site every time you save a change to a content, configuration, or theme file!</p>
 <h2>Posting to GitHub</h2>
 <p>Recall that you need a repository on GitHub named <em>username.github.io</em> (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).</p>
 <p>It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!</p>
@@ -228,7 +223,20 @@
 
 </li>
 </ol>
-<p>If you know of a more elegant solution to this problem, please <a href="mailto:amy@mathamy.com">email</a> me!</p>
+<p>If you know of a more elegant solution to this problem, please email me!</p>
+<p>In the terminal, move to the directory you're choosing to house your git repo (either the <code>output</code> directory or your blog's main directory), and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called <em>username.github.io</em>), add all the files you want to commit, commit, and push changes to the remote repository.</p>
+<div class="highlight"><pre><span class="nv">$ </span>git init
+<span class="nv">$ </span>git remote add origin https://github.com/username/username.github.io.git
+<span class="nv">$ </span>git add --all
+<span class="nv">$ </span>git commit -m <span class="s2">&quot;commit message&quot;</span>
+<span class="nv">$ </span>git push origin master
+</pre></div>
+
+
+<p>If you're going with option #1, you'll also need to set up another repository for your content, configuration files, and theme.</p>
+<p>Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)</p>
+<h2>Custom Domain Setup</h2>
+<p>If you have your own domain name that you'd like to use instead of <em>username.github.io</em>, you'll need to follow <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">these instructions</a>.</p>
       <p>
     <!-- <p> -->
         tags: 

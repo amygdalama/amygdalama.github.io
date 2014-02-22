@@ -1,12 +1,11 @@
-Title: Porting WordPress Blog to GitHub Pages using Pelican
-Date: 2014-02-19
+Title: Migrating to GitHub Pages using Pelican
+Date: 2014-02-22
 Category: Projects
 Tags: pelican, blogging, wordpress, github-pages, markdown
-Slug: porting-from-wordpress-to-github-pages-with-pelican
+Slug: migrating-to-github-pages-using-pelican
 Author: Amy Hanlon
-Status: draft
 
-Over the past five (YES, FIVE) days I have been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another ([GitHub Pages](http://pages.github.com/)) and attempting to learn enough CSS and [Jinja](http://jinja.pocoo.org/) to handle setting up my site using [Pelican](http://docs.getpelican.com/en/3.3.0/). I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.
+Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another ([GitHub Pages](http://pages.github.com/)) and attempting to learn enough CSS and [Jinja](http://jinja.pocoo.org/) to handle setting up my site using [Pelican](http://docs.getpelican.com/en/3.3.0/). I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.
 
 The great part about this whole process is that with Pelican, I can write my blog posts and pages in [Markdown](http://daringfireball.net/projects/markdown/) (about which I also knew little until last week, but it's *wonderfully easy to learn*.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.
 
@@ -16,7 +15,7 @@ There's a plethora of material online on Pelican and GitHub pages, but it is fai
 
 1. Create GitHub repo following the [GitHub Pages instructions](http://pages.github.com/) (the first step only!)
 
-*A note on GitHub Pages:* I believe your HTML files (particularly your index.html file) must be in the *main directory* of your git repo for this to work. This will be important later, specifically when you're organizing your site content on your local computer and when you're pushing your content to GitHub.
+*A note on GitHub Pages:* I believe your HTML files (particularly your index.html file) must be in the *main directory* of your git repo for this to work. This will be important later. More detail is given in the **Posting to GitHub** section.
 
 ##Pelican Setup
 
@@ -131,10 +130,7 @@ There should also be HTML files that serve as templates for specific types of pa
 If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but note that changes you make to the code in your browser will not be reflected in your source files.
 
 ##Generating Your Site
-Once you have markdown files in your `content` folder, you can run `pelican` on those files to generate HTML for your site using the theme you specify in your `pelicanconf.py` file:
-
-	:::bash
-	$ pelican content
+Once you have markdown files in your `content` folder, you can run `make devserver`, which does a number of things: it runs the `pelican` command on your `content` folder to generate HTML for your site using the theme you specify in your `pelicanconf.py` file, and serves your site locally at [http://localhost:8000](http://localhost:8000). `make devserver` will also automatically regenerate your site every time you save a change to a content, configuration, or theme file! Just refresh the page in your browser, and you should immediately see the changes.
 
 ##Posting to GitHub
 Recall that you need a repository on GitHub named *username.github.io* (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).
@@ -171,4 +167,26 @@ There seem to be two solutions for this problem:
 		# clean:
 		# 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 
-If you know of a more elegant solution to this problem, please [email](mailto:amy@mathamy.com) me!
+If you know of a more elegant solution to this problem, please email me!
+
+In the terminal, move to the directory you're choosing to house your git repo (either the `output` directory or your blog's main directory), and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called *username.github.io*), add all the files you want to commit, commit, and push changes to the remote repository.
+	
+	:::bash
+	$ git init
+	$ git remote add origin https://github.com/username/username.github.io.git
+	$ git add --all
+	$ git commit -m "commit message"
+	$ git push origin master
+
+If you're going with option #1, you'll also need to set up another repository for your content, configuration files, and theme.
+
+Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)
+
+##Custom Domain Setup
+If you have your own domain name that you'd like to use instead of *username.github.io*, you'll need to follow [these instructions](https://help.github.com/articles/setting-up-a-custom-domain-with-pages).
+
+##Fin
+
+Feel free to poke around my blog's [GitHub repo](https://github.com/amygdalama/amygdalama.github.io) (beware: there are unpublished draft posts in there). My configuration files in particular might be useful to you.
+
+If any of you Hacker Schoolers have trouble migrating your blog, I'd be happy to help!
