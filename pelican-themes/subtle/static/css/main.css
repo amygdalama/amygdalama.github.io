@@ -414,12 +414,12 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 	font-family: "Droid Sans", "sans-serif";
 	text-decoration: none;
 	font-weight: 900;
-	color: #333;
+	color: #000305;
 }
 
 .hentry h1 a {
 	text-decoration: none;
-	color: #333;
+	color: #000305;
 	font-weight: 900;
 }
 
