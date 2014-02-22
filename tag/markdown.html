@@ -183,46 +183,10 @@
 <p>Recall that you need a repository on GitHub named <em>username.github.io</em> (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).</p>
 <p>It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!</p>
 <p>However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the <code>output</code> folder (recall that Pelican by default saves the HTML it generates in this folder).</p>
-<p>There seem to be two solutions for this problem:</p>
-<ol>
-<li>Create two separate repositories - one inside the <code>output</code> directory where Pelican generates your HTML (this repo should have <em>username.github.io</em> on GitHub as a remote), and another in your blog's main directory with your source Markdown files (in <code>content</code>), theme, and configuration files (this repo should have a different remote on GitHub).</li>
-<li>
-<p>Create a single repository in your blog's main directory that houses everything (this repo should have <em>username.github.io</em> on GitHub as a remote), and edit Pelican's settings to create output in your blog's main directory rather than within the <code>output</code> subdirectory.</p>
-<p>To change Pelican's output settings, you'll need to edit these files:  </p>
-<ul>
-<li>
-<p><code>pelicanconf.py</code> - change your <code>OUTPUT</code> settings variable</p>
-<div class="highlight"><pre><span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span>
-</pre></div>
-
-
-</li>
-<li>
-<p><code>publishconf.py</code> - change your <code>DELETE_OUTPUT_DIRECTORY</code> variable</p>
-<div class="highlight"><pre><span class="n">DELETE_OUTPUT_DIRECTORY</span> <span class="o">=</span> <span class="bp">False</span>
-</pre></div>
-
-
-</li>
-<li>
-<p><code>Makefile</code> and <code>develop_server.sh</code>- change your <code>OUTPUTDIR</code></p>
-<div class="highlight"><pre><span class="nv">OUTPUTDIR</span><span class="o">=</span><span class="k">$(</span>BASEDIR<span class="k">)</span>
-</pre></div>
-
-
-</li>
-</ul>
-<p>I decided to go with this option, but <strong>DANGER!</strong> If you go with #2, <strong><em>do not use the command <code>make clean</code></em></strong>! It will delete everything in your blog's main directory! To make super sure this command never gets executed, you can comment out its definition in your <code>Makefile</code>:</p>
-<div class="highlight"><pre><span class="c"># clean:</span>
-<span class="c">#   [ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)</span>
-</pre></div>
-
-
-</li>
-</ol>
-<p>If you know of a more elegant solution to this problem, please email me!</p>
-<p>In the terminal, move to the directory you're choosing to house your git repo (either the <code>output</code> directory or your blog's main directory), and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called <em>username.github.io</em>), add all the files you want to commit, commit, and push changes to the remote repository.</p>
-<div class="highlight"><pre><span class="nv">$ </span>git init
+<p>The best solution I've come up with so far (and please email me if you know of a better solution!) is to create two separate repositories - one inside the <code>output</code> directory where Pelican generates your HTML (this repo should have <em>username.github.io</em> on GitHub as a remote), and another in your blog's main directory with your source Markdown files (in <code>content</code>), theme, and configuration files (this repo should have a different remote on GitHub).</p>
+<p>In the terminal, move to the <code>output</code> directory, and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called <em>username.github.io</em>), add all the files you want to commit, commit, and push changes to the remote repository.</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>output
+<span class="nv">$ </span>git init
 <span class="nv">$ </span>git remote add origin https://github.com/username/username.github.io.git
 <span class="nv">$ </span>git add --all
 <span class="nv">$ </span>git commit -m <span class="s2">&quot;commit message&quot;</span>
@@ -230,7 +194,7 @@
 </pre></div>
 
 
-<p>If you're going with option #1, you'll also need to set up another repository for your content, configuration files, and theme.</p>
+<p>You'll also need to set up another repository for your content, configuration files, and theme. I added a .gitignore to this repo to ignore the files in the output folder.</p>
 <p>Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)</p>
 <h2>Custom Domain Setup</h2>
 <p>If you have your own domain name that you'd like to use instead of <em>username.github.io</em>, you'll need to follow <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">these instructions</a>.</p>
