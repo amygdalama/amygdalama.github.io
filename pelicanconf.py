@@ -28,7 +28,6 @@ RELATIVE_URLS = True
 
 THEME = "pelican-themes/subtle"
 
-# This setting doesn't work
 DISPLAY_CATEGORIES_ON_MENU = False
 
-OUTPUT_PATH = '.'
+OUTPUT_PATH = 'output/'
