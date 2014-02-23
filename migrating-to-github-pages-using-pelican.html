@@ -49,12 +49,12 @@
 <p>In <a href="./category/projects.html">Projects</a> </p>
 
 
-</footer><!-- /.post-info -->      <p>Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (<a href="http://pages.github.com/">GitHub Pages</a>) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to inserting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
+</footer><!-- /.post-info -->      <p>Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (<a href="http://pages.github.com/">GitHub Pages</a>) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my HTML experience is limited to injecting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.</p>
 <p>The great part about this whole process is that with Pelican, I can write my blog posts and pages in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> (about which I also knew little until last week, but it's <em>wonderfully easy to learn</em>.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.</p>
 <p>There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others make this transition with less misery.</p>
 <h2>GitHub Pages Setup</h2>
 <ol>
-<li>Create GitHub repo following the <a href="http://pages.github.com/">GitHub Pages instructions</a> (the first step only!)</li>
+<li>Create a GitHub repo following the <a href="http://pages.github.com/">GitHub Pages instructions</a> (the first step only!)</li>
 </ol>
 <p><em>A note on GitHub Pages:</em> I believe your HTML files (particularly your index.html file) must be in the <em>main directory</em> of your git repo for this to work. This will be important later. More detail is given in the <strong>Posting to GitHub</strong> section.</p>
 <h2>Pelican Setup</h2>
@@ -209,7 +209,19 @@
 
 
 <p>Otherwise if you use the <code>publishconf.py</code> file as your settings file when running the <code>pelican</code> command, you'll delete your git repo!</p>
-<p>You'll also need to set up another repository for your source content, configuration files, and theme. I added a .gitignore to this repo to ignore the files in the output folder.</p>
+<p>Similarly, don't use the <code>make clean</code> command! If you poke around the <code>Makefile</code>, you'll see that <code>make clean</code> runs <code>rm -rf output</code> which will delete all files (including your git repo) in your output folder. </p>
+<p>If you accidentally delete the repo in your output folder, it's not a <em>huge</em> deal (I've done it like 5 times playing with different commands and settings). Just clone your remote <em>username.github.io</em> repo into a new, empty <code>output</code> folder, re-generate your site with any changes you've made since your last push to the remote, and then commit and push the changes to the remote:</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>blog
+<span class="nv">$ </span>git clone https://github.com/username/username.github.io.git output
+<span class="nv">$ </span>pelican content
+<span class="nv">$ </span><span class="nb">cd </span>output
+<span class="nv">$ </span>git add --all
+<span class="nv">$ </span>git commit -m <span class="s2">&quot;commit message&quot;</span>
+<span class="nv">$ </span>git push origin master
+</pre></div>
+
+
+<p>You'll also need to set up another repository for your source content, configuration files, and theme, which is annoying. I added a .gitignore to this repo to ignore the files in the output folder, but that isn't necessary.</p>
 <p>Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)</p>
 <h2>Custom Domain Setup</h2>
 <p>If you have your own domain name that you'd like to use instead of <em>username.github.io</em>, you'll need to follow <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">these instructions</a>.</p>
