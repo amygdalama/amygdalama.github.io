@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/tags/markdown.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-02-22T00:00:00-05:00</updated><entry><title>Migrating to GitHub Pages using Pelican</title><link href="http://amygdalama.github.io/migrating-to-github-pages-using-pelican.html" rel="alternate"></link><updated>2014-02-22T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-22:migrating-to-github-pages-using-pelican.html</id><summary type="html">&lt;p&gt;Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (&lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt;) and attempting to learn enough CSS and &lt;a href="http://jinja.pocoo.org/"&gt;Jinja&lt;/a&gt; to handle setting up my site using &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. I have no experience with CSS! And my HTML experience is limited to injecting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.&lt;/p&gt;
+&lt;p&gt;The great part about this whole process is that with Pelican, I can write my blog posts and pages in &lt;a href="http://daringfireball.net/projects/markdown/"&gt;Markdown&lt;/a&gt; (about which I also knew little until last week, but it's &lt;em&gt;wonderfully easy to learn&lt;/em&gt;.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.&lt;/p&gt;
+&lt;p&gt;There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others make this transition with less misery.&lt;/p&gt;
+&lt;h2&gt;GitHub Pages Setup&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a GitHub repo following the &lt;a href="http://pages.github.com/"&gt;GitHub Pages instructions&lt;/a&gt; (the first step only!)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;A note on GitHub Pages:&lt;/em&gt; I believe your HTML files (particularly your index.html file) must be in the &lt;em&gt;main directory&lt;/em&gt; of your git repo for this to work. This will be important later. More detail is given in the &lt;strong&gt;Posting to GitHub&lt;/strong&gt; section.&lt;/p&gt;
+&lt;h2&gt;Pelican Setup&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Install necessary &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican"&gt;packages&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Run Pelican &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog"&gt;quickstart&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred &lt;a href="http://docs.getpelican.com/en/3.1.1/settings.html"&gt;settings&lt;/a&gt;. As an example, here's how I answered (I put my responses on separate lines starting with &lt;code&gt;&amp;gt;&lt;/code&gt; to make this easier to read):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; pelican-quickstart
+&lt;span class="go"&gt;Where do you want to create your new web site? [.]  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="go"&gt;What will be the title of this web site?  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
+&lt;span class="go"&gt;Who will be the author of this web site?  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
+&lt;span class="go"&gt;What will be the default language of this web site? [en]  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; 
+&lt;span class="go"&gt;Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;What is your URL prefix? (see above example; no trailing slash) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; http://amygdalama.github.io  
+&lt;span class="go"&gt;Do you want to enable article pagination? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;How many articles per page do you want? [10] &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="go"&gt;Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;Do you want to upload your website using FTP? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using SSH? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using Dropbox? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using S3? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using Rackspace Cloud Files? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now if you type the &lt;code&gt;tree&lt;/code&gt; command within your blog's main directory, you should see:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;tree
+.
+├── Makefile
+├── content
+├── develop_server.sh
+├── fabfile.py
+├── output
+├── pelicanconf.py
+└── publishconf.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you don't have &lt;code&gt;tree&lt;/code&gt;, you should! It's neat. &lt;code&gt;brew install tree&lt;/code&gt;. If you're on OSX and don't have &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt;, you should! It's neat.&lt;/p&gt;
+&lt;p&gt;I'll briefly explain each of these files/directories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Makefile&lt;/code&gt; tells the command &lt;code&gt;make&lt;/code&gt; what to do. This file defines commands like &lt;code&gt;make devserver&lt;/code&gt;. More information on &lt;code&gt;make&lt;/code&gt; can be found &lt;a href="http://www.gnu.org/software/make/manual/make.html"&gt;here&lt;/a&gt;. I'll cover more on how to use this command for developing your site in the &lt;strong&gt;Generating Your Site&lt;/strong&gt; section.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;content&lt;/code&gt; is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within &lt;code&gt;content&lt;/code&gt;:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/pages
+&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/images
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this &lt;code&gt;pages&lt;/code&gt; directory and that images are found within the &lt;code&gt;images&lt;/code&gt; directory.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;develop_server.sh&lt;/code&gt; is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;fabfile.py&lt;/code&gt; is a configuration file for &lt;a href="http://docs.fabfile.org/en/1.8/"&gt;Fabric&lt;/a&gt; which allows you to generate your site using the &lt;code&gt;fab&lt;/code&gt; command. You'll need to &lt;code&gt;pip install fabric&lt;/code&gt; if you want to use it. Alternatively you can just use &lt;code&gt;make&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;output&lt;/code&gt; is, by default, where Pelican will store your HTML files when you run &lt;code&gt;pelican content&lt;/code&gt;. This can cause issues which I describe in the section &lt;strong&gt;Posting to GitHub&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pelicanconf.py&lt;/code&gt; houses your Pelican configuration &lt;a href="http://docs.getpelican.com/en/3.3.0/settings.html"&gt;settings&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;publishconf.py&lt;/code&gt; is like &lt;code&gt;pelicanconf.py&lt;/code&gt; in that it houses Pelican configuration settings, but is not intended to be used for local development. The reasoning behind having two separate files is described in &lt;a href="http://stackoverflow.com/a/20845195"&gt;this Stack Overflow answer&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Exporting Existing Content&lt;/h2&gt;
+&lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/"&gt;Export WordPress content to XML&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://docs.getpelican.com/en/3.1.1/importer.html"&gt;Imperfectly convert the XML to Markdown using Pelican&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Manually export your images from your WordPress Media Library (I know. This sucks.) Move these images to &lt;code&gt;content/images&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing).&lt;/li&gt;
+&lt;li&gt;Move your Markdown files to the &lt;code&gt;content&lt;/code&gt; directory within your website's main directory. Content intended to be static pages (i.e. About Me, Contact, etc) should go in the &lt;code&gt;content/pages&lt;/code&gt; directory. Articles/blog posts should go in the &lt;code&gt;content&lt;/code&gt; directory.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Pelican Themes&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Clone the available &lt;a href="https://github.com/getpelican/pelican-themes"&gt;Pelican Themes&lt;/a&gt; into your blog's main directory.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/getpelican/pelican-themes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Choose a theme you'd like to use. Pelican by default comes with the notmyidea and simple themes. Most other themes have a sample image in the pelican-themes repo to help you decide.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;After you've chosen a theme, set the THEME variable in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file to the absolute or relative path to the theme. For example, I'm using the subtle theme and added this line to my &lt;code&gt;pelicanconf.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;pelican-themes/subtle&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This method is better than using &lt;code&gt;pelican-themes&lt;/code&gt; as described &lt;a href="http://docs.getpelican.com/en/3.3.0/pelican-themes.html"&gt;here&lt;/a&gt;, because it ensures that the Pelican HTML output will reflect any changes you make to the theme (without having to re-install the theme by running the &lt;code&gt;pelican-themes&lt;/code&gt; command).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Customization&lt;/h2&gt;
+&lt;p&gt;All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the &lt;code&gt;main.css&lt;/code&gt; file found in your theme's directory. For example, I've made many edits to the file &lt;code&gt;pelican-themes/subtle/static/css/main.css&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. &lt;/p&gt;
+&lt;p&gt;There should also be HTML files that serve as templates for specific types of pages. For example, &lt;code&gt;article.html&lt;/code&gt; defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.&lt;/p&gt;
+&lt;p&gt;If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.&lt;/p&gt;
+&lt;h2&gt;Generating Your Site&lt;/h2&gt;
+&lt;p&gt;Once you have markdown files in your &lt;code&gt;content&lt;/code&gt; folder, navigate to your blog's main directory and run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
+&lt;span class="nv"&gt;$ &lt;/span&gt;make devserver
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;make devserver&lt;/code&gt; does a number of things: first it runs the &lt;code&gt;pelican&lt;/code&gt; command on your &lt;code&gt;content&lt;/code&gt; folder to generate HTML for your site using the theme you specify in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file, and serves your site locally at &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;. &lt;code&gt;make devserver&lt;/code&gt; will also automatically regenerate your site (i.e. run &lt;code&gt;pelican&lt;/code&gt; on &lt;code&gt;content&lt;/code&gt; every time you save a change to a content, configuration, or theme file! Just refresh the page in your browser, and you should immediately see the changes. If this doesn't work, it's probably due to the settings you have in your configuration files (&lt;code&gt;pelicanconf.py&lt;/code&gt;, &lt;code&gt;Makefile&lt;/code&gt;, and/or &lt;code&gt;develop_server.sh&lt;/code&gt;).&lt;/p&gt;
+&lt;h2&gt;Posting to GitHub&lt;/h2&gt;
+&lt;p&gt;Recall that you need a repository on GitHub named &lt;em&gt;username.github.io&lt;/em&gt; (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).&lt;/p&gt;
+&lt;p&gt;It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!&lt;/p&gt;
+&lt;p&gt;However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the &lt;code&gt;output&lt;/code&gt; folder (recall that Pelican by default saves the HTML it generates in this folder).&lt;/p&gt;
+&lt;p&gt;The best solution I've come up with so far (and please email me if you know of a better solution!) is to create two separate repositories - one inside the &lt;code&gt;output&lt;/code&gt; directory where Pelican generates your HTML (this repo should have &lt;em&gt;username.github.io&lt;/em&gt; on GitHub as a remote), and another in your blog's main directory with your source Markdown files (in &lt;code&gt;content&lt;/code&gt;), theme, and configuration files (this repo should have a different remote on GitHub).&lt;/p&gt;
+&lt;p&gt;In the terminal, move to the &lt;code&gt;output&lt;/code&gt; directory, and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called &lt;em&gt;username.github.io&lt;/em&gt;), add all the files you want to commit, commit, and push changes to the remote repository.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output
+&lt;span class="nv"&gt;$ &lt;/span&gt;git init
+&lt;span class="nv"&gt;$ &lt;/span&gt;git remote add origin https://github.com/username/username.github.io.git
+&lt;span class="nv"&gt;$ &lt;/span&gt;git add --all
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -m &lt;span class="s2"&gt;&amp;quot;commit message&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you use this method, you'll want to change the following setting to &lt;code&gt;False&lt;/code&gt; in your &lt;code&gt;publishconf.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;DELETE_OUTPUT_DIRECTORY&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Otherwise if you use the &lt;code&gt;publishconf.py&lt;/code&gt; file as your settings file when running the &lt;code&gt;pelican&lt;/code&gt; command, you'll delete your git repo!&lt;/p&gt;
+&lt;p&gt;Similarly, don't use the &lt;code&gt;make clean&lt;/code&gt; command! If you poke around the &lt;code&gt;Makefile&lt;/code&gt;, you'll see that &lt;code&gt;make clean&lt;/code&gt; runs &lt;code&gt;rm -rf output&lt;/code&gt; which will delete all files (including your git repo) in your output folder. &lt;/p&gt;
+&lt;p&gt;If you accidentally delete the repo in your output folder, it's not a &lt;em&gt;huge&lt;/em&gt; deal (I've done it like 5 times playing with different commands and settings). Just clone your remote &lt;em&gt;username.github.io&lt;/em&gt; repo into a new, empty &lt;code&gt;output&lt;/code&gt; folder, re-generate your site with any changes you've made since your last push to the remote, and then commit and push the changes to the remote:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
+&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/username/username.github.io.git output
+&lt;span class="nv"&gt;$ &lt;/span&gt;pelican content
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output
+&lt;span class="nv"&gt;$ &lt;/span&gt;git add --all
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -m &lt;span class="s2"&gt;&amp;quot;commit message&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You'll also need to set up another repository for your source content, configuration files, and theme, which is annoying. I added a .gitignore to this repo to ignore the files in the output folder, but that isn't necessary.&lt;/p&gt;
+&lt;p&gt;Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)&lt;/p&gt;
+&lt;h2&gt;Custom Domain Setup&lt;/h2&gt;
+&lt;p&gt;If you have your own domain name that you'd like to use instead of &lt;em&gt;username.github.io&lt;/em&gt;, you'll need to follow &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Fin&lt;/h2&gt;
+&lt;p&gt;Feel free to poke around my blog's &lt;a href="https://github.com/amygdalama/blog-source"&gt;GitHub&lt;/a&gt; &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;repos&lt;/a&gt; (beware: there are unpublished draft posts in there). My configuration files in particular might be useful to you.&lt;/p&gt;
+&lt;p&gt;If any of you Hacker Schoolers have trouble migrating your blog, I'd be happy to help!&lt;/p&gt;</summary><category term="pelican"></category><category term="blogging"></category><category term="wordpress"></category><category term="github-pages"></category><category term="markdown"></category></entry></feed>

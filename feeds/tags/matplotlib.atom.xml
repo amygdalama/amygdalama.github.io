@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/tags/matplotlib.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-02-14T15:52:00-05:00</updated><entry><title>ipython and pandas are whoa!</title><link href="http://amygdalama.github.io/ipython-and-pandas-are-whoa.html" rel="alternate"></link><updated>2014-02-14T15:52:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-14:ipython-and-pandas-are-whoa.html</id><summary type="html">&lt;p&gt;In my first five months of using Python, I would create .py files and
+then execute them in the terminal, like the loyal follower of &lt;a href="http://learnpythonthehardway.org/book/"&gt;LPTHW&lt;/a&gt;
+that I am. While it's certainly necessary to be able to write Python
+scripts and execute them from the terminal, I've learned that this
+workflow isn't the best way to explore data in Python.&lt;/p&gt;
+&lt;p&gt;I initially converted to Python from R, and since have missed the
+interactiveness of working within RStudio (you don't have to re-run your
+entire code every time you make a change and want to view the results)
+and how R allows you to so quickly get to your data with data frames
+built straight from text files. Enter: &lt;a href="http://ipython.org/"&gt;ipython&lt;/a&gt; and &lt;a href="http://pandas.pydata.org/"&gt;pandas&lt;/a&gt;. (Go
+to their respective sites for installation instructions.)&lt;/p&gt;
+&lt;p&gt;Julia Evans has a fantastic &lt;a href="https://github.com/jvns/pandas-cookbook"&gt;tutorial&lt;/a&gt; on how to use pandas in an
+ipython notebook. Here, I'd like to explore the differences between
+doing data analysis using ipython notebook and pandas versus writing .py
+scripts using mainly standard Python packages and executing via the
+terminal.&lt;/p&gt;
+&lt;p&gt;Let's use the classic iris dataset for some simple analysis. First we
+need to do some setup. Create a directory for our project (mine is
+stored within my Projects directory that I keep in my Home directory.)
+In the terminal:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir ~/Projects/ipython-pandas-whoa  
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then create a Python script and open it with a text editor (I use
+Sublime Text 2, which I've &lt;a href="http://www.sublimetext.com/docs/2/osx_command_line.html"&gt;configured&lt;/a&gt; to open files with the command
+&lt;code&gt;subl&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;touch barbaric-script.py  
+&lt;span class="nv"&gt;$ &lt;/span&gt;subl barbaric-script.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This should open up a blank .py file in Sublime. If you don't have
+&lt;code&gt;subl&lt;/code&gt; set up, you can simply open up the blank barbaric-script.py file
+we created with the &lt;code&gt;touch&lt;/code&gt; command in your text editor of choice.&lt;/p&gt;
+&lt;p&gt;In the barbaric-script.py file, let's import the necessary packages.
+We'll be using a couple standard python packages plus matplotlib.pyplot.
+If you don't have matplotlib installed, you can find installation
+instructions &lt;a href="http://matplotlib.org/users/installing.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pprint&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;urllib2&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To get the iris data, we'll use Python's built-in urllib2 and csv
+packages and then do some basic formatting. Let's process the dataset as
+a list of dictionaries.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Open data from URL as a file-like object  &lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;urllib2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Create an empty list to store our data  &lt;/span&gt;
+&lt;span class="n"&gt;parsed_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Read file  &lt;/span&gt;
+&lt;span class="n"&gt;raw_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Define our headers since the file doesn&amp;#39;t contain explicit headers  &lt;/span&gt;
+&lt;span class="c"&gt;# I found these headers from looking at the documentation at  &lt;/span&gt;
+&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  &lt;/span&gt;
+&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;  
+    &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Iterate through the rows in the file, and create a dictionary for each row  &lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;raw_data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="c"&gt;# Dictionaries should have headers -&amp;gt; row  &lt;/span&gt;
+&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="c"&gt;# Delete the last row of parsed_data because it&amp;#39;s blank  &lt;/span&gt;
+&lt;span class="n"&gt;parsed_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Let&amp;#39;s see what parsed_data looks like  &lt;/span&gt;
+&lt;span class="n"&gt;pprint&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pprint&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;What you should see when you execute barbaric-script.py:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;python barbaric-script.py  
+&lt;span class="o"&gt;[{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.4&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;5.1&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.5&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,  
+&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.4&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;4.9&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.0&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,  
+&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.3&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;4.7&amp;#39;&lt;/span&gt;,  
+&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.2&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Great! So we have our data formatted nicely. We have a list with
+elements corresponding to each row in the file, and the elements in the
+list are dictionaries. The keys in the dictionaries are the column
+headers, and the values are the values associated with the respective
+column header for that particular row. For example, the first
+row/observation (printed as the first dictionary out of the three listed
+above) is in the class &lt;code&gt;Iris-setosa&lt;/code&gt;, has a Petal Length of &lt;code&gt;1.4&lt;/code&gt;, a Petal
+Width of &lt;code&gt;0.2&lt;/code&gt;, a Sepal Length of &lt;code&gt;5.1&lt;/code&gt;, and a Sepal Width of &lt;code&gt;3.5&lt;/code&gt;. Let's do
+some plotting to explore our data. We can make a histogram! Add the
+following lines to your barbaric-script.py file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Let&amp;#39;s create a list of the Sepal Lengths  &lt;/span&gt;
+&lt;span class="c"&gt;# I&amp;#39;m calling float on the entries because otherwise they&amp;#39;re stored as strings  &lt;/span&gt;
+&lt;span class="n"&gt;sepal_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;  
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sepal_lengths&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;#348ABD&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;edgecolor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;none&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's try executing our script again.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;python barbaric-script.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A histogram should pop up in a separate window:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /&gt;&lt;/p&gt;
+&lt;p&gt;That's a lot of code (18 lines)! And we didn't even do anything
+complicated - just parsed our data and plotted a histogram. Also, notice
+that each time you tried to fix a bug or add a feature (like plotting
+the histogram), you had to execute the entire script again, rather than
+just the piece where you fixed the bug. That doesn't matter too much
+since our data is fairly small and the script doesn't require much time
+to execute, but it would be pretty annoying if our script took longer to
+run.&lt;/p&gt;
+&lt;p&gt;Now let's try doing the same thing, but using pandas in an ipython
+notebook. Use the terminal to run ipython notebook:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/ipython-pandas-whoa  
+&lt;span class="nv"&gt;$ &lt;/span&gt;ipython notebook
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This will set up a local server on your computer, which will serve the
+ipython notebooks that are in your working directory (right now you
+don't have any) to http://127.0.0.1:8888. This should automatically open
+up in your browser.&lt;/p&gt;
+&lt;p&gt;In the tab that opens in your browser, click "New Notebook". A new
+ipython notebook will open up in another tab. A new cell will also open
+up. Cells are places where you can write and execute code. This is what
+a cell looks like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;To allow matplotlib to post plots within your notebook, rather than
+opening up a separate window (like when we executed our .py script),
+type the following into the cell:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then to execute the cell, press shift+enter (which will execute the cell
+your cursor is currently in and then automatically either move to the
+next cell, if one exists, or open up a new cell). Once you press
+shift+enter, your notebook should look like:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;In the next cell, import the packages we'll be using, namely
+matplotlib.pyplot and pandas:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Press shift+enter again to execute the code (I'm going to stop telling
+you to do this, but just assume that after each block of code you should
+press shift+enter. If you get confused about what your notebook should
+look like, look at my &lt;a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb"&gt;example notebook&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;To process the iris data, we can use the built-in panda read_csv
+parser. We can get to a easy-to-use data frame within three lines of
+code!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Define our headers since the url doesn&amp;#39;t contain explicit headers  &lt;/span&gt;
+&lt;span class="c"&gt;# I found these headers from looking at the documentation at  &lt;/span&gt;
+&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  &lt;/span&gt;
+&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
+&lt;span class="n"&gt;iris&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's see what the data looks like.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;iris&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You should see a beautifully formatted table! This is a pandas data
+frame, which is similar to a data frame in R.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Now let's plot a histogram for the Sepal Length column.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# I use two brackets around &amp;#39;Sepal Length&amp;#39; to force pandas to make this  &lt;/span&gt;
+&lt;span class="c"&gt;# a data frame rather than just a series, which is like a numpy array.  &lt;/span&gt;
+&lt;span class="c"&gt;# The brackets here aren&amp;#39;t necessary, but makes printing sepal_lengths  &lt;/span&gt;
+&lt;span class="c"&gt;# prettier and makes it easier for us to combine sepal_lengths with other  &lt;/span&gt;
+&lt;span class="c"&gt;# data.  &lt;/span&gt;
+&lt;span class="n"&gt;sepal_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;iris&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+
+&lt;span class="c"&gt;# Make the plot pretty!  &lt;/span&gt;
+&lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_option&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;display.mpl_style&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;sepal_lengths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/quite_elegant.png" /&gt;&lt;/p&gt;
+&lt;p&gt;By this point it should be fairly obvious that ipython and pandas are
+both awesome for data analysis! They make Python a much more serious
+contender as a tool for data analysis by giving you quick and easy
+access to your data. In this simple example, the barbaric-script.py was
+18 lines of code (disregarding comments, etc) and comparatively the
+ipython notebook with pandas was only 10!&lt;/p&gt;
+&lt;p&gt;For further reading, I definitely encourage you to check out Julia's
+&lt;a href="https://github.com/jvns/pandas-cookbook"&gt;pandas cookbook&lt;/a&gt; (presented via ipython notebooks), on which
+incidentally I'll be collaborating with her next week (eeeep)!&lt;/p&gt;
+&lt;p&gt;My code for this post can be found on my &lt;a href="https://github.com/amygdalama/ipython-pandas-whoa"&gt;GitHub&lt;/a&gt;, and the ipython
+notebook can be easily viewed on &lt;a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb"&gt;NBViewer&lt;/a&gt;.&lt;/p&gt;</summary><category term="data analysis"></category><category term="hacker school"></category><category term="ipython"></category><category term="matplotlib"></category><category term="pandas"></category><category term="python"></category></entry><entry><title>wget sanity part 2: I'm an idiot and decided to switch to a brewed python (and reinstall the scientific stack) at 10pm</title><link href="http://amygdalama.github.io/wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html" rel="alternate"></link><updated>2013-12-27T01:08:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2013-12-27:wget-sanity-part-2-im-an-idiot-and-decided-to-switch-to-a-brewed-python-and-reinstall-the-scientific-stack-at-10pm.html</id><summary type="html">&lt;p&gt;For the past four months I've been using Anaconda's Python distribution
+on my Macbook, which has been great (except for &lt;a href="http://mathamy.com/2013/12/02/homebrew-path-pythonpath/"&gt;Part 1&lt;/a&gt; of what has
+now become a series), until I wanted to play with virtualenv. Apparently
+Anaconda does not work well with virtualenv and suggests using its own
+conda virtual environments and I don't take well to The Man telling me I
+can't do something I want to do. So of course my reaction was to
+&lt;code&gt;rm -rf /anaconda&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now I'm building my Python stack back from the ground up, and I've
+decided to try out a &lt;a href="https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python"&gt;brewed&lt;/a&gt; Python. I've been following &lt;a href="http://www.lowindata.com/2013/installing-scientific-python-on-mac-os-x/"&gt;these&lt;/a&gt;
+very elegant instructions to set up numpy, scipy, etc, on OSX, and it
+worked flawlessly! Until matplotlib! I had all of the dependencies
+(freetype, which I installed via Homebrew, zlib, and libpng), but I kept
+getting thrown this error:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fatal error: &lt;span class="s1"&gt;&amp;#39;freetype/config/ftheader.h&amp;#39;&lt;/span&gt; file not found
+
+&lt;span class="c"&gt;#include &amp;lt;freetype/config/ftheader.h&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I finally found &lt;a href="http://stackoverflow.com/questions/1477144/compile-matplotlib-for-python-on-snow-leopard"&gt;this&lt;/a&gt; StackOverflow discussion with the suggestion to
+type this into the terminal (for brewed python):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ln -s /usr/local/include/freetype2/ /usr/include/freetype
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And then &lt;code&gt;sudo pip install matplotlib&lt;/code&gt; worked! I don't rigorously
+understand this magic, but based on my research this creates a symbolic
+link from &lt;code&gt;/usr/include/freetype&lt;/code&gt; to &lt;code&gt;/usr/local/include/freetype2&lt;/code&gt;
+(the brewed freetype). I'm guessing that matplotlib by default was
+looking for freetype in &lt;code&gt;/usr/include/freetype&lt;/code&gt;, but it wasn't there
+since Homebrew installs everything in &lt;code&gt;/usr/local&lt;/code&gt;. So, creating the
+symbolic link allowed matplotlib to find freetype. In moments like these
+I'm like 'Yer a wizard, Harry.'&lt;/p&gt;</summary><category term="homebrew"></category><category term="matplotlib"></category><category term="osx"></category><category term="python"></category></entry><entry><title>Using PyMC to Analyze A/B Testing Data</title><link href="http://amygdalama.github.io/using-pymc-to-analyze-ab-testing-data.html" rel="alternate"></link><updated>2013-12-24T22:23:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2013-12-24:using-pymc-to-analyze-ab-testing-data.html</id><summary type="html">&lt;p&gt;In Chapter 2 of &lt;a href="https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers"&gt;Bayesian Methods for Hackers&lt;/a&gt;, there's an example of
+Bayesian analysis of an A/B test using simulated data. I decided to play
+around with this analysis method with real A/B landing page test data
+from one of my clients.&lt;/p&gt;
+&lt;p&gt;This method uses PyMC to estimate the real conversion rate for each page
+and Matplotlib to visually interpret the results.&lt;/p&gt;
+&lt;p&gt;First, I import the relevant packages:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pymc&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pm&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;My client ran a landing page test with the following results:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;clicks_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1135&lt;/span&gt;  
+&lt;span class="n"&gt;orders_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;  
+&lt;span class="n"&gt;clicks_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1149&lt;/span&gt;  
+&lt;span class="n"&gt;orders_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;17&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The observed conversion rates are 44% and 1.48% for pages A and B,
+respectively, but I'd like to be confident that the true conversion rate
+of page B is higher than page A.&lt;/p&gt;
+&lt;p&gt;To format this data for the analysis, I create a numpy array for each
+page with 1s representing orders and 0s representing clicks without an
+order:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;r_&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;clicks_A&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;orders_A&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;orders_A&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
+&lt;span class="n"&gt;data_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;r_&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;clicks_B&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;orders_B&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;orders_B&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next I assign distributions to my prior beliefs of &lt;code&gt;p_A&lt;/code&gt; and &lt;code&gt;p_B&lt;/code&gt;, the unknown, true conversion rates. I
+assume, for simplicity, that the distributions are uniform (i.e. I have
+no prior knowledge of what &lt;code&gt;p_A&lt;/code&gt; and 'p_B' are).
+[Note: the rest of the code in blog post is taken from [the book].&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;p_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Uniform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;p_A&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;p_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Uniform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;p_B&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Since I want to estimate the difference in true conversion rates, I need
+to define a variable &lt;code&gt;delta&lt;/code&gt;, which equals &lt;code&gt;p_B - p_A&lt;/code&gt;. Since, if I know
+both &lt;code&gt;p_A&lt;/code&gt; and &lt;code&gt;p_B&lt;/code&gt;, I can calculate &lt;code&gt;delta&lt;/code&gt;, it's a deterministic
+variable. In PyMC, deterministic variables are created using a function
+with a &lt;code&gt;pymc.deterministic&lt;/code&gt; wrapper:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nd"&gt;@pm.deterministic&lt;/span&gt;  
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;delta&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;p_A&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next I add the observed data to PyMC variables and run an inference
+algorithm (I don't understand what this code is actually doing yet - an
+explanation is coming up in Chapter 3):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;obs_A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Bernoulli&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;obs_A&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;observed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;obs_B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Bernoulli&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;obs_B&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data_B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;observed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;mcmc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MCMC&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;p_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delta&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;obs_A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;obs_B&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;  
+&lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then I plot the posterior distributions for the three unknowns:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;p_A_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;p_A&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[:]&lt;/span&gt;  
+&lt;span class="n"&gt;p_B_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;p_B&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[:]&lt;/span&gt;  
+&lt;span class="n"&gt;delta_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mcmc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;delta&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[:]&lt;/span&gt;
+
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;311&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mo"&gt;035&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_A_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;histtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stepfilled&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;25&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.85&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+&lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;posterior of $p_A$&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#A60628&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;normed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+&lt;span class="n"&gt;edgecolor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;none&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;legend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;upper right&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Posterior distributions of $p_A$, $p_B$, and delta&lt;/span&gt;
+&lt;span class="n"&gt;unknowns&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;)&lt;/span&gt;
+
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;312&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mo"&gt;035&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_B_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;histtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stepfilled&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;25&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.85&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;posterior of $p_B$&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#467821&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;normed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;edgecolor&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;none&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;legend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;upper right&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;313&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;120&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;histtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stepfilled&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.85&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;posterior of $p_B$ - $p_A$&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#7A68A6&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;normed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+        &lt;span class="n"&gt;edgecolor&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;none&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;legend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;upper right&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vlines&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;120&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;black&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/pymc_posteriors.png" /&gt;&lt;/p&gt;
+&lt;p&gt;I can also compute the probability that the true conversion rate of page
+A, &lt;code&gt;p_A&lt;/code&gt;, is better than the true conversion rate of page
+B, &lt;code&gt;p_A&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Probability site A is BETTER than site B: &lt;/span&gt;&lt;span class="si"&gt;%.3f&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;   
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_samples&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Probability site A is WORSE than site B: &lt;/span&gt;&lt;span class="si"&gt;%.3f&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;   
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta_samples&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This should print out:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Probability page A is BETTER than page B: 0.006  
+Probability page A is WORSE than page B: 0.994
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It's very safe to say (as long as our data was collected properly) that
+page B is better than page A, and these results come very intuitively
+from looking at the graphs.&lt;/p&gt;
+&lt;p&gt;The full code can be found on my &lt;a href="https://github.com/amygdalama/tutorials/blob/master/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/MySourceFiles/Chapter2/ab-real-data.py"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</summary><category term="ab testing"></category><category term="matplotlib"></category><category term="numpy"></category><category term="pymc"></category><category term="python"></category></entry></feed>
