@@ -45,4 +45,6 @@ git push origin master
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;And that's it! Joyful automation!&lt;/p&gt;</summary><category term="github pages"></category><category term="pelican"></category><category term="git"></category><category term="blogging"></category></entry></feed>
+&lt;p&gt;And that's it! Joyful automation!&lt;/p&gt;
+&lt;h2&gt;Edit&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;2014-03-14&lt;/em&gt;: Hacker Schooler Matthew Avant has a &lt;a href="http://www.mavant.com/4.html"&gt;superior&lt;/a&gt; method using a pre-push hook (rather than a post-commit hook). I'm using his method now :)&lt;/p&gt;</summary><category term="github pages"></category><category term="pelican"></category><category term="git"></category><category term="blogging"></category></entry></feed>

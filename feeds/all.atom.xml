@@ -45,7 +45,9 @@ git push origin master
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;And that's it! Joyful automation!&lt;/p&gt;</summary><category term="github pages"></category><category term="pelican"></category><category term="git"></category><category term="blogging"></category></entry><entry><title>How Should I Learn Programming?</title><link href="http://amygdalama.github.io/how-should-i-learn-programming.html" rel="alternate"></link><updated>2014-02-23T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-23:how-should-i-learn-programming.html</id><summary type="html">&lt;p&gt;I rarely hear the question &lt;em&gt;"How should I learn programming?"&lt;/em&gt; from individuals who are just beginning to write code. Instead I hear way more specific variants like:&lt;/p&gt;
+&lt;p&gt;And that's it! Joyful automation!&lt;/p&gt;
+&lt;h2&gt;Edit&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;2014-03-14&lt;/em&gt;: Hacker Schooler Matthew Avant has a &lt;a href="http://www.mavant.com/4.html"&gt;superior&lt;/a&gt; method using a pre-push hook (rather than a post-commit hook). I'm using his method now :)&lt;/p&gt;</summary><category term="github pages"></category><category term="pelican"></category><category term="git"></category><category term="blogging"></category></entry><entry><title>How Should I Learn Programming?</title><link href="http://amygdalama.github.io/how-should-i-learn-programming.html" rel="alternate"></link><updated>2014-02-23T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-23:how-should-i-learn-programming.html</id><summary type="html">&lt;p&gt;I rarely hear the question &lt;em&gt;"How should I learn programming?"&lt;/em&gt; from individuals who are just beginning to write code. Instead I hear way more specific variants like:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;What are the best sites for learning programming?&lt;/li&gt;
 &lt;li&gt;What's a good free online course...?&lt;/li&gt;
