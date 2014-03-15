@@ -117,7 +117,7 @@ NameError: name &#39;sys&#39; is not defined
     1. call the <code>__import__</code> function on <code>x</code>: <code>__builtins__.__import__('x')</code><br />
     2. assign the name <code>x</code> to the module returned by <code>__import__</code>  </p>
 <p>And <code>import sys</code> is like shorthand for the command:</p>
-<div class="highlight"><pre>&gt;&gt;&gt; sys = __builtins__.__import(&#39;sys&#39;)
+<div class="highlight"><pre>&gt;&gt;&gt; sys = __builtins__.__import__(&#39;sys&#39;)
 </pre></div>
 
 

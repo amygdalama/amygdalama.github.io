@@ -70,7 +70,7 @@ NameError: name &amp;#39;sys&amp;#39; is not defined
     1. call the &lt;code&gt;__import__&lt;/code&gt; function on &lt;code&gt;x&lt;/code&gt;: &lt;code&gt;__builtins__.__import__('x')&lt;/code&gt;&lt;br /&gt;
     2. assign the name &lt;code&gt;x&lt;/code&gt; to the module returned by &lt;code&gt;__import__&lt;/code&gt;  &lt;/p&gt;
 &lt;p&gt;And &lt;code&gt;import sys&lt;/code&gt; is like shorthand for the command:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; sys = __builtins__.__import(&amp;#39;sys&amp;#39;)
+&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; sys = __builtins__.__import__(&amp;#39;sys&amp;#39;)
 &lt;/pre&gt;&lt;/div&gt;
 
 
