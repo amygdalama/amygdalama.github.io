@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Biography</title>
+        <title>Projects</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -33,12 +33,16 @@
         </header><!-- /#banner -->
         
 <section id="content" class="body">    
-    <h1 class="page-title">Biography</h1>
-    <p><img style="float:left" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/me_white_bg.jpg" /></p>
-<h1>Hi, I'm Amy.</h1>
-<p>I'm in the W'14 batch at <a href="https://www.hackerschool.com/">Hacker School</a>, where I've worked on projects like <a href="https://github.com/amygdalama/furrier-transform">creating sounds from spectrograms</a> (huge failure) and <a href="https://github.com/amygdalama/nagini">replacing Python builtins and keywords with Harry Potter spells</a> (huge success).</p>
-<p>My background is in Theoretical Math. After college I optimized paid search ads for Adam &amp; Eve, so I basically used to sell dildos on the internet (though my employer was <a href="http://www.adlucent.com/">Adlucent</a>, an agency in Austin, TX). I then used machine learning via <a href="http://scikit-learn.org/stable/">scikit-learn</a> to automate tasks like classification of search queries into product categories.</p>
-<p>I will nerd out with you about sex toys, programming, science fiction, feminism, comics, Dune (I &lt;3 Dune. Dune, Dune, Dune.), math, board games, etc. I also think it's fabulous to drink champagne in bed.</p>
+    <h1 class="page-title">Projects</h1>
+    <h2>Nagini: Replacing <code>import</code> with <code>accio</code></h2>
+<p>Replacing Python builtin functions and statements with Harry Potter spells. The internet <a href="https://news.ycombinator.com/item?id=7402620">loved</a> this one.</p>
+<p>I first started with messing around with Python's <code>__builtin__</code> module -- seeing what I could shadow and delete. Then, I decided to go after the <code>import</code> statement, which lead me to cloning CPython source code and fiddling around with the <code>Grammar</code> file.</p>
+<p>I <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">blogged</a> about the project, and my code is on <a href="https://github.com/amygdalama/nagini">GitHub</a>.</p>
+<p>This project was also the inspiration for my first <a href="/pages/talks">talk</a>.</p>
+<h2>Furrier Transform: Converting a picture of my cat to sound</h2>
+<p>This was a huge failure. </p>
+<p>A signal (in this case, a sound) can be represented visually as a spectrogram, an image where the x-axis corresponds to time, the y-axis corresponds to frequency, and the pixels in the image are colored by their amplitude. So, theoretically, any image could be assumed to be a spectrogram of a sound. In practice, extracting the original signal from a spectrogram is quite difficult, and I did not manage to succeed.</p>
+<p>My code is on <a href="https://github.com/amygdalama/furrier-transform">GitHub</a>, although this project is potentially indefinitely incomplete.</p>
 </section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
