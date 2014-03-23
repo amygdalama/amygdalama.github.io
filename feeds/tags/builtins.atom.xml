@@ -119,5 +119,5 @@
 
 &lt;p&gt;Yes! My hypothesis was correct. Okay. So now I get why using &lt;code&gt;__builtin__&lt;/code&gt; is better than &lt;code&gt;__builtins__&lt;/code&gt;: &lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The type, and thus behavior, of &lt;code&gt;__builtins__&lt;/code&gt; changes based on the context of where it's being executed, while the type and behavior of &lt;code&gt;__builtin__&lt;/code&gt; is constant. Rad.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Thanks, stranger, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.&lt;/p&gt;
+&lt;p&gt;Thanks, stranger who &lt;a href="https://github.com/amygdalama/nagini/issues/1"&gt;suggested&lt;/a&gt; I look into this, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.&lt;/p&gt;
 &lt;p&gt;The code for this blog post is on &lt;a href="https://github.com/amygdalama/builtins"&gt;GitHub&lt;/a&gt;, of course.&lt;/p&gt;</summary><category term="python"></category><category term="builtins"></category></entry></feed>
