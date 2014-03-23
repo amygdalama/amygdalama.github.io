@@ -36,7 +36,164 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="./import-accio-bootstrapping-python-grammar.html">Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</a></h1> 
+                    <h1 class="entry-title"><a href="./whats-the-deal-with-builtins-vs-builtin.html">What's the deal with __builtins__ vs __builtin__</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-03-23T00:00:00">
+                Sun 23 March 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>Seriously, what's the difference? When you first fire up the Python interpreter, <code>__builtins__</code> is in your namespace for free:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;__builtins__&#39;, &#39;__name__&#39;, &#39;__doc__&#39;, &#39;__package__&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">__builtins__</span>
+<span class="go">&lt;module &#39;__builtin__&#39; (built-in)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s">&#39;__builtin__&#39;</span><span class="p">]</span>
+<span class="go">&lt;module &#39;__builtin__&#39; (built-in)&gt;</span>
+</pre></div>
+
+
+<p>But it appears to be the <code>__builtin__</code> module! If you:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">__builtin__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">__builtin__</span> <span class="ow">is</span> <span class="n">__builtins__</span>
+<span class="bp">True</span>
+</pre></div>
+
+
+<p>Hrm. So they are both names that point to the same object, the module <code>__builtin__</code>. Weird. Why does Python do this? Do they always behave the same?</p>
+<p>I read on <a href="http://stackoverflow.com/questions/11181519/python-whats-the-difference-between-builtin-and-builtins">StackOverflow</a> that</p>
+<blockquote>
+<p>By default, when in the <code>__main__</code> module, <code>__builtins__</code> is the built-in module <code>__builtin__</code> (note: no 's'); when in any other module, <code>__builtins__</code> is an alias for the dictionary of the <code>__builtin__</code> module itself.</p>
+</blockquote>
+<p>What. What does that mean. </p>
+<p>This talk of the "<code>__main__</code> module" and "any other module" reminds me of a sequence of words that I've known for quite a while, but haven't completely grokked:</p>
+<blockquote>
+<p>We can access the name of the current module with the builtin variable <code>__name__</code>. </p>
+</blockquote>
+<p>You're probably familiar with the related canonical statement:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+
+<p>But what does "current module" mean? What does the <code>__name__</code> variable look like when it does not equal <code>__main__</code>?</p>
+<p>I happen to know, because I've obsessively read about the <code>import</code> statement, another sequence of words: </p>
+<blockquote>
+<p>Any code executed as a result of an <code>import</code> isn't executed in the <code>__main__</code> module. </p>
+</blockquote>
+<p>Let's use these bits of knowledge to observe the behavior of <code>__builtins__</code> both inside and outside of the <code>__main__</code> module. We can also check out the <code>__name__</code> variable while we're at it.</p>
+<p>First, let's make a script, <code>a.py</code>, which will allow us to observe the behavior of <code>__builtin__</code>, <code>__builtins__</code>, and <code>__name__</code>.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">__builtin__</span>
+
+<span class="k">print</span> <span class="s">&quot;In a&quot;</span>
+<span class="k">print</span> <span class="s">&quot;__name__ is:&quot;</span><span class="p">,</span> <span class="n">__name__</span>
+<span class="k">print</span> <span class="s">&quot;__builtin__ is __builtins__:&quot;</span><span class="p">,</span> <span class="n">__builtin__</span> <span class="ow">is</span> <span class="n">__builtins__</span>
+<span class="k">print</span> <span class="s">&quot;type(__builtin__):&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">__builtin__</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;type(__builtins__):&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Let's see what happens when we execute <code>a.py</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> python a.py
+<span class="go">In a</span>
+<span class="go">__name__ is  __main__</span>
+<span class="go">__builtin__ is __builtins__ True</span>
+<span class="go">type(__builtin__) &lt;type &#39;module&#39;&gt;</span>
+<span class="go">type(__builtins__) &lt;type &#39;module&#39;&gt;</span>
+</pre></div>
+
+
+<p>Okay. So we're in the <code>__main__</code> module, and in here <code>__builtin__</code> is pointing to the same module object as <code>__builtins__</code>. </p>
+<p>What happens if we <code>import a</code> in another script? The code in <code>a</code> will execute, but it won't be executed within the <code>__main__</code> module. Instead, it'll be executed within the <code>a</code> module. Let's write another script, <code>b.py</code>, to find out what happens to <code>__builtins__</code> outside of <code>__main__</code>:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">__builtin__</span>
+
+<span class="k">print</span> <span class="s">&quot;In b, before importing a&quot;</span>
+
+<span class="c"># the output from this should be the same as when we ran</span>
+<span class="c"># $ python a.py</span>
+<span class="k">print</span> <span class="s">&quot;__name__ is:&quot;</span><span class="p">,</span> <span class="n">__name__</span>
+<span class="k">print</span> <span class="s">&quot;__builtin__ is __builtins__:&quot;</span><span class="p">,</span> <span class="n">__builtin__</span> <span class="ow">is</span> <span class="n">__builtins__</span>
+<span class="k">print</span> <span class="s">&quot;type(__builtin__):&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">__builtin__</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;type(__builtins__):&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<span class="kn">import</span> <span class="nn">a</span>
+<span class="c"># code from a will execute here</span>
+</pre></div>
+
+
+<p>Let's see what happens when we run <code>b.py</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> python b.py
+<span class="go">In b, before importing a</span>
+<span class="go">__name__ is: __main__</span>
+<span class="go">__builtin__ is __builtins__: True</span>
+<span class="go">type(__builtin__): &lt;type &#39;module&#39;&gt;</span>
+<span class="go">type(__builtins__): &lt;type &#39;module&#39;&gt;</span>
+
+
+<span class="go">In a</span>
+<span class="go">__name__ is: a</span>
+<span class="go">__builtin__ is __builtins__: False</span>
+<span class="go">type(__builtin__): &lt;type &#39;module&#39;&gt;</span>
+<span class="go">type(__builtins__): &lt;type &#39;dict&#39;&gt;</span>
+</pre></div>
+
+
+<p>Aha. So when we're outside the context of the <code>__main__</code> module, <code>__name__</code> is just equal to the name of the module where code is currently being executed. That seems logical. And outside of <code>__main__</code>, <code>__builtins__</code> is a dict, rather than a module. </p>
+<p>We were told earlier that, outside the context of <code>__main__</code>, <em>"<code>__builtins__</code> is an alias for the dictionary of the <code>__builtin__</code> module"</em>. I think that means that <code>__builtins__ is __builtin__.__dict__</code>. Let's see if my hypothesis is true, by adding another line to the bottom of our <code>a.py</code> file:</p>
+<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;__builtins__ is __builtin__.__dict__&quot;</span><span class="p">,</span> <span class="n">__builtins__</span> <span class="ow">is</span> <span class="n">__builtin__</span><span class="o">.</span><span class="n">__dict__</span>
+</pre></div>
+
+
+<p>Running <code>b.py</code> again, we get:</p>
+<div class="highlight"><pre><span class="gp">$</span> python b.py
+<span class="go">In b, before importing a</span>
+<span class="go">__name__ is: __main__</span>
+<span class="go">__builtin__ is __builtins__: True</span>
+<span class="go">type(__builtin__): &lt;type &#39;module&#39;&gt;</span>
+<span class="go">type(__builtins__): &lt;type &#39;module&#39;&gt;</span>
+
+
+<span class="go">In a</span>
+<span class="go">__name__ is: a</span>
+<span class="go">__builtin__ is __builtins__: False</span>
+<span class="go">type(__builtin__): &lt;type &#39;module&#39;&gt;</span>
+<span class="go">type(__builtins__): &lt;type &#39;dict&#39;&gt;</span>
+<span class="go">__builtins__ is __builtin__.__dict__ True</span>
+</pre></div>
+
+
+<p>Yes! My hypothesis was correct. Okay. So now I get why using <code>__builtin__</code> is better than <code>__builtins__</code>: </p>
+<p><strong>The type, and thus behavior, of <code>__builtins__</code> changes based on the context of where it's being executed, while the type and behavior of <code>__builtin__</code> is constant. Rad.</strong></p>
+<p>Thanks, stranger, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.</p>
+<p>The code for this blog post is on <a href="https://github.com/amygdalama/builtins">GitHub</a>, of course.</p>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="./tag/python.html">python</a>
+           <a href="./tag/builtins.html">builtins</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="./whats-the-deal-with-builtins-vs-builtin.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class= "other-articles">Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="./import-accio-bootstrapping-python-grammar.html" rel="bookmark" title="Permalink to Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar">Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-03-14T00:00:00">
                 Fri 14 March 2014
@@ -48,242 +205,10 @@
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>At <a href="https://www.hackerschool.com/">Hacker School</a>, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!</p>
-<p>Although this project started as a joke, I've quickly descended so deeply into Python internals that I've, with the guidance of the fabulous Hacker School facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, made edits to the CPython source code, and compiled a Python to compile a Python. All to replace the <code>import</code> statement with <code>accio</code>.</p>
-<p>But before we get into compiling the Harry Potter Python I lovingly call Nagini, let's first talk about some Python internals basics, with spells as examples, of course.</p>
-<h1>Overwriting Builtin Functions</h1>
-<p>Python builtin functions are stored in a module called <code>__builtins__</code> that's automatically imported on startup. </p>
-<div class="highlight"><pre>&gt;&gt;&gt; dir(__builtins__)
-[&#39;ArithmeticError&#39;, &#39;AssertionError&#39;, &#39;AttributeError&#39;, &#39;BaseException&#39;, &#39;BufferError&#39;, &#39;BytesWarning&#39;, &#39;DeprecationWarning&#39;, &#39;EOFError&#39;, &#39;Ellipsis&#39;, &#39;EnvironmentError&#39;, &#39;Exception&#39;, &#39;False&#39;, &#39;FloatingPointError&#39;, &#39;FutureWarning&#39;, &#39;GeneratorExit&#39;, &#39;IOError&#39;, &#39;ImportError&#39;, &#39;ImportWarning&#39;, &#39;IndentationError&#39;, &#39;IndexError&#39;, &#39;KeyError&#39;, &#39;KeyboardInterrupt&#39;, &#39;LookupError&#39;, &#39;MemoryError&#39;, &#39;NameError&#39;, &#39;None&#39;, &#39;NotImplemented&#39;, &#39;NotImplementedError&#39;, &#39;OSError&#39;, &#39;OverflowError&#39;, &#39;PendingDeprecationWarning&#39;, &#39;ReferenceError&#39;, &#39;RuntimeError&#39;, &#39;RuntimeWarning&#39;, &#39;StandardError&#39;, &#39;StopIteration&#39;, &#39;SyntaxError&#39;, &#39;SyntaxWarning&#39;, &#39;SystemError&#39;, &#39;SystemExit&#39;, &#39;TabError&#39;, &#39;True&#39;, &#39;TypeError&#39;, &#39;UnboundLocalError&#39;, &#39;UnicodeDecodeError&#39;, &#39;UnicodeEncodeError&#39;, &#39;UnicodeError&#39;, &#39;UnicodeTranslateError&#39;, &#39;UnicodeWarning&#39;, &#39;UserWarning&#39;, &#39;ValueError&#39;, &#39;Warning&#39;, &#39;ZeroDivisionError&#39;, &#39;_&#39;, &#39;__debug__&#39;, &#39;__doc__&#39;, &#39;__import__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;abs&#39;, &#39;all&#39;, &#39;any&#39;, &#39;apply&#39;, &#39;basestring&#39;, &#39;bin&#39;, &#39;bool&#39;, &#39;buffer&#39;, &#39;bytearray&#39;, &#39;bytes&#39;, &#39;callable&#39;, &#39;chr&#39;, &#39;classmethod&#39;, &#39;cmp&#39;, &#39;coerce&#39;, &#39;compile&#39;, &#39;complex&#39;, &#39;copyright&#39;, &#39;credits&#39;, &#39;delattr&#39;, &#39;dict&#39;, &#39;dir&#39;, &#39;divmod&#39;, &#39;enumerate&#39;, &#39;eval&#39;, &#39;execfile&#39;, &#39;exit&#39;, &#39;file&#39;, &#39;filter&#39;, &#39;float&#39;, &#39;format&#39;, &#39;frozenset&#39;, &#39;getattr&#39;, &#39;globals&#39;, &#39;hasattr&#39;, &#39;hash&#39;, &#39;help&#39;, &#39;hex&#39;, &#39;id&#39;, &#39;input&#39;, &#39;int&#39;, &#39;intern&#39;, &#39;isinstance&#39;, &#39;issubclass&#39;, &#39;iter&#39;, &#39;len&#39;, &#39;license&#39;, &#39;list&#39;, &#39;locals&#39;, &#39;long&#39;, &#39;map&#39;, &#39;max&#39;, &#39;memoryview&#39;, &#39;min&#39;, &#39;next&#39;, &#39;object&#39;, &#39;oct&#39;, &#39;open&#39;, &#39;ord&#39;, &#39;pow&#39;, &#39;print&#39;, &#39;property&#39;, &#39;quit&#39;, &#39;range&#39;, &#39;raw_input&#39;, &#39;reduce&#39;, &#39;reload&#39;, &#39;repr&#39;, &#39;reversed&#39;, &#39;round&#39;, &#39;set&#39;, &#39;setattr&#39;, &#39;slice&#39;, &#39;sorted&#39;, &#39;staticmethod&#39;, &#39;str&#39;, &#39;sum&#39;, &#39;super&#39;, &#39;tuple&#39;, &#39;type&#39;, &#39;unichr&#39;, &#39;unicode&#39;, &#39;vars&#39;, &#39;xrange&#39;, &#39;zip&#39;]
-</pre></div>
-
-
-<p>Overwriting Python builtins is surprisingly easy! </p>
-<div class="highlight"><pre>&gt;&gt;&gt; wingardium_leviosa = __builtins__.float
-
-&gt;&gt;&gt; del __builtins__.float
-
-&gt;&gt;&gt; float(3)
-Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-NameError: name &#39;float&#39; is not defined
-
-&gt;&gt;&gt; wingardium_leviosa(3)
-3.0
-</pre></div>
-
-
-<p>However, overwriting <code>import</code> is not so easy. Let's try:</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio = import
-  File &quot;&lt;stdin&gt;&quot;, line 1
-    accio = import
-                 ^
-SyntaxError: invalid syntax
-</pre></div>
-
-
-<p>Python is expecting the name of a module after <code>import</code>, and thus it throws a <code>SyntaxError</code>. This is an effect of <code>import x</code> being a <em>statement</em>, rather than a <em>function</em>. </p>
-<p>Hm. I remember seeing the function <code>__import__</code> listed when we ran <code>dir(__builtins__)</code>. Maybe we can overwrite that instead:</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio = __builtins__.__import__
-&gt;&gt;&gt; accio sys
-  File &quot;&lt;stdin&gt;&quot;, line 1
-    accio sys
-            ^
-SyntaxError: invalid syntax
-
-# :(
-</pre></div>
-
-
-<p>What if we tried calling <code>accio</code> like a function?</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio(sys)
-Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-NameError: name &#39;sys&#39; is not defined
-</pre></div>
-
-
-<p>Maybe we need to pass 'sys' as a string?</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio(&#39;sys&#39;)
-&lt;module &#39;sys&#39; (built-in)&gt;
-
-# Ooh!
-
-&gt;&gt;&gt; sys = accio(&#39;sys&#39;)
-&gt;&gt;&gt; sys
-&lt;module &#39;sys&#39; (built-in)&gt;
-</pre></div>
-
-
-<p>Aha. So the statement <code>import x</code> probably does something like:<br />
-    1. call the <code>__import__</code> function on <code>x</code>: <code>__builtins__.__import__('x')</code><br />
-    2. assign the name <code>x</code> to the module returned by <code>__import__</code>  </p>
-<p>And <code>import sys</code> is like shorthand for the command:</p>
-<div class="highlight"><pre>&gt;&gt;&gt; sys = __builtins__.__import__(&#39;sys&#39;)
-</pre></div>
-
-
-<p>(Here I'm only describing simple <code>import</code> statements, but more complex statements like <code>from x import y.w, y.z</code> work similarly.)</p>
-<p>So we have a way to add <code>accio</code> as a function, but not as a statement. I'm unsatisfied. </p>
-<p>For fun, can we delete import?</p>
-<div class="highlight"><pre>&gt;&gt;&gt; del import
-  File &quot;&lt;stdin&gt;&quot;, line 1
-    del import
-             ^
-SyntaxError: invalid syntax
-
-&gt;&gt;&gt; del __builtins__.__import__
-&gt;&gt;&gt; import os
-Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-ImportError: __import__ not found
-</pre></div>
-
-
-<p>Kind of! Although I want <code>import os</code> to be a <code>SyntaxError</code> rather than an <code>ImportError</code> because clearly <code>import</code> is the wrong thing to type and the user should know to type <code>accio</code> instead.</p>
-<p>So, to completely overwrite <code>import</code> with <code>accio</code>, we'll need to learn where Python defines statements.</p>
-<h1>Grammar</h1>
-<p>Eli Bendersky wrote a great <a href="http://eli.thegreenplace.net/2010/06/30/python-internals-adding-a-new-statement-to-python/">blog post</a> about adding an <code>until</code> statement to Python. Since we want to <em>replace</em> a statement, rather than add one, our method will be a bit different.</p>
-<p>Regardless, it looks like the place to start for changing Python's statements is in the <code>Grammar</code> file in the Python <a href="http://docs.python.org/devguide/setup.html">source code</a>. <strong>Python source code!</strong> Isn't this <em>fun?!</em> </p>
-<p>Python's source code is stored in a Mercurial repository, so first we'll have to install Mercurial.</p>
-<div class="highlight"><pre><span class="nv">$ </span>brew install mercurial
-</pre></div>
-
-
-<p>Then we can clone CPython (like <code>git clone</code>):</p>
-<div class="highlight"><pre><span class="nv">$ </span>hg clone http://hg.python.org/cpython
-</pre></div>
-
-
-<p>This will take a whole minute. Grab a coffee.</p>
-<p>In the Python Mercurial repo, different versions of Python have different branches. By default we're on a Python3 branch. I'm still running Python2 on my machine, so let's checkout version 2.7:</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>cpython
-<span class="nv">$ </span>hg checkout 2.7
-</pre></div>
-
-
-<p>Now let's <a href="http://docs.python.org/devguide/setup.html">compile CPython</a> and see if it works!</p>
-<div class="highlight"><pre><span class="nv">$ </span>./configure --with-pydebug
-<span class="nv">$ </span>make -s -j2
-</pre></div>
-
-
-<p>I get a warning message saying some modules were unable to be built, but I am unstoppable. We are unstoppable. Let's continue.</p>
-<p>It seems like the place to start is in the file <code>Grammar/Grammar</code>, so let's start poking around there. <a href="http://docs.python.org/2/reference/grammar.html">This</a> is what it looks like. Searching for 'import' brings us to lines 52-60:</p>
-<div class="highlight"><pre>import_stmt: import_name | import_from
-import_name: &#39;import&#39; dotted_as_names
-import_from: (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;import&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names))
-import_as_name: NAME [&#39;as&#39; NAME]
-dotted_as_name: dotted_name [&#39;as&#39; NAME]
-import_as_names: import_as_name (&#39;,&#39; import_as_name)* [&#39;,&#39;]
-dotted_as_names: dotted_as_name (&#39;,&#39; dotted_as_name)*
-dotted_name: NAME (&#39;.&#39; NAME)*
-</pre></div>
-
-
-<p>Cool! We can kind of understand what's going on here just from reading. It looks like an <code>import_stmt</code> is either an <code>import_name</code> or an <code>import_from</code> which have the format <code>import x</code> and <code>from x import y</code>, respectively. What happens if we just change 'import' to 'accio' in lines 53 and 55? Let's try it. After making the change and saving the <code>Grammar</code> file, type the following command to compile:</p>
-<div class="highlight"><pre><span class="nv">$ </span>make -s -j2
-</pre></div>
-
-
-<p>Ach. If only it was that easy. This throws an error:</p>
-<div class="highlight"><pre><span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">&quot;/Users/amyhanlon/projects/nagini/cpython/Lib/runpy.py&quot;</span>, line <span class="m">151</span>, in <span class="n">_run_module_as_main</span>
-    <span class="n">mod_name</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">_get_module_details</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
-  File <span class="nb">&quot;/Users/amyhanlon/projects/nagini/cpython/Lib/runpy.py&quot;</span>, line <span class="m">113</span>, in <span class="n">_get_module_details</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_code</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
-  File <span class="nb">&quot;/Users/amyhanlon/projects/nagini/cpython/Lib/pkgutil.py&quot;</span>, line <span class="m">283</span>, in <span class="n">get_code</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;exec&#39;</span><span class="p">)</span>
-  File <span class="nb">&quot;/Users/amyhanlon/projects/nagini/cpython/Lib/sysconfig.py&quot;</span>, line <span class="m">4</span>
-    <span class="kn">import</span> <span class="nn">sys</span>
-             <span class="o">^</span>
-<span class="gr">SyntaxError</span>: <span class="n">invalid syntax</span>
-</pre></div>
-
-
-<p>This error occurs while trying to execute a Python script! Compiling CPython requires running Python scripts! Interesting. Maybe at this point we remember that Python is <a href="http://en.wikipedia.org/wiki/Bootstrapping_(compilers)">bootstrapped</a>. We look back at the <a href="http://docs.python.org/devguide/setup.html">Python Developer's Guide</a> and we find that <em>"Vast areas of CPython are written completely in Python: as of this writing, CPython contains slightly more Python code than C."</em></p>
-<p>So then we wonder - when CPython is compiling, does it execute Python scripts with the Python that's currently being compiled? Or does it use another already-compiled muggle Python, like our environment Python? If it uses the Python that's currently being compiled, we'll need to change these .py scripts to say <code>accio</code> instead of <code>import</code>. Otherwise, what do we do? Our muggle Python only understands <code>import</code> and not <code>accio</code>...</p>
-<p>Let's look into one of the .py scripts within <code>Lib</code> to investigate. Here's the first line of the <code>Lib/keyword.py</code> script:</p>
-<div class="highlight"><pre>#! /usr/bin/env python
-</pre></div>
-
-
-<p>Aha! This script is executed via our environment Python! Our environment Python only understands <code>import</code>. So <code>keyword.py</code> needs to have <code>import</code> and not <code>accio</code>. However, since we got a <code>SyntaxError</code> on an <code>import</code> statement, that must mean that at least sometimes during the process of compiling we're required to use <code>accio</code> instead of <code>import</code>. Hrm... Any ideas?</p>
-<h1>Yo Dawg, I Heard You Like Pythons</h1>
-<p>What if we did something crazy like compiled an intermediary Python that understands <em>both</em> <code>accio</code> <em>and</em> <code>import</code>, and used <em>that</em> Python to compile <em>another</em> Python that only understands <code>accio</code>? (Full credit for this idea goes to <a href="http://akaptur.github.io/">Allison Kaptur</a>.)</p>
-<p>So, for our intermediary Python we'll need to edit the <code>Grammar</code> file like so:</p>
-<div class="highlight"><pre>import_name: &#39;import&#39; dotted_as_names | &#39;accio&#39; dotted_as_names
-import_from: ((&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;import&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names)) |
-              (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;accio&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names)))
-</pre></div>
-
-
-<p>Thus this Python should understand both <code>import</code> and <code>accio</code>. Let's compile.</p>
-<div class="highlight"><pre><span class="nv">$ </span>make -s -j2
-</pre></div>
-
-
-<p>Eep! No errors! Just the warning about missing modules that we also received before we made any changes! Now we need to prepend our $PATH so that this Python will become our environment Python (but only for this terminal session). That way this intermediary Python will be used to compile our final Python. Let's make a symlink to the <code>python.exe</code> that was created when we ran <code>make</code>, and then add the path to that symlink to our $PATH:</p>
-<div class="highlight"><pre><span class="nv">$ </span>mkdir bin
-<span class="nv">$ </span><span class="nb">cd </span>bin
-<span class="nv">$ </span>ln -s ../python.exe python
-<span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:<span class="nv">$PATH</span>
-</pre></div>
-
-
-<p>Now we'll need to duplicate this entire <code>cpython</code> directory and make our final Python:</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> ../
-<span class="nv">$ </span>cp -r cpython nagini-python
-<span class="nv">$ </span><span class="nb">cd </span>nagini-python
-</pre></div>
-
-
-<p>We want to change the <code>Grammar</code> file for this Python to only allow <code>accio</code>:</p>
-<div class="highlight"><pre>import_name: &#39;accio&#39; dotted_as_names
-import_from: (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;accio&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names))
-</pre></div>
-
-
-<p>And then we want to replace every instance of <code>import</code> in every .py file to <code>accio</code>. We'll use a blackbox bash command to accomplish that:</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="k">for </span>i in <span class="sb">`</span>find . -name <span class="s1">&#39;*.py&#39;</span><span class="sb">`</span>; <span class="k">do </span>sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/[[:&lt;:]]import[[:&gt;:]]/accio/g&#39;</span> <span class="nv">$i</span>; <span class="k">done</span>
-</pre></div>
-
-
-<p>Now we just need to compile this new Python!</p>
-<div class="highlight"><pre><span class="nv">$ </span>make -s -j2
-</pre></div>
-
-
-<p>Let's make a symlink to this Python...</p>
-<div class="highlight"><pre><span class="nv">$ </span>mkdir bin
-<span class="nv">$ </span><span class="nb">cd </span>bin
-<span class="nv">$ </span>ln -s ../python.exe python
-<span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:<span class="nv">$PATH</span>
-<span class="nv">$ </span>python
-</pre></div>
-
-
-<p>And fire it up...</p>
-<div class="highlight"><pre><span class="x">&gt;&gt;&gt; import sys</span>
-  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>
-    <span class="kn">import</span> <span class="nn">sys</span>
-             <span class="o">^</span>
-<span class="gr">SyntaxError</span>: <span class="n">invalid syntax</span>
-<span class="x">&gt;&gt;&gt; accio sys</span>
-<span class="x">&gt;&gt;&gt; sys.modules.keys()</span>
-<span class="x">[&#39;copy_reg&#39;, &#39;sre_compile&#39;, &#39;_sre&#39;, &#39;encodings&#39;, &#39;site&#39;, &#39;__builtin__&#39;, &#39;sysconfig&#39;, &#39;__main__&#39;, &#39;encodings.encodings&#39;, &#39;abc&#39;, &#39;posixpath&#39;, &#39;_weakrefset&#39;, &#39;errno&#39;, &#39;encodings.codecs&#39;, &#39;sre_constants&#39;, &#39;re&#39;, &#39;_abcoll&#39;, &#39;types&#39;, &#39;_codecs&#39;, &#39;encodings.__builtin__&#39;, &#39;_warnings&#39;, &#39;genericpath&#39;, &#39;stat&#39;, &#39;zipimport&#39;, &#39;_sysconfigdata&#39;, &#39;warnings&#39;, &#39;UserDict&#39;, &#39;encodings.ascii&#39;, &#39;sys&#39;, &#39;_osx_support&#39;, &#39;codecs&#39;, &#39;os.path&#39;, &#39;sitecustomize&#39;, &#39;signal&#39;, &#39;traceback&#39;, &#39;linecache&#39;, &#39;posix&#39;, &#39;encodings.aliases&#39;, &#39;exceptions&#39;, &#39;sre_parse&#39;, &#39;os&#39;, &#39;_weakref&#39;]</span>
-</pre></div>
-
-
-<p>HOLY SHIT IT WORKS!</p>
-<h1>Fin</h1>
-<p>That's it. We just compiled two Pythons and fooled around with source code for the sake of a joke. Grab yourselves a beer, friends. Victory.</p>
-<p>My super messy and not-really-prepared-for-the-general-public GitHub <a href="https://github.com/amygdalama/nagini">repo</a> contains both versions of Python, for reference. </p>
-                    <p>    <!-- <p> -->
+</footer><!-- /.post-info -->                <p>At <a href="https://www.hackerschool.com/">Hacker School</a>, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!</p>
+<p>Although this project started as a joke, I've quickly descended so deeply into Python internals that I've ...</p>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="./tag/python.html">python</a>
            <a href="./tag/harry-potter.html">harry potter</a>
@@ -294,13 +219,14 @@ import_from: (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
            <a href="./tag/hacker-school.html">hacker school</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="./import-accio-bootstrapping-python-grammar.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class= "other-articles">Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="./import-accio-bootstrapping-python-grammar.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="./import-accio-bootstrapping-python-grammar.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
         
 
  
@@ -625,46 +551,6 @@ from one of my clients.</p>
                 <!-- <a class="readmore" href="./using-pymc-to-analyze-ab-testing-data.html">read more</a> -->
             </p>
                 <!-- <p>There are probably no <a href="./using-pymc-to-analyze-ab-testing-data.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
-        
-
- 
-            <li><article class="hentry">    
-                <header>
-                        <h1><a href="./homebrew-path-pythonpath.html" rel="bookmark" title="Permalink to wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH">wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</a></h1>
-                </header>
-                
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-12-02T21:48:00">
-                Mon 02 December 2013
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
-<p><!-- In <a href="./category/little-eureka-moments.html">Little Eureka Moments</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <p>About a week ago, I installed <a href="http://brew.sh/">Homebrew</a> on my OSX, mostly because I wanted to use Unix's <code>wget</code> command (It's like Unix's <a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter">accio</a>! <code>wget horcrux</code>. <code>wget firebolt</code>.)</p>
-<p>Unfortunately, doing so installed a new version of python on my machine and switched the <code>PATH</code> and <code>PYTHONPATH</code> away from ...</p>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="./tag/anaconda.html">anaconda</a>
-           <a href="./tag/homebrew.html">homebrew</a>
-           <a href="./tag/osx.html">osx</a>
-           <a href="./tag/python.html">python</a>
-           <a href="./tag/unix.html">unix</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="./homebrew-path-pythonpath.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="./homebrew-path-pythonpath.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
 <p class="paginator">

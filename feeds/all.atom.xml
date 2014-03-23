@@ -1,5 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/all.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-03-14T00:00:00-04:00</updated><entry><title>Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</title><link href="http://amygdalama.github.io/import-accio-bootstrapping-python-grammar.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-14:import-accio-bootstrapping-python-grammar.html</id><summary type="html">&lt;p&gt;At &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/all.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-03-23T00:00:00-04:00</updated><entry><title>What's the deal with __builtins__ vs __builtin__</title><link href="http://amygdalama.github.io/whats-the-deal-with-builtins-vs-builtin.html" rel="alternate"></link><updated>2014-03-23T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-23:whats-the-deal-with-builtins-vs-builtin.html</id><summary type="html">&lt;p&gt;Seriously, what's the difference? When you first fire up the Python interpreter, &lt;code&gt;__builtins__&lt;/code&gt; is in your namespace for free:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;globals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;[&amp;#39;__builtins__&amp;#39;, &amp;#39;__name__&amp;#39;, &amp;#39;__doc__&amp;#39;, &amp;#39;__package__&amp;#39;]&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;module &amp;#39;__builtin__&amp;#39; (built-in)&amp;gt;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;modules&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;__builtin__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;module &amp;#39;__builtin__&amp;#39; (built-in)&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But it appears to be the &lt;code&gt;__builtin__&lt;/code&gt; module! If you:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="bp"&gt;True&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Hrm. So they are both names that point to the same object, the module &lt;code&gt;__builtin__&lt;/code&gt;. Weird. Why does Python do this? Do they always behave the same?&lt;/p&gt;
+&lt;p&gt;I read on &lt;a href="http://stackoverflow.com/questions/11181519/python-whats-the-difference-between-builtin-and-builtins"&gt;StackOverflow&lt;/a&gt; that&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;By default, when in the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__builtins__&lt;/code&gt; is the built-in module &lt;code&gt;__builtin__&lt;/code&gt; (note: no 's'); when in any other module, &lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module itself.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;What. What does that mean. &lt;/p&gt;
+&lt;p&gt;This talk of the "&lt;code&gt;__main__&lt;/code&gt; module" and "any other module" reminds me of a sequence of words that I've known for quite a while, but haven't completely grokked:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We can access the name of the current module with the builtin variable &lt;code&gt;__name__&lt;/code&gt;. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;You're probably familiar with the related canonical statement:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But what does "current module" mean? What does the &lt;code&gt;__name__&lt;/code&gt; variable look like when it does not equal &lt;code&gt;__main__&lt;/code&gt;?&lt;/p&gt;
+&lt;p&gt;I happen to know, because I've obsessively read about the &lt;code&gt;import&lt;/code&gt; statement, another sequence of words: &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Any code executed as a result of an &lt;code&gt;import&lt;/code&gt; isn't executed in the &lt;code&gt;__main__&lt;/code&gt; module. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Let's use these bits of knowledge to observe the behavior of &lt;code&gt;__builtins__&lt;/code&gt; both inside and outside of the &lt;code&gt;__main__&lt;/code&gt; module. We can also check out the &lt;code&gt;__name__&lt;/code&gt; variable while we're at it.&lt;/p&gt;
+&lt;p&gt;First, let's make a script, &lt;code&gt;a.py&lt;/code&gt;, which will allow us to observe the behavior of &lt;code&gt;__builtin__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt;, and &lt;code&gt;__name__&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;In a&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__name__ is:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtin__ is __builtins__:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtin__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtins__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's see what happens when we execute &lt;code&gt;a.py&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python a.py
+&lt;span class="go"&gt;In a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is  __main__&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__ True&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__) &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__) &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Okay. So we're in the &lt;code&gt;__main__&lt;/code&gt; module, and in here &lt;code&gt;__builtin__&lt;/code&gt; is pointing to the same module object as &lt;code&gt;__builtins__&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;What happens if we &lt;code&gt;import a&lt;/code&gt; in another script? The code in &lt;code&gt;a&lt;/code&gt; will execute, but it won't be executed within the &lt;code&gt;__main__&lt;/code&gt; module. Instead, it'll be executed within the &lt;code&gt;a&lt;/code&gt; module. Let's write another script, &lt;code&gt;b.py&lt;/code&gt;, to find out what happens to &lt;code&gt;__builtins__&lt;/code&gt; outside of &lt;code&gt;__main__&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;In b, before importing a&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# the output from this should be the same as when we ran&lt;/span&gt;
+&lt;span class="c"&gt;# $ python a.py&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__name__ is:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtin__ is __builtins__:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtin__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtins__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;a&lt;/span&gt;
+&lt;span class="c"&gt;# code from a will execute here&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's see what happens when we run &lt;code&gt;b.py&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python b.py
+&lt;span class="go"&gt;In b, before importing a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: __main__&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: True&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+
+
+&lt;span class="go"&gt;In a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: a&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: False&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;dict&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Aha. So when we're outside the context of the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__name__&lt;/code&gt; is just equal to the name of the module where code is currently being executed. That seems logical. And outside of &lt;code&gt;__main__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt; is a dict, rather than a module. &lt;/p&gt;
+&lt;p&gt;We were told earlier that, outside the context of &lt;code&gt;__main__&lt;/code&gt;, &lt;em&gt;"&lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module"&lt;/em&gt;. I think that means that &lt;code&gt;__builtins__ is __builtin__.__dict__&lt;/code&gt;. Let's see if my hypothesis is true, by adding another line to the bottom of our &lt;code&gt;a.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtins__ is __builtin__.__dict__&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__dict__&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Running &lt;code&gt;b.py&lt;/code&gt; again, we get:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python b.py
+&lt;span class="go"&gt;In b, before importing a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: __main__&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: True&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+
+
+&lt;span class="go"&gt;In a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: a&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: False&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;dict&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;__builtins__ is __builtin__.__dict__ True&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Yes! My hypothesis was correct. Okay. So now I get why using &lt;code&gt;__builtin__&lt;/code&gt; is better than &lt;code&gt;__builtins__&lt;/code&gt;: &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The type, and thus behavior, of &lt;code&gt;__builtins__&lt;/code&gt; changes based on the context of where it's being executed, while the type and behavior of &lt;code&gt;__builtin__&lt;/code&gt; is constant. Rad.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Thanks, stranger, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.&lt;/p&gt;
+&lt;p&gt;The code for this blog post is on &lt;a href="https://github.com/amygdalama/builtins"&gt;GitHub&lt;/a&gt;, of course.&lt;/p&gt;</summary><category term="python"></category><category term="builtins"></category></entry><entry><title>Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</title><link href="http://amygdalama.github.io/import-accio-bootstrapping-python-grammar.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-14:import-accio-bootstrapping-python-grammar.html</id><summary type="html">&lt;p&gt;At &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!&lt;/p&gt;
 &lt;p&gt;Although this project started as a joke, I've quickly descended so deeply into Python internals that I've, with the guidance of the fabulous Hacker School facilitator &lt;a href="http://akaptur.github.io/"&gt;Allison Kaptur&lt;/a&gt;, made edits to the CPython source code, and compiled a Python to compile a Python. All to replace the &lt;code&gt;import&lt;/code&gt; statement with &lt;code&gt;accio&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;But before we get into compiling the Harry Potter Python I lovingly call Nagini, let's first talk about some Python internals basics, with spells as examples, of course.&lt;/p&gt;
 &lt;h1&gt;Overwriting Builtin Functions&lt;/h1&gt;
