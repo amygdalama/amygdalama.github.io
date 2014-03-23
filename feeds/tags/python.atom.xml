@@ -4,12 +4,10 @@
 &lt;span class="go"&gt;[&amp;#39;__builtins__&amp;#39;, &amp;#39;__name__&amp;#39;, &amp;#39;__doc__&amp;#39;, &amp;#39;__package__&amp;#39;]&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;module &amp;#39;__builtin__&amp;#39; (built-in)&amp;gt;&lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;modules&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;__builtin__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="go"&gt;&amp;lt;module &amp;#39;__builtin__&amp;#39; (built-in)&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;But it appears to be the &lt;code&gt;__builtin__&lt;/code&gt; module! If you:&lt;/p&gt;
+&lt;p&gt;But it appears to be the &lt;code&gt;__builtin__&lt;/code&gt; module (singular)! If you:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;
 &lt;span class="bp"&gt;True&lt;/span&gt;

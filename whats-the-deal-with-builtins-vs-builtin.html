@@ -56,12 +56,10 @@
 <span class="go">[&#39;__builtins__&#39;, &#39;__name__&#39;, &#39;__doc__&#39;, &#39;__package__&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">__builtins__</span>
 <span class="go">&lt;module &#39;__builtin__&#39; (built-in)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s">&#39;__builtin__&#39;</span><span class="p">]</span>
-<span class="go">&lt;module &#39;__builtin__&#39; (built-in)&gt;</span>
 </pre></div>
 
 
-<p>But it appears to be the <code>__builtin__</code> module! If you:</p>
+<p>But it appears to be the <code>__builtin__</code> module (singular)! If you:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">__builtin__</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">__builtin__</span> <span class="ow">is</span> <span class="n">__builtins__</span>
 <span class="bp">True</span>
