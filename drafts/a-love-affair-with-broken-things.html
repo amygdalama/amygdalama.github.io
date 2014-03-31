@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>A Love Affair With Broken Things, Plus Some Functional Programming</title>
+        <title>A Love Affair With Broken Things</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -36,7 +36,7 @@
     <header>
       <h1 class="entry-title">
         <a href="a-love-affair-with-broken-things.html" rel="bookmark"
-           title="Permalink to A Love Affair With Broken Things, Plus Some Functional Programming">A Love Affair With Broken Things, Plus Some Functional Programming</a></h1>
+           title="Permalink to A Love Affair With Broken Things">A Love Affair With Broken Things</a></h1>
     </header>
 
     <div class="entry-content">
@@ -85,7 +85,8 @@
 
 
 </blockquote>
-<p>Why do we need a <code>lambda</code> function here? To understand, let's try removing it:</p>
+<p>Why does Mary use a <code>lambda</code> function here? Let's spend some time breaking this code and reconstructing it to understand why the <code>lambda</code> function is used.</p>
+<p>First let's try removing the <code>lambda</code> and seeing what happens:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
 Traceback (most recent call last):
   File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1, in <span class="nt">&lt;module&gt;</span>
@@ -93,44 +94,51 @@ NameError: name &#39;x&#39; is not defined
 </pre></div>
 
 
-<p>Okay. <code>x</code> is not defined. That makes sense, because <code>x</code> isn't in our <code>locals</code> or our <code>globals</code> or our <code>builtins</code>.</p>
-<p>What if we tried using the <code>**</code> operator? Can we pass something like <code>** 2</code> or <code>+ 2</code> as the function for <code>map</code>? Let's try:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
+<p>Okay. <code>x</code> is not defined. That makes sense, because <code>x</code> isn't in our <code>locals</code> or our <code>globals</code> or our <code>builtins</code>. Remember that when Python sees the name of a variable, it looks in those three places for a definition of that variable. If Python doesn't find the variable in any of those places, it throws a <code>NameError</code>. <code>lambda</code> must temporarily add variables (here, <code>x</code>) to our namespace and then throw them away.</p>
+<p>We removed the arm of the statue and a <code>NameError</code> was revealed. Cool. Now let's try reconstructing the statue in a different way.</p>
+<p>What if we tried using the <code>**</code> operator? Can we pass something like <code>**2</code> as the function for <code>map</code>? Let's try:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
   File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1
-    squares = map(** 2, <span class="cp">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
-                      ^
+    squares = map(**2, <span class="cp">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
+                    ^
 SyntaxError: invalid syntax
 </pre></div>
 
 
-<p><code>SyntaxError</code>. This makes me think that <code>**</code> is part of a statement, defined in Python's Grammar file, and the way that we've typed our code is in violation of the the definition of that statement. So, let's look in the <a href="http://docs.python.org/2/reference/grammar.html">Grammar file</a>. We're not afraid to look at the Grammar file.</p>
-<p>Searching for "**" in the Grammar, we find the line:</p>
-<div class="highlight"><pre><span class="n">power</span><span class="o">:</span> <span class="n">atom</span> <span class="n">trailer</span><span class="o">*</span> <span class="o">[</span><span class="s1">&#39;**&#39;</span> <span class="n">factor</span><span class="o">]</span>
-</pre></div>
-
-
-<p>Since we've read Allison Kaptur's <a href="http://akaptur.github.io/blog/2014/03/16/reading-ebnf/">post</a> on reading EBNF, the language in which Python's Grammar file is written, we know how to read this statement. Translating to English: a <code>power</code> statement consists of an <code>atom</code>, followed by zero or more <code>trailer</code>s, optionally followed by the literal string <code>'**'</code> and a <code>factor</code>.</p>
-<p>I have no clue what an <code>atom</code>, <code>trailer</code>, or <code>factor</code> is, so let's look those up.</p>
-<div class="highlight"><pre><span class="nl">atom:</span> <span class="p">(</span><span class="sc">&#39;(&#39;</span> <span class="p">[</span><span class="n">yield_expr</span><span class="o">|</span><span class="n">testlist_comp</span><span class="p">]</span> <span class="sc">&#39;)&#39;</span> <span class="o">|</span>
-   <span class="sc">&#39;[&#39;</span> <span class="p">[</span><span class="n">listmaker</span><span class="p">]</span> <span class="sc">&#39;]&#39;</span> <span class="o">|</span>
-   <span class="sc">&#39;{&#39;</span> <span class="p">[</span><span class="n">dictorsetmaker</span><span class="p">]</span> <span class="sc">&#39;}&#39;</span> <span class="o">|</span>
-   <span class="sc">&#39;`&#39;</span> <span class="n">testlist1</span> <span class="sc">&#39;`&#39;</span> <span class="o">|</span>
-   <span class="n">NAME</span> <span class="o">|</span> <span class="n">NUMBER</span> <span class="o">|</span> <span class="n">STRING</span><span class="o">+</span><span class="p">)</span>
-
-<span class="nl">trailer:</span> <span class="sc">&#39;(&#39;</span> <span class="p">[</span><span class="n">arglist</span><span class="p">]</span> <span class="sc">&#39;)&#39;</span> <span class="o">|</span> <span class="sc">&#39;[&#39;</span> <span class="n">subscriptlist</span> <span class="sc">&#39;]&#39;</span> <span class="o">|</span> <span class="sc">&#39;.&#39;</span> <span class="n">NAME</span>
-
-<span class="nl">factor:</span> <span class="p">(</span><span class="sc">&#39;+&#39;</span><span class="o">|</span><span class="sc">&#39;-&#39;</span><span class="o">|</span><span class="sc">&#39;~&#39;</span><span class="p">)</span> <span class="n">factor</span> <span class="o">|</span> <span class="n">power</span>
-</pre></div>
-
-
-<p>And now I feel like an ouroboros. What does this mean. </p>
-<p>Let's try another approach. How about we <a href="https://www.google.com/search?q=python+grammar+power+statement&amp;oq=python+grammar+power+statement&amp;aqs=chrome..69i57.7035j1j4&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8#q=python+grammar+power+operator">google "python grammar power operator"</a>. The first result is this nice <a href="https://docs.python.org/2/reference/expressions.html">Python documentation on Expressions</a>:</p>
+<p>This <code>SyntaxError</code> makes me think that <code>**</code> is part of a statement, defined in Python's Grammar file, and the way that we typed our code is in violation of the the definition of that statement.</p>
+<p>I am going to cheat a bit here. I am going to present something I found on the internet that helps us understand this <code>SyntaxError</code> without showing how I knew what to google to get the answer. At some point I'll write about, given a <code>SyntaxError</code>, how we can find the relevant rules defined in Python's Grammar, understand which rules we're violating, and adjust our code to obey. But not today.</p>
+<p>So the short story is I did some research yesterday to figure out how <code>**</code> Python operators are <a href="https://docs.python.org/2/reference/expressions.html#the-power-operator">defined</a>:</p>
 <div class="highlight"><pre><span class="n">power</span> <span class="o">::=</span>  <span class="n">primary</span> <span class="p">[</span><span class="s">&quot;**&quot;</span> <span class="n">u_expr</span><span class="p">]</span>
 </pre></div>
 
 
-<p>So <code>power</code> consists of a <code>primary</code> followed by optionally the literal string '**' and a <code>u_expr</code>. This seems </p>
-<p>But now I'm confused. What's the difference between a Python <em>statement</em> and a Python <em>expression</em>? Well, there's a <a href="http://stackoverflow.com/a/4728147">StackOverflow answer</a> for that.</p>
+<p>The important thing to note is that any time Python sees <code>**</code> in this context, it expects a thing called a <a href="https://docs.python.org/2/reference/expressions.html#primaries"><code>primary</code></a> to come before it and a thing called a <a href="https://docs.python.org/2/reference/expressions.html#unary-arithmetic-and-bitwise-operations"><code>u_expr</code></a> to come after it. We tried typing <code>**2</code>, which doesn't include anything that could be interpreted as a <code>primary</code> before the <code>**</code>. We can tell we violated this rule without even understanding what a <code>primary</code> or a <code>u_expr</code> is.</p>
+<p>Okay. So we can't reconstruct Mary's function using '**2' instead of <code>lambda</code>. </p>
+<p>What else could we try instead of a lambda function? Is there a function already defined in Python that does the same thing as the operator <code>**</code> but in function syntax?</p>
+<p>Let's <a href="https://www.google.com/search?q=python+power+operator+function&amp;oq=python+power+operator+function&amp;aqs=chrome..69i57.426j0j1&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8">google</a> "python power operator function." We quickly discover that there's a builtin <code>pow</code> function that takes two parameters, <code>x</code> and <code>y</code> and returns <code>x**y</code>. Cool! So <code>pow(x,2)</code> should be the same thing as <code>x**2</code>.  </p>
+<p>Does the <code>pow</code> function work in our <code>map</code> function? Let's try!</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
+Traceback (most recent call last):
+  File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1, in <span class="nt">&lt;module&gt;</span>
+TypeError: pow expected at least 2 arguments, got 1
+</pre></div>
+
+
+<p>Oh, right. Derp. We need to pass <code>2</code> to <code>pow</code>, in addition to each element in our list. In the <a href="https://docs.python.org/2.7/library/functions.html#map">documentation</a> for <code>map</code>, we see that if the function takes two arguments, we need to pass it two iterables. So we could do something kind of dumb like:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+</pre></div>
+
+
+<p>It works, but it's pretty ugly compared to the original:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</pre></div>
+
+
+<p>It seems silly to use a function, <code>pow</code>, that takes two arguments, when one of the arguments we pass it is always the same. Ohhh. Maybe that's why Mary used <code>lambda</code>! To create a function that works kind of like <code>pow</code> but just takes one argument! </p>
+<p>So we broke the statue, attempted to reconstruct it, and then wound up with something way uglier than the original. And thus, through breaking her code, her design decisions were revealed! And now we have a better understanding of why the original process was used!</p>
+<p>Breaking things is fucking rad.</p>
       <p>
     <!-- <p> -->
         tags: 
@@ -138,6 +146,8 @@ SyntaxError: invalid syntax
            <a href="../tag/hacker-school.html">hacker school</a>
            <a href="../tag/python.html">python</a>
            <a href="../tag/functional-programming.html">functional programming</a>
+           <a href="../tag/map.html">map</a>
+           <a href="../tag/lambda.html">lambda</a>
     <!-- </p> -->
     
       </p>
