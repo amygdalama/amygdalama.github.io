@@ -38,8 +38,8 @@
                 <article>
                     <h1 class="entry-title"><a href="../a-love-affair-with-broken-things.html">A Love Affair With Broken Things</a></h1> 
 <footer class="post-info">
-        <abbr class="published" title="2014-03-29T00:00:00">
-                Sat 29 March 2014
+        <abbr class="published" title="2014-03-31T00:00:00">
+                Mon 31 March 2014
         </abbr>
 
         <address class="vcard author">
@@ -56,8 +56,8 @@
 <img alt="a torso, broken" src="/images/broken_torso.JPG" title="broken torso" /></p>
 <p>Okay so some of them are literally naked, but you get the point. When a statue is broken, you can sneak a peek inside! You get so many clues about how it was made! Is it hollow? What's it made out of? Is the material on the outside the same as the inside? Does it have a frame?</p>
 <h2>Breaking Code</h2>
-<p>While I can't bring myself to break art to get clues about the process of its creation, I <em>can</em> break code! Breaking code is free and doesn't hurt anyone! I do this quite a bit as a method of learning - removing the pieces of code that you don't understand reveals the purpose of those pieces. It's like removing the arm of a statue to look inside.</p>
-<p>Let's look at some code from Mary Rose Cook's functional programming <a href="http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming">tutorial</a> (which is amazing, and you should absolutely read it and do the exercises and spend time understanding it completely if you're at all interested in functional programming). We won't understand the code at first (or at least <em>I</em> won't), but we'll take apart the pieces of the code in attempt to understand their purpose better.</p>
+<p>While I can't bring myself to break art to get clues about the process of its creation, I <em>can</em> break code! Breaking code is free and doesn't hurt anyone! (As long as you keep it local...) I do this quite a bit as a method of learning - removing the pieces of code that you don't understand reveals the purpose of those pieces. It's like removing the arm of a statue to look inside.</p>
+<p>Let's look at some code from Mary Rose Cook's functional programming <a href="http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming">tutorial</a> (which is amazing, and you should absolutely read it and do the exercises and spend time understanding it completely if you're at all interested in functional programming). We won't understand the code at first (or at least <em>I</em> won't), but we'll take apart the pieces of the code in an attempt to better understand their purpose.</p>
 <p>Mary aptly explains what Python's builtin <code>map</code> function does:</p>
 <blockquote>
 <p>Map takes a function and a collection of items. It makes a new, empty collection, runs the function on each item in the original collection and inserts each return value into the new collection. It returns the new collection.</p>
@@ -81,8 +81,9 @@
 </pre></div>
 
 
+<p>This map doesn’t take a named function. It takes an anonymous, inlined function defined with lambda. The parameters of the lambda are defined to the left of the colon. The function body is defined to the right of the colon. The result of running the function body is (implicitly) returned.</p>
 </blockquote>
-<p>Why does Mary use a <code>lambda</code> function here? Let's spend some time breaking this code and reconstructing it to understand why the <code>lambda</code> function is used.</p>
+<p>But <em>why</em> does Mary use a <code>lambda</code> function here? Let's spend some time breaking this code and reconstructing it to understand why the <code>lambda</code> function is used.</p>
 <p>First let's try removing the <code>lambda</code> and seeing what happens:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
 Traceback (most recent call last):
@@ -92,7 +93,7 @@ NameError: name &#39;x&#39; is not defined
 
 
 <p>Okay. <code>x</code> is not defined. That makes sense, because <code>x</code> isn't in our <code>locals</code> or our <code>globals</code> or our <code>builtins</code>. Remember that when Python sees the name of a variable, it looks in those three places for a definition of that variable. If Python doesn't find the variable in any of those places, it throws a <code>NameError</code>. <code>lambda</code> must temporarily add variables (here, <code>x</code>) to our namespace and then throw them away.</p>
-<p>We removed the arm of the statue and a <code>NameError</code> was revealed. Cool. Now let's try reconstructing the statue in a different way.</p>
+<p>We removed the arm of the statue and a <code>NameError</code> was revealed. Cool. Now let's try naively reconstructing the statue.</p>
 <p>What if we tried using the <code>**</code> operator? Can we pass something like <code>**2</code> as the function for <code>map</code>? Let's try:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
   File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1
@@ -104,15 +105,15 @@ SyntaxError: invalid syntax
 
 <p>This <code>SyntaxError</code> makes me think that <code>**</code> is part of a statement, defined in Python's Grammar file, and the way that we typed our code is in violation of the the definition of that statement.</p>
 <p>I am going to cheat a bit here. I am going to present something I found on the internet that helps us understand this <code>SyntaxError</code> without showing how I knew what to google to get the answer. At some point I'll write about, given a <code>SyntaxError</code>, how we can find the relevant rules defined in Python's Grammar, understand which rules we're violating, and adjust our code to obey. But not today.</p>
-<p>So the short story is I did some research yesterday to figure out how <code>**</code> Python operators are <a href="https://docs.python.org/2/reference/expressions.html#the-power-operator">defined</a>:</p>
+<p>So the short story is I did some research to figure out how <code>**</code> Python operators are <a href="https://docs.python.org/2/reference/expressions.html#the-power-operator">defined</a>:</p>
 <div class="highlight"><pre><span class="n">power</span> <span class="o">::=</span>  <span class="n">primary</span> <span class="p">[</span><span class="s">&quot;**&quot;</span> <span class="n">u_expr</span><span class="p">]</span>
 </pre></div>
 
 
-<p>The important thing to note is that any time Python sees <code>**</code> in this context, it expects a thing called a <a href="https://docs.python.org/2/reference/expressions.html#primaries"><code>primary</code></a> to come before it and a thing called a <a href="https://docs.python.org/2/reference/expressions.html#unary-arithmetic-and-bitwise-operations"><code>u_expr</code></a> to come after it. We tried typing <code>**2</code>, which doesn't include anything that could be interpreted as a <code>primary</code> before the <code>**</code>. We can tell we violated this rule without even understanding what a <code>primary</code> or a <code>u_expr</code> is.</p>
-<p>Okay. So we can't reconstruct Mary's function using '**2' instead of <code>lambda</code>. </p>
+<p>The important thing to note is that any time Python sees <code>**</code> in this context, it expects a thing called a <a href="https://docs.python.org/2/reference/expressions.html#primaries"><code>primary</code></a> to come before it and a thing called a <a href="https://docs.python.org/2/reference/expressions.html#unary-arithmetic-and-bitwise-operations"><code>u_expr</code></a> to come after it. We can tell we violated this rule without even understanding what a <code>primary</code> or a <code>u_expr</code> is. We tried typing <code>**2</code>, which doesn't include anything that could be interpreted as a <code>primary</code> before the <code>**</code>. </p>
+<p>Okay. So we can't reconstruct Mary's function using <code>**</code> instead of <code>lambda</code>. </p>
 <p>What else could we try instead of a lambda function? Is there a function already defined in Python that does the same thing as the operator <code>**</code> but in function syntax?</p>
-<p>Let's <a href="https://www.google.com/search?q=python+power+operator+function&amp;oq=python+power+operator+function&amp;aqs=chrome..69i57.426j0j1&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8">google</a> "python power operator function." We quickly discover that there's a builtin <code>pow</code> function that takes two parameters, <code>x</code> and <code>y</code> and returns <code>x**y</code>. Cool! So <code>pow(x,2)</code> should be the same thing as <code>x**2</code>.  </p>
+<p>Let's <a href="https://www.google.com/search?q=python+power+operator+function&amp;oq=python+power+operator+function&amp;aqs=chrome..69i57.426j0j1&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8">google</a> "python power operator function." We quickly discover that there's a builtin <code>pow</code> function that takes two parameters, <code>x</code> and <code>y</code> and returns <code>x**y</code>. Cool! So <code>pow(x,2)</code> should return the same thing as <code>x**2</code>.  </p>
 <p>Does the <code>pow</code> function work in our <code>map</code> function? Let's try!</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
 Traceback (most recent call last):
@@ -133,8 +134,10 @@ TypeError: pow expected at least 2 arguments, got 1
 </pre></div>
 
 
-<p>It seems silly to use a function, <code>pow</code>, that takes two arguments, when one of the arguments we pass it is always the same. Ohhh. Maybe that's why Mary used <code>lambda</code>! To create a function that works kind of like <code>pow</code> but just takes one argument! </p>
-<p>So we broke the statue, attempted to reconstruct it, and then wound up with something way uglier than the original. And thus, through breaking her code, her design decisions were revealed! And now we have a better understanding of why the original process was used!</p>
+<p>It seems silly to use a function, <code>pow</code>, that takes two arguments, when one of the arguments we pass it is always the same. </p>
+<p>Ohhh. </p>
+<p>Maybe that's why Mary used <code>lambda</code>! To create a function that works kind of like <code>pow</code> but just takes one argument! </p>
+<p>So we broke the statue, attempted to reconstruct it, and then wound up with something way uglier than the original. And thus, through breaking Mary's code, her design decisions were revealed! And now we have a better understanding of why the original process was used!</p>
 <p>Breaking things is fucking rad.</p>
                     <p>    <!-- <p> -->
         tags: 
