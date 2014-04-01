@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>After Six Months of Learning The Python, I Can Finally Print "Hello World!"</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+   
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="..">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="..">Home</a></li>
+                    <li><a href="../pages/bio.html">Biography</a></li>
+                    <li><a href="../pages/contact.html">Contact</a></li>
+                    <li><a href="../pages/projects.html">Projects</a></li>
+                    <li><a href="../pages/talks.html">Talks</a></li>
+                </ul></nav>
+
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="bookmark"
+           title="Permalink to After Six Months of Learning The Python, I Can Finally Print "Hello World!"">After Six Months of Learning The Python, I Can Finally Print "Hello World!"</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-04-01T00:00:00">
+                Tue 01 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info -->      <p>I've been trying to learn how to write a function in the Python that prints two words, only two, "Hello World." I've been trying for six months. And today, friends, I've done it.</p>
+<p>I've read so many places that you can make print statements in the Python like so:</p>
+<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Hello World!&quot;</span>
+</pre></div>
+
+
+<p>But where do you type this in? How do you tell the computer, the Python, the whatever, that you want it to take this sequence of characters, interpret it as code, and execute it?</p>
+<p>Well, I hope you are sitting down, because I've found the answer: the <a href="https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement"><code>exec</code></a> statement (or function if you're into the Python 3)! </p>
+<p>Let's say you want the Python to execute the definition of a function like:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">&quot;Hello World!&quot;</span>
+</pre></div>
+
+
+<p>You can accomplish this by firing up the Python interpreter and typing:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">exec</span><span class="p">(</span><span class="s">&quot;def foo():</span><span class="se">\n</span><span class="s">    print &#39;Hello World!&#39;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><a href="https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement"><code>exec</code></a> here takes in a string of the Python code and executes it! The <code>\n</code> and the whitespace between the <code>\n</code> and the <code>print</code> statement are very important! The Python needs those to understand where the function ends.</p>
+<p>So now, we can see that <code>foo</code> exists and is a function that prints "Hello World!"</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span>
+<span class="go">&lt;function foo at 0x10b611230&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="p">()</span>
+<span class="go">Hello World!</span>
+</pre></div>
+
+
+<p><code>exec</code> can also take in <code>code</code> objects. We can make a <code>code</code> object by using the <a href="https://docs.python.org/2/library/functions.html#compile"><code>compile</code></a> function:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="s">&quot;def bar():</span><span class="se">\n</span><span class="s">    print &#39;Hello World!&#39;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;exec&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<span class="go">&lt;code object &lt;module&gt; at 0x10b5f88b0, file &quot;&quot;, line 1&gt;</span>
+</pre></div>
+
+
+<p><code>compile</code> takes in a string of code, a filename (we can just pass it the empty string), and a mode, which can be 'exec', 'eval', or 'single'.</p>
+<p>Let's pass <code>c</code> into <code>exec</code> to execute the code and define our <code>bar</code> function:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">exec</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="p">()</span>
+<span class="go">Hello World!</span>
+</pre></div>
+
+
+<p>Yes! We did it again! This is a victorious day. </p>
+<p>Interestingly enough, functions themselves have <code>code</code> objects assigned to them as attributes:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="o">.</span><span class="n">__code__</span>
+<span class="go">&lt;code object bar at 0x10b5f81b0, file &quot;&quot;, line 1&gt;</span>
+</pre></div>
+
+
+<p>And we can overwrite these <code>code</code> objects with our own <code>code</code> objects! </p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">new_code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="s">&quot;print &#39;Hello, We Are Victorious Beings!&#39;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;exec&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_code</span>
+<span class="go">&lt;code object &lt;module&gt; at 0x10b5f81b0, file &quot;&quot;, line 1&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="o">.</span><span class="n">__code__</span> <span class="o">=</span> <span class="n">new_code</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="o">.</span><span class="n">__code__</span>
+<span class="go">&lt;code object &lt;module&gt; at 0x10b5f81b0, file &quot;&quot;, line 1&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="p">()</span>
+<span class="go">Hello, We Are Victorious Beings!</span>
+</pre></div>
+
+
+<p>Neat! We don't need the <code>"def bar():"</code> part in the string we pass to <code>compile</code> because at this point, <code>bar</code> already exists and we're just overwriting the code in the body of the <code>bar</code> function.</p>
+<p>Share in the comments if you know of any other ways to print statements in the Python!</p>
+      <p>
+    <!-- <p> -->
+        tags: 
+           <a href="../tag/python.html">python</a>
+           <a href="../tag/python-internals.html">python internals</a>
+           <a href="../tag/hello-world.html">hello world</a>
+    <!-- </p> -->
+    
+      </p>
+    </div><!-- /.entry-content -->
+    <br>
+    <div class="comments">
+      <h2 class = "other-articles">Comments</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://mathamy.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-48330831-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+<script type="text/javascript">
+    var disqus_shortname = 'mathamy';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
