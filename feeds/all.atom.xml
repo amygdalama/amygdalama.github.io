@@ -1,5 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/all.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-03-31T00:00:00-04:00</updated><entry><title>A Love Affair With Broken Things</title><link href="http://amygdalama.github.io/a-love-affair-with-broken-things.html" rel="alternate"></link><updated>2014-03-31T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-31:a-love-affair-with-broken-things.html</id><summary type="html">&lt;p&gt;I love broken things, unfinished things, breaking things, unfinishing things. Broken and unfinished things allow you to see the process in which they were created; their most intimate secrets are exposed.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/all.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-04-01T00:00:00-04:00</updated><entry><title>After Six Months of Learning The Python, I Can Finally Print "Hello World!"</title><link href="http://amygdalama.github.io/after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="alternate"></link><updated>2014-04-01T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-01:after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html</id><summary type="html">&lt;p&gt;I've been trying to learn how to write a function in the Python that prints two words, only two, "Hello World." I've been trying for six months. And today, friends, I've done it.&lt;/p&gt;
+&lt;p&gt;I've read so many places that you can make print statements in the Python like so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Hello World!&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But where do you type this in? How do you tell the computer, the Python, the whatever, that you want it to take this sequence of characters, interpret it as code, and execute it?&lt;/p&gt;
+&lt;p&gt;Well, I hope you are sitting down, because I've found the answer: the &lt;a href="https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement"&gt;&lt;code&gt;exec&lt;/code&gt;&lt;/a&gt; statement (or function if you're into the Python 3)! &lt;/p&gt;
+&lt;p&gt;Let's say you want the Python to execute the definition of a function like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Hello World!&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can accomplish this by firing up the Python interpreter and typing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;exec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;def foo():&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;    print &amp;#39;Hello World!&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;a href="https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement"&gt;&lt;code&gt;exec&lt;/code&gt;&lt;/a&gt; here takes in a string of the Python code and executes it! The &lt;code&gt;\n&lt;/code&gt; and the whitespace between the &lt;code&gt;\n&lt;/code&gt; and the &lt;code&gt;print&lt;/code&gt; statement are very important! The Python needs those to understand where the function ends.&lt;/p&gt;
+&lt;p&gt;So now, we can see that &lt;code&gt;foo&lt;/code&gt; exists and is a function that prints "Hello World!"&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;foo&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;function foo at 0x10b611230&amp;gt;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;Hello World!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;exec&lt;/code&gt; can also take in &lt;code&gt;code&lt;/code&gt; objects. We can make a &lt;code&gt;code&lt;/code&gt; object by using the &lt;a href="https://docs.python.org/2/library/functions.html#compile"&gt;&lt;code&gt;compile&lt;/code&gt;&lt;/a&gt; function:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;compile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;def bar():&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;    print &amp;#39;Hello World!&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;exec&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object &amp;lt;module&amp;gt; at 0x10b5f88b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;compile&lt;/code&gt; takes in a string of code, a filename (we can just pass it the empty string), and a mode, which can be 'exec', 'eval', or 'single'.&lt;/p&gt;
+&lt;p&gt;Let's pass &lt;code&gt;c&lt;/code&gt; into &lt;code&gt;exec&lt;/code&gt; to execute the code and define our &lt;code&gt;bar&lt;/code&gt; function:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;exec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;Hello World!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Yes! We did it again! This is a victorious day. &lt;/p&gt;
+&lt;p&gt;Interestingly enough, functions themselves have &lt;code&gt;code&lt;/code&gt; objects assigned to them as attributes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__code__&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object bar at 0x10b5f81b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And we can overwrite these &lt;code&gt;code&lt;/code&gt; objects with our own &lt;code&gt;code&lt;/code&gt; objects! &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;new_code&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;compile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;print &amp;#39;Hello, We Are Victorious Beings!&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;exec&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;new_code&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object &amp;lt;module&amp;gt; at 0x10b5f81b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__code__&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new_code&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__code__&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object &amp;lt;module&amp;gt; at 0x10b5f81b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;Hello, We Are Victorious Beings!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Neat! We don't need the &lt;code&gt;"def bar():"&lt;/code&gt; part in the string we pass to &lt;code&gt;compile&lt;/code&gt; because at this point, &lt;code&gt;bar&lt;/code&gt; already exists and we're just overwriting the code in the body of the &lt;code&gt;bar&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;Share in the comments if you know of any other ways to print statements in the Python!&lt;/p&gt;</summary><category term="python"></category><category term="python internals"></category><category term="hello world"></category></entry><entry><title>A Love Affair With Broken Things</title><link href="http://amygdalama.github.io/a-love-affair-with-broken-things.html" rel="alternate"></link><updated>2014-03-31T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-31:a-love-affair-with-broken-things.html</id><summary type="html">&lt;p&gt;I love broken things, unfinished things, breaking things, unfinishing things. Broken and unfinished things allow you to see the process in which they were created; their most intimate secrets are exposed.&lt;/p&gt;
 &lt;h2&gt;Broken Statues&lt;/h2&gt;
 &lt;p&gt;A week ago, inside &lt;a href="http://www.metmuseum.org/en"&gt;The Metropolitan Museum of Art&lt;/a&gt;, my love for broken things was realized. Just &lt;em&gt;look&lt;/em&gt; at these. They're so &lt;em&gt;naked, vulnerable&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="some ladies, broken" src="/images/broken_ladies.JPG" title="broken ladies" /&gt;
