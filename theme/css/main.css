@@ -410,6 +410,10 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 	font-family: "Lobster", cursive;
 }
 
+.entry-summary {
+	margin-left: 190px;
+}
+
 .hentry h1 {
 	font-family: "Droid Sans", "sans-serif";
 	text-decoration: none;
