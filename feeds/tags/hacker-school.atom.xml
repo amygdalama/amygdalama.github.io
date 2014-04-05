@@ -1,5 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/tags/hacker-school.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-03-31T00:00:00-04:00</updated><entry><title>A Love Affair With Broken Things</title><link href="http://amygdalama.github.io/a-love-affair-with-broken-things.html" rel="alternate"></link><updated>2014-03-31T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-31:a-love-affair-with-broken-things.html</id><summary type="html">&lt;p&gt;I love broken things, unfinished things, breaking things, unfinishing things. Broken and unfinished things allow you to see the process in which they were created; their most intimate secrets are exposed.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/tags/hacker-school.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-04-01T00:00:00-04:00</updated><entry><title>After Six Months of Learning The Python, I Can Finally Print "Hello World!"</title><link href="http://amygdalama.github.io/after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="alternate"></link><updated>2014-04-01T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-01:after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html</id><summary type="html">&lt;p&gt;I've been trying to learn how to write a function in the Python that prints two words, only two, "Hello World." I've been trying for six months. And today, friends, I've done it.&lt;/p&gt;
+&lt;p&gt;I've read so many places that you can make print statements in the Python like so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Hello World!&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But where do you type this in? How do you tell the computer, the Python, the whatever, that you want it to take this sequence of characters, interpret it as code, and execute it?&lt;/p&gt;
+&lt;p&gt;Well, I hope you are sitting down, because I've found the answer: the &lt;a href="https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement"&gt;&lt;code&gt;exec&lt;/code&gt;&lt;/a&gt; statement (or function if you're into the Python 3)! &lt;/p&gt;
+&lt;p&gt;Let's say you want the Python to execute the definition of a function like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Hello World!&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can accomplish this by firing up the Python interpreter and typing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;exec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;def foo():&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;    print &amp;#39;Hello World!&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;a href="https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement"&gt;&lt;code&gt;exec&lt;/code&gt;&lt;/a&gt; here takes in a string of the Python code and executes it! The &lt;code&gt;\n&lt;/code&gt; and the whitespace between the &lt;code&gt;\n&lt;/code&gt; and the &lt;code&gt;print&lt;/code&gt; statement are very important! The Python needs those to understand where the function ends.&lt;/p&gt;
+&lt;p&gt;So now, we can see that &lt;code&gt;foo&lt;/code&gt; exists and is a function that prints "Hello World!"&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;foo&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;function foo at 0x10b611230&amp;gt;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;Hello World!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;exec&lt;/code&gt; can also take in &lt;code&gt;code&lt;/code&gt; objects. We can make a &lt;code&gt;code&lt;/code&gt; object by using the &lt;a href="https://docs.python.org/2/library/functions.html#compile"&gt;&lt;code&gt;compile&lt;/code&gt;&lt;/a&gt; function:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;compile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;def bar():&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;    print &amp;#39;Hello World!&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;exec&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object &amp;lt;module&amp;gt; at 0x10b5f88b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;compile&lt;/code&gt; takes in a string of code, a filename (we can just pass it the empty string), and a mode, which can be 'exec', 'eval', or 'single'.&lt;/p&gt;
+&lt;p&gt;Let's pass &lt;code&gt;c&lt;/code&gt; into &lt;code&gt;exec&lt;/code&gt; to execute the code and define our &lt;code&gt;bar&lt;/code&gt; function:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;exec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;Hello World!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Yes! We did it again! This is a victorious day. &lt;/p&gt;
+&lt;p&gt;Interestingly enough, functions themselves have &lt;code&gt;code&lt;/code&gt; objects assigned to them as attributes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__code__&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object bar at 0x10b5f81b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And we can overwrite these &lt;code&gt;code&lt;/code&gt; objects with our own &lt;code&gt;code&lt;/code&gt; objects! &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;new_code&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;compile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;print &amp;#39;Hello, We Are Victorious Beings!&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;exec&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;new_code&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object &amp;lt;module&amp;gt; at 0x10b5f81b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__code__&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new_code&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__code__&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;code object &amp;lt;module&amp;gt; at 0x10b5f81b0, file &amp;quot;&amp;quot;, line 1&amp;gt;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;Hello, We Are Victorious Beings!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Neat! We don't need the &lt;code&gt;"def bar():"&lt;/code&gt; part in the string we pass to &lt;code&gt;compile&lt;/code&gt; because at this point, &lt;code&gt;bar&lt;/code&gt; already exists and we're just overwriting the code in the body of the &lt;code&gt;bar&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;Share in the comments if you know of any other ways to print statements in the Python!&lt;/p&gt;</summary><category term="python"></category><category term="python internals"></category><category term="hello world"></category><category term="hacker school"></category></entry><entry><title>A Love Affair With Broken Things</title><link href="http://amygdalama.github.io/a-love-affair-with-broken-things.html" rel="alternate"></link><updated>2014-03-31T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-31:a-love-affair-with-broken-things.html</id><summary type="html">&lt;p&gt;I love broken things, unfinished things, breaking things, unfinishing things. Broken and unfinished things allow you to see the process in which they were created; their most intimate secrets are exposed.&lt;/p&gt;
 &lt;h2&gt;Broken Statues&lt;/h2&gt;
 &lt;p&gt;A week ago, inside &lt;a href="http://www.metmuseum.org/en"&gt;The Metropolitan Museum of Art&lt;/a&gt;, my love for broken things was realized. Just &lt;em&gt;look&lt;/em&gt; at these. They're so &lt;em&gt;naked, vulnerable&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="some ladies, broken" src="/images/broken_ladies.JPG" title="broken ladies" /&gt;
@@ -90,7 +153,128 @@ TypeError: pow expected at least 2 arguments, got 1
 &lt;p&gt;Maybe that's why Mary used &lt;code&gt;lambda&lt;/code&gt;! To create a function that works kind of like &lt;code&gt;pow&lt;/code&gt; but just takes one argument! &lt;/p&gt;
 &lt;p&gt;So we broke the statue, attempted to reconstruct it, and then wound up with something way uglier than the original. And thus, through breaking Mary's code, her design decisions were revealed! And now we have a better understanding of why the original process was used!&lt;/p&gt;
 &lt;p&gt;Breaking things is fucking rad.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; This post is not intended to show the most pythonic way of squaring a list of integers. Instead, it is intended to show that we can discover how and why a code block works by exploring what happens when we remove chunks of it.&lt;/p&gt;</summary><category term="learning"></category><category term="hacker school"></category><category term="python"></category><category term="functional programming"></category><category term="map"></category><category term="lambda"></category></entry><entry><title>Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</title><link href="http://amygdalama.github.io/import-accio-bootstrapping-python-grammar.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-14:import-accio-bootstrapping-python-grammar.html</id><summary type="html">&lt;p&gt;At &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; This post is not intended to show the most pythonic way of squaring a list of integers. Instead, it is intended to show that we can discover how and why a code block works by exploring what happens when we remove chunks of it.&lt;/p&gt;</summary><category term="learning"></category><category term="hacker school"></category><category term="python"></category><category term="functional programming"></category><category term="map"></category><category term="lambda"></category><category term="python internals"></category><category term="grammar"></category></entry><entry><title>What's the deal with __builtins__ vs __builtin__</title><link href="http://amygdalama.github.io/whats-the-deal-with-builtins-vs-builtin.html" rel="alternate"></link><updated>2014-03-23T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-23:whats-the-deal-with-builtins-vs-builtin.html</id><summary type="html">&lt;p&gt;Seriously, what's the difference? When you first fire up the Python interpreter, &lt;code&gt;__builtins__&lt;/code&gt; is in your namespace for free:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;globals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;[&amp;#39;__builtins__&amp;#39;, &amp;#39;__name__&amp;#39;, &amp;#39;__doc__&amp;#39;, &amp;#39;__package__&amp;#39;]&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;module &amp;#39;__builtin__&amp;#39; (built-in)&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But it appears to be the &lt;code&gt;__builtin__&lt;/code&gt; module (singular)! If you:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="bp"&gt;True&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Hrm. So they are both names that point to the same object, the module &lt;code&gt;__builtin__&lt;/code&gt;. Weird. Why does Python do this? Do they always behave the same?&lt;/p&gt;
+&lt;p&gt;I read on &lt;a href="http://stackoverflow.com/questions/11181519/python-whats-the-difference-between-builtin-and-builtins"&gt;StackOverflow&lt;/a&gt; that&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;By default, when in the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__builtins__&lt;/code&gt; is the built-in module &lt;code&gt;__builtin__&lt;/code&gt; (note: no 's'); when in any other module, &lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module itself.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;What. What does that mean. &lt;/p&gt;
+&lt;p&gt;This talk of the "&lt;code&gt;__main__&lt;/code&gt; module" and "any other module" reminds me of a sequence of words that I've known for quite a while, but haven't completely grokked:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We can access the name of the current module with the builtin variable &lt;code&gt;__name__&lt;/code&gt;. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;You're probably familiar with the related canonical statement:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But what does "current module" mean? What does the &lt;code&gt;__name__&lt;/code&gt; variable look like when it does not equal &lt;code&gt;__main__&lt;/code&gt;?&lt;/p&gt;
+&lt;p&gt;I happen to know, because I've obsessively read about the &lt;code&gt;import&lt;/code&gt; statement, another sequence of words: &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Any code executed as a result of an &lt;code&gt;import&lt;/code&gt; isn't executed in the &lt;code&gt;__main__&lt;/code&gt; module. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Let's use these bits of knowledge to observe the behavior of &lt;code&gt;__builtins__&lt;/code&gt; both inside and outside of the &lt;code&gt;__main__&lt;/code&gt; module. We can also check out the &lt;code&gt;__name__&lt;/code&gt; variable while we're at it.&lt;/p&gt;
+&lt;p&gt;First, let's make a script, &lt;code&gt;a.py&lt;/code&gt;, which will allow us to observe the behavior of &lt;code&gt;__builtin__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt;, and &lt;code&gt;__name__&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;In a&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__name__ is:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtin__ is __builtins__:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtin__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtins__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's see what happens when we execute &lt;code&gt;a.py&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python a.py
+&lt;span class="go"&gt;In a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: __main__&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: True&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Okay. So we're in the &lt;code&gt;__main__&lt;/code&gt; module, and in here &lt;code&gt;__builtin__&lt;/code&gt; is pointing to the same module object as &lt;code&gt;__builtins__&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;What happens if we &lt;code&gt;import a&lt;/code&gt; in another script? The code in &lt;code&gt;a&lt;/code&gt; will execute, but it won't be executed within the &lt;code&gt;__main__&lt;/code&gt; module. Instead, it'll be executed within the &lt;code&gt;a&lt;/code&gt; module. Let's write another script, &lt;code&gt;b.py&lt;/code&gt;, to find out what happens to &lt;code&gt;__builtins__&lt;/code&gt; outside of &lt;code&gt;__main__&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;In b, before importing a&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# the output from this should be the same as when we ran&lt;/span&gt;
+&lt;span class="c"&gt;# $ python a.py&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__name__ is:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtin__ is __builtins__:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtin__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;type(__builtins__):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;a&lt;/span&gt;
+&lt;span class="c"&gt;# code from a will execute here&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's see what happens when we run &lt;code&gt;b.py&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python b.py
+&lt;span class="go"&gt;In b, before importing a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: __main__&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: True&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+
+
+&lt;span class="go"&gt;In a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: a&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: False&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;dict&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Aha. So when we're outside the context of the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__name__&lt;/code&gt; is just equal to the name of the module where code is currently being executed. That seems logical. And outside of &lt;code&gt;__main__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt; is a dict, rather than a module. &lt;/p&gt;
+&lt;p&gt;We were told earlier that, outside the context of &lt;code&gt;__main__&lt;/code&gt;, &lt;em&gt;"&lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module"&lt;/em&gt;. I think that means that &lt;code&gt;__builtins__ is __builtin__.__dict__&lt;/code&gt;. Let's see if my hypothesis is true, by adding another line to the bottom of our &lt;code&gt;a.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtins__ is __builtin__.__dict__&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__dict__&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Running &lt;code&gt;b.py&lt;/code&gt; again, we get:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python b.py
+&lt;span class="go"&gt;In b, before importing a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: __main__&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: True&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+
+
+&lt;span class="go"&gt;In a&lt;/span&gt;
+&lt;span class="go"&gt;__name__ is: a&lt;/span&gt;
+&lt;span class="go"&gt;__builtin__ is __builtins__: False&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtin__): &amp;lt;type &amp;#39;module&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;type(__builtins__): &amp;lt;type &amp;#39;dict&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class="go"&gt;__builtins__ is __builtin__.__dict__ True&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Yes! My hypothesis was correct. Okay. So now I get why using &lt;code&gt;__builtin__&lt;/code&gt; is better than &lt;code&gt;__builtins__&lt;/code&gt;: &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The type, and thus behavior, of &lt;code&gt;__builtins__&lt;/code&gt; changes based on the context of where it's being executed, while the type and behavior of &lt;code&gt;__builtin__&lt;/code&gt; is constant. Rad.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Thanks, stranger who &lt;a href="https://github.com/amygdalama/nagini/issues/1"&gt;suggested&lt;/a&gt; I look into this, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.&lt;/p&gt;
+&lt;p&gt;The code for this blog post is on &lt;a href="https://github.com/amygdalama/builtins"&gt;GitHub&lt;/a&gt;, of course.&lt;/p&gt;</summary><category term="python"></category><category term="builtins"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</title><link href="http://amygdalama.github.io/import-accio-bootstrapping-python-grammar.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-14:import-accio-bootstrapping-python-grammar.html</id><summary type="html">&lt;p&gt;At &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!&lt;/p&gt;
 &lt;p&gt;Although this project started as a joke, I've quickly descended so deeply into Python internals that I've, with the guidance of the fabulous Hacker School facilitator &lt;a href="http://akaptur.github.io/"&gt;Allison Kaptur&lt;/a&gt;, made edits to the CPython source code, and compiled a Python to compile a Python. All to replace the &lt;code&gt;import&lt;/code&gt; statement with &lt;code&gt;accio&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;But before we get into compiling the Harry Potter Python I lovingly call Nagini, let's first talk about some Python internals basics, with spells as examples, of course.&lt;/p&gt;
 &lt;h1&gt;Overwriting Builtin Functions&lt;/h1&gt;
@@ -324,7 +508,55 @@ import_from: (&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#3
 &lt;p&gt;HOLY SHIT IT WORKS!&lt;/p&gt;
 &lt;h1&gt;Fin&lt;/h1&gt;
 &lt;p&gt;That's it. We just compiled two Pythons and fooled around with source code for the sake of a joke. Grab yourselves a beer, friends. Victory.&lt;/p&gt;
-&lt;p&gt;My super messy and not-really-prepared-for-the-general-public GitHub &lt;a href="https://github.com/amygdalama/nagini"&gt;repo&lt;/a&gt; contains both versions of Python, for reference. &lt;/p&gt;</summary><category term="python"></category><category term="harry potter"></category><category term="bootstrapping"></category><category term="cpython"></category><category term="compilers"></category><category term="grammar"></category><category term="hacker school"></category></entry><entry><title>How Should I Learn Programming?</title><link href="http://amygdalama.github.io/how-should-i-learn-programming.html" rel="alternate"></link><updated>2014-02-23T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-23:how-should-i-learn-programming.html</id><summary type="html">&lt;p&gt;I rarely hear the question &lt;em&gt;"How should I learn programming?"&lt;/em&gt; from individuals who are just beginning to write code. Instead I hear way more specific variants like:&lt;/p&gt;
+&lt;p&gt;My super messy and not-really-prepared-for-the-general-public GitHub &lt;a href="https://github.com/amygdalama/nagini"&gt;repo&lt;/a&gt; contains both versions of Python, for reference. &lt;/p&gt;</summary><category term="python"></category><category term="harry potter"></category><category term="bootstrapping"></category><category term="cpython"></category><category term="compilers"></category><category term="grammar"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>GitHub Pages Publication with Git Hooks</title><link href="http://amygdalama.github.io/github-pages-publication-git-hooks.html" rel="alternate"></link><updated>2014-03-08T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-08:github-pages-publication-git-hooks.html</id><summary type="html">&lt;p&gt;As I &lt;a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html"&gt;wrote&lt;/a&gt; at length a couple weeks ago, this blog is hosted on &lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; and generated by &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. Generally the integration between the two is quite blissful, except for managing two separate repositories - &lt;a href="https://github.com/amygdalama/blog-source"&gt;blog-source&lt;/a&gt; for my blog's source content, configuration files, and theme, and &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;amygdalama.github.io&lt;/a&gt; for my Pelican-generated site.&lt;/p&gt;
+&lt;p&gt;Lately I've been pushing to these two separate repositories manually, so my workflow looks something like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/      &lt;span class="c"&gt;# root directory for my blog&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;make devserver    &lt;span class="c"&gt;# automatically re-generates site and hosts site locally&lt;/span&gt;
+&lt;span class="c"&gt;# change something in content or settings&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git add --all
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -m &lt;span class="s2"&gt;&amp;quot;committing blog source&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git push origin master    &lt;span class="c"&gt;# pushes to my blog-source repo on GitHub&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output/    &lt;span class="c"&gt;# pelican-generated output folder&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -am &lt;span class="s2"&gt;&amp;quot;committing pelican-generated site content&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git push origin master    &lt;span class="c"&gt;# pushes to my amygdalama.github.io repo&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But alas! I have figured out how to automatically push any changes committed in my root blog directory to my blog-source repo and then automatically add, commit, and push changes to my GitHub Pages repo. Now my workflow looks like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/
+&lt;span class="nv"&gt;$ &lt;/span&gt;make devserver
+&lt;span class="c"&gt;# change something in content or settings&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git add --all
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -m &lt;span class="s2"&gt;&amp;quot;committing blog source&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# everything else happens automatically! no more typing! yay!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The key is to use &lt;a href="http://githooks.com/"&gt;Git Hooks&lt;/a&gt;. For a particular .git repo, you can add an executable file in &lt;code&gt;.git/hooks&lt;/code&gt; which will automatically execute before or after an event like &lt;code&gt;commit&lt;/code&gt;. The available types of hooks can be found &lt;a href="http://githooks.com/"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For this specific automation task, I used a post-commit hook. To do this, first create the file &lt;code&gt;.git/hooks/post-commit&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/
+&lt;span class="nv"&gt;$ &lt;/span&gt;subl .git/hooks/post-commit
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Add these lines to the file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+git push origin master
+&lt;span class="nb"&gt;cd &lt;/span&gt;output/
+git add --all       &lt;span class="c"&gt;# sub-optimally will add all even if you didn&amp;#39;t add all to blog-source&lt;/span&gt;
+git commit -m &lt;span class="s2"&gt;&amp;quot;automatic commit&amp;quot;&lt;/span&gt;    &lt;span class="c"&gt;# add whatever commit message you want&lt;/span&gt;
+git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then, to make the file executable, type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;chmod &lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;r+w+x .git/hooks/post-commit
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And that's it! Joyful automation!&lt;/p&gt;
+&lt;h2&gt;Edit&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;2014-03-14&lt;/em&gt;: Hacker Schooler Matthew Avant has a &lt;a href="http://www.mavant.com/4.html"&gt;superior&lt;/a&gt; method using a pre-push hook (rather than a post-commit hook). I'm using his method now :)&lt;/p&gt;</summary><category term="github pages"></category><category term="pelican"></category><category term="git"></category><category term="blogging"></category><category term="hacker school"></category></entry><entry><title>How Should I Learn Programming?</title><link href="http://amygdalama.github.io/how-should-i-learn-programming.html" rel="alternate"></link><updated>2014-02-23T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-23:how-should-i-learn-programming.html</id><summary type="html">&lt;p&gt;I rarely hear the question &lt;em&gt;"How should I learn programming?"&lt;/em&gt; from individuals who are just beginning to write code. Instead I hear way more specific variants like:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;What are the best sites for learning programming?&lt;/li&gt;
 &lt;li&gt;What's a good free online course...?&lt;/li&gt;
@@ -345,7 +577,185 @@ import_from: (&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#3
 &lt;p&gt;It is essential to become aware of your fears. List them. Have someone read the list. You will probably giggle together. They are probably afraid, too.&lt;/p&gt;
 &lt;h2&gt;Fuck tutorials. Write a program. Send it to another human.&lt;/h2&gt;
 &lt;p&gt;You can send it to me! Here's my email: amyehanlon@gmail.com &amp;lt;3&lt;/p&gt;
-&lt;p&gt;A huge shoutout to the fabulous &lt;a href="http://melchua.com/"&gt;Mel Chua&lt;/a&gt; for talking through this post with me and giving me a better vocabulary and framework for understanding learning.&lt;/p&gt;</summary><category term="learning"></category><category term="hacker school"></category></entry><entry><title>ipython and pandas are whoa!</title><link href="http://amygdalama.github.io/ipython-and-pandas-are-whoa.html" rel="alternate"></link><updated>2014-02-14T15:52:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-14:ipython-and-pandas-are-whoa.html</id><summary type="html">&lt;p&gt;In my first five months of using Python, I would create .py files and
+&lt;p&gt;A huge shoutout to the fabulous &lt;a href="http://melchua.com/"&gt;Mel Chua&lt;/a&gt; for talking through this post with me and giving me a better vocabulary and framework for understanding learning.&lt;/p&gt;</summary><category term="learning"></category><category term="hacker school"></category></entry><entry><title>Migrating to GitHub Pages using Pelican</title><link href="http://amygdalama.github.io/migrating-to-github-pages-using-pelican.html" rel="alternate"></link><updated>2014-02-22T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-22:migrating-to-github-pages-using-pelican.html</id><summary type="html">&lt;p&gt;Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (&lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt;) and attempting to learn enough CSS and &lt;a href="http://jinja.pocoo.org/"&gt;Jinja&lt;/a&gt; to handle setting up my site using &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. I have no experience with CSS! And my HTML experience is limited to injecting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.&lt;/p&gt;
+&lt;p&gt;The great part about this whole process is that with Pelican, I can write my blog posts and pages in &lt;a href="http://daringfireball.net/projects/markdown/"&gt;Markdown&lt;/a&gt; (about which I also knew little until last week, but it's &lt;em&gt;wonderfully easy to learn&lt;/em&gt;.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.&lt;/p&gt;
+&lt;p&gt;There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others make this transition with less misery.&lt;/p&gt;
+&lt;h2&gt;GitHub Pages Setup&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a GitHub repo following the &lt;a href="http://pages.github.com/"&gt;GitHub Pages instructions&lt;/a&gt; (the first step only!)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;A note on GitHub Pages:&lt;/em&gt; I believe your HTML files (particularly your index.html file) must be in the &lt;em&gt;main directory&lt;/em&gt; of your git repo for this to work. This will be important later. More detail is given in the &lt;strong&gt;Posting to GitHub&lt;/strong&gt; section.&lt;/p&gt;
+&lt;h2&gt;Pelican Setup&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Install necessary &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican"&gt;packages&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Run Pelican &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog"&gt;quickstart&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred &lt;a href="http://docs.getpelican.com/en/3.1.1/settings.html"&gt;settings&lt;/a&gt;. As an example, here's how I answered (I put my responses on separate lines starting with &lt;code&gt;&amp;gt;&lt;/code&gt; to make this easier to read):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; pelican-quickstart
+&lt;span class="go"&gt;Where do you want to create your new web site? [.]  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="go"&gt;What will be the title of this web site?  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
+&lt;span class="go"&gt;Who will be the author of this web site?  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
+&lt;span class="go"&gt;What will be the default language of this web site? [en]  &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; 
+&lt;span class="go"&gt;Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;What is your URL prefix? (see above example; no trailing slash) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; http://amygdalama.github.io  
+&lt;span class="go"&gt;Do you want to enable article pagination? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;How many articles per page do you want? [10] &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="go"&gt;Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
+&lt;span class="go"&gt;Do you want to upload your website using FTP? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using SSH? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using Dropbox? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using S3? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
+&lt;span class="go"&gt;Do you want to upload your website using Rackspace Cloud Files? (y/N) &lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now if you type the &lt;code&gt;tree&lt;/code&gt; command within your blog's main directory, you should see:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;tree
+.
+├── Makefile
+├── content
+├── develop_server.sh
+├── fabfile.py
+├── output
+├── pelicanconf.py
+└── publishconf.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you don't have &lt;code&gt;tree&lt;/code&gt;, you should! It's neat. &lt;code&gt;brew install tree&lt;/code&gt;. If you're on OSX and don't have &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt;, you should! It's neat.&lt;/p&gt;
+&lt;p&gt;I'll briefly explain each of these files/directories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Makefile&lt;/code&gt; tells the command &lt;code&gt;make&lt;/code&gt; what to do. This file defines commands like &lt;code&gt;make devserver&lt;/code&gt;. More information on &lt;code&gt;make&lt;/code&gt; can be found &lt;a href="http://www.gnu.org/software/make/manual/make.html"&gt;here&lt;/a&gt;. I'll cover more on how to use this command for developing your site in the &lt;strong&gt;Generating Your Site&lt;/strong&gt; section.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;content&lt;/code&gt; is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within &lt;code&gt;content&lt;/code&gt;:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/pages
+&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/images
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this &lt;code&gt;pages&lt;/code&gt; directory and that images are found within the &lt;code&gt;images&lt;/code&gt; directory.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;develop_server.sh&lt;/code&gt; is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;fabfile.py&lt;/code&gt; is a configuration file for &lt;a href="http://docs.fabfile.org/en/1.8/"&gt;Fabric&lt;/a&gt; which allows you to generate your site using the &lt;code&gt;fab&lt;/code&gt; command. You'll need to &lt;code&gt;pip install fabric&lt;/code&gt; if you want to use it. Alternatively you can just use &lt;code&gt;make&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;output&lt;/code&gt; is, by default, where Pelican will store your HTML files when you run &lt;code&gt;pelican content&lt;/code&gt;. This can cause issues which I describe in the section &lt;strong&gt;Posting to GitHub&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pelicanconf.py&lt;/code&gt; houses your Pelican configuration &lt;a href="http://docs.getpelican.com/en/3.3.0/settings.html"&gt;settings&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;publishconf.py&lt;/code&gt; is like &lt;code&gt;pelicanconf.py&lt;/code&gt; in that it houses Pelican configuration settings, but is not intended to be used for local development. The reasoning behind having two separate files is described in &lt;a href="http://stackoverflow.com/a/20845195"&gt;this Stack Overflow answer&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Exporting Existing Content&lt;/h2&gt;
+&lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/"&gt;Export WordPress content to XML&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://docs.getpelican.com/en/3.1.1/importer.html"&gt;Imperfectly convert the XML to Markdown using Pelican&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Manually export your images from your WordPress Media Library (I know. This sucks.) Move these images to &lt;code&gt;content/images&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing).&lt;/li&gt;
+&lt;li&gt;Move your Markdown files to the &lt;code&gt;content&lt;/code&gt; directory within your website's main directory. Content intended to be static pages (i.e. About Me, Contact, etc) should go in the &lt;code&gt;content/pages&lt;/code&gt; directory. Articles/blog posts should go in the &lt;code&gt;content&lt;/code&gt; directory.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Pelican Themes&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Clone the available &lt;a href="https://github.com/getpelican/pelican-themes"&gt;Pelican Themes&lt;/a&gt; into your blog's main directory.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/getpelican/pelican-themes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Choose a theme you'd like to use. Pelican by default comes with the notmyidea and simple themes. Most other themes have a sample image in the pelican-themes repo to help you decide.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;After you've chosen a theme, set the THEME variable in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file to the absolute or relative path to the theme. For example, I'm using the subtle theme and added this line to my &lt;code&gt;pelicanconf.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;pelican-themes/subtle&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This method is better than using &lt;code&gt;pelican-themes&lt;/code&gt; as described &lt;a href="http://docs.getpelican.com/en/3.3.0/pelican-themes.html"&gt;here&lt;/a&gt;, because it ensures that the Pelican HTML output will reflect any changes you make to the theme (without having to re-install the theme by running the &lt;code&gt;pelican-themes&lt;/code&gt; command).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Customization&lt;/h2&gt;
+&lt;p&gt;All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the &lt;code&gt;main.css&lt;/code&gt; file found in your theme's directory. For example, I've made many edits to the file &lt;code&gt;pelican-themes/subtle/static/css/main.css&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. &lt;/p&gt;
+&lt;p&gt;There should also be HTML files that serve as templates for specific types of pages. For example, &lt;code&gt;article.html&lt;/code&gt; defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.&lt;/p&gt;
+&lt;p&gt;If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.&lt;/p&gt;
+&lt;h2&gt;Generating Your Site&lt;/h2&gt;
+&lt;p&gt;Once you have markdown files in your &lt;code&gt;content&lt;/code&gt; folder, navigate to your blog's main directory and run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
+&lt;span class="nv"&gt;$ &lt;/span&gt;make devserver
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;make devserver&lt;/code&gt; does a number of things: first it runs the &lt;code&gt;pelican&lt;/code&gt; command on your &lt;code&gt;content&lt;/code&gt; folder to generate HTML for your site using the theme you specify in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file, and serves your site locally at &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;. &lt;code&gt;make devserver&lt;/code&gt; will also automatically regenerate your site (i.e. run &lt;code&gt;pelican&lt;/code&gt; on &lt;code&gt;content&lt;/code&gt; every time you save a change to a content, configuration, or theme file! Just refresh the page in your browser, and you should immediately see the changes. If this doesn't work, it's probably due to the settings you have in your configuration files (&lt;code&gt;pelicanconf.py&lt;/code&gt;, &lt;code&gt;Makefile&lt;/code&gt;, and/or &lt;code&gt;develop_server.sh&lt;/code&gt;).&lt;/p&gt;
+&lt;h2&gt;Posting to GitHub&lt;/h2&gt;
+&lt;p&gt;Recall that you need a repository on GitHub named &lt;em&gt;username.github.io&lt;/em&gt; (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).&lt;/p&gt;
+&lt;p&gt;It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!&lt;/p&gt;
+&lt;p&gt;However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the &lt;code&gt;output&lt;/code&gt; folder (recall that Pelican by default saves the HTML it generates in this folder).&lt;/p&gt;
+&lt;p&gt;The best solution I've come up with so far (and please email me if you know of a better solution!) is to create two separate repositories - one inside the &lt;code&gt;output&lt;/code&gt; directory where Pelican generates your HTML (this repo should have &lt;em&gt;username.github.io&lt;/em&gt; on GitHub as a remote), and another in your blog's main directory with your source Markdown files (in &lt;code&gt;content&lt;/code&gt;), theme, and configuration files (this repo should have a different remote on GitHub).&lt;/p&gt;
+&lt;p&gt;In the terminal, move to the &lt;code&gt;output&lt;/code&gt; directory, and initialize a git repo. Add a remote pointing to the repo you created on GitHub (called &lt;em&gt;username.github.io&lt;/em&gt;), add all the files you want to commit, commit, and push changes to the remote repository.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output
+&lt;span class="nv"&gt;$ &lt;/span&gt;git init
+&lt;span class="nv"&gt;$ &lt;/span&gt;git remote add origin https://github.com/username/username.github.io.git
+&lt;span class="nv"&gt;$ &lt;/span&gt;git add --all
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -m &lt;span class="s2"&gt;&amp;quot;commit message&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you use this method, you'll want to change the following setting to &lt;code&gt;False&lt;/code&gt; in your &lt;code&gt;publishconf.py&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;DELETE_OUTPUT_DIRECTORY&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Otherwise if you use the &lt;code&gt;publishconf.py&lt;/code&gt; file as your settings file when running the &lt;code&gt;pelican&lt;/code&gt; command, you'll delete your git repo!&lt;/p&gt;
+&lt;p&gt;Similarly, don't use the &lt;code&gt;make clean&lt;/code&gt; command! If you poke around the &lt;code&gt;Makefile&lt;/code&gt;, you'll see that &lt;code&gt;make clean&lt;/code&gt; runs &lt;code&gt;rm -rf output&lt;/code&gt; which will delete all files (including your git repo) in your output folder. &lt;/p&gt;
+&lt;p&gt;If you accidentally delete the repo in your output folder, it's not a &lt;em&gt;huge&lt;/em&gt; deal (I've done it like 5 times playing with different commands and settings). Just clone your remote &lt;em&gt;username.github.io&lt;/em&gt; repo into a new, empty &lt;code&gt;output&lt;/code&gt; folder, re-generate your site with any changes you've made since your last push to the remote, and then commit and push the changes to the remote:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
+&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/username/username.github.io.git output
+&lt;span class="nv"&gt;$ &lt;/span&gt;pelican content
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output
+&lt;span class="nv"&gt;$ &lt;/span&gt;git add --all
+&lt;span class="nv"&gt;$ &lt;/span&gt;git commit -m &lt;span class="s2"&gt;&amp;quot;commit message&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You'll also need to set up another repository for your source content, configuration files, and theme, which is annoying. I added a .gitignore to this repo to ignore the files in the output folder, but that isn't necessary.&lt;/p&gt;
+&lt;p&gt;Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)&lt;/p&gt;
+&lt;h2&gt;Custom Domain Setup&lt;/h2&gt;
+&lt;p&gt;If you have your own domain name that you'd like to use instead of &lt;em&gt;username.github.io&lt;/em&gt;, you'll need to follow &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Fin&lt;/h2&gt;
+&lt;p&gt;Feel free to poke around my blog's &lt;a href="https://github.com/amygdalama/blog-source"&gt;GitHub&lt;/a&gt; &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;repos&lt;/a&gt; (beware: there are unpublished draft posts in there). My configuration files in particular might be useful to you.&lt;/p&gt;
+&lt;p&gt;If any of you Hacker Schoolers have trouble migrating your blog, I'd be happy to help!&lt;/p&gt;</summary><category term="pelican"></category><category term="blogging"></category><category term="wordpress"></category><category term="github pages"></category><category term="markdown"></category><category term="hacker school"></category></entry><entry><title>ipython and pandas are whoa!</title><link href="http://amygdalama.github.io/ipython-and-pandas-are-whoa.html" rel="alternate"></link><updated>2014-02-14T15:52:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-14:ipython-and-pandas-are-whoa.html</id><summary type="html">&lt;p&gt;In my first five months of using Python, I would create .py files and
 then execute them in the terminal, like the loyal follower of &lt;a href="http://learnpythonthehardway.org/book/"&gt;LPTHW&lt;/a&gt;
 that I am. While it's certainly necessary to be able to write Python
 scripts and execute them from the terminal, I've learned that this

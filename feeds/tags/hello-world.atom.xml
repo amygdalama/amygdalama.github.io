@@ -62,4 +62,4 @@
 
 
 &lt;p&gt;Neat! We don't need the &lt;code&gt;"def bar():"&lt;/code&gt; part in the string we pass to &lt;code&gt;compile&lt;/code&gt; because at this point, &lt;code&gt;bar&lt;/code&gt; already exists and we're just overwriting the code in the body of the &lt;code&gt;bar&lt;/code&gt; function.&lt;/p&gt;
-&lt;p&gt;Share in the comments if you know of any other ways to print statements in the Python!&lt;/p&gt;</summary><category term="python"></category><category term="python internals"></category><category term="hello world"></category></entry></feed>
+&lt;p&gt;Share in the comments if you know of any other ways to print statements in the Python!&lt;/p&gt;</summary><category term="python"></category><category term="python internals"></category><category term="hello world"></category><category term="hacker school"></category></entry></feed>

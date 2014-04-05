@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Furrier Transforms: A Journey That Ends In Failure</title>
+        <title>Dissecting Reduce and Lambda Statements</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -35,14 +35,14 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="furrier-transforms-a-journey-that-ends-in-failure.html" rel="bookmark"
-           title="Permalink to Furrier Transforms: A Journey That Ends In Failure">Furrier Transforms: A Journey That Ends In Failure</a></h1>
+        <a href="dissecting-reduce-and-lambda-statements.html" rel="bookmark"
+           title="Permalink to Dissecting Reduce and Lambda Statements">Dissecting Reduce and Lambda Statements</a></h1>
     </header>
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2014-03-16T00:00:00">
-                Sun 16 March 2014
+        <abbr class="published" title="2014-03-29T00:00:00">
+                Sat 29 March 2014
         </abbr>
 
         <address class="vcard author">
@@ -51,11 +51,32 @@
 <p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
 
 
-</footer><!-- /.post-info -->      <p>This is a draft post.</p>
+</footer><!-- /.post-info -->      <p>In Mary's functional programming <a href="http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming">tutorial</a> -- which, let me reiterate, you should read -- there's a mysterious code block:</p>
+<div class="highlight"><pre><span class="n">sum</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
+<span class="n">print</span> <span class="n">sum</span>
+</pre></div>
+
+
+<p>Mary defines what <code>reduce</code> and <code>lambda</code> do:</p>
+<blockquote>
+<p>Reduce takes a function and a collection of items. It returns a value that is created by combining the items.</p>
+<p>[Lambda is] an anonymous, inlined function [...] The parameters of the lambda are defined to the left of the colon. The function body is defined to the right of the colon. The result of running the function body is (implicitly) returned.</p>
+</blockquote>
+<p>That's great and all, but I still don't really understand what's going on.</p>
+<p>A post on what happens to your local variables within a lambda statement.</p>
+<p>Like:</p>
+<div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">locals</span><span class="p">().</span><span class="n">items</span><span class="p">()</span>
+<span class="n">things</span> <span class="o">=</span> <span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="p">]</span> 
+<span class="n">x</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
+</pre></div>
       <p>
     <!-- <p> -->
         tags: 
            <a href="../tag/hacker-school.html">hacker school</a>
+           <a href="../tag/python.html">python</a>
+           <a href="../tag/functional-programming.html">functional programming</a>
+           <a href="../tag/python-internals.html">python internals</a>
     <!-- </p> -->
     
       </p>
@@ -65,7 +86,7 @@
       <h2 class = "other-articles">Comments</h2>
       <div id="disqus_thread"></div>
       <script type="text/javascript">
-        var disqus_identifier = "furrier-transforms-a-journey-that-ends-in-failure.html";
+        var disqus_identifier = "dissecting-reduce-and-lambda-statements.html";
         (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = 'http://mathamy.disqus.com/embed.js';
