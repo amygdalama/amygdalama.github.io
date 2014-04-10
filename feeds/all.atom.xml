@@ -1,5 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/all.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-04-07T00:00:00-04:00</updated><entry><title>Dissecting the Reduce Function</title><link href="http://amygdalama.github.io/dissecting-the-reduce-function.html" rel="alternate"></link><updated>2014-04-07T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-07:dissecting-the-reduce-function.html</id><summary type="html">&lt;p&gt;Good morning, &lt;a href="http://www.vice.com/columns/good-morning-sinners-with-warren-ellis"&gt;sinners&lt;/a&gt;. Today we're going to figure out what the hell is going on inside a Python expression like:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/all.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-04-10T00:00:00-04:00</updated><entry><title>Python Closures and Free Variables</title><link href="http://amygdalama.github.io/python-closures-and-free-variables.html" rel="alternate"></link><updated>2014-04-10T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-10:python-closures-and-free-variables.html</id><summary type="html">&lt;p&gt;Today, friends, we will continue to dissect functional programming concepts in Python. We're going to try to figure out what the hell is going on in this chunk of code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;make_contains_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;s&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;What happens when we pass &lt;code&gt;make_contains_function&lt;/code&gt; a string?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;make_contains_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt; &lt;span class="nx"&gt;at&lt;/span&gt; &lt;span class="mh"&gt;0x10a1e2cf8&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We get a function! Whoa. A function that returns a function. Cool. Let's assign this returned function a name and try to use it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;contains_a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;make_contains_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;contains_a&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt; &lt;span class="nx"&gt;at&lt;/span&gt; &lt;span class="mh"&gt;0x10a1e2c80&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;contains_a&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;cat&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="nx"&gt;True&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;contains_a&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bro&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can create a function called &lt;code&gt;contains_a&lt;/code&gt; by calling the &lt;code&gt;make_contains_function&lt;/code&gt; and passing the string &lt;code&gt;'a'&lt;/code&gt; as a parameter. Then, when we pass &lt;code&gt;contains_a&lt;/code&gt; a string, the function returns a boolean representing whether &lt;code&gt;'a'&lt;/code&gt; is in the string or not.&lt;/p&gt;
+&lt;p&gt;Let's look at the original code again and try to understand what it does and why it works:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;make_contains_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;s&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;First let's translate this to English. We're creating a function called &lt;code&gt;make_contains_function&lt;/code&gt;, which takes one parameter, &lt;code&gt;x&lt;/code&gt;. In the body of the &lt;code&gt;make_contains_function&lt;/code&gt;, we create an inner function called &lt;code&gt;contains&lt;/code&gt;, which takes one parameter, &lt;code&gt;s&lt;/code&gt;. The inner function returns &lt;code&gt;x in s&lt;/code&gt;, and then the outer function returns the inner function.&lt;/p&gt;
+&lt;p&gt;But how does &lt;code&gt;contains&lt;/code&gt; have access to &lt;code&gt;x&lt;/code&gt;? Shouldn't that throw a &lt;code&gt;NameError&lt;/code&gt;? Here's my mental model for how Python looks up the value associated with a name of a variable, &lt;code&gt;x&lt;/code&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Check to see if &lt;code&gt;x&lt;/code&gt; is in the &lt;code&gt;locals()&lt;/code&gt; dictionary. If it is, then the value of &lt;code&gt;x&lt;/code&gt; is the value associated with &lt;code&gt;x&lt;/code&gt; in &lt;code&gt;locals()&lt;/code&gt;. i.e.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="n"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Check to see if &lt;code&gt;x&lt;/code&gt; is in the &lt;code&gt;globals()&lt;/code&gt; dictionary. If it is, then the value of &lt;code&gt;x&lt;/code&gt; is the value associated with &lt;code&gt;x&lt;/code&gt; in &lt;code&gt;globals()&lt;/code&gt;. i.e.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="n"&gt;globals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;globals&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Check to see if &lt;code&gt;x&lt;/code&gt; is in the &lt;code&gt;__builtins__.__dict__&lt;/code&gt; dictionary. If it is, then the value of &lt;code&gt;x&lt;/code&gt; is the value associated with &lt;code&gt;x&lt;/code&gt; in &lt;code&gt;__builtins__.__dict__&lt;/code&gt;. i.e.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__dict__&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__dict__&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Otherwise, throw a &lt;code&gt;NameError&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;My mental model for how &lt;code&gt;locals()&lt;/code&gt; works is that it returns all local variables, which are defined in the &lt;em&gt;most narrowly-defined&lt;/em&gt; current scope. In the case of &lt;code&gt;x&lt;/code&gt; in our example, the most narrowly-defined current scope is the function &lt;code&gt;contains&lt;/code&gt;. Since &lt;code&gt;x&lt;/code&gt; isn't assigned a value within the function &lt;code&gt;contains&lt;/code&gt;, &lt;code&gt;locals()&lt;/code&gt; won't contain a value for &lt;code&gt;x&lt;/code&gt; (based on my mental model). &lt;/p&gt;
+&lt;p&gt;My model for how &lt;code&gt;globals()&lt;/code&gt; works is that it returns the variables which are defined at the module-level (i.e. variables which aren't defined within a scope like a function or a class. Since &lt;code&gt;x&lt;/code&gt; is defined within a function, namely within the &lt;code&gt;make_contains_function&lt;/code&gt;, it won't be included in the &lt;code&gt;globals()&lt;/code&gt; dictionary either.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;x&lt;/code&gt; is pretty clearly not defined in &lt;code&gt;__builtins__.__dict__&lt;/code&gt;, because it isn't defined in the &lt;code&gt;builtin&lt;/code&gt; module. (It isn't automatically imported any time you run Python).&lt;/p&gt;
+&lt;p&gt;Poor &lt;code&gt;x&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So is my mental model correct? If it is, we should be getting a &lt;code&gt;NameError&lt;/code&gt; when we execute the &lt;code&gt;contains_a&lt;/code&gt; or &lt;code&gt;contains_b&lt;/code&gt; functions. Since we're not getting a &lt;code&gt;NameError&lt;/code&gt;, something about my mental model must be inaccurate. &lt;/p&gt;
+&lt;p&gt;Shucks.&lt;/p&gt;
+&lt;p&gt;Let's try printing the &lt;code&gt;locals()&lt;/code&gt; within each of the functions in our code block, to see where &lt;code&gt;x&lt;/code&gt; is defined: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;make_contains_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="nx"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Inside make_contains_function&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="nx"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;locals(): &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;             &lt;span class="nx"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Inside contains function&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;             &lt;span class="nx"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;locals(): &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;s&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If my mental model is correct, &lt;code&gt;x&lt;/code&gt; should be returned by &lt;code&gt;locals()&lt;/code&gt; within the &lt;code&gt;make_contains_function&lt;/code&gt;, but not by &lt;code&gt;locals()&lt;/code&gt; within the &lt;code&gt;contains&lt;/code&gt; function. Let's put my model to the test!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;contains_a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;make_contains_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;Inside&lt;/span&gt; &lt;span class="nx"&gt;make_contains_function&lt;/span&gt;
+&lt;span class="nx"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;contains_a&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;cat&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;Inside&lt;/span&gt; &lt;span class="nx"&gt;contains&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;
+&lt;span class="nx"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;s&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;cat&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nx"&gt;True&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Oh! So &lt;code&gt;x&lt;/code&gt; is returned by &lt;code&gt;locals()&lt;/code&gt; inside the &lt;code&gt;contains&lt;/code&gt; function. That's why we don't get a &lt;code&gt;NameError&lt;/code&gt; when we try using &lt;code&gt;x&lt;/code&gt;. My mental model of how &lt;code&gt;locals()&lt;/code&gt; works and what it returns must be wrong. Let's look at the &lt;a href="https://docs.python.org/2/library/functions.html#locals"&gt;documentation&lt;/a&gt; for &lt;code&gt;locals()&lt;/code&gt;: &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Update and return a dictionary representing the current local symbol table. Free variables are returned by &lt;code&gt;locals()&lt;/code&gt; when it is called in function blocks but not in class blocks.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Hm. What is a "free variable"? Does that apply to our situation? I suspect it does. Either that or my definition of a local variable is wrong. Googling "python free variable" brings us to the trusty Python &lt;a href="https://docs.python.org/2/reference/executionmodel.html"&gt;Execution Model&lt;/a&gt; page, which I strongly believe every Python programmer should read and re-read often.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When a name is used in a code block, it is resolved using the nearest enclosing scope. The set of all such scopes visible to a code block is called the block's &lt;em&gt;environment&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;If a name is bound in a block, it is a local variable of that block. If a name is bound at the module level, it is a global variable. (The variables of the module code block are local and global.) If a variable is used in a code block but not defined there, it is a &lt;em&gt;free variable&lt;/em&gt;. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Let's apply this information to our example, and list what we know:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;contains&lt;/code&gt; is a function.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;x&lt;/code&gt; is a free variable in &lt;code&gt;contains&lt;/code&gt;, because it is referenced in &lt;code&gt;contains&lt;/code&gt; but isn't defined there.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Free variables are not local variables.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;However, free variables are returned when calling &lt;code&gt;locals()&lt;/code&gt; within a function block.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Okay! When Python looks up the name &lt;code&gt;x&lt;/code&gt;, it finds a value for it in the &lt;code&gt;locals()&lt;/code&gt; dictionary, even though &lt;code&gt;x&lt;/code&gt; isn't a local variable. My mental model wasn't &lt;em&gt;too&lt;/em&gt; far off. I just need to adjust how I think about how &lt;code&gt;locals()&lt;/code&gt; behaves within functions.  &lt;/p&gt;
+&lt;p&gt;And, so that you understand the title of this post, and so that you can sound smart around other programmers, you should know that a function that uses a &lt;em&gt;free variable&lt;/em&gt; is called a &lt;em&gt;closure&lt;/em&gt;. So, in our example, &lt;code&gt;x&lt;/code&gt; is a &lt;em&gt;free variable&lt;/em&gt; and the function &lt;code&gt;contains&lt;/code&gt; is a &lt;em&gt;closure&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Credit to &lt;a href="https://twitter.com/ballingt"&gt;Tom Ballinger&lt;/a&gt; for the example code block and for intoducing me to &lt;a href="http://www.diveintopython3.net/"&gt;Dive Into Python3&lt;/a&gt;, an excellent read and the inspiration for this post.&lt;/p&gt;</summary><category term="python"></category><category term="python internals"></category><category term="functional programming"></category><category term="closures"></category></entry><entry><title>Dissecting the Reduce Function</title><link href="http://amygdalama.github.io/dissecting-the-reduce-function.html" rel="alternate"></link><updated>2014-04-07T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-07:dissecting-the-reduce-function.html</id><summary type="html">&lt;p&gt;Good morning, &lt;a href="http://www.vice.com/columns/good-morning-sinners-with-warren-ellis"&gt;sinners&lt;/a&gt;. Today we're going to figure out what the hell is going on inside a Python expression like:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
