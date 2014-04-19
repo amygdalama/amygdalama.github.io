@@ -36,11 +36,13 @@
     <h1 class="page-title">Projects</h1>
     <h2>Nagini: Replacing <code>import</code> with <code>accio</code></h2>
 <p>I spent about a week at Hacker School mischievously replacing Python builtin functions and statements with Harry Potter spells. I've named this custom Harry Potter-themed Python Nagini, after Voldemort's snake.</p>
-<p>In order to replace the import statement, I needed to compile an intermediary Python that understood both "import" and "accio" as valid statements and then use that Python to compile another Python that only understood "accio" as a valid statement (rather than "import"). The main modifications to the CPython source code occured in the Grammar files. Here are the two versions of the files:<br />
-<a href="https://github.com/amygdalama/nagini/blob/master/cpython/Grammar/Grammar">Both "accio" and "import" defined as statements</a><br />
-<a href="https://github.com/amygdalama/nagini/blob/master/nagini-python/Grammar/Grammar">Only "accio" defined as a statement</a><br />
-(The relevant lines start at around line 53 in both of those files.)</p>
-<p>I wrote a <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">blog post</a> about this project and the internet loved it * it was on the front page of <a href="https://news.ycombinator.com/item?id=7402620">Hacker News</a> and on Reddit and a bunch of people Tweeted about it. </p>
+<p>In order to replace the import statement, I needed to compile an intermediary Python that understood both "import" and "accio" as valid statements and then use that Python to compile another Python that only understood "accio" as a valid statement (rather than "import"). The main modifications to the CPython source code occured in the Grammar files. Here are the two versions of the files:  </p>
+<ul>
+<li><a href="https://github.com/amygdalama/nagini/blob/master/cpython/Grammar/Grammar">Both "accio" and "import" defined as statements</a>  </li>
+<li><a href="https://github.com/amygdalama/nagini/blob/master/nagini-python/Grammar/Grammar">Only "accio" defined as a statement</a>  </li>
+</ul>
+<p><em>(The relevant lines start at around line 53 in both of those files.)</em></p>
+<p>I wrote a <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">blog post</a> about this project and the internet loved it - it was on the front page of <a href="https://news.ycombinator.com/item?id=7402620">Hacker News</a> and on Reddit and a bunch of people Tweeted about it. </p>
 <p>I also gave a <a href="http://www.slideshare.net/AmyHanlon/replacing-import-with-accio">talk</a> on this project at NYC PyLadies and at Hack and Tell.  </p>
 <p>Things I learned about:</p>
 <ul>
@@ -57,9 +59,11 @@
 <p>I quickly realized that starting with an image of my cat was a bad idea, because I had no way of telling if the sound I created was correct or not. So, I decided to start with an actual spectrogram of an actual sound, and then try to reconstruct the original sound from the spectrogram. Then I could tell if I was even close or not.</p>
 <p>Later I found that this is actually a <a href="http://arxiv.org/abs/1209.2076">"longstanding problem in audio signal processing"</a> and is anything but trivial. So, needless to say, I never "completed" this project. But I think I'm finally okay with that.</p>
 <p>Fair warning: you do not want to listen to any audio files that this program creates. They are wildly unpleasant.</p>
-<p>Things I learned about:
-<em> Fourier Transforms, Additive Synthesis, signal processing, and how sound works in the analog and digital worlds. This was super interesting and fun to learn about!
-</em> numpy, scipy, matplotlib, and ipython notebooks.</p>
+<p>Things I learned about: </p>
+<ul>
+<li>Fourier Transforms, Additive Synthesis, signal processing, and how sound works in the analog and digital worlds. This was super interesting and fun to learn about!</li>
+<li>numpy, scipy, matplotlib, and ipython notebooks.  </li>
+</ul>
 <p>The code for this project is on <a href="https://github.com/amygdalama/furrier-transform">GitHub</a>.</p>
 <h2>Phonebook Command Line Tool</h2>
 <p>A phonebook command line tool, which sounds boring, but it was super interesting to make!</p>
@@ -67,12 +71,12 @@
 <ul>
 <li>Sqlite3 specifically, and databases in general. I had never worked with a database before! I essentially wrote a wrapper for sqlite3 to interact with databases that store phonebook (name and phone number) entries.</li>
 <li>Raising Exceptions. I hadn't really done this before, either!</li>
-<li>Python's argparse module. Whoa * this module is cool. This is the first time I've used it, and it was super interesting! I learned how to create parsers and subparsers, set default values for arguments, and set default functions to execute for each subparser.</li>
+<li>Python's argparse module. Whoa - this module is cool. This is the first time I've used it, and it was super interesting! I learned how to create parsers and subparsers, set default values for arguments, and set default functions to execute for each subparser.</li>
 <li>Tests! I had never written extensive tests before. I learned about Python's unittest and nose modules. I spent a lot of time thinking about how to design my test cases and how to test if any unexpected behavior occurred.</li>
 </ul>
 <p>The code for this project is on <a href="https://github.com/amygdalama/phonebook">GitHub</a>.</p>
 <h2>Weekly Blog</h2>
-<p>I've maintained a slightly-more-frequent-than-weekly <a href="http://mathamy.com/">blog</a> since starting Hacker School. I realized that writing is one of the ways I learn best * explaining things forces me to think very explicitly about them. Often, when I sit down to write a blog post, I realize that I didn't understand the topic as well as I thought, so I put in extra effort to understand the topic very well.</p>
+<p>I've maintained a slightly-more-frequent-than-weekly <a href="http://mathamy.com/">blog</a> since starting Hacker School. I realized that writing is one of the ways I learn best - explaining things forces me to think very explicitly about them. Often, when I sit down to write a blog post, I realize that I didn't understand the topic as well as I thought, so I put in extra effort to understand the topic very well.</p>
 <p>Some posts:</p>
 <ul>
 <li><a href="http://mathamy.com/python-closures-and-free-variables.html">Python Closures and Free Variables</a></li>
@@ -92,7 +96,7 @@ After setting up my new website, I wrote a <a href="http://mathamy.com/migrating
 <li>Pelican, a static site-generator, like Octopress, but written in Python. Static site generators are super rad because they allow you to write posts in Markdown, which brings me to...</li>
 <li>Markdown!</li>
 <li>Git. I can't count how many times I accidentally deleted or corrupted my git repositories for my blog. Because I was really clumsy with Pelican at first, I'd often make horrible, horrible mistakes and then use git to revert changes. The worst was when I thought I merged something gracefully, published my changes, and then found a bunch of "&gt;&gt;&gt; HEAD" marks floating all over my website. At 11pm. But, now. Now I am a master.</li>
-<li>Git hooks, which allows you to run scripts before or after particular git commands. This was super wonderful because I have two separate repos for my blog * one for the content in Markdown and another for the HTML output that Pelican makes. Git hooks allows me to automatically add, commit, and push the output repo to GitHub any time I push the source repo. Super awesome.</li>
+<li>Git hooks, which allows you to run scripts before or after particular git commands. This was super wonderful because I have two separate repos for my blog - one for the content in Markdown and another for the HTML output that Pelican makes. Git hooks allows me to automatically add, commit, and push the output repo to GitHub any time I push the source repo. Super awesome.</li>
 <li>SimpleHTTPServer! I learned about the process of local development, and serving my site locally.</li>
 <li>Jinja, a Python package which handles Pelican's templating.</li>
 <li>CSS and HTML, and how they fit together.</li>
