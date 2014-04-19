@@ -36,7 +36,61 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../dissecting-the-reduce-function.html">Dissecting the Reduce Function</a></h1> 
+                    <h1 class="entry-title"><a href="../introducing-iron-maker-or-forger-or-something.html">Introducing Iron Maker Or Forger Or Something</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-04-19T00:00:00">
+                Sat 19 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p><!-- In <a href="../category/hacker-school.html">Hacker School</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>The end of <a href="https://www.hackerschool.com/">Hacker School</a> is quickly approaching and a thousand kittens are crying tears of sadness!</p>
+<p><img alt="" src="/images/cat-crying.gif" /></p>
+<p>In order to maintain momentum and Never Graduate, I'm challenging myself and some other Hacker Schoolers to complete a programming project once a week for two(?) months.  </p>
+<p>This challenge is inspired by Iron Blogger, which requires participants to blog once a week, and if you miss a week, you owe $5. Mike Walker, from the Fall 2013 batch of Hacker School, <a href="http://blog.lazerwalker.com/blog/2013/12/24/one-post-a-week-running-an-iron-blogger-challenge">wrote extensively</a> about Iron Blogger.  </p>
+<p>The difference with Iron Maker, or Iron Forger, or Iron Something-Clever-That-Will-Hopefully-Come-To-Me-In-The-Near-Future, is that we will be completing small, self-contained programming projects, rather than writing blog posts.  </p>
+<p>Specifically, I want to work on projects that take about 4-8 hours to complete, and center around making, for lack of a better word, a <em>product</em>. </p>
+<h2>Criteria</h2>
+<p>A few days ago, I <a href="https://twitter.com/amygdalama/status/456950130286292992">asked Twitter</a> for project ideas, but I hadn't yet figured out how to explicitly define criteria for what I was looking for. <a href="https://twitter.com/moss">Moss Collum</a> responded with an excellent <a href="http://makingcodespeak.com/2014/04/18/tiny-projects.html">blog post</a>, which includes some defining characteristics of good projects:</p>
+<blockquote>
+<ul>
+<li><strong>Short</strong>: I can see interesting results within a few hours, and some results even sooner.</li>
+<li><strong>End-to-end</strong>: The project produces real software with a user-interface (even if it’s a simple one like a command-line script).</li>
+<li><strong>Expandable</strong>: Once I have some working code, it should be easy to think of new features.</li>
+<li><strong>Variable</strong>: There should be room to change requirements over time in ways that break my assumptions and test my code’s ability to evolve</li>
+<li><strong>Fun</strong>: The problem should be something I can care about enough to stay engaged.</li>
+</ul>
+</blockquote>
+<h2>Purpose</h2>
+<p>These projects are not intended to result in products that people will actually use. Instead, the intention is to get exposure to new tools and concepts and to practice making software design decisions. </p>
+<h2>Suggested Projects</h2>
+<p>I'll be maintaining a <a href="https://github.com/amygdalama/programming-projects">list</a> of suggested projects on GitHub. I'm trying to keep the list short, manageable, and high-quality, so I'm only adding projects that I'm committed to working on, and then for each project I'll be adding details on how long it took and what parts were fun/challenging/easy/boring.</p>
+<p>The repo also contains a list of resources with much more extensive project lists. If I'm missing any good resources, of if you've completed any small projects that have been particularly enlightening, please submit a pull request or create an issue! </p>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="../tag/hacker-school.html">hacker school</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="../introducing-iron-maker-or-forger-or-something.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class= "other-articles">Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="../dissecting-the-reduce-function.html" rel="bookmark" title="Permalink to Dissecting the Reduce Function">Dissecting the Reduce Function</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-07T00:00:00">
                 Mon 07 April 2014
@@ -48,190 +102,30 @@
 <p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>Good morning, <a href="http://www.vice.com/columns/good-morning-sinners-with-warren-ellis">sinners</a>. Today we're going to figure out what the hell is going on inside a Python expression like:</p>
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>Good morning, <a href="http://www.vice.com/columns/good-morning-sinners-with-warren-ellis">sinners</a>. Today we're going to figure out what the hell is going on inside a Python expression like:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
 </pre></div>
 
 
-<p>(What <code>things</code> is doesn't matter too much, as long as it's an iterable. We'll look at a more specific example in a bit.)</p>
-<p>Mary Rose Cook <a href="http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming">defines</a> the <code>reduce</code> function nicely:</p>
-<blockquote>
-<p>Reduce takes a function and a collection of items. It returns a value that is created by combining the items.</p>
-</blockquote>
-<p>Here, the function passed as a parameter to the <code>reduce</code> function is a <code>lambda</code> statement, which Mary also defines:</p>
-<blockquote>
-<p>[A <code>lambda</code> statement is] an anonymous, inlined function [...] The parameters of the <code>lambda</code> are defined to the left of the colon. The function body is defined to the right of the colon. The result of running the function body is (implicitly) returned.</p>
-</blockquote>
-<p>A caveat: our <code>reduce</code> function also takes in a third parameter, the empty string, which I'll discuss in detail later. </p>
-<p>Another caveat: if you're using Python3, <code>reduce</code> is no longer a builtin function. To use it, you'll need to:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">from</span> <span class="n">functools</span> <span class="n">import</span> <span class="n">reduce</span>
-</pre></div>
-
-
-<p>So, how do we better understand what's happening inside this expression?  </p>
-<h2>A Mental Model</h2>
-<p>Let's look at a specific example of our expression and examine a mental model -- which may or may not be correct -- for what's happening to the values of <code>a</code> and <code>x</code> inside the expression.</p>
-<p>I said earlier that <code>things</code> needs to be an iterable. So, presumably, <code>things</code> could be a string. Let's try:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">things</span> <span class="o">=</span> <span class="err">&#39;</span><span class="mo">012</span><span class="err">&#39;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
-<span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">,</span> <span class="sc">&#39;2&#39;</span><span class="p">]</span>
-</pre></div>
-
-
-<p>What's going on in this statement? My (not functional) mental model for how this works is:</p>
-<p>For each <code>x</code> in <code>things</code>, convert <code>x</code> to a list and then append <code>[x]</code> to <code>a</code>, which starts as an empty list on the first iteration (this is because of the third parameter we passed to <code>reduce</code>, which I'll explain later). After each iteration, <code>a</code> grows one element longer (because we're adding whatever <code>[x]</code> is during the iteration to <code>a</code>). Return the result of the last iteration.</p>
-<p>So, the first time we pass <code>a</code> and <code>x</code> through to the <code>lambda</code> statement:</p>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
-  <span class="o">==</span> <span class="sc">&#39;0&#39;</span>
-
-<span class="n">a</span> <span class="o">==</span> <span class="p">[]</span>
-</pre></div>
-
-
-<p>The <code>lambda</code> then implicitly returns the list given by:</p>
-<div class="highlight"><pre><span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="p">[]</span> <span class="o">+</span> <span class="p">[</span><span class="n">things</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> 
-        <span class="o">==</span> <span class="p">[]</span> <span class="o">+</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">]</span> 
-        <span class="o">==</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">]</span>
-</pre></div>
-
-
-<p>The second time we pass <code>a</code> and <code>x</code> to <code>lambda</code>, we have:</p>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
-  <span class="o">==</span> <span class="sc">&#39;1&#39;</span>
-
-<span class="cp"># set `a` to the value the previous step implicitly returned</span>
-<span class="n">a</span> <span class="o">==</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">]</span>
-
-<span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sc">&#39;1&#39;</span><span class="p">]</span> 
-        <span class="o">==</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">]</span>
-</pre></div>
-
-
-<p>For the third and final step, we have:</p>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-  <span class="o">==</span> <span class="sc">&#39;2&#39;</span>
-
-<span class="n">a</span> <span class="o">==</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">]</span>
-
-<span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sc">&#39;2&#39;</span><span class="p">]</span>
-        <span class="o">==</span> <span class="p">[</span><span class="sc">&#39;0&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">,</span> <span class="sc">&#39;2&#39;</span><span class="p">]</span>
-</pre></div>
-
-
-<p>So why did we have to pass <code>[]</code> as the third parameter to <code>reduce</code>? Well, if <code>reduce</code> isn't given a third parameter, for the first iteration it sets <code>a = x</code>, and then jumps to the second iteration. So, in my mental model, the first iteration would look like:</p>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-  <span class="o">==</span> <span class="sc">&#39;0&#39;</span>
-
-<span class="n">a</span> <span class="o">==</span> <span class="n">x</span>
-  <span class="o">==</span> <span class="sc">&#39;0&#39;</span>
-
-<span class="cp"># no calculation of a + [x]</span>
-<span class="cp"># instead, implicitly returns the value of `a`, which is &#39;0&#39;</span>
-</pre></div>
-
-
-<p>And then in the second iteration:</p>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-  <span class="o">==</span> <span class="sc">&#39;1&#39;</span>
-
-<span class="cp"># set `a` to the value implicitly returned from the first iteration</span>
-<span class="n">a</span> <span class="o">==</span> <span class="sc">&#39;0&#39;</span>
-
-<span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;0&#39;</span> <span class="o">+</span> <span class="p">[</span><span class="sc">&#39;1&#39;</span><span class="p">]</span>
-</pre></div>
-
-
-<p>This results in an error because you can't concatenate a string and a list.</p>
-<p>Is my mental model correct? We can tell that the model ultimately returns the same value as the expression, but how can we tell if these are really the values of <code>a</code> and <code>x</code> at each step?</p>
-<h2>Testing the Model</h2>
-<p>We'll need to figure out some clever way of printing or storing the values of <code>a</code> and <code>x</code> at each step. </p>
-<p>Let's recall the original expression:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
-</pre></div>
-
-
-<p>Here we append the value of <code>x</code> to <code>a</code>. Could we also append the value of <code>a</code> itself? Then maybe we could see what <code>a</code> is at each step. Let's try:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="n">a</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="n">x</span><span class="p">}],</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
-</pre></div>
-
-
-<p>There's a lot going on in that expression, so let's break it up:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">things</span> <span class="o">=</span> <span class="err">&#39;</span><span class="mo">012</span><span class="err">&#39;</span>  
-<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="n">a</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="n">x</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">reduce</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
-</pre></div>
-
-
-<p>Let's apply the mental model to help us understand this example. </p>
-<h4>Step 1:</h4>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-  <span class="o">==</span> <span class="sc">&#39;0&#39;</span>
-
-<span class="n">a</span> <span class="o">==</span> <span class="p">[]</span>
-
-<span class="cp"># this step implicitly returns the value:</span>
-<span class="n">a</span> <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="n">a</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="n">x</span><span class="p">}]</span> 
-  <span class="o">==</span> <span class="p">[]</span> <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}]</span>
-  <span class="o">==</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}]</span>
-</pre></div>
-
-
-<h4>Step 2:</h4>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-  <span class="o">==</span> <span class="sc">&#39;1&#39;</span>
-
-<span class="n">a</span> <span class="o">==</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}]</span>
-
-<span class="n">a</span> <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="n">a</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="n">x</span><span class="p">}]</span> 
-  <span class="o">==</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}]</span> <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">}]</span>
-  <span class="o">==</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">}]</span>
-</pre></div>
-
-
-<h4>Step 3:</h4>
-<div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-  <span class="o">==</span> <span class="sc">&#39;2&#39;</span>
-
-<span class="n">a</span> <span class="o">==</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">}]</span>
-
-<span class="n">a</span> <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="n">a</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="n">x</span><span class="p">}]</span> 
-    <span class="o">==</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">}]</span>
-        <span class="o">+</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;2&#39;</span><span class="p">}]</span>
-    <span class="o">==</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span> 
-        <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">},</span>
-        <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;2&#39;</span><span class="p">}]</span>
-</pre></div>
-
-
-<p>This is pretty complicated and difficult to read. You might want to write out the steps for yourself. I did (obviously). And I screwed it up the first few times.</p>
-<p>Let's see if our result from step 3 is the same as what Python evaluates for our expression:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span>
-<span class="p">...</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">},</span>
-<span class="p">...</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[{</span><span class="sc">&#39;a&#39;</span> <span class="o">:</span> <span class="p">[],</span> <span class="sc">&#39;x&#39;</span> <span class="o">:</span> <span class="sc">&#39;0&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;1&#39;</span><span class="p">}],</span> <span class="sc">&#39;x&#39;</span><span class="o">:</span> <span class="sc">&#39;2&#39;</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">answer</span> <span class="o">==</span> <span class="n">result</span>
-<span class="n">True</span>
-</pre></div>
-
-
-<p>Victory! But what does this mean? </p>
-<h2>Wait what were we trying to do again?</h2>
-<p>We've been attempting to understand what happens inside a <code>reduce</code> function. We developed a mental model for what happens to the values of <code>a</code> and <code>x</code> at each iteration, and we came up with a way to test to see if the mental model was accurate. And it was!</p>
-<p>I think this might be one of those posts that is less about what I intended it to be about (dissecting the <code>reduce</code> function) and more about the approach I would take to accomplish what I intended it to be about. Meta, sinners.</p>
-                    <p>    <!-- <p> -->
+<p>(What <code>things</code> is doesn't matter too much, as long as it's an iterable. We'll look at a more specific ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="../tag/hacker-school.html">hacker school</a>
            <a href="../tag/python.html">python</a>
            <a href="../tag/functional-programming.html">functional programming</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="../dissecting-the-reduce-function.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class= "other-articles">Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="../dissecting-the-reduce-function.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="../dissecting-the-reduce-function.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
         
 
  
@@ -589,49 +483,6 @@ scripts and execute them from the terminal, I've learned ...</p>
                 <!-- <a class="readmore" href="../ipython-and-pandas-are-whoa.html">read more</a> -->
             </p>
                 <!-- <p>There are probably no <a href="../ipython-and-pandas-are-whoa.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
-        
-
- 
-            <li><article class="hentry">    
-                <header>
-                        <h1><a href="../hacker-school-day-2-goals.html" rel="bookmark" title="Permalink to Hacker School Day 2: Goals! Or, A Grasp For Sanity">Hacker School Day 2: Goals! Or, A Grasp For Sanity</a></h1>
-                </header>
-                
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-02-12T10:02:00">
-                Wed 12 February 2014
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
-<p><!-- In <a href="../category/hacker-school.html">Hacker School</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <div class="entry-summary">
-                    <p>I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
-collaborate on I felt a bit like:</p>
-<p><img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/allthetennisballs.gif" /></p>
-<p><em>(Credit to Hacker School alumnus Alex Beaulne for finding this perfect
-gif.)</em></p>
-<p>In an attempt to regain ...</p>
-                </div>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="../tag/github.html">github</a>
-           <a href="../tag/hacker-school.html">hacker school</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="../hacker-school-day-2-goals.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="../hacker-school-day-2-goals.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
 <p class="paginator">

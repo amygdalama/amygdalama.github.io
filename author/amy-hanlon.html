@@ -36,7 +36,61 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../python-closures-and-free-variables.html">Python Closures and Free Variables</a></h1> 
+                    <h1 class="entry-title"><a href="../introducing-iron-maker-or-forger-or-something.html">Introducing Iron Maker Or Forger Or Something</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-04-19T00:00:00">
+                Sat 19 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p><!-- In <a href="../category/hacker-school.html">Hacker School</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>The end of <a href="https://www.hackerschool.com/">Hacker School</a> is quickly approaching and a thousand kittens are crying tears of sadness!</p>
+<p><img alt="" src="/images/cat-crying.gif" /></p>
+<p>In order to maintain momentum and Never Graduate, I'm challenging myself and some other Hacker Schoolers to complete a programming project once a week for two(?) months.  </p>
+<p>This challenge is inspired by Iron Blogger, which requires participants to blog once a week, and if you miss a week, you owe $5. Mike Walker, from the Fall 2013 batch of Hacker School, <a href="http://blog.lazerwalker.com/blog/2013/12/24/one-post-a-week-running-an-iron-blogger-challenge">wrote extensively</a> about Iron Blogger.  </p>
+<p>The difference with Iron Maker, or Iron Forger, or Iron Something-Clever-That-Will-Hopefully-Come-To-Me-In-The-Near-Future, is that we will be completing small, self-contained programming projects, rather than writing blog posts.  </p>
+<p>Specifically, I want to work on projects that take about 4-8 hours to complete, and center around making, for lack of a better word, a <em>product</em>. </p>
+<h2>Criteria</h2>
+<p>A few days ago, I <a href="https://twitter.com/amygdalama/status/456950130286292992">asked Twitter</a> for project ideas, but I hadn't yet figured out how to explicitly define criteria for what I was looking for. <a href="https://twitter.com/moss">Moss Collum</a> responded with an excellent <a href="http://makingcodespeak.com/2014/04/18/tiny-projects.html">blog post</a>, which includes some defining characteristics of good projects:</p>
+<blockquote>
+<ul>
+<li><strong>Short</strong>: I can see interesting results within a few hours, and some results even sooner.</li>
+<li><strong>End-to-end</strong>: The project produces real software with a user-interface (even if it’s a simple one like a command-line script).</li>
+<li><strong>Expandable</strong>: Once I have some working code, it should be easy to think of new features.</li>
+<li><strong>Variable</strong>: There should be room to change requirements over time in ways that break my assumptions and test my code’s ability to evolve</li>
+<li><strong>Fun</strong>: The problem should be something I can care about enough to stay engaged.</li>
+</ul>
+</blockquote>
+<h2>Purpose</h2>
+<p>These projects are not intended to result in products that people will actually use. Instead, the intention is to get exposure to new tools and concepts and to practice making software design decisions. </p>
+<h2>Suggested Projects</h2>
+<p>I'll be maintaining a <a href="https://github.com/amygdalama/programming-projects">list</a> of suggested projects on GitHub. I'm trying to keep the list short, manageable, and high-quality, so I'm only adding projects that I'm committed to working on, and then for each project I'll be adding details on how long it took and what parts were fun/challenging/easy/boring.</p>
+<p>The repo also contains a list of resources with much more extensive project lists. If I'm missing any good resources, of if you've completed any small projects that have been particularly enlightening, please submit a pull request or create an issue! </p>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="../tag/hacker-school.html">hacker school</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="../introducing-iron-maker-or-forger-or-something.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class= "other-articles">Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="../python-closures-and-free-variables.html" rel="bookmark" title="Permalink to Python Closures and Free Variables">Python Closures and Free Variables</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-10T00:00:00">
                 Thu 10 April 2014
@@ -48,7 +102,8 @@
 <p><!-- In <a href="../category/python-internals.html">Python Internals</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>Today, friends, we will continue to dissect functional programming concepts in Python. We're going to try to figure out what the hell is going on in this chunk of code:</p>
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>Today, friends, we will continue to dissect functional programming concepts in Python. We're going to try to figure out what the hell is going on in this chunk of code:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
 <span class="p">...</span>     <span class="nx">def</span> <span class="nx">contains</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">:</span>
 <span class="p">...</span>             <span class="k">return</span> <span class="nx">x</span> <span class="k">in</span> <span class="nx">s</span>
@@ -57,122 +112,10 @@
 </pre></div>
 
 
-<p>What happens when we pass <code>make_contains_function</code> a string?</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="o">&lt;</span><span class="kd">function</span> <span class="nx">contains</span> <span class="nx">at</span> <span class="mh">0x10a1e2cf8</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p>We get a function! Whoa. A function that returns a function. Cool. Let's assign this returned function a name and try to use it:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span> <span class="o">=</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span>
-<span class="o">&lt;</span><span class="kd">function</span> <span class="nx">contains</span> <span class="nx">at</span> <span class="mh">0x10a1e2c80</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span><span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">)</span> 
-<span class="nx">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span><span class="p">(</span><span class="s1">&#39;bro&#39;</span><span class="p">)</span>
-<span class="nx">False</span>
-</pre></div>
-
-
-<p>We can create a function called <code>contains_a</code> by calling the <code>make_contains_function</code> and passing the string <code>'a'</code> as a parameter. Then, when we pass <code>contains_a</code> a string, the function returns a boolean representing whether <code>'a'</code> is in the string or not.</p>
-<p>Let's look at the original code again and try to understand what it does and why it works:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>     <span class="nx">def</span> <span class="nx">contains</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>             <span class="k">return</span> <span class="nx">x</span> <span class="k">in</span> <span class="nx">s</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="nx">contains</span>
-<span class="p">...</span>
-</pre></div>
-
-
-<p>First let's translate this to English. We're creating a function called <code>make_contains_function</code>, which takes one parameter, <code>x</code>. In the body of the <code>make_contains_function</code>, we create an inner function called <code>contains</code>, which takes one parameter, <code>s</code>. The inner function returns <code>x in s</code>, and then the outer function returns the inner function.</p>
-<p>But how does <code>contains</code> have access to <code>x</code>? Shouldn't that throw a <code>NameError</code>? Here's my mental model for how Python looks up the value associated with a name of a variable, <code>x</code>:</p>
-<ol>
-<li>
-<p>Check to see if <code>x</code> is in the <code>locals()</code> dictionary. If it is, then the value of <code>x</code> is the value associated with <code>x</code> in <code>locals()</code>. i.e.:</p>
-<div class="highlight"><pre><span class="k">if</span> <span class="n">x</span> <span class="n">in</span> <span class="n">locals</span><span class="p">()</span><span class="o">:</span>
-    <span class="k">return</span> <span class="n">locals</span><span class="p">()[</span><span class="n">x</span><span class="p">]</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>Check to see if <code>x</code> is in the <code>globals()</code> dictionary. If it is, then the value of <code>x</code> is the value associated with <code>x</code> in <code>globals()</code>. i.e.:</p>
-<div class="highlight"><pre><span class="n">elif</span> <span class="n">x</span> <span class="n">in</span> <span class="n">globals</span><span class="p">()</span><span class="o">:</span>
-    <span class="k">return</span> <span class="n">globals</span><span class="p">()[</span><span class="n">x</span><span class="p">]</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>Check to see if <code>x</code> is in the <code>__builtins__.__dict__</code> dictionary. If it is, then the value of <code>x</code> is the value associated with <code>x</code> in <code>__builtins__.__dict__</code>. i.e.:</p>
-<div class="highlight"><pre><span class="n">elif</span> <span class="n">x</span> <span class="n">in</span> <span class="n">__builtins__</span><span class="p">.</span><span class="n">__dict__</span><span class="o">:</span>
-    <span class="k">return</span> <span class="n">__builtins__</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>Otherwise, throw a <code>NameError</code>.</p>
-</li>
-</ol>
-<p>My mental model for how <code>locals()</code> works is that it returns all local variables, which are defined in the <em>most narrowly-defined</em> current scope. In the case of <code>x</code> in our example, the most narrowly-defined current scope is the function <code>contains</code>. Since <code>x</code> isn't assigned a value within the function <code>contains</code>, <code>locals()</code> won't contain a value for <code>x</code> (based on my mental model). </p>
-<p>My model for how <code>globals()</code> works is that it returns the variables which are defined at the module-level (i.e. variables which aren't defined within a scope like a function or a class. Since <code>x</code> is defined within a function, namely within the <code>make_contains_function</code>, it won't be included in the <code>globals()</code> dictionary either.</p>
-<p><code>x</code> is pretty clearly not defined in <code>__builtins__.__dict__</code>, because it isn't defined in the <code>builtin</code> module. (It isn't automatically imported any time you run Python).</p>
-<p>Poor <code>x</code>.</p>
-<p>So is my mental model correct? If it is, we should be getting a <code>NameError</code> when we execute the <code>contains_a</code> or <code>contains_b</code> functions. Since we're not getting a <code>NameError</code>, something about my mental model must be inaccurate. </p>
-<p>Shucks.</p>
-<p>Let's try printing the <code>locals()</code> within each of the functions in our code block, to see where <code>x</code> is defined: </p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>     <span class="nx">print</span> <span class="s2">&quot;Inside make_contains_function&quot;</span>
-<span class="p">...</span>     <span class="nx">print</span> <span class="s2">&quot;locals(): &quot;</span><span class="p">,</span> <span class="nx">locals</span><span class="p">()</span>
-<span class="p">...</span>     <span class="nx">def</span> <span class="nx">contains</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>             <span class="nx">print</span> <span class="s2">&quot;Inside contains function&quot;</span>
-<span class="p">...</span>             <span class="nx">print</span> <span class="s2">&quot;locals(): &quot;</span><span class="p">,</span> <span class="nx">locals</span><span class="p">()</span>
-<span class="p">...</span>             <span class="k">return</span> <span class="nx">x</span> <span class="k">in</span> <span class="nx">s</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="nx">contains</span>
-<span class="p">...</span>
-</pre></div>
-
-
-<p>If my mental model is correct, <code>x</code> should be returned by <code>locals()</code> within the <code>make_contains_function</code>, but not by <code>locals()</code> within the <code>contains</code> function. Let's put my model to the test!</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span> <span class="o">=</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="nx">Inside</span> <span class="nx">make_contains_function</span>
-<span class="nx">locals</span><span class="p">()</span><span class="o">:</span>  <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="o">:</span> <span class="s1">&#39;a&#39;</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span><span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">)</span>
-<span class="nx">Inside</span> <span class="nx">contains</span> <span class="kd">function</span>
-<span class="nx">locals</span><span class="p">()</span><span class="o">:</span>  <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="o">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="o">:</span> <span class="s1">&#39;cat&#39;</span><span class="p">}</span>
-<span class="nx">True</span>
-</pre></div>
-
-
-<p>Oh! So <code>x</code> is returned by <code>locals()</code> inside the <code>contains</code> function. That's why we don't get a <code>NameError</code> when we try using <code>x</code>. My mental model of how <code>locals()</code> works and what it returns must be wrong. Let's look at the <a href="https://docs.python.org/2/library/functions.html#locals">documentation</a> for <code>locals()</code>: </p>
-<blockquote>
-<p>Update and return a dictionary representing the current local symbol table. Free variables are returned by <code>locals()</code> when it is called in function blocks but not in class blocks.</p>
-</blockquote>
-<p>Hm. What is a "free variable"? Does that apply to our situation? I suspect it does. Either that or my definition of a local variable is wrong. Googling "python free variable" brings us to the trusty Python <a href="https://docs.python.org/2/reference/executionmodel.html">Execution Model</a> page, which I strongly believe every Python programmer should read and re-read often.</p>
-<blockquote>
-<p>When a name is used in a code block, it is resolved using the nearest enclosing scope. The set of all such scopes visible to a code block is called the block's <em>environment</em>.</p>
-<p>If a name is bound in a block, it is a local variable of that block. If a name is bound at the module level, it is a global variable. (The variables of the module code block are local and global.) If a variable is used in a code block but not defined there, it is a <em>free variable</em>. </p>
-</blockquote>
-<p>Let's apply this information to our example, and list what we know:</p>
-<ol>
-<li>
-<p><code>contains</code> is a function.  </p>
-</li>
-<li>
-<p><code>x</code> is a free variable in <code>contains</code>, because it is referenced in <code>contains</code> but isn't defined there.  </p>
-</li>
-<li>
-<p>Free variables are not local variables.  </p>
-</li>
-<li>
-<p>However, free variables are returned when calling <code>locals()</code> within a function block.  </p>
-</li>
-</ol>
-<p>Okay! When Python looks up the name <code>x</code>, it finds a value for it in the <code>locals()</code> dictionary, even though <code>x</code> isn't a local variable. My mental model wasn't <em>too</em> far off. I just need to adjust how I think about how <code>locals()</code> behaves within functions.  </p>
-<p>And, so that you understand the title of this post, and so that you can sound smart around other programmers, you should know that a function that uses a <em>free variable</em> is called a <em>closure</em>. So, in our example, <code>x</code> is a <em>free variable</em> and the function <code>contains</code> is a <em>closure</em>.</p>
-<p>Credit to <a href="https://twitter.com/ballingt">Tom Ballinger</a> for the example code block and for intoducing me to <a href="http://www.diveintopython3.net/">Dive Into Python3</a>, an excellent read and the inspiration for this post.</p>
-                    <p>    <!-- <p> -->
+<p>What happens when we pass <code>make_contains_function</code> a ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="../tag/python.html">python</a>
            <a href="../tag/python-internals.html">python internals</a>
@@ -180,13 +123,14 @@
            <a href="../tag/closures.html">closures</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="../python-closures-and-free-variables.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class= "other-articles">Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="../python-closures-and-free-variables.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="../python-closures-and-free-variables.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
         
 
  
@@ -543,51 +487,6 @@
                 <!-- <a class="readmore" href="../migrating-to-github-pages-using-pelican.html">read more</a> -->
             </p>
                 <!-- <p>There are probably no <a href="../migrating-to-github-pages-using-pelican.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
-        
-
- 
-            <li><article class="hentry">    
-                <header>
-                        <h1><a href="../ipython-and-pandas-are-whoa.html" rel="bookmark" title="Permalink to ipython and pandas are whoa!">ipython and pandas are whoa!</a></h1>
-                </header>
-                
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-02-14T15:52:00">
-                Fri 14 February 2014
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
-<p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <div class="entry-summary">
-                    <p>In my first five months of using Python, I would create .py files and
-then execute them in the terminal, like the loyal follower of <a href="http://learnpythonthehardway.org/book/">LPTHW</a>
-that I am. While it's certainly necessary to be able to write Python
-scripts and execute them from the terminal, I've learned ...</p>
-                </div>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="../tag/data-analysis.html">data analysis</a>
-           <a href="../tag/hacker-school.html">hacker school</a>
-           <a href="../tag/ipython.html">ipython</a>
-           <a href="../tag/matplotlib.html">matplotlib</a>
-           <a href="../tag/pandas.html">pandas</a>
-           <a href="../tag/python.html">python</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="../ipython-and-pandas-are-whoa.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="../ipython-and-pandas-are-whoa.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
 <p class="paginator">
