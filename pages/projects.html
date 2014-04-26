@@ -35,44 +35,45 @@
 <section id="content" class="body">    
     <h1 class="page-title">Projects</h1>
     <h2>Nagini: Replacing <code>import</code> with <code>accio</code></h2>
-<p>I spent about a week at Hacker School mischievously replacing Python builtin functions and statements with Harry Potter spells. I've named this custom Harry Potter-themed Python Nagini, after Voldemort's snake.</p>
-<p>In order to replace the import statement, I needed to compile an intermediary Python that understood both "import" and "accio" as valid statements and then use that Python to compile another Python that only understood "accio" as a valid statement (rather than "import"). The main modifications to the CPython source code occured in the Grammar files. Here are the two versions of the files:  </p>
+<p>I spent about a week at Hacker School mischievously replacing Python builtin functions and statements with Harry Potter spells. I created a custom Harry Potter-themed Python that I named Nagini, after Voldemort's snake.</p>
+<p>Replacing functions was fairly easy - you can do it in the REPL! However, replacing import was not as easy, because import is a statement. </p>
+<p>To replace import with "accio", a Harry Potter spell, I compiled an intermediary Python that understood both "import" and "accio" as valid statements and then used that Python to compile another Python that only understood "accio" as a valid statement. Yes, I compiled a Python to compile a Python! The main modifications that I made to the CPython source code was in the Grammar files. Here are the two versions of the files:
+Both "accio" and "import" defined as statements: https://github.com/amygdalama/nagini/tree/master/intermediary-python
+Only "accio": https://github.com/amygdalama/nagini/blob/master/nagini-python/Grammar/Grammar
+(The relevant lines start at around line 53 in both of those files.)</p>
+<p>I wrote a <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">blog post</a> about this project and the internet loved it! It was on the front page of Hacker News! And on Reddit! And a bunch of people Tweeted about it! </p>
+<p>I also gave a <a href="http://www.slideshare.net/AmyHanlon/replacing-import-with-accio">talk</a> on this project at PyLadies and at Hack and Tell. </p>
+<h4>Things I learned about:</h4>
 <ul>
-<li><a href="https://github.com/amygdalama/nagini/blob/master/cpython/Grammar/Grammar">Both "accio" and "import" defined as statements</a>  </li>
-<li><a href="https://github.com/amygdalama/nagini/blob/master/nagini-python/Grammar/Grammar">Only "accio" defined as a statement</a>  </li>
-</ul>
-<p><em>(The relevant lines start at around line 53 in both of those files.)</em></p>
-<p>I wrote a <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">blog post</a> about this project and the internet loved it - it was on the front page of <a href="https://news.ycombinator.com/item?id=7402620">Hacker News</a> and on Reddit and a bunch of people Tweeted about it. </p>
-<p>I also gave a <a href="http://www.slideshare.net/AmyHanlon/replacing-import-with-accio">talk</a> on this project at NYC PyLadies and at Hack and Tell.  </p>
-<p>Things I learned about:</p>
-<ul>
-<li>CPython source code, in general. I'm fairly comfortable with its organization and structure.</li>
-<li>Python Grammar file, specifically. The Grammar file is where valid Python statements are defined. I had to edit this file a couple of times in order to replace the import statement with "accio", a Harry Potter spell, which is one letter shorter, so strictly better, than "import".</li>
-<li>Compilers and bootstrapping. In order to change Python's Grammar, I needed to compile a Python to compile a Python. This was really interesting! Much credit goes to Allison Kaptur for helping me figure this out. </li>
-<li>Mercurial. I had never used Mercurial before! I still don't know a whole lot about it, but I now have it set up on my computer and can clone repositories and change branches.</li>
+<li>CPython source code, in general. </li>
+<li>Python Grammar file, specifically. The Grammar file is where valid Python statements are defined. I had to edit this file a couple of times in order to replace the import statement with "accio", which is one letter shorter, so strictly better.</li>
+<li>Compiling and bootstrapping. In order to remove a statement (import) from Python, I needed to compile a Python to compile a Python. This was really interesting! Much credit goes to Allison Kaptur for helping me figure this out. </li>
+<li>Mercurial. I can now do simple things like clone repositories and change branches.</li>
 <li>PYTHONSTARTUP. This is an environment variable that you can use to make Python scripts execute automatically any time the Python interpreter is run. I use this to run a Python script that replaces a bunch of builtin functions with Harry Potter spells any time I run nagini.</li>
 <li>Bash and Unix. I learned about Unix environments, the <code>sed</code> command, symlinks, and executables.</li>
 </ul>
+<p>Collaborators: <a href="http://akaptur.github.io/">Allison Kaptur</a></p>
 <p>The code for this project is on <a href="https://github.com/amygdalama/nagini">GitHub</a>.</p>
 <h2>Furrier Transform: Converting a picture of my cat to sound</h2>
 <p>This was an attempt at creating a sound from an image of my cat. The idea was that, since a spectrogram is an "image" representation of a sound, an arbitrary image could be interpreted as a spectrogram of a sound. With that assumption, I attempted to create a sound that would have the spectrogram of an image of my cat.</p>
 <p>I quickly realized that starting with an image of my cat was a bad idea, because I had no way of telling if the sound I created was correct or not. So, I decided to start with an actual spectrogram of an actual sound, and then try to reconstruct the original sound from the spectrogram. Then I could tell if I was even close or not.</p>
-<p>Later I found that this is actually a <a href="http://arxiv.org/abs/1209.2076">"longstanding problem in audio signal processing"</a> and is anything but trivial. So, needless to say, I never "completed" this project. But I think I'm finally okay with that.</p>
+<p>Later I found that this is actually a <a href="http://arxiv.org/abs/1209.2076">"longstanding problem in audio signal processing"</a> and is anything but trivial. So, needless to say, I never "completed" this project. But I think I'm finally okay with that!</p>
 <p>Fair warning: you do not want to listen to any audio files that this program creates. They are wildly unpleasant.</p>
-<p>Things I learned about: </p>
+<h4>Things I learned about:</h4>
 <ul>
 <li>Fourier Transforms, Additive Synthesis, signal processing, and how sound works in the analog and digital worlds. This was super interesting and fun to learn about!</li>
-<li>numpy, scipy, matplotlib, and ipython notebooks.  </li>
+<li>numpy, scipy, matplotlib, and ipython notebooks.</li>
 </ul>
+<p>Collaborators: Andreas Dewes, David Dalrymple, Robert P. Sokolowski, Sean Patrick Murphy</p>
 <p>The code for this project is on <a href="https://github.com/amygdalama/furrier-transform">GitHub</a>.</p>
 <h2>Phonebook Command Line Tool</h2>
-<p>A phonebook command line tool, which sounds boring, but it was super interesting to make!</p>
-<p>Things I learned about:</p>
+<p>A phonebook command line tool, which was super interesting to make!</p>
+<h4>Things I learned about:</h4>
 <ul>
-<li>Sqlite3 specifically, and databases in general. I had never worked with a database before! I essentially wrote a wrapper for sqlite3 to interact with databases that store phonebook (name and phone number) entries.</li>
-<li>Raising Exceptions. I hadn't really done this before, either!</li>
-<li>Python's argparse module. Whoa - this module is cool. This is the first time I've used it, and it was super interesting! I learned how to create parsers and subparsers, set default values for arguments, and set default functions to execute for each subparser.</li>
-<li>Tests! I had never written extensive tests before. I learned about Python's unittest and nose modules. I spent a lot of time thinking about how to design my test cases and how to test if any unexpected behavior occurred.</li>
+<li>Sqlite3 specifically, and databases in general. </li>
+<li>Raising Exceptions. </li>
+<li>Python's argparse module. Whoa - this module is cool. I learned how to create parsers and subparsers, set default values for arguments, and set default functions to execute for each subparser.</li>
+<li>Tests! I learned about Python's unittest and nose modules. I spent a lot of time thinking about how to design my test cases and how to test if any unexpected behavior occurred.</li>
 </ul>
 <p>The code for this project is on <a href="https://github.com/amygdalama/phonebook">GitHub</a>.</p>
 <h2>Weekly Blog</h2>
@@ -91,7 +92,7 @@
 <h2>Personal Website</h2>
 <p>I entered the batch with a simple Wordpress blog and quickly realized that I could not stand formatting code blocks in Wordpress's editor. Plus Wordpress is so <em>boring</em>. So I made a static site hosted on GitHub Pages.
 After setting up my new website, I wrote a <a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html">blog post</a> on how I did it, and was able to help a bunch of other Hacker Schoolers who wanted a similar setup.</p>
-<p>Things I learned about:</p>
+<h4>Things I learned about:</h4>
 <ul>
 <li>Pelican, a static site-generator, like Octopress, but written in Python. Static site generators are super rad because they allow you to write posts in Markdown, which brings me to...</li>
 <li>Markdown!</li>
@@ -102,7 +103,37 @@ After setting up my new website, I wrote a <a href="http://mathamy.com/migrating
 <li>CSS and HTML, and how they fit together.</li>
 <li>Chrome's lovely "Inspect Element" tool. What would I do without you.</li>
 </ul>
+<p>Here's the repo containing my source content, customized theme, and configuration files: https://github.com/amygdalama/blog-source</p>
+<p>Collaborators: Carl Vogel, Robert Lord</p>
 <p><a href="https://github.com/amygdalama/blog-source">Here</a>'s the repo containing my source content, customized theme, and configuration files.</p>
+<h2>Iron Forger</h2>
+<p>After Hacker School, I'm running a weekly "make a product or you owe $5 to a charity" challenge called <a href="http://mathamy.com/introducing-iron-maker-or-forger-or-something.html">Iron Forger</a>.</p>
+<p>To help facilitate the challenge, Rose Ames and I are making a Flask App with MongoDB. It's quite skeletal at the moment, but eventually the website will have the following features:</p>
+<p>Proposals</p>
+<ul>
+<li>a proposal submit page</li>
+<li>a voting page, where users can choose their favorite proposed projects weekly (winning proposals will be chosen as the suggested project for that week)</li>
+<li>discussion pages for each proposal, where users can ask questions and give feedback</li>
+</ul>
+<p>Projects</p>
+<ul>
+<li>a page for each weekly project, where users can post a link to their project on GitHub</li>
+</ul>
+<p>Users</p>
+<ul>
+<li>registration, with Hacker School OAuth (hopefully)</li>
+<li>a page per user, with links to that user's projects on GitHub</li>
+</ul>
+<h4>Things I'm learning about:</h4>
+<ul>
+<li>The Internet! Webservers! HTTP requests and responses!</li>
+<li>Design! And <em>planning</em>! We're answering questions like "What pages do we need? How should they be organized? What information do we need to store in our database?"</li>
+<li>Flask</li>
+<li>MongoDB</li>
+<li>Jinja (again)</li>
+<li>Heroku</li>
+</ul>
+<p>Collaborators: Rose Ames</p>
 </section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
