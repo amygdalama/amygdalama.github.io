@@ -113,14 +113,15 @@
 <p>Guess what, nerds! We kind of just did a <a href="http://en.wikipedia.org/wiki/Proof_by_contradiction">proof by contradiction</a>!</p>
 <p>So then what really happens when we define default values for arguments? Let's see if we can figure out where the default values are stored.</p>
 <p>My usual go-to for questions like this is Python internals whiz and Hacker School Facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, but you can also find the answer with a bit of <a href="https://www.google.com/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=python%20mutable%20default%20arguments">googling</a>. </p>
-<p>So, without further ado, what actually happens when we define a default argument is that the value of the argument gets stored inside the function's <code>func_defaults</code> method. Let's look back at the <code>foo</code> function:</p>
+<p>So, without further ado, what actually happens when we define a default argument in Python 2.x is that the value of the argument gets stored inside the function's <code>func_defaults</code> method. (In 3.x, the values are stored in the <code>__defaults__</code> method.) </p>
+<p>Let's look back at the <code>foo</code> function:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
 <span class="p">...</span>     <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
 <span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
 </pre></div>
 
 
-<p>We can access <code>foo</code>'s <code>func_defaults</code> like so:</p>
+<p>In Python 2.x, we can access <code>foo</code>'s <code>func_defaults</code> like so:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
 <span class="p">([],)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
