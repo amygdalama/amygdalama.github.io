@@ -68,7 +68,7 @@
 
 
 <p>Whoa! So mutating <code>l</code> actually mutates it for all future calls to the function. Weird.</p>
-<p>This means that the <code>[]</code> object is <em>only created once</em>, and each time we call <code>foo</code> without a argument, <code>l</code> is referring to that same object. This may lead you to form a hypothesis: <code>l=[]</code> is kind of like a name-binding statement that executes only once, when the function is defined. </p>
+<p>This means that the <code>[]</code> object is <em>only created once</em>, and each time we call <code>foo</code> without an argument, <code>l</code> is referring to that same object. This may lead you to form a hypothesis: <code>l=[]</code> is kind of like a name-binding statement that executes only once, when the function is defined. </p>
 <p>But, if that hypothesis is true, then how should we expect the following function to behave?</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
 <span class="p">...</span>     <span class="n">print</span> <span class="n">locals</span><span class="p">()</span>
@@ -170,7 +170,7 @@
 </ul>
 </li>
 <li><code>bar</code> is called the first time:<ul>
-<li>since we didn't pass in a value for <code>l</code> as a argument, Python looks in the <code>func_defaults</code> for the value to bind to the name <code>l</code>, and grabs the <code>[]</code> object that we created when we defined <code>bar</code></li>
+<li>since we didn't pass in a value for <code>l</code> as an argument, Python looks in the <code>func_defaults</code> for the value to bind to the name <code>l</code>, and grabs the <code>[]</code> object that we created when we defined <code>bar</code></li>
 <li><code>locals()</code> returns <code>{l : []}</code></li>
 <li>we reassign <code>l</code> to <code>['cat']</code> within the scope of <code>bar</code>. Since this is a reassignment, this doesn't modify the <code>[]</code> object contained in <code>func_defaults</code>. Instead, <code>l</code> is just bound to a different object in memory.</li>
 <li><code>['cat']</code> is returned</li>

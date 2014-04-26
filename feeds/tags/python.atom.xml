@@ -16,7 +16,7 @@
 
 
 &lt;p&gt;Whoa! So mutating &lt;code&gt;l&lt;/code&gt; actually mutates it for all future calls to the function. Weird.&lt;/p&gt;
-&lt;p&gt;This means that the &lt;code&gt;[]&lt;/code&gt; object is &lt;em&gt;only created once&lt;/em&gt;, and each time we call &lt;code&gt;foo&lt;/code&gt; without a argument, &lt;code&gt;l&lt;/code&gt; is referring to that same object. This may lead you to form a hypothesis: &lt;code&gt;l=[]&lt;/code&gt; is kind of like a name-binding statement that executes only once, when the function is defined. &lt;/p&gt;
+&lt;p&gt;This means that the &lt;code&gt;[]&lt;/code&gt; object is &lt;em&gt;only created once&lt;/em&gt;, and each time we call &lt;code&gt;foo&lt;/code&gt; without an argument, &lt;code&gt;l&lt;/code&gt; is referring to that same object. This may lead you to form a hypothesis: &lt;code&gt;l=[]&lt;/code&gt; is kind of like a name-binding statement that executes only once, when the function is defined. &lt;/p&gt;
 &lt;p&gt;But, if that hypothesis is true, then how should we expect the following function to behave?&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[])&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
 &lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -118,7 +118,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;code&gt;bar&lt;/code&gt; is called the first time:&lt;ul&gt;
-&lt;li&gt;since we didn't pass in a value for &lt;code&gt;l&lt;/code&gt; as a argument, Python looks in the &lt;code&gt;func_defaults&lt;/code&gt; for the value to bind to the name &lt;code&gt;l&lt;/code&gt;, and grabs the &lt;code&gt;[]&lt;/code&gt; object that we created when we defined &lt;code&gt;bar&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;since we didn't pass in a value for &lt;code&gt;l&lt;/code&gt; as an argument, Python looks in the &lt;code&gt;func_defaults&lt;/code&gt; for the value to bind to the name &lt;code&gt;l&lt;/code&gt;, and grabs the &lt;code&gt;[]&lt;/code&gt; object that we created when we defined &lt;code&gt;bar&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;locals()&lt;/code&gt; returns &lt;code&gt;{l : []}&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;we reassign &lt;code&gt;l&lt;/code&gt; to &lt;code&gt;['cat']&lt;/code&gt; within the scope of &lt;code&gt;bar&lt;/code&gt;. Since this is a reassignment, this doesn't modify the &lt;code&gt;[]&lt;/code&gt; object contained in &lt;code&gt;func_defaults&lt;/code&gt;. Instead, &lt;code&gt;l&lt;/code&gt; is just bound to a different object in memory.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;['cat']&lt;/code&gt; is returned&lt;/li&gt;
