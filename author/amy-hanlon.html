@@ -36,7 +36,188 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../introducing-iron-maker-or-forger-or-something.html">Introducing Iron Maker Or Forger Or Something</a></h1> 
+                    <h1 class="entry-title"><a href="../python-wats-mutable-default-arguments.html">Python Wats: Mutable Default Arguments</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-04-25T00:00:00">
+                Fri 25 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p><!-- In <a href="../category/python.html">Python</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>Let's look at a common Python <a href="https://www.destroyallsoftware.com/talks/wat">wat</a> and try to figure out wat's actually happening!  </p>
+<p>We'll define a function, <code>foo</code>, which takes one argument, <code>l</code>, which has the default value of an empty list.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>What happens when we call <code>foo</code> multiple times?</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Whoa! So mutating <code>l</code> actually mutates it for all future calls to the function. Weird.</p>
+<p>This means that the <code>[]</code> object is <em>only created once</em>, and each time we call <code>foo</code> without a argument, <code>l</code> is referring to that same object. This may lead you to form a hypothesis: <code>l=[]</code> is kind of like a name-binding statement that executes only once, when the function is defined. </p>
+<p>But, if that hypothesis is true, then how should we expect the following function to behave?</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">print</span> <span class="n">locals</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+<span class="p">...</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="cp"># ?</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="cp"># ?</span>
+</pre></div>
+
+
+<p>Well, if <code>l=[]</code> is <em>like a name-binding statement that executes only once</em> when the function is defined, then I would expect something like this sequence of events to happen, when we define <code>bar</code> and then call it twice:</p>
+<ol>
+<li><code>bar</code> is defined<ul>
+<li>the name <code>l</code> is bound to the object <code>[]</code></li>
+</ul>
+</li>
+<li><code>bar</code> is called the first time:<ul>
+<li><code>locals()</code> should return <code>{l : []}</code></li>
+<li>then we reassign <code>l</code> to <code>['cat']</code> within the scope of <code>bar</code></li>
+<li><code>bar</code> should return <code>['cat']</code></li>
+</ul>
+</li>
+<li><code>bar</code> is called again:<ul>
+<li><code>l=[]</code> is not executed (based on our assumption)</li>
+<li><code>locals()</code> should either return <code>{}</code> or <code>{l : ['cat']}</code>, depending on if the assignment of <code>l = ['cat']</code> persists after the function is called the first time</li>
+<li><code>bar</code> should return <code>['cat']</code></li>
+</ul>
+</li>
+</ol>
+<p>What actually happens?</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Hrm. This behavior reasonably leads us to believe that the assignment <code>l=[]</code> happens <em>each time we call the function <code>bar</code></em>. But in <code>foo</code>, <code>l=[]</code> can't be a statement that executes each time the function is called, or else we'd create a new <code>[]</code> each time. </p>
+<p>If we assume <code>l=[]</code> executes like a name-binding statement, then it must execute either (1) only once when the function is defined, or (2) each time the function is called. In <code>foo</code>, it only executes once, but in <code>bar</code>, it executes every time we call <code>bar</code>. That just can't be. So our assumption that <code>l=[]</code> executes like a name-binding statement leads to a contradiction, and thus must be wrong! </p>
+<p>Guess what, nerds! We kind of just did a <a href="http://en.wikipedia.org/wiki/Proof_by_contradiction">proof by contradiction</a>!</p>
+<p>So then what really happens when we define default values for arguments? Let's see if we can figure out where the default values are stored.</p>
+<p>My usual go-to for questions like this is Python internals whiz and Hacker School Facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, but you can also find the answer with a bit of <a href="https://www.google.com/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=python%20mutable%20default%20arguments">googling</a>. </p>
+<p>So, without further ado, what actually happens when we define a default argument is that the value of the argument gets stored inside the function's <code>func_defaults</code> method. Let's look back at the <code>foo</code> function:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>We can access <code>foo</code>'s <code>func_defaults</code> like so:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([],)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">],)</span>
+</pre></div>
+
+
+<p>Aha! So the actual object that is being stored as the default for <code>foo</code> is being modified when we call <code>foo</code>! For fun, let's see if we can mutate the default value from outside of the function:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">],)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Eep! That was fun. So what's in the <code>func_defaults</code> of <code>bar</code>? Recall:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">print</span> <span class="n">locals</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>And then:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([],)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">.</span><span class="n">func_defaults</span> 
+<span class="p">([],)</span>
+</pre></div>
+
+
+<p>Okay! So since <code>bar</code> <em>reassigns</em> <code>l</code> to <code>['cat']</code>, it doesn't modify the object stored in <code>func_defaults</code>.</p>
+<p>So what have we learned?</p>
+<p>It appears as if the following happens when we define and call <code>bar</code>:</p>
+<ol>
+<li><code>bar</code> is defined<ul>
+<li>the object <code>[]</code> is created and stored in the <code>func_defaults</code> tuple</li>
+</ul>
+</li>
+<li><code>bar</code> is called the first time:<ul>
+<li>since we didn't pass in a value for <code>l</code> as a argument, Python looks in the <code>func_defaults</code> for the value to bind to the name <code>l</code>, and grabs the <code>[]</code> object that we created when we defined <code>bar</code></li>
+<li><code>locals()</code> returns <code>{l : []}</code></li>
+<li>we reassign <code>l</code> to <code>['cat']</code> within the scope of <code>bar</code>. Since this is a reassignment, this doesn't modify the <code>[]</code> object contained in <code>func_defaults</code>. Instead, <code>l</code> is just bound to a different object in memory.</li>
+<li><code>['cat']</code> is returned</li>
+</ul>
+</li>
+<li><code>bar</code> is called again:<ul>
+<li>since we didn't modify the <code>[]</code> object the first time we called <code>bar</code>, the same series of events happens as in step 2!</li>
+</ul>
+</li>
+</ol>
+<p>I should probably also mention something more useful: a common way of setting a default value to an empty list (and having it actually work as expected) is to do the following:</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">baz</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="n">None</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">if</span> <span class="n">not</span> <span class="n">l</span><span class="o">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>When we call <code>baz</code> multiple times, its behavior is more expected:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baz</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">baz</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Cool! Wat conquered. We should collect badges for all the wats we've battled and overcome.</p>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="../tag/python.html">python</a>
+           <a href="../tag/python-internals.html">python internals</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="../python-wats-mutable-default-arguments.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class= "other-articles">Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="../introducing-iron-maker-or-forger-or-something.html" rel="bookmark" title="Permalink to Introducing Iron Maker Or Forger Or Something">Introducing Iron Maker Or Forger Or Something</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-19T00:00:00">
                 Sat 19 April 2014
@@ -48,40 +229,26 @@
 <p><!-- In <a href="../category/hacker-school.html">Hacker School</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>The end of <a href="https://www.hackerschool.com/">Hacker School</a> is quickly approaching and a thousand kittens are crying tears of sadness!</p>
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>The end of <a href="https://www.hackerschool.com/">Hacker School</a> is quickly approaching and a thousand kittens are crying tears of sadness!</p>
 <p><img alt="" src="/images/cat-crying.gif" /></p>
 <p>In order to maintain momentum and Never Graduate, I'm challenging myself and some other Hacker Schoolers to complete a programming project once a week for two(?) months.  </p>
-<p>This challenge is inspired by Iron Blogger, which requires participants to blog once a week, and if you miss a week, you owe $5. Mike Walker, from the Fall 2013 batch of Hacker School, <a href="http://blog.lazerwalker.com/blog/2013/12/24/one-post-a-week-running-an-iron-blogger-challenge">wrote extensively</a> about Iron Blogger.  </p>
-<p>The difference with Iron Maker, or Iron Forger, or Iron Something-Clever-That-Will-Hopefully-Come-To-Me-In-The-Near-Future, is that we will be completing small, self-contained programming projects, rather than writing blog posts.  </p>
-<p>Specifically, I want to work on projects that take about 4-8 hours to complete, and center around making, for lack of a better word, a <em>product</em>. </p>
-<h2>Criteria</h2>
-<p>A few days ago, I <a href="https://twitter.com/amygdalama/status/456950130286292992">asked Twitter</a> for project ideas, but I hadn't yet figured out how to explicitly define criteria for what I was looking for. <a href="https://twitter.com/moss">Moss Collum</a> responded with an excellent <a href="http://makingcodespeak.com/2014/04/18/tiny-projects.html">blog post</a>, which includes some defining characteristics of good projects:</p>
-<blockquote>
-<ul>
-<li><strong>Short</strong>: I can see interesting results within a few hours, and some results even sooner.</li>
-<li><strong>End-to-end</strong>: The project produces real software with a user-interface (even if it’s a simple one like a command-line script).</li>
-<li><strong>Expandable</strong>: Once I have some working code, it should be easy to think of new features.</li>
-<li><strong>Variable</strong>: There should be room to change requirements over time in ways that break my assumptions and test my code’s ability to evolve</li>
-<li><strong>Fun</strong>: The problem should be something I can care about enough to stay engaged.</li>
-</ul>
-</blockquote>
-<h2>Purpose</h2>
-<p>These projects are not intended to result in products that people will actually use. Instead, the intention is to get exposure to new tools and concepts and to practice making software design decisions. </p>
-<h2>Suggested Projects</h2>
-<p>I'll be maintaining a <a href="https://github.com/amygdalama/programming-projects">list</a> of suggested projects on GitHub. I'm trying to keep the list short, manageable, and high-quality, so I'm only adding projects that I'm committed to working on, and then for each project I'll be adding details on how long it took and what parts were fun/challenging/easy/boring.</p>
-<p>The repo also contains a list of resources with much more extensive project lists. If I'm missing any good resources, of if you've completed any small projects that have been particularly enlightening, please submit a pull request or create an issue! </p>
-                    <p>    <!-- <p> -->
+<p>This challenge is inspired by ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="../tag/hacker-school.html">hacker school</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="../introducing-iron-maker-or-forger-or-something.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class= "other-articles">Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="../introducing-iron-maker-or-forger-or-something.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="../introducing-iron-maker-or-forger-or-something.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
         
 
  
@@ -445,48 +612,6 @@
                 <!-- <a class="readmore" href="../how-should-i-learn-programming.html">read more</a> -->
             </p>
                 <!-- <p>There are probably no <a href="../how-should-i-learn-programming.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
-        
-
- 
-            <li><article class="hentry">    
-                <header>
-                        <h1><a href="../migrating-to-github-pages-using-pelican.html" rel="bookmark" title="Permalink to Migrating to GitHub Pages using Pelican">Migrating to GitHub Pages using Pelican</a></h1>
-                </header>
-                
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-02-22T00:00:00">
-                Sat 22 February 2014
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
-<p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <div class="entry-summary">
-                    <p>Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (<a href="http://pages.github.com/">GitHub Pages</a>) and attempting to learn enough CSS and <a href="http://jinja.pocoo.org/">Jinja</a> to handle setting up my site using <a href="http://docs.getpelican.com/en/3.3.0/">Pelican</a>. I have no experience with CSS! And my ...</p>
-                </div>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="../tag/pelican.html">pelican</a>
-           <a href="../tag/blogging.html">blogging</a>
-           <a href="../tag/wordpress.html">wordpress</a>
-           <a href="../tag/github-pages.html">github pages</a>
-           <a href="../tag/markdown.html">markdown</a>
-           <a href="../tag/hacker-school.html">hacker school</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="../migrating-to-github-pages-using-pelican.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="../migrating-to-github-pages-using-pelican.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
 <p class="paginator">

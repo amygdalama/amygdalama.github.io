@@ -36,7 +36,188 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../python-closures-and-free-variables.html">Python Closures and Free Variables</a></h1> 
+                    <h1 class="entry-title"><a href="../python-wats-mutable-default-arguments.html">Python Wats: Mutable Default Arguments</a></h1> 
+<footer class="post-info">
+        <abbr class="published" title="2014-04-25T00:00:00">
+                Fri 25 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
+        </address>
+<p><!-- In <a href="../category/python.html">Python</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>Let's look at a common Python <a href="https://www.destroyallsoftware.com/talks/wat">wat</a> and try to figure out wat's actually happening!  </p>
+<p>We'll define a function, <code>foo</code>, which takes one argument, <code>l</code>, which has the default value of an empty list.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>What happens when we call <code>foo</code> multiple times?</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Whoa! So mutating <code>l</code> actually mutates it for all future calls to the function. Weird.</p>
+<p>This means that the <code>[]</code> object is <em>only created once</em>, and each time we call <code>foo</code> without a argument, <code>l</code> is referring to that same object. This may lead you to form a hypothesis: <code>l=[]</code> is kind of like a name-binding statement that executes only once, when the function is defined. </p>
+<p>But, if that hypothesis is true, then how should we expect the following function to behave?</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">print</span> <span class="n">locals</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+<span class="p">...</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="cp"># ?</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="cp"># ?</span>
+</pre></div>
+
+
+<p>Well, if <code>l=[]</code> is <em>like a name-binding statement that executes only once</em> when the function is defined, then I would expect something like this sequence of events to happen, when we define <code>bar</code> and then call it twice:</p>
+<ol>
+<li><code>bar</code> is defined<ul>
+<li>the name <code>l</code> is bound to the object <code>[]</code></li>
+</ul>
+</li>
+<li><code>bar</code> is called the first time:<ul>
+<li><code>locals()</code> should return <code>{l : []}</code></li>
+<li>then we reassign <code>l</code> to <code>['cat']</code> within the scope of <code>bar</code></li>
+<li><code>bar</code> should return <code>['cat']</code></li>
+</ul>
+</li>
+<li><code>bar</code> is called again:<ul>
+<li><code>l=[]</code> is not executed (based on our assumption)</li>
+<li><code>locals()</code> should either return <code>{}</code> or <code>{l : ['cat']}</code>, depending on if the assignment of <code>l = ['cat']</code> persists after the function is called the first time</li>
+<li><code>bar</code> should return <code>['cat']</code></li>
+</ul>
+</li>
+</ol>
+<p>What actually happens?</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Hrm. This behavior reasonably leads us to believe that the assignment <code>l=[]</code> happens <em>each time we call the function <code>bar</code></em>. But in <code>foo</code>, <code>l=[]</code> can't be a statement that executes each time the function is called, or else we'd create a new <code>[]</code> each time. </p>
+<p>If we assume <code>l=[]</code> executes like a name-binding statement, then it must execute either (1) only once when the function is defined, or (2) each time the function is called. In <code>foo</code>, it only executes once, but in <code>bar</code>, it executes every time we call <code>bar</code>. That just can't be. So our assumption that <code>l=[]</code> executes like a name-binding statement leads to a contradiction, and thus must be wrong! </p>
+<p>Guess what, nerds! We kind of just did a <a href="http://en.wikipedia.org/wiki/Proof_by_contradiction">proof by contradiction</a>!</p>
+<p>So then what really happens when we define default values for arguments? Let's see if we can figure out where the default values are stored.</p>
+<p>My usual go-to for questions like this is Python internals whiz and Hacker School Facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, but you can also find the answer with a bit of <a href="https://www.google.com/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=python%20mutable%20default%20arguments">googling</a>. </p>
+<p>So, without further ado, what actually happens when we define a default argument is that the value of the argument gets stored inside the function's <code>func_defaults</code> method. Let's look back at the <code>foo</code> function:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>We can access <code>foo</code>'s <code>func_defaults</code> like so:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([],)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">],)</span>
+</pre></div>
+
+
+<p>Aha! So the actual object that is being stored as the default for <code>foo</code> is being modified when we call <code>foo</code>! For fun, let's see if we can mutate the default value from outside of the function:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">],)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Eep! That was fun. So what's in the <code>func_defaults</code> of <code>bar</code>? Recall:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">print</span> <span class="n">locals</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>And then:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">.</span><span class="n">func_defaults</span>
+<span class="p">([],)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
+<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">.</span><span class="n">func_defaults</span> 
+<span class="p">([],)</span>
+</pre></div>
+
+
+<p>Okay! So since <code>bar</code> <em>reassigns</em> <code>l</code> to <code>['cat']</code>, it doesn't modify the object stored in <code>func_defaults</code>.</p>
+<p>So what have we learned?</p>
+<p>It appears as if the following happens when we define and call <code>bar</code>:</p>
+<ol>
+<li><code>bar</code> is defined<ul>
+<li>the object <code>[]</code> is created and stored in the <code>func_defaults</code> tuple</li>
+</ul>
+</li>
+<li><code>bar</code> is called the first time:<ul>
+<li>since we didn't pass in a value for <code>l</code> as a argument, Python looks in the <code>func_defaults</code> for the value to bind to the name <code>l</code>, and grabs the <code>[]</code> object that we created when we defined <code>bar</code></li>
+<li><code>locals()</code> returns <code>{l : []}</code></li>
+<li>we reassign <code>l</code> to <code>['cat']</code> within the scope of <code>bar</code>. Since this is a reassignment, this doesn't modify the <code>[]</code> object contained in <code>func_defaults</code>. Instead, <code>l</code> is just bound to a different object in memory.</li>
+<li><code>['cat']</code> is returned</li>
+</ul>
+</li>
+<li><code>bar</code> is called again:<ul>
+<li>since we didn't modify the <code>[]</code> object the first time we called <code>bar</code>, the same series of events happens as in step 2!</li>
+</ul>
+</li>
+</ol>
+<p>I should probably also mention something more useful: a common way of setting a default value to an empty list (and having it actually work as expected) is to do the following:</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">baz</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="n">None</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">if</span> <span class="n">not</span> <span class="n">l</span><span class="o">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">l</span>
+</pre></div>
+
+
+<p>When we call <code>baz</code> multiple times, its behavior is more expected:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baz</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">baz</span><span class="p">()</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Cool! Wat conquered. We should collect badges for all the wats we've battled and overcome.</p>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="../tag/python.html">python</a>
+           <a href="../tag/python-internals.html">python internals</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="../python-wats-mutable-default-arguments.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class= "other-articles">Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="../python-closures-and-free-variables.html" rel="bookmark" title="Permalink to Python Closures and Free Variables">Python Closures and Free Variables</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-10T00:00:00">
                 Thu 10 April 2014
@@ -48,7 +229,8 @@
 <p><!-- In <a href="../category/python-internals.html">Python Internals</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>Today, friends, we will continue to dissect functional programming concepts in Python. We're going to try to figure out what the hell is going on in this chunk of code:</p>
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>Today, friends, we will continue to dissect functional programming concepts in Python. We're going to try to figure out what the hell is going on in this chunk of code:</p>
 <div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
 <span class="p">...</span>     <span class="nx">def</span> <span class="nx">contains</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">:</span>
 <span class="p">...</span>             <span class="k">return</span> <span class="nx">x</span> <span class="k">in</span> <span class="nx">s</span>
@@ -57,122 +239,10 @@
 </pre></div>
 
 
-<p>What happens when we pass <code>make_contains_function</code> a string?</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="o">&lt;</span><span class="kd">function</span> <span class="nx">contains</span> <span class="nx">at</span> <span class="mh">0x10a1e2cf8</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p>We get a function! Whoa. A function that returns a function. Cool. Let's assign this returned function a name and try to use it:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span> <span class="o">=</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span>
-<span class="o">&lt;</span><span class="kd">function</span> <span class="nx">contains</span> <span class="nx">at</span> <span class="mh">0x10a1e2c80</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span><span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">)</span> 
-<span class="nx">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span><span class="p">(</span><span class="s1">&#39;bro&#39;</span><span class="p">)</span>
-<span class="nx">False</span>
-</pre></div>
-
-
-<p>We can create a function called <code>contains_a</code> by calling the <code>make_contains_function</code> and passing the string <code>'a'</code> as a parameter. Then, when we pass <code>contains_a</code> a string, the function returns a boolean representing whether <code>'a'</code> is in the string or not.</p>
-<p>Let's look at the original code again and try to understand what it does and why it works:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>     <span class="nx">def</span> <span class="nx">contains</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>             <span class="k">return</span> <span class="nx">x</span> <span class="k">in</span> <span class="nx">s</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="nx">contains</span>
-<span class="p">...</span>
-</pre></div>
-
-
-<p>First let's translate this to English. We're creating a function called <code>make_contains_function</code>, which takes one parameter, <code>x</code>. In the body of the <code>make_contains_function</code>, we create an inner function called <code>contains</code>, which takes one parameter, <code>s</code>. The inner function returns <code>x in s</code>, and then the outer function returns the inner function.</p>
-<p>But how does <code>contains</code> have access to <code>x</code>? Shouldn't that throw a <code>NameError</code>? Here's my mental model for how Python looks up the value associated with a name of a variable, <code>x</code>:</p>
-<ol>
-<li>
-<p>Check to see if <code>x</code> is in the <code>locals()</code> dictionary. If it is, then the value of <code>x</code> is the value associated with <code>x</code> in <code>locals()</code>. i.e.:</p>
-<div class="highlight"><pre><span class="k">if</span> <span class="n">x</span> <span class="n">in</span> <span class="n">locals</span><span class="p">()</span><span class="o">:</span>
-    <span class="k">return</span> <span class="n">locals</span><span class="p">()[</span><span class="n">x</span><span class="p">]</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>Check to see if <code>x</code> is in the <code>globals()</code> dictionary. If it is, then the value of <code>x</code> is the value associated with <code>x</code> in <code>globals()</code>. i.e.:</p>
-<div class="highlight"><pre><span class="n">elif</span> <span class="n">x</span> <span class="n">in</span> <span class="n">globals</span><span class="p">()</span><span class="o">:</span>
-    <span class="k">return</span> <span class="n">globals</span><span class="p">()[</span><span class="n">x</span><span class="p">]</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>Check to see if <code>x</code> is in the <code>__builtins__.__dict__</code> dictionary. If it is, then the value of <code>x</code> is the value associated with <code>x</code> in <code>__builtins__.__dict__</code>. i.e.:</p>
-<div class="highlight"><pre><span class="n">elif</span> <span class="n">x</span> <span class="n">in</span> <span class="n">__builtins__</span><span class="p">.</span><span class="n">__dict__</span><span class="o">:</span>
-    <span class="k">return</span> <span class="n">__builtins__</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>Otherwise, throw a <code>NameError</code>.</p>
-</li>
-</ol>
-<p>My mental model for how <code>locals()</code> works is that it returns all local variables, which are defined in the <em>most narrowly-defined</em> current scope. In the case of <code>x</code> in our example, the most narrowly-defined current scope is the function <code>contains</code>. Since <code>x</code> isn't assigned a value within the function <code>contains</code>, <code>locals()</code> won't contain a value for <code>x</code> (based on my mental model). </p>
-<p>My model for how <code>globals()</code> works is that it returns the variables which are defined at the module-level (i.e. variables which aren't defined within a scope like a function or a class. Since <code>x</code> is defined within a function, namely within the <code>make_contains_function</code>, it won't be included in the <code>globals()</code> dictionary either.</p>
-<p><code>x</code> is pretty clearly not defined in <code>__builtins__.__dict__</code>, because it isn't defined in the <code>builtin</code> module. (It isn't automatically imported any time you run Python).</p>
-<p>Poor <code>x</code>.</p>
-<p>So is my mental model correct? If it is, we should be getting a <code>NameError</code> when we execute the <code>contains_a</code> or <code>contains_b</code> functions. Since we're not getting a <code>NameError</code>, something about my mental model must be inaccurate. </p>
-<p>Shucks.</p>
-<p>Let's try printing the <code>locals()</code> within each of the functions in our code block, to see where <code>x</code> is defined: </p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>     <span class="nx">print</span> <span class="s2">&quot;Inside make_contains_function&quot;</span>
-<span class="p">...</span>     <span class="nx">print</span> <span class="s2">&quot;locals(): &quot;</span><span class="p">,</span> <span class="nx">locals</span><span class="p">()</span>
-<span class="p">...</span>     <span class="nx">def</span> <span class="nx">contains</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>             <span class="nx">print</span> <span class="s2">&quot;Inside contains function&quot;</span>
-<span class="p">...</span>             <span class="nx">print</span> <span class="s2">&quot;locals(): &quot;</span><span class="p">,</span> <span class="nx">locals</span><span class="p">()</span>
-<span class="p">...</span>             <span class="k">return</span> <span class="nx">x</span> <span class="k">in</span> <span class="nx">s</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="nx">contains</span>
-<span class="p">...</span>
-</pre></div>
-
-
-<p>If my mental model is correct, <code>x</code> should be returned by <code>locals()</code> within the <code>make_contains_function</code>, but not by <code>locals()</code> within the <code>contains</code> function. Let's put my model to the test!</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span> <span class="o">=</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="nx">Inside</span> <span class="nx">make_contains_function</span>
-<span class="nx">locals</span><span class="p">()</span><span class="o">:</span>  <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="o">:</span> <span class="s1">&#39;a&#39;</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nx">contains_a</span><span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">)</span>
-<span class="nx">Inside</span> <span class="nx">contains</span> <span class="kd">function</span>
-<span class="nx">locals</span><span class="p">()</span><span class="o">:</span>  <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="o">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="o">:</span> <span class="s1">&#39;cat&#39;</span><span class="p">}</span>
-<span class="nx">True</span>
-</pre></div>
-
-
-<p>Oh! So <code>x</code> is returned by <code>locals()</code> inside the <code>contains</code> function. That's why we don't get a <code>NameError</code> when we try using <code>x</code>. My mental model of how <code>locals()</code> works and what it returns must be wrong. Let's look at the <a href="https://docs.python.org/2/library/functions.html#locals">documentation</a> for <code>locals()</code>: </p>
-<blockquote>
-<p>Update and return a dictionary representing the current local symbol table. Free variables are returned by <code>locals()</code> when it is called in function blocks but not in class blocks.</p>
-</blockquote>
-<p>Hm. What is a "free variable"? Does that apply to our situation? I suspect it does. Either that or my definition of a local variable is wrong. Googling "python free variable" brings us to the trusty Python <a href="https://docs.python.org/2/reference/executionmodel.html">Execution Model</a> page, which I strongly believe every Python programmer should read and re-read often.</p>
-<blockquote>
-<p>When a name is used in a code block, it is resolved using the nearest enclosing scope. The set of all such scopes visible to a code block is called the block's <em>environment</em>.</p>
-<p>If a name is bound in a block, it is a local variable of that block. If a name is bound at the module level, it is a global variable. (The variables of the module code block are local and global.) If a variable is used in a code block but not defined there, it is a <em>free variable</em>. </p>
-</blockquote>
-<p>Let's apply this information to our example, and list what we know:</p>
-<ol>
-<li>
-<p><code>contains</code> is a function.  </p>
-</li>
-<li>
-<p><code>x</code> is a free variable in <code>contains</code>, because it is referenced in <code>contains</code> but isn't defined there.  </p>
-</li>
-<li>
-<p>Free variables are not local variables.  </p>
-</li>
-<li>
-<p>However, free variables are returned when calling <code>locals()</code> within a function block.  </p>
-</li>
-</ol>
-<p>Okay! When Python looks up the name <code>x</code>, it finds a value for it in the <code>locals()</code> dictionary, even though <code>x</code> isn't a local variable. My mental model wasn't <em>too</em> far off. I just need to adjust how I think about how <code>locals()</code> behaves within functions.  </p>
-<p>And, so that you understand the title of this post, and so that you can sound smart around other programmers, you should know that a function that uses a <em>free variable</em> is called a <em>closure</em>. So, in our example, <code>x</code> is a <em>free variable</em> and the function <code>contains</code> is a <em>closure</em>.</p>
-<p>Credit to <a href="https://twitter.com/ballingt">Tom Ballinger</a> for the example code block and for intoducing me to <a href="http://www.diveintopython3.net/">Dive Into Python3</a>, an excellent read and the inspiration for this post.</p>
-                    <p>    <!-- <p> -->
+<p>What happens when we pass <code>make_contains_function</code> a ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="../tag/python.html">python</a>
            <a href="../tag/python-internals.html">python internals</a>
@@ -180,13 +250,14 @@
            <a href="../tag/closures.html">closures</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="../python-closures-and-free-variables.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class= "other-articles">Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="../python-closures-and-free-variables.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="../python-closures-and-free-variables.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
         
 
  
@@ -551,50 +622,9 @@ from one of my clients.</p>
                 <!-- <p>There are probably no <a href="../using-pymc-to-analyze-ab-testing-data.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
-
- 
-            <li><article class="hentry">    
-                <header>
-                        <h1><a href="../homebrew-path-pythonpath.html" rel="bookmark" title="Permalink to wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH">wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</a></h1>
-                </header>
-                
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-12-02T21:48:00">
-                Mon 02 December 2013
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
-<p><!-- In <a href="../category/little-eureka-moments.html">Little Eureka Moments</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <div class="entry-summary">
-                    <p>About a week ago, I installed <a href="http://brew.sh/">Homebrew</a> on my OSX, mostly because I wanted to use Unix's <code>wget</code> command (It's like Unix's <a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter">accio</a>! <code>wget horcrux</code>. <code>wget firebolt</code>.)</p>
-<p>Unfortunately, doing so installed a new version of python on my machine and switched the <code>PATH</code> and <code>PYTHONPATH</code> away from ...</p>
-                </div>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="../tag/anaconda.html">anaconda</a>
-           <a href="../tag/homebrew.html">homebrew</a>
-           <a href="../tag/osx.html">osx</a>
-           <a href="../tag/python.html">python</a>
-           <a href="../tag/unix.html">unix</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="../homebrew-path-pythonpath.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="../homebrew-path-pythonpath.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
 <p class="paginator">
-    Page 1 / 1
+    Page 1 / 2
+        <a href="../tag/python2.html">&raquo;</a>
 </p>
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
