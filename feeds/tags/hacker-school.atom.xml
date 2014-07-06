@@ -21,7 +21,7 @@
 &lt;h2&gt;Suggested Projects&lt;/h2&gt;
 &lt;p&gt;I'll be maintaining a &lt;a href="https://github.com/amygdalama/programming-projects"&gt;list&lt;/a&gt; of suggested projects on GitHub. I'm trying to keep the list short, manageable, and high-quality, so I'm only adding projects that I'm committed to working on, and then for each project I'll be adding details on how long it took and what parts were fun/challenging/easy/boring.&lt;/p&gt;
 &lt;p&gt;The repo also contains a list of resources with much more extensive project lists. If I'm missing any good resources, of if you've completed any small projects that have been particularly enlightening, please submit a pull request or create an issue! &lt;/p&gt;</summary><category term="hacker school"></category></entry><entry><title>Dissecting the Reduce Function</title><link href="http://amygdalama.github.io/dissecting-the-reduce-function.html" rel="alternate"></link><updated>2014-04-07T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-07:dissecting-the-reduce-function.html</id><summary type="html">&lt;p&gt;Good morning, &lt;a href="http://www.vice.com/columns/good-morning-sinners-with-warren-ellis"&gt;sinners&lt;/a&gt;. Today we're going to figure out what the hell is going on inside a Python expression like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -34,91 +34,91 @@
 &lt;blockquote&gt;
 &lt;p&gt;[A &lt;code&gt;lambda&lt;/code&gt; statement is] an anonymous, inlined function [...] The parameters of the &lt;code&gt;lambda&lt;/code&gt; are defined to the left of the colon. The function body is defined to the right of the colon. The result of running the function body is (implicitly) returned.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;A caveat: our &lt;code&gt;reduce&lt;/code&gt; function also takes in a third parameter, the empty string, which I'll discuss in detail later. &lt;/p&gt;
+&lt;p&gt;A caveat: our &lt;code&gt;reduce&lt;/code&gt; function also takes in a third parameter, the empty string, which I'll discuss in detail later.&lt;/p&gt;
 &lt;p&gt;Another caveat: if you're using Python3, &lt;code&gt;reduce&lt;/code&gt; is no longer a builtin function. To use it, you'll need to:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;functools&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;reduce&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;functools&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nb"&gt;reduce&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;So, how do we better understand what's happening inside this expression?  &lt;/p&gt;
+&lt;p&gt;So, how do we better understand what's happening inside this expression?&lt;/p&gt;
 &lt;h2&gt;A Mental Model&lt;/h2&gt;
 &lt;p&gt;Let's look at a specific example of our expression and examine a mental model -- which may or may not be correct -- for what's happening to the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; inside the expression.&lt;/p&gt;
 &lt;p&gt;I said earlier that &lt;code&gt;things&lt;/code&gt; needs to be an iterable. So, presumably, &lt;code&gt;things&lt;/code&gt; could be a string. Let's try:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;012&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;
-&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
-&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;things&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;012&amp;#39;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
+&lt;span class="go"&gt;[&amp;#39;0&amp;#39;, &amp;#39;1&amp;#39;, &amp;#39;2&amp;#39;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;What's going on in this statement? My (not functional) mental model for how this works is:&lt;/p&gt;
 &lt;p&gt;For each &lt;code&gt;x&lt;/code&gt; in &lt;code&gt;things&lt;/code&gt;, convert &lt;code&gt;x&lt;/code&gt; to a list and then append &lt;code&gt;[x]&lt;/code&gt; to &lt;code&gt;a&lt;/code&gt;, which starts as an empty list on the first iteration (this is because of the third parameter we passed to &lt;code&gt;reduce&lt;/code&gt;, which I'll explain later). After each iteration, &lt;code&gt;a&lt;/code&gt; grows one element longer (because we're adding whatever &lt;code&gt;[x]&lt;/code&gt; is during the iteration to &lt;code&gt;a&lt;/code&gt;). Return the result of the last iteration.&lt;/p&gt;
 &lt;p&gt;So, the first time we pass &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; through to the &lt;code&gt;lambda&lt;/code&gt; statement:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
 
 &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The &lt;code&gt;lambda&lt;/code&gt; then implicitly returns the list given by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; 
-        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
-        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The second time we pass &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; to &lt;code&gt;lambda&lt;/code&gt;, we have:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
 
-&lt;span class="cp"&gt;# set `a` to the value the previous step implicitly returned&lt;/span&gt;
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="c"&gt;# set `a` to the value the previous step implicitly returned&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
-        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;For the third and final step, we have:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;So why did we have to pass &lt;code&gt;[]&lt;/code&gt; as the third parameter to &lt;code&gt;reduce&lt;/code&gt;? Well, if &lt;code&gt;reduce&lt;/code&gt; isn't given a third parameter, for the first iteration it sets &lt;code&gt;a = x&lt;/code&gt;, and then jumps to the second iteration. So, in my mental model, the first iteration would look like:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
 
 &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
 
-&lt;span class="cp"&gt;# no calculation of a + [x]&lt;/span&gt;
-&lt;span class="cp"&gt;# instead, implicitly returns the value of `a`, which is &amp;#39;0&amp;#39;&lt;/span&gt;
+&lt;span class="c"&gt;# no calculation of a + [x]&lt;/span&gt;
+&lt;span class="c"&gt;# instead, implicitly returns the value of `a`, which is &amp;#39;0&amp;#39;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;And then in the second iteration:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
 
-&lt;span class="cp"&gt;# set `a` to the value implicitly returned from the first iteration&lt;/span&gt;
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
+&lt;span class="c"&gt;# set `a` to the value implicitly returned from the first iteration&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;This results in an error because you can't concatenate a string and a list.&lt;/p&gt;
 &lt;p&gt;Is my mental model correct? We can tell that the model ultimately returns the same value as the expression, but how can we tell if these are really the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each step?&lt;/p&gt;
 &lt;h2&gt;Testing the Model&lt;/h2&gt;
-&lt;p&gt;We'll need to figure out some clever way of printing or storing the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each step. &lt;/p&gt;
+&lt;p&gt;We'll need to figure out some clever way of printing or storing the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each step.&lt;/p&gt;
 &lt;p&gt;Let's recall the original expression:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -128,65 +128,65 @@
 
 
 &lt;p&gt;There's a lot going on in that expression, so let's break it up:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;012&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;  
-&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
-&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;things&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;012&amp;#39;&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Let's apply the mental model to help us understand this example. &lt;/p&gt;
+&lt;p&gt;Let's apply the mental model to help us understand this example.&lt;/p&gt;
 &lt;h4&gt;Step 1:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
 
 &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
 
-&lt;span class="cp"&gt;# this step implicitly returns the value:&lt;/span&gt;
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt; 
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;span class="c"&gt;# this step implicitly returns the value:&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4&gt;Step 2:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt; 
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4&gt;Step 3:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
+  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
 
-&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt; 
-    &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
-        &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
-    &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; 
-        &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-        &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+    &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+        &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+    &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;This is pretty complicated and difficult to read. You might want to write out the steps for yourself. I did (obviously). And I screwed it up the first few times.&lt;/p&gt;
 &lt;p&gt;Let's see if our result from step 3 is the same as what Python evaluates for our expression:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;answer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
-&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
-&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;answer&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;
-&lt;span class="n"&gt;True&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;answer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;span class="gp"&gt;... &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;span class="gp"&gt;... &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}],&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;answer&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;
+&lt;span class="go"&gt;True&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Victory! But what does this mean? &lt;/p&gt;
+&lt;p&gt;Victory! But what does this mean?&lt;/p&gt;
 &lt;h2&gt;Wait what were we trying to do again?&lt;/h2&gt;
 &lt;p&gt;We've been attempting to understand what happens inside a &lt;code&gt;reduce&lt;/code&gt; function. We developed a mental model for what happens to the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each iteration, and we came up with a way to test to see if the mental model was accurate. And it was!&lt;/p&gt;
 &lt;p&gt;I think this might be one of those posts that is less about what I intended it to be about (dissecting the &lt;code&gt;reduce&lt;/code&gt; function) and more about the approach I would take to accomplish what I intended it to be about. Meta, sinners.&lt;/p&gt;</summary><category term="hacker school"></category><category term="python"></category><category term="functional programming"></category></entry><entry><title>After Six Months of Learning The Python, I Can Finally Print "Hello World!"</title><link href="http://amygdalama.github.io/after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="alternate"></link><updated>2014-04-01T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-01:after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html</id><summary type="html">&lt;p&gt;I've been trying to learn how to write a function in the Python that prints two words, only two, "Hello World." I've been trying for six months. And today, friends, I've done it.&lt;/p&gt;
@@ -269,19 +269,19 @@
 &lt;p&gt;Her first example for showing how &lt;code&gt;map&lt;/code&gt; works is fairly straightforward:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;This is a simple map that takes a list of names and returns a list of the lengths of those names:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;name_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Mary&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Isla&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Sam&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;name_lengths&lt;/span&gt;
-&lt;span class="cp"&gt;# =&amp;gt; [4, 4, 3]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;name_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Mary&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Isla&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Sam&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;name_lengths&lt;/span&gt;
+&lt;span class="c"&gt;# =&amp;gt; [4, 4, 3]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/blockquote&gt;
-&lt;p&gt;In the second example of &lt;code&gt;map&lt;/code&gt;, we see that Mary uses a &lt;code&gt;lambda&lt;/code&gt; function: &lt;/p&gt;
+&lt;p&gt;In the second example of &lt;code&gt;map&lt;/code&gt;, we see that Mary uses a &lt;code&gt;lambda&lt;/code&gt; function:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;This is a map that squares every number in the passed collection:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt;
-&lt;span class="cp"&gt;# =&amp;gt; [0, 1, 4, 9, 16]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt;
+&lt;span class="c"&gt;# =&amp;gt; [0, 1, 4, 9, 16]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -289,21 +289,21 @@
 &lt;/blockquote&gt;
 &lt;p&gt;But &lt;em&gt;why&lt;/em&gt; does Mary use a &lt;code&gt;lambda&lt;/code&gt; function here? Let's spend some time breaking this code and reconstructing it to understand why the &lt;code&gt;lambda&lt;/code&gt; function is used.&lt;/p&gt;
 &lt;p&gt;First let's try removing the &lt;code&gt;lambda&lt;/code&gt; and seeing what happens:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;)
-Traceback (most recent call last):
-  File &amp;quot;&lt;span class="nt"&gt;&amp;lt;stdin&amp;gt;&lt;/span&gt;&amp;quot;, line 1, in &lt;span class="nt"&gt;&amp;lt;module&amp;gt;&lt;/span&gt;
-NameError: name &amp;#39;x&amp;#39; is not defined
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="gt"&gt;Traceback (most recent call last):&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;, in &lt;span class="n"&gt;&amp;lt;module&amp;gt;&lt;/span&gt;
+&lt;span class="gr"&gt;NameError&lt;/span&gt;: &lt;span class="n"&gt;name &amp;#39;x&amp;#39; is not defined&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Okay. &lt;code&gt;x&lt;/code&gt; is not defined. That makes sense, because &lt;code&gt;x&lt;/code&gt; isn't in our &lt;code&gt;locals&lt;/code&gt; or our &lt;code&gt;globals&lt;/code&gt; or our &lt;code&gt;builtins&lt;/code&gt;. Remember that when Python sees the name of a variable, it looks in those three places for a definition of that variable. If Python doesn't find the variable in any of those places, it throws a &lt;code&gt;NameError&lt;/code&gt;. &lt;code&gt;lambda&lt;/code&gt; must temporarily add variables (here, &lt;code&gt;x&lt;/code&gt;) to our namespace and then throw them away.&lt;/p&gt;
 &lt;p&gt;We removed the arm of the statue and a &lt;code&gt;NameError&lt;/code&gt; was revealed. Cool. Now let's try naively reconstructing the statue.&lt;/p&gt;
 &lt;p&gt;What if we tried using the &lt;code&gt;**&lt;/code&gt; operator? Can we pass something like &lt;code&gt;**2&lt;/code&gt; as the function for &lt;code&gt;map&lt;/code&gt;? Let's try:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;)
-  File &amp;quot;&lt;span class="nt"&gt;&amp;lt;stdin&amp;gt;&lt;/span&gt;&amp;quot;, line 1
-    squares = map(**2, &lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;)
-                    ^
-SyntaxError: invalid syntax
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;
+    &lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+                    &lt;span class="o"&gt;^&lt;/span&gt;
+&lt;span class="gr"&gt;SyntaxError&lt;/span&gt;: &lt;span class="n"&gt;invalid syntax&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -314,33 +314,33 @@ SyntaxError: invalid syntax
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The important thing to note is that any time Python sees &lt;code&gt;**&lt;/code&gt; in this context, it expects a thing called a &lt;a href="https://docs.python.org/2/reference/expressions.html#primaries"&gt;&lt;code&gt;primary&lt;/code&gt;&lt;/a&gt; to come before it and a thing called a &lt;a href="https://docs.python.org/2/reference/expressions.html#unary-arithmetic-and-bitwise-operations"&gt;&lt;code&gt;u_expr&lt;/code&gt;&lt;/a&gt; to come after it. We can tell we violated this rule without even understanding what a &lt;code&gt;primary&lt;/code&gt; or a &lt;code&gt;u_expr&lt;/code&gt; is. We tried typing &lt;code&gt;**2&lt;/code&gt;, which doesn't include anything that could be interpreted as a &lt;code&gt;primary&lt;/code&gt; before the &lt;code&gt;**&lt;/code&gt;. &lt;/p&gt;
-&lt;p&gt;Okay. So we can't reconstruct Mary's function using &lt;code&gt;**&lt;/code&gt; instead of &lt;code&gt;lambda&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;The important thing to note is that any time Python sees &lt;code&gt;**&lt;/code&gt; in this context, it expects a thing called a &lt;a href="https://docs.python.org/2/reference/expressions.html#primaries"&gt;&lt;code&gt;primary&lt;/code&gt;&lt;/a&gt; to come before it and a thing called a &lt;a href="https://docs.python.org/2/reference/expressions.html#unary-arithmetic-and-bitwise-operations"&gt;&lt;code&gt;u_expr&lt;/code&gt;&lt;/a&gt; to come after it. We can tell we violated this rule without even understanding what a &lt;code&gt;primary&lt;/code&gt; or a &lt;code&gt;u_expr&lt;/code&gt; is. We tried typing &lt;code&gt;**2&lt;/code&gt;, which doesn't include anything that could be interpreted as a &lt;code&gt;primary&lt;/code&gt; before the &lt;code&gt;**&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Okay. So we can't reconstruct Mary's function using &lt;code&gt;**&lt;/code&gt; instead of &lt;code&gt;lambda&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;What else could we try instead of a lambda function? Is there a function already defined in Python that does the same thing as the operator &lt;code&gt;**&lt;/code&gt; but in function syntax?&lt;/p&gt;
-&lt;p&gt;Let's &lt;a href="https://www.google.com/search?q=python+power+operator+function&amp;amp;oq=python+power+operator+function&amp;amp;aqs=chrome..69i57.426j0j1&amp;amp;sourceid=chrome&amp;amp;espv=210&amp;amp;es_sm=91&amp;amp;ie=UTF-8"&gt;google&lt;/a&gt; "python power operator function." We quickly discover that there's a builtin &lt;code&gt;pow&lt;/code&gt; function that takes two parameters, &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; and returns &lt;code&gt;x**y&lt;/code&gt;. Cool! So &lt;code&gt;pow(x,2)&lt;/code&gt; should return the same thing as &lt;code&gt;x**2&lt;/code&gt;.  &lt;/p&gt;
+&lt;p&gt;Let's &lt;a href="https://www.google.com/search?q=python+power+operator+function&amp;amp;oq=python+power+operator+function&amp;amp;aqs=chrome..69i57.426j0j1&amp;amp;sourceid=chrome&amp;amp;espv=210&amp;amp;es_sm=91&amp;amp;ie=UTF-8"&gt;google&lt;/a&gt; "python power operator function." We quickly discover that there's a builtin &lt;code&gt;pow&lt;/code&gt; function that takes two parameters, &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; and returns &lt;code&gt;x**y&lt;/code&gt;. Cool! So &lt;code&gt;pow(x,2)&lt;/code&gt; should return the same thing as &lt;code&gt;x**2&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Does the &lt;code&gt;pow&lt;/code&gt; function work in our &lt;code&gt;map&lt;/code&gt; function? Let's try!&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;pow&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;)
-Traceback (most recent call last):
-  File &amp;quot;&lt;span class="nt"&gt;&amp;lt;stdin&amp;gt;&lt;/span&gt;&amp;quot;, line 1, in &lt;span class="nt"&gt;&amp;lt;module&amp;gt;&lt;/span&gt;
-TypeError: pow expected at least 2 arguments, got 1
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;pow&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="gt"&gt;Traceback (most recent call last):&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;, in &lt;span class="n"&gt;&amp;lt;module&amp;gt;&lt;/span&gt;
+&lt;span class="gr"&gt;TypeError&lt;/span&gt;: &lt;span class="n"&gt;pow expected at least 2 arguments, got 1&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Oh, right. Derp. We need to pass &lt;code&gt;2&lt;/code&gt; to &lt;code&gt;pow&lt;/code&gt;, in addition to each element in our list. In the &lt;a href="https://docs.python.org/2.7/library/functions.html#map"&gt;documentation&lt;/a&gt; for &lt;code&gt;map&lt;/code&gt;, we see that if the function takes two arguments, we need to pass it two iterables. So we could do something kind of dumb like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pow&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt;
-&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;pow&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;squares&lt;/span&gt;
+&lt;span class="go"&gt;[0, 1, 4, 9, 16]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;It works, but it's pretty ugly compared to the original:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;It seems silly to use a function, &lt;code&gt;pow&lt;/code&gt;, that takes two arguments, when one of the arguments we pass it is always the same. &lt;/p&gt;
-&lt;p&gt;Ohhh. &lt;/p&gt;
-&lt;p&gt;Maybe that's why Mary used &lt;code&gt;lambda&lt;/code&gt;! To create a function that works kind of like &lt;code&gt;pow&lt;/code&gt; but just takes one argument! &lt;/p&gt;
+&lt;p&gt;It seems silly to use a function, &lt;code&gt;pow&lt;/code&gt;, that takes two arguments, when one of the arguments we pass it is always the same.&lt;/p&gt;
+&lt;p&gt;Ohhh.&lt;/p&gt;
+&lt;p&gt;Maybe that's why Mary used &lt;code&gt;lambda&lt;/code&gt;! To create a function that works kind of like &lt;code&gt;pow&lt;/code&gt; but just takes one argument!&lt;/p&gt;
 &lt;p&gt;So we broke the statue, attempted to reconstruct it, and then wound up with something way uglier than the original. And thus, through breaking Mary's code, her design decisions were revealed! And now we have a better understanding of why the original process was used!&lt;/p&gt;
 &lt;p&gt;Breaking things is fucking rad.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; This post is not intended to show the most pythonic way of squaring a list of integers. Instead, it is intended to show that we can discover how and why a code block works by exploring what happens when we remove chunks of it.&lt;/p&gt;</summary><category term="learning"></category><category term="hacker school"></category><category term="python"></category><category term="functional programming"></category><category term="map"></category><category term="lambda"></category><category term="python internals"></category><category term="grammar"></category></entry><entry><title>What's the deal with __builtins__ vs __builtin__</title><link href="http://amygdalama.github.io/whats-the-deal-with-builtins-vs-builtin.html" rel="alternate"></link><updated>2014-03-23T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-23:whats-the-deal-with-builtins-vs-builtin.html</id><summary type="html">&lt;p&gt;Seriously, what's the difference? When you first fire up the Python interpreter, &lt;code&gt;__builtins__&lt;/code&gt; is in your namespace for free:&lt;/p&gt;
@@ -363,10 +363,10 @@ TypeError: pow expected at least 2 arguments, got 1
 &lt;blockquote&gt;
 &lt;p&gt;By default, when in the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__builtins__&lt;/code&gt; is the built-in module &lt;code&gt;__builtin__&lt;/code&gt; (note: no 's'); when in any other module, &lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module itself.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;What. What does that mean. &lt;/p&gt;
+&lt;p&gt;What. What does that mean.&lt;/p&gt;
 &lt;p&gt;This talk of the "&lt;code&gt;__main__&lt;/code&gt; module" and "any other module" reminds me of a sequence of words that I've known for quite a while, but haven't completely grokked:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;We can access the name of the current module with the builtin variable &lt;code&gt;__name__&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;We can access the name of the current module with the builtin variable &lt;code&gt;__name__&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;You're probably familiar with the related canonical statement:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -375,9 +375,9 @@ TypeError: pow expected at least 2 arguments, got 1
 
 
 &lt;p&gt;But what does "current module" mean? What does the &lt;code&gt;__name__&lt;/code&gt; variable look like when it does not equal &lt;code&gt;__main__&lt;/code&gt;?&lt;/p&gt;
-&lt;p&gt;I happen to know, because I've obsessively read about the &lt;code&gt;import&lt;/code&gt; statement, another sequence of words: &lt;/p&gt;
+&lt;p&gt;I happen to know, because I've obsessively read about the &lt;code&gt;import&lt;/code&gt; statement, another sequence of words:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Any code executed as a result of an &lt;code&gt;import&lt;/code&gt; isn't executed in the &lt;code&gt;__main__&lt;/code&gt; module. &lt;/p&gt;
+&lt;p&gt;Any code executed as a result of an &lt;code&gt;import&lt;/code&gt; isn't executed in the &lt;code&gt;__main__&lt;/code&gt; module.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Let's use these bits of knowledge to observe the behavior of &lt;code&gt;__builtins__&lt;/code&gt; both inside and outside of the &lt;code&gt;__main__&lt;/code&gt; module. We can also check out the &lt;code&gt;__name__&lt;/code&gt; variable while we're at it.&lt;/p&gt;
 &lt;p&gt;First, let's make a script, &lt;code&gt;a.py&lt;/code&gt;, which will allow us to observe the behavior of &lt;code&gt;__builtin__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt;, and &lt;code&gt;__name__&lt;/code&gt;.&lt;/p&gt;
@@ -401,7 +401,7 @@ TypeError: pow expected at least 2 arguments, got 1
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Okay. So we're in the &lt;code&gt;__main__&lt;/code&gt; module, and in here &lt;code&gt;__builtin__&lt;/code&gt; is pointing to the same module object as &lt;code&gt;__builtins__&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Okay. So we're in the &lt;code&gt;__main__&lt;/code&gt; module, and in here &lt;code&gt;__builtin__&lt;/code&gt; is pointing to the same module object as &lt;code&gt;__builtins__&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;What happens if we &lt;code&gt;import a&lt;/code&gt; in another script? The code in &lt;code&gt;a&lt;/code&gt; will execute, but it won't be executed within the &lt;code&gt;__main__&lt;/code&gt; module. Instead, it'll be executed within the &lt;code&gt;a&lt;/code&gt; module. Let's write another script, &lt;code&gt;b.py&lt;/code&gt;, to find out what happens to &lt;code&gt;__builtins__&lt;/code&gt; outside of &lt;code&gt;__main__&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
 
@@ -437,7 +437,7 @@ TypeError: pow expected at least 2 arguments, got 1
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Aha. So when we're outside the context of the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__name__&lt;/code&gt; is just equal to the name of the module where code is currently being executed. That seems logical. And outside of &lt;code&gt;__main__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt; is a dict, rather than a module. &lt;/p&gt;
+&lt;p&gt;Aha. So when we're outside the context of the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__name__&lt;/code&gt; is just equal to the name of the module where code is currently being executed. That seems logical. And outside of &lt;code&gt;__main__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt; is a dict, rather than a module.&lt;/p&gt;
 &lt;p&gt;We were told earlier that, outside the context of &lt;code&gt;__main__&lt;/code&gt;, &lt;em&gt;"&lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module"&lt;/em&gt;. I think that means that &lt;code&gt;__builtins__ is __builtin__.__dict__&lt;/code&gt;. Let's see if my hypothesis is true, by adding another line to the bottom of our &lt;code&gt;a.py&lt;/code&gt; file:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtins__ is __builtin__.__dict__&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__dict__&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -461,98 +461,95 @@ TypeError: pow expected at least 2 arguments, got 1
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Yes! My hypothesis was correct. Okay. So now I get why using &lt;code&gt;__builtin__&lt;/code&gt; is better than &lt;code&gt;__builtins__&lt;/code&gt;: &lt;/p&gt;
+&lt;p&gt;Yes! My hypothesis was correct. Okay. So now I get why using &lt;code&gt;__builtin__&lt;/code&gt; is better than &lt;code&gt;__builtins__&lt;/code&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The type, and thus behavior, of &lt;code&gt;__builtins__&lt;/code&gt; changes based on the context of where it's being executed, while the type and behavior of &lt;code&gt;__builtin__&lt;/code&gt; is constant. Rad.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Thanks, stranger who &lt;a href="https://github.com/amygdalama/nagini/issues/1"&gt;suggested&lt;/a&gt; I look into this, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.&lt;/p&gt;
-&lt;p&gt;The code for this blog post is on &lt;a href="https://github.com/amygdalama/builtins"&gt;GitHub&lt;/a&gt;, of course.&lt;/p&gt;</summary><category term="python"></category><category term="builtins"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</title><link href="http://amygdalama.github.io/import-accio-bootstrapping-python-grammar.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-14:import-accio-bootstrapping-python-grammar.html</id><summary type="html">&lt;p&gt;At &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!&lt;/p&gt;
+&lt;p&gt;The code for this blog post is on &lt;a href="https://github.com/amygdalama/builtins"&gt;GitHub&lt;/a&gt;, of course.&lt;/p&gt;</summary><category term="python"></category><category term="builtins"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>Replacing import with accio: A Dive into Bootstrapping and Python's Grammar</title><link href="http://amygdalama.github.io/import-accio-bootstrapping-python-grammar.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-14:import-accio-bootstrapping-python-grammar.html</id><summary type="html">&lt;p&gt;At &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!&lt;/p&gt;
 &lt;p&gt;Although this project started as a joke, I've quickly descended so deeply into Python internals that I've, with the guidance of the fabulous Hacker School facilitator &lt;a href="http://akaptur.github.io/"&gt;Allison Kaptur&lt;/a&gt;, made edits to the CPython source code, and compiled a Python to compile a Python. All to replace the &lt;code&gt;import&lt;/code&gt; statement with &lt;code&gt;accio&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;But before we get into compiling the Harry Potter Python I lovingly call Nagini, let's first talk about some Python internals basics, with spells as examples, of course.&lt;/p&gt;
 &lt;h1&gt;Overwriting Builtin Functions&lt;/h1&gt;
-&lt;p&gt;Python builtin functions are stored in a module called &lt;code&gt;__builtins__&lt;/code&gt; that's automatically imported on startup. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; dir(__builtins__)
-[&amp;#39;ArithmeticError&amp;#39;, &amp;#39;AssertionError&amp;#39;, &amp;#39;AttributeError&amp;#39;, &amp;#39;BaseException&amp;#39;, &amp;#39;BufferError&amp;#39;, &amp;#39;BytesWarning&amp;#39;, &amp;#39;DeprecationWarning&amp;#39;, &amp;#39;EOFError&amp;#39;, &amp;#39;Ellipsis&amp;#39;, &amp;#39;EnvironmentError&amp;#39;, &amp;#39;Exception&amp;#39;, &amp;#39;False&amp;#39;, &amp;#39;FloatingPointError&amp;#39;, &amp;#39;FutureWarning&amp;#39;, &amp;#39;GeneratorExit&amp;#39;, &amp;#39;IOError&amp;#39;, &amp;#39;ImportError&amp;#39;, &amp;#39;ImportWarning&amp;#39;, &amp;#39;IndentationError&amp;#39;, &amp;#39;IndexError&amp;#39;, &amp;#39;KeyError&amp;#39;, &amp;#39;KeyboardInterrupt&amp;#39;, &amp;#39;LookupError&amp;#39;, &amp;#39;MemoryError&amp;#39;, &amp;#39;NameError&amp;#39;, &amp;#39;None&amp;#39;, &amp;#39;NotImplemented&amp;#39;, &amp;#39;NotImplementedError&amp;#39;, &amp;#39;OSError&amp;#39;, &amp;#39;OverflowError&amp;#39;, &amp;#39;PendingDeprecationWarning&amp;#39;, &amp;#39;ReferenceError&amp;#39;, &amp;#39;RuntimeError&amp;#39;, &amp;#39;RuntimeWarning&amp;#39;, &amp;#39;StandardError&amp;#39;, &amp;#39;StopIteration&amp;#39;, &amp;#39;SyntaxError&amp;#39;, &amp;#39;SyntaxWarning&amp;#39;, &amp;#39;SystemError&amp;#39;, &amp;#39;SystemExit&amp;#39;, &amp;#39;TabError&amp;#39;, &amp;#39;True&amp;#39;, &amp;#39;TypeError&amp;#39;, &amp;#39;UnboundLocalError&amp;#39;, &amp;#39;UnicodeDecodeError&amp;#39;, &amp;#39;UnicodeEncodeError&amp;#39;, &amp;#39;UnicodeError&amp;#39;, &amp;#39;UnicodeTranslateError&amp;#39;, &amp;#39;UnicodeWarning&amp;#39;, &amp;#39;UserWarning&amp;#39;, &amp;#39;ValueError&amp;#39;, &amp;#39;Warning&amp;#39;, &amp;#39;ZeroDivisionError&amp;#39;, &amp;#39;_&amp;#39;, &amp;#39;__debug__&amp;#39;, &amp;#39;__doc__&amp;#39;, &amp;#39;__import__&amp;#39;, &amp;#39;__name__&amp;#39;, &amp;#39;__package__&amp;#39;, &amp;#39;abs&amp;#39;, &amp;#39;all&amp;#39;, &amp;#39;any&amp;#39;, &amp;#39;apply&amp;#39;, &amp;#39;basestring&amp;#39;, &amp;#39;bin&amp;#39;, &amp;#39;bool&amp;#39;, &amp;#39;buffer&amp;#39;, &amp;#39;bytearray&amp;#39;, &amp;#39;bytes&amp;#39;, &amp;#39;callable&amp;#39;, &amp;#39;chr&amp;#39;, &amp;#39;classmethod&amp;#39;, &amp;#39;cmp&amp;#39;, &amp;#39;coerce&amp;#39;, &amp;#39;compile&amp;#39;, &amp;#39;complex&amp;#39;, &amp;#39;copyright&amp;#39;, &amp;#39;credits&amp;#39;, &amp;#39;delattr&amp;#39;, &amp;#39;dict&amp;#39;, &amp;#39;dir&amp;#39;, &amp;#39;divmod&amp;#39;, &amp;#39;enumerate&amp;#39;, &amp;#39;eval&amp;#39;, &amp;#39;execfile&amp;#39;, &amp;#39;exit&amp;#39;, &amp;#39;file&amp;#39;, &amp;#39;filter&amp;#39;, &amp;#39;float&amp;#39;, &amp;#39;format&amp;#39;, &amp;#39;frozenset&amp;#39;, &amp;#39;getattr&amp;#39;, &amp;#39;globals&amp;#39;, &amp;#39;hasattr&amp;#39;, &amp;#39;hash&amp;#39;, &amp;#39;help&amp;#39;, &amp;#39;hex&amp;#39;, &amp;#39;id&amp;#39;, &amp;#39;input&amp;#39;, &amp;#39;int&amp;#39;, &amp;#39;intern&amp;#39;, &amp;#39;isinstance&amp;#39;, &amp;#39;issubclass&amp;#39;, &amp;#39;iter&amp;#39;, &amp;#39;len&amp;#39;, &amp;#39;license&amp;#39;, &amp;#39;list&amp;#39;, &amp;#39;locals&amp;#39;, &amp;#39;long&amp;#39;, &amp;#39;map&amp;#39;, &amp;#39;max&amp;#39;, &amp;#39;memoryview&amp;#39;, &amp;#39;min&amp;#39;, &amp;#39;next&amp;#39;, &amp;#39;object&amp;#39;, &amp;#39;oct&amp;#39;, &amp;#39;open&amp;#39;, &amp;#39;ord&amp;#39;, &amp;#39;pow&amp;#39;, &amp;#39;print&amp;#39;, &amp;#39;property&amp;#39;, &amp;#39;quit&amp;#39;, &amp;#39;range&amp;#39;, &amp;#39;raw_input&amp;#39;, &amp;#39;reduce&amp;#39;, &amp;#39;reload&amp;#39;, &amp;#39;repr&amp;#39;, &amp;#39;reversed&amp;#39;, &amp;#39;round&amp;#39;, &amp;#39;set&amp;#39;, &amp;#39;setattr&amp;#39;, &amp;#39;slice&amp;#39;, &amp;#39;sorted&amp;#39;, &amp;#39;staticmethod&amp;#39;, &amp;#39;str&amp;#39;, &amp;#39;sum&amp;#39;, &amp;#39;super&amp;#39;, &amp;#39;tuple&amp;#39;, &amp;#39;type&amp;#39;, &amp;#39;unichr&amp;#39;, &amp;#39;unicode&amp;#39;, &amp;#39;vars&amp;#39;, &amp;#39;xrange&amp;#39;, &amp;#39;zip&amp;#39;]
+&lt;p&gt;Python builtin functions are stored in a module called &lt;code&gt;__builtins__&lt;/code&gt; that's automatically imported on startup.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;dir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="go"&gt;[&amp;#39;ArithmeticError&amp;#39;, &amp;#39;AssertionError&amp;#39;, &amp;#39;AttributeError&amp;#39;, &amp;#39;BaseException&amp;#39;, &amp;#39;BufferError&amp;#39;, &amp;#39;BytesWarning&amp;#39;, &amp;#39;DeprecationWarning&amp;#39;, &amp;#39;EOFError&amp;#39;, &amp;#39;Ellipsis&amp;#39;, &amp;#39;EnvironmentError&amp;#39;, &amp;#39;Exception&amp;#39;, &amp;#39;False&amp;#39;, &amp;#39;FloatingPointError&amp;#39;, &amp;#39;FutureWarning&amp;#39;, &amp;#39;GeneratorExit&amp;#39;, &amp;#39;IOError&amp;#39;, &amp;#39;ImportError&amp;#39;, &amp;#39;ImportWarning&amp;#39;, &amp;#39;IndentationError&amp;#39;, &amp;#39;IndexError&amp;#39;, &amp;#39;KeyError&amp;#39;, &amp;#39;KeyboardInterrupt&amp;#39;, &amp;#39;LookupError&amp;#39;, &amp;#39;MemoryError&amp;#39;, &amp;#39;NameError&amp;#39;, &amp;#39;None&amp;#39;, &amp;#39;NotImplemented&amp;#39;, &amp;#39;NotImplementedError&amp;#39;, &amp;#39;OSError&amp;#39;, &amp;#39;OverflowError&amp;#39;, &amp;#39;PendingDeprecationWarning&amp;#39;, &amp;#39;ReferenceError&amp;#39;, &amp;#39;RuntimeError&amp;#39;, &amp;#39;RuntimeWarning&amp;#39;, &amp;#39;StandardError&amp;#39;, &amp;#39;StopIteration&amp;#39;, &amp;#39;SyntaxError&amp;#39;, &amp;#39;SyntaxWarning&amp;#39;, &amp;#39;SystemError&amp;#39;, &amp;#39;SystemExit&amp;#39;, &amp;#39;TabError&amp;#39;, &amp;#39;True&amp;#39;, &amp;#39;TypeError&amp;#39;, &amp;#39;UnboundLocalError&amp;#39;, &amp;#39;UnicodeDecodeError&amp;#39;, &amp;#39;UnicodeEncodeError&amp;#39;, &amp;#39;UnicodeError&amp;#39;, &amp;#39;UnicodeTranslateError&amp;#39;, &amp;#39;UnicodeWarning&amp;#39;, &amp;#39;UserWarning&amp;#39;, &amp;#39;ValueError&amp;#39;, &amp;#39;Warning&amp;#39;, &amp;#39;ZeroDivisionError&amp;#39;, &amp;#39;_&amp;#39;, &amp;#39;__debug__&amp;#39;, &amp;#39;__doc__&amp;#39;, &amp;#39;__import__&amp;#39;, &amp;#39;__name__&amp;#39;, &amp;#39;__package__&amp;#39;, &amp;#39;abs&amp;#39;, &amp;#39;all&amp;#39;, &amp;#39;any&amp;#39;, &amp;#39;apply&amp;#39;, &amp;#39;basestring&amp;#39;, &amp;#39;bin&amp;#39;, &amp;#39;bool&amp;#39;, &amp;#39;buffer&amp;#39;, &amp;#39;bytearray&amp;#39;, &amp;#39;bytes&amp;#39;, &amp;#39;callable&amp;#39;, &amp;#39;chr&amp;#39;, &amp;#39;classmethod&amp;#39;, &amp;#39;cmp&amp;#39;, &amp;#39;coerce&amp;#39;, &amp;#39;compile&amp;#39;, &amp;#39;complex&amp;#39;, &amp;#39;copyright&amp;#39;, &amp;#39;credits&amp;#39;, &amp;#39;delattr&amp;#39;, &amp;#39;dict&amp;#39;, &amp;#39;dir&amp;#39;, &amp;#39;divmod&amp;#39;, &amp;#39;enumerate&amp;#39;, &amp;#39;eval&amp;#39;, &amp;#39;execfile&amp;#39;, &amp;#39;exit&amp;#39;, &amp;#39;file&amp;#39;, &amp;#39;filter&amp;#39;, &amp;#39;float&amp;#39;, &amp;#39;format&amp;#39;, &amp;#39;frozenset&amp;#39;, &amp;#39;getattr&amp;#39;, &amp;#39;globals&amp;#39;, &amp;#39;hasattr&amp;#39;, &amp;#39;hash&amp;#39;, &amp;#39;help&amp;#39;, &amp;#39;hex&amp;#39;, &amp;#39;id&amp;#39;, &amp;#39;input&amp;#39;, &amp;#39;int&amp;#39;, &amp;#39;intern&amp;#39;, &amp;#39;isinstance&amp;#39;, &amp;#39;issubclass&amp;#39;, &amp;#39;iter&amp;#39;, &amp;#39;len&amp;#39;, &amp;#39;license&amp;#39;, &amp;#39;list&amp;#39;, &amp;#39;locals&amp;#39;, &amp;#39;long&amp;#39;, &amp;#39;map&amp;#39;, &amp;#39;max&amp;#39;, &amp;#39;memoryview&amp;#39;, &amp;#39;min&amp;#39;, &amp;#39;next&amp;#39;, &amp;#39;object&amp;#39;, &amp;#39;oct&amp;#39;, &amp;#39;open&amp;#39;, &amp;#39;ord&amp;#39;, &amp;#39;pow&amp;#39;, &amp;#39;print&amp;#39;, &amp;#39;property&amp;#39;, &amp;#39;quit&amp;#39;, &amp;#39;range&amp;#39;, &amp;#39;raw_input&amp;#39;, &amp;#39;reduce&amp;#39;, &amp;#39;reload&amp;#39;, &amp;#39;repr&amp;#39;, &amp;#39;reversed&amp;#39;, &amp;#39;round&amp;#39;, &amp;#39;set&amp;#39;, &amp;#39;setattr&amp;#39;, &amp;#39;slice&amp;#39;, &amp;#39;sorted&amp;#39;, &amp;#39;staticmethod&amp;#39;, &amp;#39;str&amp;#39;, &amp;#39;sum&amp;#39;, &amp;#39;super&amp;#39;, &amp;#39;tuple&amp;#39;, &amp;#39;type&amp;#39;, &amp;#39;unichr&amp;#39;, &amp;#39;unicode&amp;#39;, &amp;#39;vars&amp;#39;, &amp;#39;xrange&amp;#39;, &amp;#39;zip&amp;#39;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Overwriting Python builtins is surprisingly easy! &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; wingardium_leviosa = __builtins__.float
-
-&amp;gt;&amp;gt;&amp;gt; del __builtins__.float
-
-&amp;gt;&amp;gt;&amp;gt; float(3)
-Traceback (most recent call last):
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
-NameError: name &amp;#39;float&amp;#39; is not defined
-
-&amp;gt;&amp;gt;&amp;gt; wingardium_leviosa(3)
-3.0
+&lt;p&gt;Overwriting Python builtins is surprisingly easy!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;wingardium_leviosa&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;float&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;del&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;float&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gt"&gt;Traceback (most recent call last):&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;, in &lt;span class="n"&gt;&amp;lt;module&amp;gt;&lt;/span&gt;
+&lt;span class="gr"&gt;NameError&lt;/span&gt;: &lt;span class="n"&gt;name &amp;#39;float&amp;#39; is not defined&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;wingardium_leviosa&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="go"&gt;3.0&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;However, overwriting &lt;code&gt;import&lt;/code&gt; is not so easy. Let's try:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; accio = import
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1
-    accio = import
-                 ^
-SyntaxError: invalid syntax
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;accio&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;
+    &lt;span class="n"&gt;accio&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt;
+                 &lt;span class="o"&gt;^&lt;/span&gt;
+&lt;span class="gr"&gt;SyntaxError&lt;/span&gt;: &lt;span class="n"&gt;invalid syntax&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Python is expecting the name of a module after &lt;code&gt;import&lt;/code&gt;, and thus it throws a &lt;code&gt;SyntaxError&lt;/code&gt;. This is an effect of &lt;code&gt;import x&lt;/code&gt; being a &lt;em&gt;statement&lt;/em&gt;, rather than a &lt;em&gt;function&lt;/em&gt;. &lt;/p&gt;
+&lt;p&gt;Python is expecting the name of a module after &lt;code&gt;import&lt;/code&gt;, and thus it throws a &lt;code&gt;SyntaxError&lt;/code&gt;. This is an effect of &lt;code&gt;import x&lt;/code&gt; being a &lt;em&gt;statement&lt;/em&gt;, rather than an &lt;em&gt;expression&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;Hm. I remember seeing the function &lt;code&gt;__import__&lt;/code&gt; listed when we ran &lt;code&gt;dir(__builtins__)&lt;/code&gt;. Maybe we can overwrite that instead:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; accio = __builtins__.__import__
-&amp;gt;&amp;gt;&amp;gt; accio sys
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1
-    accio sys
-            ^
-SyntaxError: invalid syntax
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;accio&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__import__&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;accio&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;
+    &lt;span class="n"&gt;accio&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;
+            &lt;span class="o"&gt;^&lt;/span&gt;
+&lt;span class="gr"&gt;SyntaxError&lt;/span&gt;: &lt;span class="n"&gt;invalid syntax&lt;/span&gt;
 
-# :(
+&lt;span class="go"&gt;# :(&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;What if we tried calling &lt;code&gt;accio&lt;/code&gt; like a function?&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; accio(sys)
-Traceback (most recent call last):
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
-NameError: name &amp;#39;sys&amp;#39; is not defined
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;accio&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gt"&gt;Traceback (most recent call last):&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;, in &lt;span class="n"&gt;&amp;lt;module&amp;gt;&lt;/span&gt;
+&lt;span class="gr"&gt;NameError&lt;/span&gt;: &lt;span class="n"&gt;name &amp;#39;sys&amp;#39; is not defined&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Maybe we need to pass 'sys' as a string?&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; accio(&amp;#39;sys&amp;#39;)
-&amp;lt;module &amp;#39;sys&amp;#39; (built-in)&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;accio&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;sys&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;module &amp;#39;sys&amp;#39; (built-in)&amp;gt;&lt;/span&gt;
 
-# Ooh!
+&lt;span class="go"&gt;# Ooh!&lt;/span&gt;
 
-&amp;gt;&amp;gt;&amp;gt; sys = accio(&amp;#39;sys&amp;#39;)
-&amp;gt;&amp;gt;&amp;gt; sys
-&amp;lt;module &amp;#39;sys&amp;#39; (built-in)&amp;gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;accio&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;sys&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;
+&lt;span class="go"&gt;&amp;lt;module &amp;#39;sys&amp;#39; (built-in)&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Aha. So the statement &lt;code&gt;import x&lt;/code&gt; probably does something like:&lt;br /&gt;
-    1. call the &lt;code&gt;__import__&lt;/code&gt; function on &lt;code&gt;x&lt;/code&gt;: &lt;code&gt;__builtins__.__import__('x')&lt;/code&gt;&lt;br /&gt;
-    2. assign the name &lt;code&gt;x&lt;/code&gt; to the module returned by &lt;code&gt;__import__&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;Aha. So the statement &lt;code&gt;import x&lt;/code&gt; probably does something like:
+    1. call the &lt;code&gt;__import__&lt;/code&gt; function on &lt;code&gt;x&lt;/code&gt;: &lt;code&gt;__builtins__.__import__('x')&lt;/code&gt;
+    2. assign the name &lt;code&gt;x&lt;/code&gt; to the module returned by &lt;code&gt;__import__&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;And &lt;code&gt;import sys&lt;/code&gt; is like shorthand for the command:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; sys = __builtins__.__import__(&amp;#39;sys&amp;#39;)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__import__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;sys&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;(Here I'm only describing simple &lt;code&gt;import&lt;/code&gt; statements, but more complex statements like &lt;code&gt;from x import y.w, y.z&lt;/code&gt; work similarly.)&lt;/p&gt;
-&lt;p&gt;So we have a way to add &lt;code&gt;accio&lt;/code&gt; as a function, but not as a statement. I'm unsatisfied. &lt;/p&gt;
+&lt;p&gt;So we have a way to add &lt;code&gt;accio&lt;/code&gt; as a function, but not as a statement. I'm unsatisfied.&lt;/p&gt;
 &lt;p&gt;For fun, can we delete import?&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;gt;&amp;gt;&amp;gt; del import
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1
-    del import
-             ^
-SyntaxError: invalid syntax
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;del&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;
+    &lt;span class="k"&gt;del&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt;
+             &lt;span class="o"&gt;^&lt;/span&gt;
+&lt;span class="gr"&gt;SyntaxError&lt;/span&gt;: &lt;span class="n"&gt;invalid syntax&lt;/span&gt;
 
-&amp;gt;&amp;gt;&amp;gt; del __builtins__.__import__
-&amp;gt;&amp;gt;&amp;gt; import os
-Traceback (most recent call last):
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
-ImportError: __import__ not found
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;del&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__import__&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
+&lt;span class="gt"&gt;Traceback (most recent call last):&lt;/span&gt;
+  File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;, in &lt;span class="n"&gt;&amp;lt;module&amp;gt;&lt;/span&gt;
+&lt;span class="gr"&gt;ImportError&lt;/span&gt;: &lt;span class="n"&gt;__import__ not found&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -560,7 +557,7 @@ ImportError: __import__ not found
 &lt;p&gt;So, to completely overwrite &lt;code&gt;import&lt;/code&gt; with &lt;code&gt;accio&lt;/code&gt;, we'll need to learn where Python defines statements.&lt;/p&gt;
 &lt;h1&gt;Grammar&lt;/h1&gt;
 &lt;p&gt;Eli Bendersky wrote a great &lt;a href="http://eli.thegreenplace.net/2010/06/30/python-internals-adding-a-new-statement-to-python/"&gt;blog post&lt;/a&gt; about adding an &lt;code&gt;until&lt;/code&gt; statement to Python. Since we want to &lt;em&gt;replace&lt;/em&gt; a statement, rather than add one, our method will be a bit different.&lt;/p&gt;
-&lt;p&gt;Regardless, it looks like the place to start for changing Python's statements is in the &lt;code&gt;Grammar&lt;/code&gt; file in the Python &lt;a href="http://docs.python.org/devguide/setup.html"&gt;source code&lt;/a&gt;. &lt;strong&gt;Python source code!&lt;/strong&gt; Isn't this &lt;em&gt;fun?!&lt;/em&gt; &lt;/p&gt;
+&lt;p&gt;Regardless, it looks like the place to start for changing Python's statements is in the &lt;code&gt;Grammar&lt;/code&gt; file in the Python &lt;a href="http://docs.python.org/devguide/setup.html"&gt;source code&lt;/a&gt;. &lt;strong&gt;Python source code!&lt;/strong&gt; Isn't this &lt;em&gt;fun?!&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Python's source code is stored in a Mercurial repository, so first we'll have to install Mercurial.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;brew install mercurial
 &lt;/pre&gt;&lt;/div&gt;
@@ -586,15 +583,15 @@ ImportError: __import__ not found
 
 &lt;p&gt;I get a warning message saying some modules were unable to be built, but I am unstoppable. We are unstoppable. Let's continue.&lt;/p&gt;
 &lt;p&gt;It seems like the place to start is in the file &lt;code&gt;Grammar/Grammar&lt;/code&gt;, so let's start poking around there. &lt;a href="http://docs.python.org/2/reference/grammar.html"&gt;This&lt;/a&gt; is what it looks like. Searching for 'import' brings us to lines 52-60:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;import_stmt: import_name | import_from
-import_name: &amp;#39;import&amp;#39; dotted_as_names
-import_from: (&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#39;.&amp;#39;+)
-              &amp;#39;import&amp;#39; (&amp;#39;*&amp;#39; | &amp;#39;(&amp;#39; import_as_names &amp;#39;)&amp;#39; | import_as_names))
-import_as_name: NAME [&amp;#39;as&amp;#39; NAME]
-dotted_as_name: dotted_name [&amp;#39;as&amp;#39; NAME]
-import_as_names: import_as_name (&amp;#39;,&amp;#39; import_as_name)* [&amp;#39;,&amp;#39;]
-dotted_as_names: dotted_as_name (&amp;#39;,&amp;#39; dotted_as_name)*
-dotted_name: NAME (&amp;#39;.&amp;#39; NAME)*
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;import_stmt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;import_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;import_from&lt;/span&gt;
+&lt;span class="n"&gt;import_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;import&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;dotted_as_names&lt;/span&gt;
+&lt;span class="n"&gt;import_from&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;from&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dotted_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="s"&gt;&amp;#39;import&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;(&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;)&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;import_as_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;as&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;dotted_as_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;dotted_name&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;as&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;import_as_names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;import_as_name&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;import_as_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;dotted_as_names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;dotted_as_name&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;dotted_as_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="n"&gt;dotted_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -621,7 +618,7 @@ dotted_name: NAME (&amp;#39;.&amp;#39; NAME)*
 &lt;p&gt;This error occurs while trying to execute a Python script! Compiling CPython requires running Python scripts! Interesting. Maybe at this point we remember that Python is &lt;a href="http://en.wikipedia.org/wiki/Bootstrapping_(compilers)"&gt;bootstrapped&lt;/a&gt;. We look back at the &lt;a href="http://docs.python.org/devguide/setup.html"&gt;Python Developer's Guide&lt;/a&gt; and we find that &lt;em&gt;"Vast areas of CPython are written completely in Python: as of this writing, CPython contains slightly more Python code than C."&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;So then we wonder - when CPython is compiling, does it execute Python scripts with the Python that's currently being compiled? Or does it use another already-compiled muggle Python, like our environment Python? If it uses the Python that's currently being compiled, we'll need to change these .py scripts to say &lt;code&gt;accio&lt;/code&gt; instead of &lt;code&gt;import&lt;/code&gt;. Otherwise, what do we do? Our muggle Python only understands &lt;code&gt;import&lt;/code&gt; and not &lt;code&gt;accio&lt;/code&gt;...&lt;/p&gt;
 &lt;p&gt;Let's look into one of the .py scripts within &lt;code&gt;Lib&lt;/code&gt; to investigate. Here's the first line of the &lt;code&gt;Lib/keyword.py&lt;/code&gt; script:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;#! /usr/bin/env python
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#! /usr/bin/env python&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -629,11 +626,11 @@ dotted_name: NAME (&amp;#39;.&amp;#39; NAME)*
 &lt;h1&gt;Yo Dawg, I Heard You Like Pythons&lt;/h1&gt;
 &lt;p&gt;What if we did something crazy like compiled an intermediary Python that understands &lt;em&gt;both&lt;/em&gt; &lt;code&gt;accio&lt;/code&gt; &lt;em&gt;and&lt;/em&gt; &lt;code&gt;import&lt;/code&gt;, and used &lt;em&gt;that&lt;/em&gt; Python to compile &lt;em&gt;another&lt;/em&gt; Python that only understands &lt;code&gt;accio&lt;/code&gt;? (Full credit for this idea goes to &lt;a href="http://akaptur.github.io/"&gt;Allison Kaptur&lt;/a&gt;.)&lt;/p&gt;
 &lt;p&gt;So, for our intermediary Python we'll need to edit the &lt;code&gt;Grammar&lt;/code&gt; file like so:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;import_name: &amp;#39;import&amp;#39; dotted_as_names | &amp;#39;accio&amp;#39; dotted_as_names
-import_from: ((&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#39;.&amp;#39;+)
-              &amp;#39;import&amp;#39; (&amp;#39;*&amp;#39; | &amp;#39;(&amp;#39; import_as_names &amp;#39;)&amp;#39; | import_as_names)) |
-              (&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#39;.&amp;#39;+)
-              &amp;#39;accio&amp;#39; (&amp;#39;*&amp;#39; | &amp;#39;(&amp;#39; import_as_names &amp;#39;)&amp;#39; | import_as_names)))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;import_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;import&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;dotted_as_names&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;accio&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;dotted_as_names&lt;/span&gt;
+&lt;span class="n"&gt;import_from&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;from&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dotted_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="s"&gt;&amp;#39;import&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;(&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;)&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;
+              &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;from&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dotted_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="s"&gt;&amp;#39;accio&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;(&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;)&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -658,9 +655,9 @@ import_from: ((&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#
 
 
 &lt;p&gt;We want to change the &lt;code&gt;Grammar&lt;/code&gt; file for this Python to only allow &lt;code&gt;accio&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;import_name: &amp;#39;accio&amp;#39; dotted_as_names
-import_from: (&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#39;.&amp;#39;+)
-              &amp;#39;accio&amp;#39; (&amp;#39;*&amp;#39; | &amp;#39;(&amp;#39; import_as_names &amp;#39;)&amp;#39; | import_as_names))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;import_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;accio&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;dotted_as_names&lt;/span&gt;
+&lt;span class="n"&gt;import_from&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;from&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;dotted_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="s"&gt;&amp;#39;accio&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;(&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;)&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;import_as_names&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -684,21 +681,21 @@ import_from: (&amp;#39;from&amp;#39; (&amp;#39;.&amp;#39;* dotted_name | &amp;#3
 
 
 &lt;p&gt;And fire it up...&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt;&amp;gt;&amp;gt;&amp;gt; import sys&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
   File &lt;span class="nb"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;
     &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
              &lt;span class="o"&gt;^&lt;/span&gt;
 &lt;span class="gr"&gt;SyntaxError&lt;/span&gt;: &lt;span class="n"&gt;invalid syntax&lt;/span&gt;
-&lt;span class="x"&gt;&amp;gt;&amp;gt;&amp;gt; accio sys&lt;/span&gt;
-&lt;span class="x"&gt;&amp;gt;&amp;gt;&amp;gt; sys.modules.keys()&lt;/span&gt;
-&lt;span class="x"&gt;[&amp;#39;copy_reg&amp;#39;, &amp;#39;sre_compile&amp;#39;, &amp;#39;_sre&amp;#39;, &amp;#39;encodings&amp;#39;, &amp;#39;site&amp;#39;, &amp;#39;__builtin__&amp;#39;, &amp;#39;sysconfig&amp;#39;, &amp;#39;__main__&amp;#39;, &amp;#39;encodings.encodings&amp;#39;, &amp;#39;abc&amp;#39;, &amp;#39;posixpath&amp;#39;, &amp;#39;_weakrefset&amp;#39;, &amp;#39;errno&amp;#39;, &amp;#39;encodings.codecs&amp;#39;, &amp;#39;sre_constants&amp;#39;, &amp;#39;re&amp;#39;, &amp;#39;_abcoll&amp;#39;, &amp;#39;types&amp;#39;, &amp;#39;_codecs&amp;#39;, &amp;#39;encodings.__builtin__&amp;#39;, &amp;#39;_warnings&amp;#39;, &amp;#39;genericpath&amp;#39;, &amp;#39;stat&amp;#39;, &amp;#39;zipimport&amp;#39;, &amp;#39;_sysconfigdata&amp;#39;, &amp;#39;warnings&amp;#39;, &amp;#39;UserDict&amp;#39;, &amp;#39;encodings.ascii&amp;#39;, &amp;#39;sys&amp;#39;, &amp;#39;_osx_support&amp;#39;, &amp;#39;codecs&amp;#39;, &amp;#39;os.path&amp;#39;, &amp;#39;sitecustomize&amp;#39;, &amp;#39;signal&amp;#39;, &amp;#39;traceback&amp;#39;, &amp;#39;linecache&amp;#39;, &amp;#39;posix&amp;#39;, &amp;#39;encodings.aliases&amp;#39;, &amp;#39;exceptions&amp;#39;, &amp;#39;sre_parse&amp;#39;, &amp;#39;os&amp;#39;, &amp;#39;_weakref&amp;#39;]&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;accio&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;modules&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="go"&gt;[&amp;#39;copy_reg&amp;#39;, &amp;#39;sre_compile&amp;#39;, &amp;#39;_sre&amp;#39;, &amp;#39;encodings&amp;#39;, &amp;#39;site&amp;#39;, &amp;#39;__builtin__&amp;#39;, &amp;#39;sysconfig&amp;#39;, &amp;#39;__main__&amp;#39;, &amp;#39;encodings.encodings&amp;#39;, &amp;#39;abc&amp;#39;, &amp;#39;posixpath&amp;#39;, &amp;#39;_weakrefset&amp;#39;, &amp;#39;errno&amp;#39;, &amp;#39;encodings.codecs&amp;#39;, &amp;#39;sre_constants&amp;#39;, &amp;#39;re&amp;#39;, &amp;#39;_abcoll&amp;#39;, &amp;#39;types&amp;#39;, &amp;#39;_codecs&amp;#39;, &amp;#39;encodings.__builtin__&amp;#39;, &amp;#39;_warnings&amp;#39;, &amp;#39;genericpath&amp;#39;, &amp;#39;stat&amp;#39;, &amp;#39;zipimport&amp;#39;, &amp;#39;_sysconfigdata&amp;#39;, &amp;#39;warnings&amp;#39;, &amp;#39;UserDict&amp;#39;, &amp;#39;encodings.ascii&amp;#39;, &amp;#39;sys&amp;#39;, &amp;#39;_osx_support&amp;#39;, &amp;#39;codecs&amp;#39;, &amp;#39;os.path&amp;#39;, &amp;#39;sitecustomize&amp;#39;, &amp;#39;signal&amp;#39;, &amp;#39;traceback&amp;#39;, &amp;#39;linecache&amp;#39;, &amp;#39;posix&amp;#39;, &amp;#39;encodings.aliases&amp;#39;, &amp;#39;exceptions&amp;#39;, &amp;#39;sre_parse&amp;#39;, &amp;#39;os&amp;#39;, &amp;#39;_weakref&amp;#39;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;HOLY SHIT IT WORKS!&lt;/p&gt;
 &lt;h1&gt;Fin&lt;/h1&gt;
 &lt;p&gt;That's it. We just compiled two Pythons and fooled around with source code for the sake of a joke. Grab yourselves a beer, friends. Victory.&lt;/p&gt;
-&lt;p&gt;My super messy and not-really-prepared-for-the-general-public GitHub &lt;a href="https://github.com/amygdalama/nagini"&gt;repo&lt;/a&gt; contains both versions of Python, for reference. &lt;/p&gt;</summary><category term="python"></category><category term="harry potter"></category><category term="bootstrapping"></category><category term="cpython"></category><category term="compilers"></category><category term="grammar"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>GitHub Pages Publication with Git Hooks</title><link href="http://amygdalama.github.io/github-pages-publication-git-hooks.html" rel="alternate"></link><updated>2014-03-08T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-08:github-pages-publication-git-hooks.html</id><summary type="html">&lt;p&gt;As I &lt;a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html"&gt;wrote&lt;/a&gt; at length a couple weeks ago, this blog is hosted on &lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; and generated by &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. Generally the integration between the two is quite blissful, except for managing two separate repositories - &lt;a href="https://github.com/amygdalama/blog-source"&gt;blog-source&lt;/a&gt; for my blog's source content, configuration files, and theme, and &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;amygdalama.github.io&lt;/a&gt; for my Pelican-generated site.&lt;/p&gt;
+&lt;p&gt;My super messy and not-really-prepared-for-the-general-public GitHub &lt;a href="https://github.com/amygdalama/nagini"&gt;repo&lt;/a&gt; contains both versions of Python, for reference.&lt;/p&gt;</summary><category term="python"></category><category term="harry potter"></category><category term="bootstrapping"></category><category term="cpython"></category><category term="compilers"></category><category term="grammar"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>GitHub Pages Publication with Git Hooks</title><link href="http://amygdalama.github.io/github-pages-publication-git-hooks.html" rel="alternate"></link><updated>2014-03-08T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-08:github-pages-publication-git-hooks.html</id><summary type="html">&lt;p&gt;As I &lt;a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html"&gt;wrote&lt;/a&gt; at length a couple weeks ago, this blog is hosted on &lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; and generated by &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. Generally the integration between the two is quite blissful, except for managing two separate repositories - &lt;a href="https://github.com/amygdalama/blog-source"&gt;blog-source&lt;/a&gt; for my blog's source content, configuration files, and theme, and &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;amygdalama.github.io&lt;/a&gt; for my Pelican-generated site.&lt;/p&gt;
 &lt;p&gt;Lately I've been pushing to these two separate repositories manually, so my workflow looks something like:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/      &lt;span class="c"&gt;# root directory for my blog&lt;/span&gt;
 &lt;span class="nv"&gt;$ &lt;/span&gt;make devserver    &lt;span class="c"&gt;# automatically re-generates site and hosts site locally&lt;/span&gt;
@@ -782,37 +779,34 @@ git push origin master
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Run Pelican &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog"&gt;quickstart&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred &lt;a href="http://docs.getpelican.com/en/3.1.1/settings.html"&gt;settings&lt;/a&gt;. As an example, here's how I answered (I put my responses on separate lines starting with &lt;code&gt;&amp;gt;&lt;/code&gt; to make this easier to read):&lt;/p&gt;
+&lt;p&gt;This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred &lt;a href="http://docs.getpelican.com/en/3.1.1/settings.html"&gt;settings&lt;/a&gt;. As an example, here's how I answered:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; pelican-quickstart
-&lt;span class="go"&gt;Where do you want to create your new web site? [.]  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="go"&gt;What will be the title of this web site?  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
-&lt;span class="go"&gt;Who will be the author of this web site?  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
-&lt;span class="go"&gt;What will be the default language of this web site? [en]  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; 
-&lt;span class="go"&gt;Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;What is your URL prefix? (see above example; no trailing slash) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; http://amygdalama.github.io  
-&lt;span class="go"&gt;Do you want to enable article pagination? (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;How many articles per page do you want? [10] &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="go"&gt;Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;Do you want to upload your website using FTP? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using SSH? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using Dropbox? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using S3? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using Rackspace Cloud Files? (y/N) &lt;/span&gt;
+&lt;span class="go"&gt;Where do you want to create your new web site? [.]&lt;/span&gt;
+&lt;span class="go"&gt;What will be the title of this web site?&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon
+&lt;span class="go"&gt;Who will be the author of this web site?&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon
+&lt;span class="go"&gt;What will be the default language of this web site? [en]&lt;/span&gt;
+&lt;span class="go"&gt;Do you want to specify a URL prefix? e.g., http://example.com   (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;What is your URL prefix? (see above example; no trailing slash)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; http://amygdalama.github.io
+&lt;span class="go"&gt;Do you want to enable article pagination? (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;How many articles per page do you want? [10]&lt;/span&gt;
+&lt;span class="go"&gt;Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;Do you want to upload your website using FTP? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using SSH? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using Dropbox? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using S3? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using Rackspace Cloud Files? (y/N)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -837,13 +831,13 @@ git push origin master
 &lt;p&gt;&lt;code&gt;Makefile&lt;/code&gt; tells the command &lt;code&gt;make&lt;/code&gt; what to do. This file defines commands like &lt;code&gt;make devserver&lt;/code&gt;. More information on &lt;code&gt;make&lt;/code&gt; can be found &lt;a href="http://www.gnu.org/software/make/manual/make.html"&gt;here&lt;/a&gt;. I'll cover more on how to use this command for developing your site in the &lt;strong&gt;Generating Your Site&lt;/strong&gt; section.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;code&gt;content&lt;/code&gt; is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within &lt;code&gt;content&lt;/code&gt;:  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;content&lt;/code&gt; is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within &lt;code&gt;content&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/pages
 &lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/images
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this &lt;code&gt;pages&lt;/code&gt; directory and that images are found within the &lt;code&gt;images&lt;/code&gt; directory.  &lt;/p&gt;
+&lt;p&gt;Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this &lt;code&gt;pages&lt;/code&gt; directory and that images are found within the &lt;code&gt;images&lt;/code&gt; directory.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;develop_server.sh&lt;/code&gt; is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;).&lt;/p&gt;
@@ -864,7 +858,7 @@ git push origin master
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2&gt;Exporting Existing Content&lt;/h2&gt;
-&lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  &lt;/p&gt;
+&lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/"&gt;Export WordPress content to XML&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://docs.getpelican.com/en/3.1.1/importer.html"&gt;Imperfectly convert the XML to Markdown using Pelican&lt;/a&gt;&lt;/li&gt;
@@ -895,7 +889,7 @@ git push origin master
 &lt;/ol&gt;
 &lt;h2&gt;Customization&lt;/h2&gt;
 &lt;p&gt;All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the &lt;code&gt;main.css&lt;/code&gt; file found in your theme's directory. For example, I've made many edits to the file &lt;code&gt;pelican-themes/subtle/static/css/main.css&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. &lt;/p&gt;
+&lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page.&lt;/p&gt;
 &lt;p&gt;There should also be HTML files that serve as templates for specific types of pages. For example, &lt;code&gt;article.html&lt;/code&gt; defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.&lt;/p&gt;
 &lt;p&gt;If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.&lt;/p&gt;
 &lt;h2&gt;Generating Your Site&lt;/h2&gt;
@@ -927,7 +921,7 @@ git push origin master
 
 
 &lt;p&gt;Otherwise if you use the &lt;code&gt;publishconf.py&lt;/code&gt; file as your settings file when running the &lt;code&gt;pelican&lt;/code&gt; command, you'll delete your git repo!&lt;/p&gt;
-&lt;p&gt;Similarly, don't use the &lt;code&gt;make clean&lt;/code&gt; command! If you poke around the &lt;code&gt;Makefile&lt;/code&gt;, you'll see that &lt;code&gt;make clean&lt;/code&gt; runs &lt;code&gt;rm -rf output&lt;/code&gt; which will delete all files (including your git repo) in your output folder. &lt;/p&gt;
+&lt;p&gt;Similarly, don't use the &lt;code&gt;make clean&lt;/code&gt; command! If you poke around the &lt;code&gt;Makefile&lt;/code&gt;, you'll see that &lt;code&gt;make clean&lt;/code&gt; runs &lt;code&gt;rm -rf output&lt;/code&gt; which will delete all files (including your git repo) in your output folder.&lt;/p&gt;
 &lt;p&gt;If you accidentally delete the repo in your output folder, it's not a &lt;em&gt;huge&lt;/em&gt; deal (I've done it like 5 times playing with different commands and settings). Just clone your remote &lt;em&gt;username.github.io&lt;/em&gt; repo into a new, empty &lt;code&gt;output&lt;/code&gt; folder, re-generate your site with any changes you've made since your last push to the remote, and then commit and push the changes to the remote:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
 &lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/username/username.github.io.git output
@@ -964,8 +958,8 @@ terminal.&lt;/p&gt;
 &lt;p&gt;Let's use the classic iris dataset for some simple analysis. First we
 need to do some setup. Create a directory for our project (mine is
 stored within my Projects directory that I keep in my Home directory.)
-In the terminal:  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir ~/Projects/ipython-pandas-whoa  
+In the terminal:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir ~/Projects/ipython-pandas-whoa
 &lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -973,7 +967,7 @@ In the terminal:  &lt;/p&gt;
 &lt;p&gt;Then create a Python script and open it with a text editor (I use
 Sublime Text 2, which I've &lt;a href="http://www.sublimetext.com/docs/2/osx_command_line.html"&gt;configured&lt;/a&gt; to open files with the command
 &lt;code&gt;subl&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;touch barbaric-script.py  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;touch barbaric-script.py
 &lt;span class="nv"&gt;$ &lt;/span&gt;subl barbaric-script.py
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -985,8 +979,8 @@ we created with the &lt;code&gt;touch&lt;/code&gt; command in your text editor 
 We'll be using a couple standard python packages plus matplotlib.pyplot.
 If you don't have matplotlib installed, you can find installation
 instructions &lt;a href="http://matplotlib.org/users/installing.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;  
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pprint&lt;/span&gt;  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pprint&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;urllib2&lt;/span&gt;
 
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
@@ -998,52 +992,52 @@ packages and then do some basic formatting. Let's process the dataset as
 a list of dictionaries.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&amp;quot;&lt;/span&gt;
 
-&lt;span class="c"&gt;# Open data from URL as a file-like object  &lt;/span&gt;
+&lt;span class="c"&gt;# Open data from URL as a file-like object&lt;/span&gt;
 &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;urllib2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-&lt;span class="c"&gt;# Create an empty list to store our data  &lt;/span&gt;
+&lt;span class="c"&gt;# Create an empty list to store our data&lt;/span&gt;
 &lt;span class="n"&gt;parsed_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
 
-&lt;span class="c"&gt;# Read file  &lt;/span&gt;
+&lt;span class="c"&gt;# Read file&lt;/span&gt;
 &lt;span class="n"&gt;raw_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-&lt;span class="c"&gt;# Define our headers since the file doesn&amp;#39;t contain explicit headers  &lt;/span&gt;
-&lt;span class="c"&gt;# I found these headers from looking at the documentation at  &lt;/span&gt;
-&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  &lt;/span&gt;
-&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;  
+&lt;span class="c"&gt;# Define our headers since the file doesn&amp;#39;t contain explicit headers&lt;/span&gt;
+&lt;span class="c"&gt;# I found these headers from looking at the documentation at&lt;/span&gt;
+&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names&lt;/span&gt;
+&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;
     &lt;span class="p"&gt;]&lt;/span&gt;
 
-&lt;span class="c"&gt;# Iterate through the rows in the file, and create a dictionary for each row  &lt;/span&gt;
+&lt;span class="c"&gt;# Iterate through the rows in the file, and create a dictionary for each row&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;raw_data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 
-&lt;span class="c"&gt;# Dictionaries should have headers -&amp;gt; row  &lt;/span&gt;
+&lt;span class="c"&gt;# Dictionaries should have headers -&amp;gt; row&lt;/span&gt;
 &lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 
-&lt;span class="c"&gt;# Delete the last row of parsed_data because it&amp;#39;s blank  &lt;/span&gt;
+&lt;span class="c"&gt;# Delete the last row of parsed_data because it&amp;#39;s blank&lt;/span&gt;
 &lt;span class="n"&gt;parsed_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 
-&lt;span class="c"&gt;# Let&amp;#39;s see what parsed_data looks like  &lt;/span&gt;
+&lt;span class="c"&gt;# Let&amp;#39;s see what parsed_data looks like&lt;/span&gt;
 &lt;span class="n"&gt;pprint&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pprint&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;What you should see when you execute barbaric-script.py:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;python barbaric-script.py  
-&lt;span class="o"&gt;[{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.4&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;5.1&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.5&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,  
-&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.4&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;4.9&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.0&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,  
-&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Iris-setosa&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;1.3&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;0.2&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;4.7&amp;#39;&lt;/span&gt;,  
-&lt;span class="s1"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;3.2&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python barbaric-script.py
+&lt;span class="go"&gt;[{&amp;#39;Class&amp;#39;: &amp;#39;Iris-setosa&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Petal Length&amp;#39;: &amp;#39;1.4&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Petal Width&amp;#39;: &amp;#39;0.2&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Sepal Length&amp;#39;: &amp;#39;5.1&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Sepal Width&amp;#39;: &amp;#39;3.5&amp;#39;},&lt;/span&gt;
+&lt;span class="go"&gt;{&amp;#39;Class&amp;#39;: &amp;#39;Iris-setosa&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Petal Length&amp;#39;: &amp;#39;1.4&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Petal Width&amp;#39;: &amp;#39;0.2&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Sepal Length&amp;#39;: &amp;#39;4.9&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Sepal Width&amp;#39;: &amp;#39;3.0&amp;#39;},&lt;/span&gt;
+&lt;span class="go"&gt;{&amp;#39;Class&amp;#39;: &amp;#39;Iris-setosa&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Petal Length&amp;#39;: &amp;#39;1.3&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Petal Width&amp;#39;: &amp;#39;0.2&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Sepal Length&amp;#39;: &amp;#39;4.7&amp;#39;,&lt;/span&gt;
+&lt;span class="go"&gt;&amp;#39;Sepal Width&amp;#39;: &amp;#39;3.2&amp;#39;}]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1057,14 +1051,14 @@ above) is in the class &lt;code&gt;Iris-setosa&lt;/code&gt;, has a Petal Length 
 Width of &lt;code&gt;0.2&lt;/code&gt;, a Sepal Length of &lt;code&gt;5.1&lt;/code&gt;, and a Sepal Width of &lt;code&gt;3.5&lt;/code&gt;. Let's do
 some plotting to explore our data. We can make a histogram! Add the
 following lines to your barbaric-script.py file:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Let&amp;#39;s create a list of the Sepal Lengths  &lt;/span&gt;
-&lt;span class="c"&gt;# I&amp;#39;m calling float on the entries because otherwise they&amp;#39;re stored as strings  &lt;/span&gt;
-&lt;span class="n"&gt;sepal_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Let&amp;#39;s create a list of the Sepal Lengths&lt;/span&gt;
+&lt;span class="c"&gt;# I&amp;#39;m calling float on the entries because otherwise they&amp;#39;re stored as strings&lt;/span&gt;
+&lt;span class="n"&gt;sepal_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed_data&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
 
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sepal_lengths&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;#348ABD&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;edgecolor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;none&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sepal_lengths&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;#348ABD&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;edgecolor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;none&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1086,7 +1080,7 @@ to execute, but it would be pretty annoying if our script took longer to
 run.&lt;/p&gt;
 &lt;p&gt;Now let's try doing the same thing, but using pandas in an ipython
 notebook. Use the terminal to run ipython notebook:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/ipython-pandas-whoa  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/ipython-pandas-whoa
 &lt;span class="nv"&gt;$ &lt;/span&gt;ipython notebook
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1114,7 +1108,7 @@ shift+enter, your notebook should look like:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
 &lt;p&gt;In the next cell, import the packages we'll be using, namely
 matplotlib.pyplot and pandas:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1128,10 +1122,10 @@ parser. We can get to a easy-to-use data frame within three lines of
 code!&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.data&amp;quot;&lt;/span&gt;
 
-&lt;span class="c"&gt;# Define our headers since the url doesn&amp;#39;t contain explicit headers  &lt;/span&gt;
-&lt;span class="c"&gt;# I found these headers from looking at the documentation at  &lt;/span&gt;
-&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names  &lt;/span&gt;
-&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
+&lt;span class="c"&gt;# Define our headers since the url doesn&amp;#39;t contain explicit headers&lt;/span&gt;
+&lt;span class="c"&gt;# I found these headers from looking at the documentation at&lt;/span&gt;
+&lt;span class="c"&gt;# http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/iris.names&lt;/span&gt;
+&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sepal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Petal Width&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;iris&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1145,14 +1139,14 @@ code!&lt;/p&gt;
 frame, which is similar to a data frame in R.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /&gt;&lt;/p&gt;
 &lt;p&gt;Now let's plot a histogram for the Sepal Length column.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# I use two brackets around &amp;#39;Sepal Length&amp;#39; to force pandas to make this  &lt;/span&gt;
-&lt;span class="c"&gt;# a data frame rather than just a series, which is like a numpy array.  &lt;/span&gt;
-&lt;span class="c"&gt;# The brackets here aren&amp;#39;t necessary, but makes printing sepal_lengths  &lt;/span&gt;
-&lt;span class="c"&gt;# prettier and makes it easier for us to combine sepal_lengths with other  &lt;/span&gt;
-&lt;span class="c"&gt;# data.  &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# I use two brackets around &amp;#39;Sepal Length&amp;#39; to force pandas to make this&lt;/span&gt;
+&lt;span class="c"&gt;# a data frame rather than just a series, which is like a numpy array.&lt;/span&gt;
+&lt;span class="c"&gt;# The brackets here aren&amp;#39;t necessary, but makes printing sepal_lengths&lt;/span&gt;
+&lt;span class="c"&gt;# prettier and makes it easier for us to combine sepal_lengths with other&lt;/span&gt;
+&lt;span class="c"&gt;# data.&lt;/span&gt;
 &lt;span class="n"&gt;sepal_lengths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;iris&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sepal Length&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 
-&lt;span class="c"&gt;# Make the plot pretty!  &lt;/span&gt;
+&lt;span class="c"&gt;# Make the plot pretty!&lt;/span&gt;
 &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_option&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;display.mpl_style&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;sepal_lengths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;

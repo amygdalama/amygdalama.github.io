@@ -62,37 +62,34 @@ git push origin master
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Run Pelican &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog"&gt;quickstart&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred &lt;a href="http://docs.getpelican.com/en/3.1.1/settings.html"&gt;settings&lt;/a&gt;. As an example, here's how I answered (I put my responses on separate lines starting with &lt;code&gt;&amp;gt;&lt;/code&gt; to make this easier to read):&lt;/p&gt;
+&lt;p&gt;This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred &lt;a href="http://docs.getpelican.com/en/3.1.1/settings.html"&gt;settings&lt;/a&gt;. As an example, here's how I answered:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; pelican-quickstart
-&lt;span class="go"&gt;Where do you want to create your new web site? [.]  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="go"&gt;What will be the title of this web site?  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
-&lt;span class="go"&gt;Who will be the author of this web site?  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon  
-&lt;span class="go"&gt;What will be the default language of this web site? [en]  &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; 
-&lt;span class="go"&gt;Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;What is your URL prefix? (see above example; no trailing slash) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; http://amygdalama.github.io  
-&lt;span class="go"&gt;Do you want to enable article pagination? (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;How many articles per page do you want? [10] &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="go"&gt;Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y  
-&lt;span class="go"&gt;Do you want to upload your website using FTP? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using SSH? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using Dropbox? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using S3? (y/N) &lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n  
-&lt;span class="go"&gt;Do you want to upload your website using Rackspace Cloud Files? (y/N) &lt;/span&gt;
+&lt;span class="go"&gt;Where do you want to create your new web site? [.]&lt;/span&gt;
+&lt;span class="go"&gt;What will be the title of this web site?&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon
+&lt;span class="go"&gt;Who will be the author of this web site?&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; Amy Hanlon
+&lt;span class="go"&gt;What will be the default language of this web site? [en]&lt;/span&gt;
+&lt;span class="go"&gt;Do you want to specify a URL prefix? e.g., http://example.com   (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;What is your URL prefix? (see above example; no trailing slash)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; http://amygdalama.github.io
+&lt;span class="go"&gt;Do you want to enable article pagination? (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;How many articles per page do you want? [10]&lt;/span&gt;
+&lt;span class="go"&gt;Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; y
+&lt;span class="go"&gt;Do you want to upload your website using FTP? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using SSH? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using Dropbox? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using S3? (y/N)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
+&lt;span class="go"&gt;Do you want to upload your website using Rackspace Cloud Files? (y/N)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&lt;/span&gt; n
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -117,13 +114,13 @@ git push origin master
 &lt;p&gt;&lt;code&gt;Makefile&lt;/code&gt; tells the command &lt;code&gt;make&lt;/code&gt; what to do. This file defines commands like &lt;code&gt;make devserver&lt;/code&gt;. More information on &lt;code&gt;make&lt;/code&gt; can be found &lt;a href="http://www.gnu.org/software/make/manual/make.html"&gt;here&lt;/a&gt;. I'll cover more on how to use this command for developing your site in the &lt;strong&gt;Generating Your Site&lt;/strong&gt; section.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;code&gt;content&lt;/code&gt; is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within &lt;code&gt;content&lt;/code&gt;:  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;content&lt;/code&gt; is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within &lt;code&gt;content&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/pages
 &lt;span class="nv"&gt;$ &lt;/span&gt;mkdir content/images
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this &lt;code&gt;pages&lt;/code&gt; directory and that images are found within the &lt;code&gt;images&lt;/code&gt; directory.  &lt;/p&gt;
+&lt;p&gt;Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this &lt;code&gt;pages&lt;/code&gt; directory and that images are found within the &lt;code&gt;images&lt;/code&gt; directory.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;develop_server.sh&lt;/code&gt; is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;).&lt;/p&gt;
@@ -144,7 +141,7 @@ git push origin master
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2&gt;Exporting Existing Content&lt;/h2&gt;
-&lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  &lt;/p&gt;
+&lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/"&gt;Export WordPress content to XML&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://docs.getpelican.com/en/3.1.1/importer.html"&gt;Imperfectly convert the XML to Markdown using Pelican&lt;/a&gt;&lt;/li&gt;
@@ -175,7 +172,7 @@ git push origin master
 &lt;/ol&gt;
 &lt;h2&gt;Customization&lt;/h2&gt;
 &lt;p&gt;All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the &lt;code&gt;main.css&lt;/code&gt; file found in your theme's directory. For example, I've made many edits to the file &lt;code&gt;pelican-themes/subtle/static/css/main.css&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. &lt;/p&gt;
+&lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page.&lt;/p&gt;
 &lt;p&gt;There should also be HTML files that serve as templates for specific types of pages. For example, &lt;code&gt;article.html&lt;/code&gt; defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.&lt;/p&gt;
 &lt;p&gt;If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.&lt;/p&gt;
 &lt;h2&gt;Generating Your Site&lt;/h2&gt;
@@ -207,7 +204,7 @@ git push origin master
 
 
 &lt;p&gt;Otherwise if you use the &lt;code&gt;publishconf.py&lt;/code&gt; file as your settings file when running the &lt;code&gt;pelican&lt;/code&gt; command, you'll delete your git repo!&lt;/p&gt;
-&lt;p&gt;Similarly, don't use the &lt;code&gt;make clean&lt;/code&gt; command! If you poke around the &lt;code&gt;Makefile&lt;/code&gt;, you'll see that &lt;code&gt;make clean&lt;/code&gt; runs &lt;code&gt;rm -rf output&lt;/code&gt; which will delete all files (including your git repo) in your output folder. &lt;/p&gt;
+&lt;p&gt;Similarly, don't use the &lt;code&gt;make clean&lt;/code&gt; command! If you poke around the &lt;code&gt;Makefile&lt;/code&gt;, you'll see that &lt;code&gt;make clean&lt;/code&gt; runs &lt;code&gt;rm -rf output&lt;/code&gt; which will delete all files (including your git repo) in your output folder.&lt;/p&gt;
 &lt;p&gt;If you accidentally delete the repo in your output folder, it's not a &lt;em&gt;huge&lt;/em&gt; deal (I've done it like 5 times playing with different commands and settings). Just clone your remote &lt;em&gt;username.github.io&lt;/em&gt; repo into a new, empty &lt;code&gt;output&lt;/code&gt; folder, re-generate your site with any changes you've made since your last push to the remote, and then commit and push the changes to the remote:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
 &lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/username/username.github.io.git output

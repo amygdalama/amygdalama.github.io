@@ -36,18 +36,15 @@
     <header>
       <h1 class="entry-title">
         <a href="whats-the-deal-with-builtins-vs-builtin.html" rel="bookmark"
-           title="Permalink to What's the deal with __builtins__ vs __builtin__">What's the deal with __builtins__ vs __builtin__</a></h1>
+           title="Permalink to What's the deal with __builtins__ vs __builtin__">What's the deal with <code>__builtins__</code> vs <code>__builtin__</code></a></h1>
     </header>
 
     <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-03-23T00:00:00">
-                Sun 23 March 2014
+                March 23 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -71,10 +68,10 @@
 <blockquote>
 <p>By default, when in the <code>__main__</code> module, <code>__builtins__</code> is the built-in module <code>__builtin__</code> (note: no 's'); when in any other module, <code>__builtins__</code> is an alias for the dictionary of the <code>__builtin__</code> module itself.</p>
 </blockquote>
-<p>What. What does that mean. </p>
+<p>What. What does that mean.</p>
 <p>This talk of the "<code>__main__</code> module" and "any other module" reminds me of a sequence of words that I've known for quite a while, but haven't completely grokked:</p>
 <blockquote>
-<p>We can access the name of the current module with the builtin variable <code>__name__</code>. </p>
+<p>We can access the name of the current module with the builtin variable <code>__name__</code>.</p>
 </blockquote>
 <p>You're probably familiar with the related canonical statement:</p>
 <div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
@@ -83,9 +80,9 @@
 
 
 <p>But what does "current module" mean? What does the <code>__name__</code> variable look like when it does not equal <code>__main__</code>?</p>
-<p>I happen to know, because I've obsessively read about the <code>import</code> statement, another sequence of words: </p>
+<p>I happen to know, because I've obsessively read about the <code>import</code> statement, another sequence of words:</p>
 <blockquote>
-<p>Any code executed as a result of an <code>import</code> isn't executed in the <code>__main__</code> module. </p>
+<p>Any code executed as a result of an <code>import</code> isn't executed in the <code>__main__</code> module.</p>
 </blockquote>
 <p>Let's use these bits of knowledge to observe the behavior of <code>__builtins__</code> both inside and outside of the <code>__main__</code> module. We can also check out the <code>__name__</code> variable while we're at it.</p>
 <p>First, let's make a script, <code>a.py</code>, which will allow us to observe the behavior of <code>__builtin__</code>, <code>__builtins__</code>, and <code>__name__</code>.</p>
@@ -109,7 +106,7 @@
 </pre></div>
 
 
-<p>Okay. So we're in the <code>__main__</code> module, and in here <code>__builtin__</code> is pointing to the same module object as <code>__builtins__</code>. </p>
+<p>Okay. So we're in the <code>__main__</code> module, and in here <code>__builtin__</code> is pointing to the same module object as <code>__builtins__</code>.</p>
 <p>What happens if we <code>import a</code> in another script? The code in <code>a</code> will execute, but it won't be executed within the <code>__main__</code> module. Instead, it'll be executed within the <code>a</code> module. Let's write another script, <code>b.py</code>, to find out what happens to <code>__builtins__</code> outside of <code>__main__</code>:</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">__builtin__</span>
 
@@ -145,7 +142,7 @@
 </pre></div>
 
 
-<p>Aha. So when we're outside the context of the <code>__main__</code> module, <code>__name__</code> is just equal to the name of the module where code is currently being executed. That seems logical. And outside of <code>__main__</code>, <code>__builtins__</code> is a dict, rather than a module. </p>
+<p>Aha. So when we're outside the context of the <code>__main__</code> module, <code>__name__</code> is just equal to the name of the module where code is currently being executed. That seems logical. And outside of <code>__main__</code>, <code>__builtins__</code> is a dict, rather than a module.</p>
 <p>We were told earlier that, outside the context of <code>__main__</code>, <em>"<code>__builtins__</code> is an alias for the dictionary of the <code>__builtin__</code> module"</em>. I think that means that <code>__builtins__ is __builtin__.__dict__</code>. Let's see if my hypothesis is true, by adding another line to the bottom of our <code>a.py</code> file:</p>
 <div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;__builtins__ is __builtin__.__dict__&quot;</span><span class="p">,</span> <span class="n">__builtins__</span> <span class="ow">is</span> <span class="n">__builtin__</span><span class="o">.</span><span class="n">__dict__</span>
 </pre></div>
@@ -169,7 +166,7 @@
 </pre></div>
 
 
-<p>Yes! My hypothesis was correct. Okay. So now I get why using <code>__builtin__</code> is better than <code>__builtins__</code>: </p>
+<p>Yes! My hypothesis was correct. Okay. So now I get why using <code>__builtin__</code> is better than <code>__builtins__</code>:</p>
 <p><strong>The type, and thus behavior, of <code>__builtins__</code> changes based on the context of where it's being executed, while the type and behavior of <code>__builtin__</code> is constant. Rad.</strong></p>
 <p>Thanks, stranger who <a href="https://github.com/amygdalama/nagini/issues/1">suggested</a> I look into this, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.</p>
 <p>The code for this blog post is on <a href="https://github.com/amygdalama/builtins">GitHub</a>, of course.</p>

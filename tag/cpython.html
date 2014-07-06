@@ -31,20 +31,15 @@
                 </ul></nav>
 
         </header><!-- /#banner -->
-        
-        
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../import-accio-bootstrapping-python-grammar.html">Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</a></h1> 
+                    <h1 class="entry-title"><a href="../import-accio-bootstrapping-python-grammar.html">Replacing <code>import</code> with <code>accio</code>: A Dive into Bootstrapping and Python's Grammar</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2014-03-14T00:00:00">
-                Fri 14 March 2014
+                March 14 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
 
 
@@ -52,91 +47,88 @@
 <p>Although this project started as a joke, I've quickly descended so deeply into Python internals that I've, with the guidance of the fabulous Hacker School facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, made edits to the CPython source code, and compiled a Python to compile a Python. All to replace the <code>import</code> statement with <code>accio</code>.</p>
 <p>But before we get into compiling the Harry Potter Python I lovingly call Nagini, let's first talk about some Python internals basics, with spells as examples, of course.</p>
 <h1>Overwriting Builtin Functions</h1>
-<p>Python builtin functions are stored in a module called <code>__builtins__</code> that's automatically imported on startup. </p>
-<div class="highlight"><pre>&gt;&gt;&gt; dir(__builtins__)
-[&#39;ArithmeticError&#39;, &#39;AssertionError&#39;, &#39;AttributeError&#39;, &#39;BaseException&#39;, &#39;BufferError&#39;, &#39;BytesWarning&#39;, &#39;DeprecationWarning&#39;, &#39;EOFError&#39;, &#39;Ellipsis&#39;, &#39;EnvironmentError&#39;, &#39;Exception&#39;, &#39;False&#39;, &#39;FloatingPointError&#39;, &#39;FutureWarning&#39;, &#39;GeneratorExit&#39;, &#39;IOError&#39;, &#39;ImportError&#39;, &#39;ImportWarning&#39;, &#39;IndentationError&#39;, &#39;IndexError&#39;, &#39;KeyError&#39;, &#39;KeyboardInterrupt&#39;, &#39;LookupError&#39;, &#39;MemoryError&#39;, &#39;NameError&#39;, &#39;None&#39;, &#39;NotImplemented&#39;, &#39;NotImplementedError&#39;, &#39;OSError&#39;, &#39;OverflowError&#39;, &#39;PendingDeprecationWarning&#39;, &#39;ReferenceError&#39;, &#39;RuntimeError&#39;, &#39;RuntimeWarning&#39;, &#39;StandardError&#39;, &#39;StopIteration&#39;, &#39;SyntaxError&#39;, &#39;SyntaxWarning&#39;, &#39;SystemError&#39;, &#39;SystemExit&#39;, &#39;TabError&#39;, &#39;True&#39;, &#39;TypeError&#39;, &#39;UnboundLocalError&#39;, &#39;UnicodeDecodeError&#39;, &#39;UnicodeEncodeError&#39;, &#39;UnicodeError&#39;, &#39;UnicodeTranslateError&#39;, &#39;UnicodeWarning&#39;, &#39;UserWarning&#39;, &#39;ValueError&#39;, &#39;Warning&#39;, &#39;ZeroDivisionError&#39;, &#39;_&#39;, &#39;__debug__&#39;, &#39;__doc__&#39;, &#39;__import__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;abs&#39;, &#39;all&#39;, &#39;any&#39;, &#39;apply&#39;, &#39;basestring&#39;, &#39;bin&#39;, &#39;bool&#39;, &#39;buffer&#39;, &#39;bytearray&#39;, &#39;bytes&#39;, &#39;callable&#39;, &#39;chr&#39;, &#39;classmethod&#39;, &#39;cmp&#39;, &#39;coerce&#39;, &#39;compile&#39;, &#39;complex&#39;, &#39;copyright&#39;, &#39;credits&#39;, &#39;delattr&#39;, &#39;dict&#39;, &#39;dir&#39;, &#39;divmod&#39;, &#39;enumerate&#39;, &#39;eval&#39;, &#39;execfile&#39;, &#39;exit&#39;, &#39;file&#39;, &#39;filter&#39;, &#39;float&#39;, &#39;format&#39;, &#39;frozenset&#39;, &#39;getattr&#39;, &#39;globals&#39;, &#39;hasattr&#39;, &#39;hash&#39;, &#39;help&#39;, &#39;hex&#39;, &#39;id&#39;, &#39;input&#39;, &#39;int&#39;, &#39;intern&#39;, &#39;isinstance&#39;, &#39;issubclass&#39;, &#39;iter&#39;, &#39;len&#39;, &#39;license&#39;, &#39;list&#39;, &#39;locals&#39;, &#39;long&#39;, &#39;map&#39;, &#39;max&#39;, &#39;memoryview&#39;, &#39;min&#39;, &#39;next&#39;, &#39;object&#39;, &#39;oct&#39;, &#39;open&#39;, &#39;ord&#39;, &#39;pow&#39;, &#39;print&#39;, &#39;property&#39;, &#39;quit&#39;, &#39;range&#39;, &#39;raw_input&#39;, &#39;reduce&#39;, &#39;reload&#39;, &#39;repr&#39;, &#39;reversed&#39;, &#39;round&#39;, &#39;set&#39;, &#39;setattr&#39;, &#39;slice&#39;, &#39;sorted&#39;, &#39;staticmethod&#39;, &#39;str&#39;, &#39;sum&#39;, &#39;super&#39;, &#39;tuple&#39;, &#39;type&#39;, &#39;unichr&#39;, &#39;unicode&#39;, &#39;vars&#39;, &#39;xrange&#39;, &#39;zip&#39;]
+<p>Python builtin functions are stored in a module called <code>__builtins__</code> that's automatically imported on startup.</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">)</span>
+<span class="go">[&#39;ArithmeticError&#39;, &#39;AssertionError&#39;, &#39;AttributeError&#39;, &#39;BaseException&#39;, &#39;BufferError&#39;, &#39;BytesWarning&#39;, &#39;DeprecationWarning&#39;, &#39;EOFError&#39;, &#39;Ellipsis&#39;, &#39;EnvironmentError&#39;, &#39;Exception&#39;, &#39;False&#39;, &#39;FloatingPointError&#39;, &#39;FutureWarning&#39;, &#39;GeneratorExit&#39;, &#39;IOError&#39;, &#39;ImportError&#39;, &#39;ImportWarning&#39;, &#39;IndentationError&#39;, &#39;IndexError&#39;, &#39;KeyError&#39;, &#39;KeyboardInterrupt&#39;, &#39;LookupError&#39;, &#39;MemoryError&#39;, &#39;NameError&#39;, &#39;None&#39;, &#39;NotImplemented&#39;, &#39;NotImplementedError&#39;, &#39;OSError&#39;, &#39;OverflowError&#39;, &#39;PendingDeprecationWarning&#39;, &#39;ReferenceError&#39;, &#39;RuntimeError&#39;, &#39;RuntimeWarning&#39;, &#39;StandardError&#39;, &#39;StopIteration&#39;, &#39;SyntaxError&#39;, &#39;SyntaxWarning&#39;, &#39;SystemError&#39;, &#39;SystemExit&#39;, &#39;TabError&#39;, &#39;True&#39;, &#39;TypeError&#39;, &#39;UnboundLocalError&#39;, &#39;UnicodeDecodeError&#39;, &#39;UnicodeEncodeError&#39;, &#39;UnicodeError&#39;, &#39;UnicodeTranslateError&#39;, &#39;UnicodeWarning&#39;, &#39;UserWarning&#39;, &#39;ValueError&#39;, &#39;Warning&#39;, &#39;ZeroDivisionError&#39;, &#39;_&#39;, &#39;__debug__&#39;, &#39;__doc__&#39;, &#39;__import__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;abs&#39;, &#39;all&#39;, &#39;any&#39;, &#39;apply&#39;, &#39;basestring&#39;, &#39;bin&#39;, &#39;bool&#39;, &#39;buffer&#39;, &#39;bytearray&#39;, &#39;bytes&#39;, &#39;callable&#39;, &#39;chr&#39;, &#39;classmethod&#39;, &#39;cmp&#39;, &#39;coerce&#39;, &#39;compile&#39;, &#39;complex&#39;, &#39;copyright&#39;, &#39;credits&#39;, &#39;delattr&#39;, &#39;dict&#39;, &#39;dir&#39;, &#39;divmod&#39;, &#39;enumerate&#39;, &#39;eval&#39;, &#39;execfile&#39;, &#39;exit&#39;, &#39;file&#39;, &#39;filter&#39;, &#39;float&#39;, &#39;format&#39;, &#39;frozenset&#39;, &#39;getattr&#39;, &#39;globals&#39;, &#39;hasattr&#39;, &#39;hash&#39;, &#39;help&#39;, &#39;hex&#39;, &#39;id&#39;, &#39;input&#39;, &#39;int&#39;, &#39;intern&#39;, &#39;isinstance&#39;, &#39;issubclass&#39;, &#39;iter&#39;, &#39;len&#39;, &#39;license&#39;, &#39;list&#39;, &#39;locals&#39;, &#39;long&#39;, &#39;map&#39;, &#39;max&#39;, &#39;memoryview&#39;, &#39;min&#39;, &#39;next&#39;, &#39;object&#39;, &#39;oct&#39;, &#39;open&#39;, &#39;ord&#39;, &#39;pow&#39;, &#39;print&#39;, &#39;property&#39;, &#39;quit&#39;, &#39;range&#39;, &#39;raw_input&#39;, &#39;reduce&#39;, &#39;reload&#39;, &#39;repr&#39;, &#39;reversed&#39;, &#39;round&#39;, &#39;set&#39;, &#39;setattr&#39;, &#39;slice&#39;, &#39;sorted&#39;, &#39;staticmethod&#39;, &#39;str&#39;, &#39;sum&#39;, &#39;super&#39;, &#39;tuple&#39;, &#39;type&#39;, &#39;unichr&#39;, &#39;unicode&#39;, &#39;vars&#39;, &#39;xrange&#39;, &#39;zip&#39;]</span>
 </pre></div>
 
 
-<p>Overwriting Python builtins is surprisingly easy! </p>
-<div class="highlight"><pre>&gt;&gt;&gt; wingardium_leviosa = __builtins__.float
-
-&gt;&gt;&gt; del __builtins__.float
-
-&gt;&gt;&gt; float(3)
-Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-NameError: name &#39;float&#39; is not defined
-
-&gt;&gt;&gt; wingardium_leviosa(3)
-3.0
+<p>Overwriting Python builtins is surprisingly easy!</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">wingardium_leviosa</span> <span class="o">=</span> <span class="n">__builtins__</span><span class="o">.</span><span class="n">float</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">__builtins__</span><span class="o">.</span><span class="n">float</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">float</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">NameError</span>: <span class="n">name &#39;float&#39; is not defined</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wingardium_leviosa</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">3.0</span>
 </pre></div>
 
 
 <p>However, overwriting <code>import</code> is not so easy. Let's try:</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio = import
-  File &quot;&lt;stdin&gt;&quot;, line 1
-    accio = import
-                 ^
-SyntaxError: invalid syntax
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">accio</span> <span class="o">=</span> <span class="kn">import</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>
+    <span class="n">accio</span> <span class="o">=</span> <span class="n">import</span>
+                 <span class="o">^</span>
+<span class="gr">SyntaxError</span>: <span class="n">invalid syntax</span>
 </pre></div>
 
 
-<p>Python is expecting the name of a module after <code>import</code>, and thus it throws a <code>SyntaxError</code>. This is an effect of <code>import x</code> being a <em>statement</em>, rather than a <em>function</em>. </p>
+<p>Python is expecting the name of a module after <code>import</code>, and thus it throws a <code>SyntaxError</code>. This is an effect of <code>import x</code> being a <em>statement</em>, rather than an <em>expression</em>.</p>
 <p>Hm. I remember seeing the function <code>__import__</code> listed when we ran <code>dir(__builtins__)</code>. Maybe we can overwrite that instead:</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio = __builtins__.__import__
-&gt;&gt;&gt; accio sys
-  File &quot;&lt;stdin&gt;&quot;, line 1
-    accio sys
-            ^
-SyntaxError: invalid syntax
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">accio</span> <span class="o">=</span> <span class="n">__builtins__</span><span class="o">.</span><span class="n">__import__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accio</span> <span class="n">sys</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>
+    <span class="n">accio</span> <span class="n">sys</span>
+            <span class="o">^</span>
+<span class="gr">SyntaxError</span>: <span class="n">invalid syntax</span>
 
-# :(
+<span class="go"># :(</span>
 </pre></div>
 
 
 <p>What if we tried calling <code>accio</code> like a function?</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio(sys)
-Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-NameError: name &#39;sys&#39; is not defined
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">accio</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">NameError</span>: <span class="n">name &#39;sys&#39; is not defined</span>
 </pre></div>
 
 
 <p>Maybe we need to pass 'sys' as a string?</p>
-<div class="highlight"><pre>&gt;&gt;&gt; accio(&#39;sys&#39;)
-&lt;module &#39;sys&#39; (built-in)&gt;
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">accio</span><span class="p">(</span><span class="s">&#39;sys&#39;</span><span class="p">)</span>
+<span class="go">&lt;module &#39;sys&#39; (built-in)&gt;</span>
 
-# Ooh!
+<span class="go"># Ooh!</span>
 
-&gt;&gt;&gt; sys = accio(&#39;sys&#39;)
-&gt;&gt;&gt; sys
-&lt;module &#39;sys&#39; (built-in)&gt;
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span> <span class="o">=</span> <span class="n">accio</span><span class="p">(</span><span class="s">&#39;sys&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span>
+<span class="go">&lt;module &#39;sys&#39; (built-in)&gt;</span>
 </pre></div>
 
 
-<p>Aha. So the statement <code>import x</code> probably does something like:<br />
-    1. call the <code>__import__</code> function on <code>x</code>: <code>__builtins__.__import__('x')</code><br />
-    2. assign the name <code>x</code> to the module returned by <code>__import__</code>  </p>
+<p>Aha. So the statement <code>import x</code> probably does something like:
+    1. call the <code>__import__</code> function on <code>x</code>: <code>__builtins__.__import__('x')</code>
+    2. assign the name <code>x</code> to the module returned by <code>__import__</code></p>
 <p>And <code>import sys</code> is like shorthand for the command:</p>
-<div class="highlight"><pre>&gt;&gt;&gt; sys = __builtins__.__import__(&#39;sys&#39;)
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span> <span class="o">=</span> <span class="n">__builtins__</span><span class="o">.</span><span class="n">__import__</span><span class="p">(</span><span class="s">&#39;sys&#39;</span><span class="p">)</span>
 </pre></div>
 
 
 <p>(Here I'm only describing simple <code>import</code> statements, but more complex statements like <code>from x import y.w, y.z</code> work similarly.)</p>
-<p>So we have a way to add <code>accio</code> as a function, but not as a statement. I'm unsatisfied. </p>
+<p>So we have a way to add <code>accio</code> as a function, but not as a statement. I'm unsatisfied.</p>
 <p>For fun, can we delete import?</p>
-<div class="highlight"><pre>&gt;&gt;&gt; del import
-  File &quot;&lt;stdin&gt;&quot;, line 1
-    del import
-             ^
-SyntaxError: invalid syntax
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="kn">import</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>
+    <span class="k">del</span> <span class="n">import</span>
+             <span class="o">^</span>
+<span class="gr">SyntaxError</span>: <span class="n">invalid syntax</span>
 
-&gt;&gt;&gt; del __builtins__.__import__
-&gt;&gt;&gt; import os
-Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-ImportError: __import__ not found
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">__builtins__</span><span class="o">.</span><span class="n">__import__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">__import__ not found</span>
 </pre></div>
 
 
@@ -144,7 +136,7 @@ ImportError: __import__ not found
 <p>So, to completely overwrite <code>import</code> with <code>accio</code>, we'll need to learn where Python defines statements.</p>
 <h1>Grammar</h1>
 <p>Eli Bendersky wrote a great <a href="http://eli.thegreenplace.net/2010/06/30/python-internals-adding-a-new-statement-to-python/">blog post</a> about adding an <code>until</code> statement to Python. Since we want to <em>replace</em> a statement, rather than add one, our method will be a bit different.</p>
-<p>Regardless, it looks like the place to start for changing Python's statements is in the <code>Grammar</code> file in the Python <a href="http://docs.python.org/devguide/setup.html">source code</a>. <strong>Python source code!</strong> Isn't this <em>fun?!</em> </p>
+<p>Regardless, it looks like the place to start for changing Python's statements is in the <code>Grammar</code> file in the Python <a href="http://docs.python.org/devguide/setup.html">source code</a>. <strong>Python source code!</strong> Isn't this <em>fun?!</em></p>
 <p>Python's source code is stored in a Mercurial repository, so first we'll have to install Mercurial.</p>
 <div class="highlight"><pre><span class="nv">$ </span>brew install mercurial
 </pre></div>
@@ -170,15 +162,15 @@ ImportError: __import__ not found
 
 <p>I get a warning message saying some modules were unable to be built, but I am unstoppable. We are unstoppable. Let's continue.</p>
 <p>It seems like the place to start is in the file <code>Grammar/Grammar</code>, so let's start poking around there. <a href="http://docs.python.org/2/reference/grammar.html">This</a> is what it looks like. Searching for 'import' brings us to lines 52-60:</p>
-<div class="highlight"><pre>import_stmt: import_name | import_from
-import_name: &#39;import&#39; dotted_as_names
-import_from: (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;import&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names))
-import_as_name: NAME [&#39;as&#39; NAME]
-dotted_as_name: dotted_name [&#39;as&#39; NAME]
-import_as_names: import_as_name (&#39;,&#39; import_as_name)* [&#39;,&#39;]
-dotted_as_names: dotted_as_name (&#39;,&#39; dotted_as_name)*
-dotted_name: NAME (&#39;.&#39; NAME)*
+<div class="highlight"><pre><span class="n">import_stmt</span><span class="p">:</span> <span class="n">import_name</span> <span class="o">|</span> <span class="n">import_from</span>
+<span class="n">import_name</span><span class="p">:</span> <span class="s">&#39;import&#39;</span> <span class="n">dotted_as_names</span>
+<span class="n">import_from</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;from&#39;</span> <span class="p">(</span><span class="s">&#39;.&#39;</span><span class="o">*</span> <span class="n">dotted_name</span> <span class="o">|</span> <span class="s">&#39;.&#39;</span><span class="o">+</span><span class="p">)</span>
+              <span class="s">&#39;import&#39;</span> <span class="p">(</span><span class="s">&#39;*&#39;</span> <span class="o">|</span> <span class="s">&#39;(&#39;</span> <span class="n">import_as_names</span> <span class="s">&#39;)&#39;</span> <span class="o">|</span> <span class="n">import_as_names</span><span class="p">))</span>
+<span class="n">import_as_name</span><span class="p">:</span> <span class="n">NAME</span> <span class="p">[</span><span class="s">&#39;as&#39;</span> <span class="n">NAME</span><span class="p">]</span>
+<span class="n">dotted_as_name</span><span class="p">:</span> <span class="n">dotted_name</span> <span class="p">[</span><span class="s">&#39;as&#39;</span> <span class="n">NAME</span><span class="p">]</span>
+<span class="n">import_as_names</span><span class="p">:</span> <span class="n">import_as_name</span> <span class="p">(</span><span class="s">&#39;,&#39;</span> <span class="n">import_as_name</span><span class="p">)</span><span class="o">*</span> <span class="p">[</span><span class="s">&#39;,&#39;</span><span class="p">]</span>
+<span class="n">dotted_as_names</span><span class="p">:</span> <span class="n">dotted_as_name</span> <span class="p">(</span><span class="s">&#39;,&#39;</span> <span class="n">dotted_as_name</span><span class="p">)</span><span class="o">*</span>
+<span class="n">dotted_name</span><span class="p">:</span> <span class="n">NAME</span> <span class="p">(</span><span class="s">&#39;.&#39;</span> <span class="n">NAME</span><span class="p">)</span><span class="o">*</span>
 </pre></div>
 
 
@@ -205,7 +197,7 @@ dotted_name: NAME (&#39;.&#39; NAME)*
 <p>This error occurs while trying to execute a Python script! Compiling CPython requires running Python scripts! Interesting. Maybe at this point we remember that Python is <a href="http://en.wikipedia.org/wiki/Bootstrapping_(compilers)">bootstrapped</a>. We look back at the <a href="http://docs.python.org/devguide/setup.html">Python Developer's Guide</a> and we find that <em>"Vast areas of CPython are written completely in Python: as of this writing, CPython contains slightly more Python code than C."</em></p>
 <p>So then we wonder - when CPython is compiling, does it execute Python scripts with the Python that's currently being compiled? Or does it use another already-compiled muggle Python, like our environment Python? If it uses the Python that's currently being compiled, we'll need to change these .py scripts to say <code>accio</code> instead of <code>import</code>. Otherwise, what do we do? Our muggle Python only understands <code>import</code> and not <code>accio</code>...</p>
 <p>Let's look into one of the .py scripts within <code>Lib</code> to investigate. Here's the first line of the <code>Lib/keyword.py</code> script:</p>
-<div class="highlight"><pre>#! /usr/bin/env python
+<div class="highlight"><pre><span class="c">#! /usr/bin/env python</span>
 </pre></div>
 
 
@@ -213,11 +205,11 @@ dotted_name: NAME (&#39;.&#39; NAME)*
 <h1>Yo Dawg, I Heard You Like Pythons</h1>
 <p>What if we did something crazy like compiled an intermediary Python that understands <em>both</em> <code>accio</code> <em>and</em> <code>import</code>, and used <em>that</em> Python to compile <em>another</em> Python that only understands <code>accio</code>? (Full credit for this idea goes to <a href="http://akaptur.github.io/">Allison Kaptur</a>.)</p>
 <p>So, for our intermediary Python we'll need to edit the <code>Grammar</code> file like so:</p>
-<div class="highlight"><pre>import_name: &#39;import&#39; dotted_as_names | &#39;accio&#39; dotted_as_names
-import_from: ((&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;import&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names)) |
-              (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;accio&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names)))
+<div class="highlight"><pre><span class="n">import_name</span><span class="p">:</span> <span class="s">&#39;import&#39;</span> <span class="n">dotted_as_names</span> <span class="o">|</span> <span class="s">&#39;accio&#39;</span> <span class="n">dotted_as_names</span>
+<span class="n">import_from</span><span class="p">:</span> <span class="p">((</span><span class="s">&#39;from&#39;</span> <span class="p">(</span><span class="s">&#39;.&#39;</span><span class="o">*</span> <span class="n">dotted_name</span> <span class="o">|</span> <span class="s">&#39;.&#39;</span><span class="o">+</span><span class="p">)</span>
+              <span class="s">&#39;import&#39;</span> <span class="p">(</span><span class="s">&#39;*&#39;</span> <span class="o">|</span> <span class="s">&#39;(&#39;</span> <span class="n">import_as_names</span> <span class="s">&#39;)&#39;</span> <span class="o">|</span> <span class="n">import_as_names</span><span class="p">))</span> <span class="o">|</span>
+              <span class="p">(</span><span class="s">&#39;from&#39;</span> <span class="p">(</span><span class="s">&#39;.&#39;</span><span class="o">*</span> <span class="n">dotted_name</span> <span class="o">|</span> <span class="s">&#39;.&#39;</span><span class="o">+</span><span class="p">)</span>
+              <span class="s">&#39;accio&#39;</span> <span class="p">(</span><span class="s">&#39;*&#39;</span> <span class="o">|</span> <span class="s">&#39;(&#39;</span> <span class="n">import_as_names</span> <span class="s">&#39;)&#39;</span> <span class="o">|</span> <span class="n">import_as_names</span><span class="p">)))</span>
 </pre></div>
 
 
@@ -242,9 +234,9 @@ import_from: ((&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
 
 
 <p>We want to change the <code>Grammar</code> file for this Python to only allow <code>accio</code>:</p>
-<div class="highlight"><pre>import_name: &#39;accio&#39; dotted_as_names
-import_from: (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
-              &#39;accio&#39; (&#39;*&#39; | &#39;(&#39; import_as_names &#39;)&#39; | import_as_names))
+<div class="highlight"><pre><span class="n">import_name</span><span class="p">:</span> <span class="s">&#39;accio&#39;</span> <span class="n">dotted_as_names</span>
+<span class="n">import_from</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;from&#39;</span> <span class="p">(</span><span class="s">&#39;.&#39;</span><span class="o">*</span> <span class="n">dotted_name</span> <span class="o">|</span> <span class="s">&#39;.&#39;</span><span class="o">+</span><span class="p">)</span>
+              <span class="s">&#39;accio&#39;</span> <span class="p">(</span><span class="s">&#39;*&#39;</span> <span class="o">|</span> <span class="s">&#39;(&#39;</span> <span class="n">import_as_names</span> <span class="s">&#39;)&#39;</span> <span class="o">|</span> <span class="n">import_as_names</span><span class="p">))</span>
 </pre></div>
 
 
@@ -268,21 +260,21 @@ import_from: (&#39;from&#39; (&#39;.&#39;* dotted_name | &#39;.&#39;+)
 
 
 <p>And fire it up...</p>
-<div class="highlight"><pre><span class="x">&gt;&gt;&gt; import sys</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
   File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>
     <span class="kn">import</span> <span class="nn">sys</span>
              <span class="o">^</span>
 <span class="gr">SyntaxError</span>: <span class="n">invalid syntax</span>
-<span class="x">&gt;&gt;&gt; accio sys</span>
-<span class="x">&gt;&gt;&gt; sys.modules.keys()</span>
-<span class="x">[&#39;copy_reg&#39;, &#39;sre_compile&#39;, &#39;_sre&#39;, &#39;encodings&#39;, &#39;site&#39;, &#39;__builtin__&#39;, &#39;sysconfig&#39;, &#39;__main__&#39;, &#39;encodings.encodings&#39;, &#39;abc&#39;, &#39;posixpath&#39;, &#39;_weakrefset&#39;, &#39;errno&#39;, &#39;encodings.codecs&#39;, &#39;sre_constants&#39;, &#39;re&#39;, &#39;_abcoll&#39;, &#39;types&#39;, &#39;_codecs&#39;, &#39;encodings.__builtin__&#39;, &#39;_warnings&#39;, &#39;genericpath&#39;, &#39;stat&#39;, &#39;zipimport&#39;, &#39;_sysconfigdata&#39;, &#39;warnings&#39;, &#39;UserDict&#39;, &#39;encodings.ascii&#39;, &#39;sys&#39;, &#39;_osx_support&#39;, &#39;codecs&#39;, &#39;os.path&#39;, &#39;sitecustomize&#39;, &#39;signal&#39;, &#39;traceback&#39;, &#39;linecache&#39;, &#39;posix&#39;, &#39;encodings.aliases&#39;, &#39;exceptions&#39;, &#39;sre_parse&#39;, &#39;os&#39;, &#39;_weakref&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accio</span> <span class="n">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;copy_reg&#39;, &#39;sre_compile&#39;, &#39;_sre&#39;, &#39;encodings&#39;, &#39;site&#39;, &#39;__builtin__&#39;, &#39;sysconfig&#39;, &#39;__main__&#39;, &#39;encodings.encodings&#39;, &#39;abc&#39;, &#39;posixpath&#39;, &#39;_weakrefset&#39;, &#39;errno&#39;, &#39;encodings.codecs&#39;, &#39;sre_constants&#39;, &#39;re&#39;, &#39;_abcoll&#39;, &#39;types&#39;, &#39;_codecs&#39;, &#39;encodings.__builtin__&#39;, &#39;_warnings&#39;, &#39;genericpath&#39;, &#39;stat&#39;, &#39;zipimport&#39;, &#39;_sysconfigdata&#39;, &#39;warnings&#39;, &#39;UserDict&#39;, &#39;encodings.ascii&#39;, &#39;sys&#39;, &#39;_osx_support&#39;, &#39;codecs&#39;, &#39;os.path&#39;, &#39;sitecustomize&#39;, &#39;signal&#39;, &#39;traceback&#39;, &#39;linecache&#39;, &#39;posix&#39;, &#39;encodings.aliases&#39;, &#39;exceptions&#39;, &#39;sre_parse&#39;, &#39;os&#39;, &#39;_weakref&#39;]</span>
 </pre></div>
 
 
 <p>HOLY SHIT IT WORKS!</p>
 <h1>Fin</h1>
 <p>That's it. We just compiled two Pythons and fooled around with source code for the sake of a joke. Grab yourselves a beer, friends. Victory.</p>
-<p>My super messy and not-really-prepared-for-the-general-public GitHub <a href="https://github.com/amygdalama/nagini">repo</a> contains both versions of Python, for reference. </p>
+<p>My super messy and not-really-prepared-for-the-general-public GitHub <a href="https://github.com/amygdalama/nagini">repo</a> contains both versions of Python, for reference.</p>
                     <p>    <!-- <p> -->
         tags: 
            <a href="../tag/python.html">python</a>

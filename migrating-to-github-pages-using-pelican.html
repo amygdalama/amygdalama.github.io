@@ -42,12 +42,9 @@
     <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-02-22T00:00:00">
-                Sat 22 February 2014
+                February 22 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -66,37 +63,34 @@
 </li>
 <li>
 <p>Run Pelican <a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#kickstart-a-blog">quickstart</a></p>
-<p>This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred <a href="http://docs.getpelican.com/en/3.1.1/settings.html">settings</a>. As an example, here's how I answered (I put my responses on separate lines starting with <code>&gt;</code> to make this easier to read):</p>
+<p>This will ask you lots of questions that probably seem foreign. These questions will set up some configuration files that you can later edit with your preferred <a href="http://docs.getpelican.com/en/3.1.1/settings.html">settings</a>. As an example, here's how I answered:</p>
 <div class="highlight"><pre><span class="gp">$</span> pelican-quickstart
-<span class="go">Where do you want to create your new web site? [.]  </span>
-<span class="gp">&gt;</span>  
-<span class="go">What will be the title of this web site?  </span>
-<span class="gp">&gt;</span> Amy Hanlon  
-<span class="go">Who will be the author of this web site?  </span>
-<span class="gp">&gt;</span> Amy Hanlon  
-<span class="go">What will be the default language of this web site? [en]  </span>
-<span class="gp">&gt;</span> 
-<span class="go">Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) </span>
-<span class="gp">&gt;</span> y  
-<span class="go">What is your URL prefix? (see above example; no trailing slash) </span>
-<span class="gp">&gt;</span> http://amygdalama.github.io  
-<span class="go">Do you want to enable article pagination? (Y/n) </span>
-<span class="gp">&gt;</span> y  
-<span class="go">How many articles per page do you want? [10] </span>
-<span class="gp">&gt;</span>  
-<span class="go">Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) </span>
-<span class="gp">&gt;</span> y  
-<span class="go">Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n) </span>
-<span class="gp">&gt;</span> y  
-<span class="go">Do you want to upload your website using FTP? (y/N) </span>
-<span class="gp">&gt;</span> n  
-<span class="go">Do you want to upload your website using SSH? (y/N) </span>
-<span class="gp">&gt;</span> n  
-<span class="go">Do you want to upload your website using Dropbox? (y/N) </span>
-<span class="gp">&gt;</span> n  
-<span class="go">Do you want to upload your website using S3? (y/N) </span>
-<span class="gp">&gt;</span> n  
-<span class="go">Do you want to upload your website using Rackspace Cloud Files? (y/N) </span>
+<span class="go">Where do you want to create your new web site? [.]</span>
+<span class="go">What will be the title of this web site?</span>
+<span class="gp">&gt;</span> Amy Hanlon
+<span class="go">Who will be the author of this web site?</span>
+<span class="gp">&gt;</span> Amy Hanlon
+<span class="go">What will be the default language of this web site? [en]</span>
+<span class="go">Do you want to specify a URL prefix? e.g., http://example.com   (Y/n)</span>
+<span class="gp">&gt;</span> y
+<span class="go">What is your URL prefix? (see above example; no trailing slash)</span>
+<span class="gp">&gt;</span> http://amygdalama.github.io
+<span class="go">Do you want to enable article pagination? (Y/n)</span>
+<span class="gp">&gt;</span> y
+<span class="go">How many articles per page do you want? [10]</span>
+<span class="go">Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n)</span>
+<span class="gp">&gt;</span> y
+<span class="go">Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n)</span>
+<span class="gp">&gt;</span> y
+<span class="go">Do you want to upload your website using FTP? (y/N)</span>
+<span class="gp">&gt;</span> n
+<span class="go">Do you want to upload your website using SSH? (y/N)</span>
+<span class="gp">&gt;</span> n
+<span class="go">Do you want to upload your website using Dropbox? (y/N)</span>
+<span class="gp">&gt;</span> n
+<span class="go">Do you want to upload your website using S3? (y/N)</span>
+<span class="gp">&gt;</span> n
+<span class="go">Do you want to upload your website using Rackspace Cloud Files? (y/N)</span>
 <span class="gp">&gt;</span> n
 </pre></div>
 
@@ -121,13 +115,13 @@
 <p><code>Makefile</code> tells the command <code>make</code> what to do. This file defines commands like <code>make devserver</code>. More information on <code>make</code> can be found <a href="http://www.gnu.org/software/make/manual/make.html">here</a>. I'll cover more on how to use this command for developing your site in the <strong>Generating Your Site</strong> section.</p>
 </li>
 <li>
-<p><code>content</code> is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within <code>content</code>:  </p>
+<p><code>content</code> is the directory that should house all of your Markdown files. Pelican assumes that your articles/blog posts will be inside this directory. Additionally, there are some special directories you should create within <code>content</code>:</p>
 <div class="highlight"><pre><span class="nv">$ </span>mkdir content/pages
 <span class="nv">$ </span>mkdir content/images
 </pre></div>
 
 
-<p>Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this <code>pages</code> directory and that images are found within the <code>images</code> directory.  </p>
+<p>Pelican by default is configured to know that your pages (i.e. static pages like About Me, Contact, etc) are found within this <code>pages</code> directory and that images are found within the <code>images</code> directory.</p>
 </li>
 <li>
 <p><code>develop_server.sh</code> is a bash script that I believe handles serving your site locally during development (i.e. it serves your site to <a href="http://localhost:8000">http://localhost:8000</a>).</p>
@@ -148,7 +142,7 @@
 </li>
 </ol>
 <h2>Exporting Existing Content</h2>
-<p>This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.  </p>
+<p>This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.</p>
 <ol>
 <li><a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/">Export WordPress content to XML</a></li>
 <li><a href="http://docs.getpelican.com/en/3.1.1/importer.html">Imperfectly convert the XML to Markdown using Pelican</a></li>
@@ -179,7 +173,7 @@
 </ol>
 <h2>Customization</h2>
 <p>All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the <code>main.css</code> file found in your theme's directory. For example, I've made many edits to the file <code>pelican-themes/subtle/static/css/main.css</code>.</p>
-<p>Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the <code>templates</code> folder within your theme. There will usually be a <code>base.html</code> file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page. </p>
+<p>Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the <code>templates</code> folder within your theme. There will usually be a <code>base.html</code> file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page.</p>
 <p>There should also be HTML files that serve as templates for specific types of pages. For example, <code>article.html</code> defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.</p>
 <p>If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.</p>
 <h2>Generating Your Site</h2>
@@ -211,7 +205,7 @@
 
 
 <p>Otherwise if you use the <code>publishconf.py</code> file as your settings file when running the <code>pelican</code> command, you'll delete your git repo!</p>
-<p>Similarly, don't use the <code>make clean</code> command! If you poke around the <code>Makefile</code>, you'll see that <code>make clean</code> runs <code>rm -rf output</code> which will delete all files (including your git repo) in your output folder. </p>
+<p>Similarly, don't use the <code>make clean</code> command! If you poke around the <code>Makefile</code>, you'll see that <code>make clean</code> runs <code>rm -rf output</code> which will delete all files (including your git repo) in your output folder.</p>
 <p>If you accidentally delete the repo in your output folder, it's not a <em>huge</em> deal (I've done it like 5 times playing with different commands and settings). Just clone your remote <em>username.github.io</em> repo into a new, empty <code>output</code> folder, re-generate your site with any changes you've made since your last push to the remote, and then commit and push the changes to the remote:</p>
 <div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>blog
 <span class="nv">$ </span>git clone https://github.com/username/username.github.io.git output

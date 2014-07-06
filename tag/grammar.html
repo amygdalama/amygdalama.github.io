@@ -31,20 +31,15 @@
                 </ul></nav>
 
         </header><!-- /#banner -->
-        
-        
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../a-love-affair-with-broken-things.html">A Love Affair With Broken Things</a></h1> 
+                    <h1 class="entry-title"><a href="../a-love-affair-with-broken-things.html">A Love Affair With Broken Things</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2014-03-31T00:00:00">
-                Mon 31 March 2014
+                March 31 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
 
 
@@ -65,19 +60,19 @@
 <p>Her first example for showing how <code>map</code> works is fairly straightforward:</p>
 <blockquote>
 <p>This is a simple map that takes a list of names and returns a list of the lengths of those names:</p>
-<div class="highlight"><pre><span class="n">name_lengths</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">len</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Mary&quot;</span><span class="p">,</span> <span class="s">&quot;Isla&quot;</span><span class="p">,</span> <span class="s">&quot;Sam&quot;</span><span class="p">])</span>
-<span class="n">print</span> <span class="n">name_lengths</span>
-<span class="cp"># =&gt; [4, 4, 3]</span>
+<div class="highlight"><pre><span class="n">name_lengths</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Mary&quot;</span><span class="p">,</span> <span class="s">&quot;Isla&quot;</span><span class="p">,</span> <span class="s">&quot;Sam&quot;</span><span class="p">])</span>
+<span class="k">print</span> <span class="n">name_lengths</span>
+<span class="c"># =&gt; [4, 4, 3]</span>
 </pre></div>
 
 
 </blockquote>
-<p>In the second example of <code>map</code>, we see that Mary uses a <code>lambda</code> function: </p>
+<p>In the second example of <code>map</code>, we see that Mary uses a <code>lambda</code> function:</p>
 <blockquote>
 <p>This is a map that squares every number in the passed collection:</p>
-<div class="highlight"><pre><span class="n">squares</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-<span class="n">print</span> <span class="n">squares</span>
-<span class="cp"># =&gt; [0, 1, 4, 9, 16]</span>
+<div class="highlight"><pre><span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="k">print</span> <span class="n">squares</span>
+<span class="c"># =&gt; [0, 1, 4, 9, 16]</span>
 </pre></div>
 
 
@@ -85,21 +80,21 @@
 </blockquote>
 <p>But <em>why</em> does Mary use a <code>lambda</code> function here? Let's spend some time breaking this code and reconstructing it to understand why the <code>lambda</code> function is used.</p>
 <p>First let's try removing the <code>lambda</code> and seeing what happens:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
-Traceback (most recent call last):
-  File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1, in <span class="nt">&lt;module&gt;</span>
-NameError: name &#39;x&#39; is not defined
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">NameError</span>: <span class="n">name &#39;x&#39; is not defined</span>
 </pre></div>
 
 
 <p>Okay. <code>x</code> is not defined. That makes sense, because <code>x</code> isn't in our <code>locals</code> or our <code>globals</code> or our <code>builtins</code>. Remember that when Python sees the name of a variable, it looks in those three places for a definition of that variable. If Python doesn't find the variable in any of those places, it throws a <code>NameError</code>. <code>lambda</code> must temporarily add variables (here, <code>x</code>) to our namespace and then throw them away.</p>
 <p>We removed the arm of the statue and a <code>NameError</code> was revealed. Cool. Now let's try naively reconstructing the statue.</p>
 <p>What if we tried using the <code>**</code> operator? Can we pass something like <code>**2</code> as the function for <code>map</code>? Let's try:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
-  File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1
-    squares = map(**2, <span class="cp">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
-                    ^
-SyntaxError: invalid syntax
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>
+    <span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+                    <span class="o">^</span>
+<span class="gr">SyntaxError</span>: <span class="n">invalid syntax</span>
 </pre></div>
 
 
@@ -110,33 +105,33 @@ SyntaxError: invalid syntax
 </pre></div>
 
 
-<p>The important thing to note is that any time Python sees <code>**</code> in this context, it expects a thing called a <a href="https://docs.python.org/2/reference/expressions.html#primaries"><code>primary</code></a> to come before it and a thing called a <a href="https://docs.python.org/2/reference/expressions.html#unary-arithmetic-and-bitwise-operations"><code>u_expr</code></a> to come after it. We can tell we violated this rule without even understanding what a <code>primary</code> or a <code>u_expr</code> is. We tried typing <code>**2</code>, which doesn't include anything that could be interpreted as a <code>primary</code> before the <code>**</code>. </p>
-<p>Okay. So we can't reconstruct Mary's function using <code>**</code> instead of <code>lambda</code>. </p>
+<p>The important thing to note is that any time Python sees <code>**</code> in this context, it expects a thing called a <a href="https://docs.python.org/2/reference/expressions.html#primaries"><code>primary</code></a> to come before it and a thing called a <a href="https://docs.python.org/2/reference/expressions.html#unary-arithmetic-and-bitwise-operations"><code>u_expr</code></a> to come after it. We can tell we violated this rule without even understanding what a <code>primary</code> or a <code>u_expr</code> is. We tried typing <code>**2</code>, which doesn't include anything that could be interpreted as a <code>primary</code> before the <code>**</code>.</p>
+<p>Okay. So we can't reconstruct Mary's function using <code>**</code> instead of <code>lambda</code>.</p>
 <p>What else could we try instead of a lambda function? Is there a function already defined in Python that does the same thing as the operator <code>**</code> but in function syntax?</p>
-<p>Let's <a href="https://www.google.com/search?q=python+power+operator+function&amp;oq=python+power+operator+function&amp;aqs=chrome..69i57.426j0j1&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8">google</a> "python power operator function." We quickly discover that there's a builtin <code>pow</code> function that takes two parameters, <code>x</code> and <code>y</code> and returns <code>x**y</code>. Cool! So <code>pow(x,2)</code> should return the same thing as <code>x**2</code>.  </p>
+<p>Let's <a href="https://www.google.com/search?q=python+power+operator+function&amp;oq=python+power+operator+function&amp;aqs=chrome..69i57.426j0j1&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8">google</a> "python power operator function." We quickly discover that there's a builtin <code>pow</code> function that takes two parameters, <code>x</code> and <code>y</code> and returns <code>x**y</code>. Cool! So <code>pow(x,2)</code> should return the same thing as <code>x**2</code>.</p>
 <p>Does the <code>pow</code> function work in our <code>map</code> function? Let's try!</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="kt">map</span><span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="err">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span>)
-Traceback (most recent call last):
-  File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1, in <span class="nt">&lt;module&gt;</span>
-TypeError: pow expected at least 2 arguments, got 1
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">pow expected at least 2 arguments, got 1</span>
 </pre></div>
 
 
 <p>Oh, right. Derp. We need to pass <code>2</code> to <code>pow</code>, in addition to each element in our list. In the <a href="https://docs.python.org/2.7/library/functions.html#map">documentation</a> for <code>map</code>, we see that if the function takes two arguments, we need to pass it two iterables. So we could do something kind of dumb like:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">squares</span>
+<span class="go">[0, 1, 4, 9, 16]</span>
 </pre></div>
 
 
 <p>It works, but it's pretty ugly compared to the original:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
 
-<p>It seems silly to use a function, <code>pow</code>, that takes two arguments, when one of the arguments we pass it is always the same. </p>
-<p>Ohhh. </p>
-<p>Maybe that's why Mary used <code>lambda</code>! To create a function that works kind of like <code>pow</code> but just takes one argument! </p>
+<p>It seems silly to use a function, <code>pow</code>, that takes two arguments, when one of the arguments we pass it is always the same.</p>
+<p>Ohhh.</p>
+<p>Maybe that's why Mary used <code>lambda</code>! To create a function that works kind of like <code>pow</code> but just takes one argument!</p>
 <p>So we broke the statue, attempted to reconstruct it, and then wound up with something way uglier than the original. And thus, through breaking Mary's code, her design decisions were revealed! And now we have a better understanding of why the original process was used!</p>
 <p>Breaking things is fucking rad.</p>
 <p><strong>Disclaimer:</strong> This post is not intended to show the most pythonic way of squaring a list of integers. Instead, it is intended to show that we can discover how and why a code block works by exploring what happens when we remove chunks of it.</p>
@@ -159,23 +154,18 @@ TypeError: pow expected at least 2 arguments, got 1
                     <h1 class= "other-articles">Other articles</h1>
                     <hr />
                     <ol id="posts-list" class="hfeed">
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="../import-accio-bootstrapping-python-grammar.html" rel="bookmark" title="Permalink to Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar">Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</a></h1>
+                        <h1 class="entry-title"><a href="../import-accio-bootstrapping-python-grammar.html" rel="bookmark" title="Permalink to Replacing import with accio: A Dive into Bootstrapping and Python's Grammar">Replacing <code>import</code> with <code>accio</code>: A Dive into Bootstrapping and Python's Grammar</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-03-14T00:00:00">
-                Fri 14 March 2014
+                March 14 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="../author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
 
 

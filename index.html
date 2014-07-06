@@ -31,51 +31,46 @@
                 </ul></nav>
 
         </header><!-- /#banner -->
-        
-        
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="./python-wats-mutable-default-arguments.html">Python Wats: Mutable Default Arguments</a></h1> 
+                    <h1 class="entry-title"><a href="./python-wats-mutable-default-arguments.html">Python Wats: Mutable Default Arguments</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2014-04-25T00:00:00">
-                Fri 25 April 2014
+                April 25 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/python.html">Python</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>Let's look at a common Python <a href="https://www.destroyallsoftware.com/talks/wat">wat</a> and try to figure out wat's actually happening!  </p>
+</footer><!-- /.post-info --><p>Let's look at a common Python <a href="https://www.destroyallsoftware.com/talks/wat">wat</a> and try to figure out wat's actually happening!</p>
 <p>We'll define a function, <code>foo</code>, which takes one argument, <code>l</code>, which has the default value of an empty list.</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
-<span class="p">...</span>     <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[]):</span>
+<span class="gp">... </span>    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;cat&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">l</span>
 </pre></div>
 
 
 <p>What happens when we call <code>foo</code> multiple times?</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="p">()</span>
+<span class="go">[&#39;cat&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="p">()</span>
+<span class="go">[&#39;cat&#39;, &#39;cat&#39;]</span>
 </pre></div>
 
 
 <p>Whoa! So mutating <code>l</code> actually mutates it for all future calls to the function. Weird.</p>
-<p>This means that the <code>[]</code> object is <em>only created once</em>, and each time we call <code>foo</code> without an argument, <code>l</code> is referring to that same object. This may lead you to form a hypothesis: <code>l=[]</code> is kind of like a name-binding statement that executes only once, when the function is defined. </p>
+<p>This means that the <code>[]</code> object is <em>only created once</em>, and each time we call <code>foo</code> without an argument, <code>l</code> is referring to that same object. This may lead you to form a hypothesis: <code>l=[]</code> is kind of like a name-binding statement that executes only once, when the function is defined.</p>
 <p>But, if that hypothesis is true, then how should we expect the following function to behave?</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
-<span class="p">...</span>     <span class="n">print</span> <span class="n">locals</span><span class="p">()</span>
-<span class="p">...</span>     <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
-<span class="p">...</span> 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
-<span class="cp"># ?</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
-<span class="cp"># ?</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[]):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="nb">locals</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;cat&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">l</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="p">()</span>
+<span class="go"># ?</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="p">()</span>
+<span class="go"># ?</span>
 </pre></div>
 
 
@@ -99,63 +94,63 @@
 </li>
 </ol>
 <p>What actually happens?</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
-<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
-<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="p">()</span>
+<span class="go">{&#39;l&#39;: []}</span>
+<span class="go">[&#39;cat&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="p">()</span>
+<span class="go">{&#39;l&#39;: []}</span>
+<span class="go">[&#39;cat&#39;]</span>
 </pre></div>
 
 
-<p>Hrm. This behavior reasonably leads us to believe that the assignment <code>l=[]</code> happens <em>each time we call the function <code>bar</code></em>. But in <code>foo</code>, <code>l=[]</code> can't be a statement that executes each time the function is called, or else we'd create a new <code>[]</code> each time. </p>
-<p>If we assume <code>l=[]</code> executes like a name-binding statement, then it must execute either (1) only once when the function is defined, or (2) each time the function is called. In <code>foo</code>, it only executes once, but in <code>bar</code>, it executes every time we call <code>bar</code>. That just can't be. So our assumption that <code>l=[]</code> executes like a name-binding statement leads to a contradiction, and thus must be wrong! </p>
+<p>Hrm. This behavior reasonably leads us to believe that the assignment <code>l=[]</code> happens <em>each time we call the function <code>bar</code></em>. But in <code>foo</code>, <code>l=[]</code> can't be a statement that executes each time the function is called, or else we'd create a new <code>[]</code> each time.</p>
+<p>If we assume <code>l=[]</code> executes like a name-binding statement, then it must execute either (1) only once when the function is defined, or (2) each time the function is called. In <code>foo</code>, it only executes once, but in <code>bar</code>, it executes every time we call <code>bar</code>. That just can't be. So our assumption that <code>l=[]</code> executes like a name-binding statement leads to a contradiction, and thus must be wrong!</p>
 <p>Guess what, nerds! We kind of just did a <a href="http://en.wikipedia.org/wiki/Proof_by_contradiction">proof by contradiction</a>!</p>
 <p>So then what really happens when we define default values for arguments? Let's see if we can figure out where the default values are stored.</p>
-<p>My usual go-to for questions like this is Python internals whiz and Hacker School Facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, but you can also find the answer with a bit of <a href="https://www.google.com/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=python%20mutable%20default%20arguments">googling</a>. </p>
-<p>So, without further ado, what actually happens when we define a default argument in Python 2.x is that the value of the argument gets stored inside the function's <code>func_defaults</code> method. (In 3.x, the values are stored in the <code>__defaults__</code> method.) </p>
+<p>My usual go-to for questions like this is Python internals whiz and Hacker School Facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, but you can also find the answer with a bit of <a href="https://www.google.com/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=python%20mutable%20default%20arguments">googling</a>.</p>
+<p>So, without further ado, what actually happens when we define a default argument in Python 2.x is that the value of the argument gets stored inside the function's <code>func_defaults</code> method. (In 3.x, the values are stored in the <code>__defaults__</code> method.)</p>
 <p>Let's look back at the <code>foo</code> function:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
-<span class="p">...</span>     <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[]):</span>
+<span class="gp">... </span>    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;cat&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">l</span>
 </pre></div>
 
 
 <p>In Python 2.x, we can access <code>foo</code>'s <code>func_defaults</code> like so:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
-<span class="p">([],)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
-<span class="p">([</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">],)</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">func_defaults</span>
+<span class="go">([],)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="p">()</span>
+<span class="go">[&#39;cat&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">func_defaults</span>
+<span class="go">([&#39;cat&#39;],)</span>
 </pre></div>
 
 
 <p>Aha! So the actual object that is being stored as the default for <code>foo</code> is being modified when we call <code>foo</code>! For fun, let's see if we can mutate the default value from outside of the function:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">.</span><span class="n">func_defaults</span>
-<span class="p">([</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">],)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">dragon</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">func_defaults</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;dragon&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">func_defaults</span>
+<span class="go">([&#39;cat&#39;, &#39;dragon&#39;],)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="p">()</span>
+<span class="go">[&#39;cat&#39;, &#39;dragon&#39;, &#39;cat&#39;]</span>
 </pre></div>
 
 
 <p>Eep! That was fun. So what's in the <code>func_defaults</code> of <code>bar</code>? Recall:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[])</span><span class="o">:</span>
-<span class="p">...</span>     <span class="n">print</span> <span class="n">locals</span><span class="p">()</span>
-<span class="p">...</span>     <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="n">l</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="p">[]):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="nb">locals</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;cat&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">l</span>
 </pre></div>
 
 
 <p>And then:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">.</span><span class="n">func_defaults</span>
-<span class="p">([],)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">()</span>
-<span class="p">{</span><span class="sc">&#39;l&#39;</span><span class="o">:</span> <span class="p">[]}</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span><span class="p">.</span><span class="n">func_defaults</span> 
-<span class="p">([],)</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="o">.</span><span class="n">func_defaults</span>
+<span class="go">([],)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="p">()</span>
+<span class="go">{&#39;l&#39;: []}</span>
+<span class="go">[&#39;cat&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span><span class="o">.</span><span class="n">func_defaults</span>
+<span class="go">([],)</span>
 </pre></div>
 
 
@@ -180,23 +175,23 @@
 </li>
 </ol>
 <p>I should probably also mention something more useful: a common way of setting a default value to an empty list (and having it actually work as expected) is to do the following:</p>
-<div class="highlight"><pre><span class="n">def</span> <span class="n">baz</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="n">None</span><span class="p">)</span><span class="o">:</span>
-    <span class="k">if</span> <span class="n">not</span> <span class="n">l</span><span class="o">:</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">l</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">baz</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">l</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;cat&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">l</span>
 </pre></div>
 
 
 <p>When we call <code>baz</code> multiple times, its behavior is more expected:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baz</span><span class="p">()</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">baz</span><span class="p">()</span>
-<span class="p">[</span><span class="err">&#39;</span><span class="n">cat</span><span class="err">&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">baz</span><span class="p">()</span>
+<span class="go">[&#39;cat&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">baz</span><span class="p">()</span>
+<span class="go">[&#39;cat&#39;]</span>
 </pre></div>
 
 
-<p>Cool! Wat conquered. We should collect badges for all the wats we've battled.  </p>
+<p>Cool! Wat conquered. We should collect badges for all the wats we've battled.</p>
 <p>Thanks to <a href="http://maryrosecook.com/">Mary Rose Cook</a> and <a href="http://akaptur.github.io/">Allison Kaptur</a>, who valiantly battled this wat with me.</p>
                     <p>    <!-- <p> -->
         tags: 
@@ -211,23 +206,18 @@
                     <h1 class= "other-articles">Other articles</h1>
                     <hr />
                     <ol id="posts-list" class="hfeed">
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./introducing-iron-maker-or-forger-or-something.html" rel="bookmark" title="Permalink to Introducing Iron Maker Or Forger Or Something">Introducing Iron Maker Or Forger Or Something</a></h1>
+                        <h1 class="entry-title"><a href="./introducing-iron-maker-or-forger-or-something.html" rel="bookmark" title="Permalink to Introducing Iron Maker Or Forger Or Something">Introducing Iron Maker Or Forger Or Something</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-19T00:00:00">
-                Sat 19 April 2014
+                April 19 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/hacker-school.html">Hacker School</a>  --></p>
 
 
@@ -251,33 +241,27 @@
                 <!-- <p>There are probably no <a href="./introducing-iron-maker-or-forger-or-something.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./python-closures-and-free-variables.html" rel="bookmark" title="Permalink to Python Closures and Free Variables">Python Closures and Free Variables</a></h1>
+                        <h1 class="entry-title"><a href="./python-closures-and-free-variables.html" rel="bookmark" title="Permalink to Python Closures and Free Variables">Python Closures and Free Variables</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-10T00:00:00">
-                Thu 10 April 2014
+                April 10 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/python-internals.html">Python Internals</a>  --></p>
 
 
 </footer><!-- /.post-info -->                <div class="entry-summary">
                     <p>Today, friends, we will continue to dissect functional programming concepts in Python. We're going to try to figure out what the hell is going on in this chunk of code:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">make_contains_function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>     <span class="nx">def</span> <span class="nx">contains</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">:</span>
-<span class="p">...</span>             <span class="k">return</span> <span class="nx">x</span> <span class="k">in</span> <span class="nx">s</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="nx">contains</span>
-<span class="p">...</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">make_contains_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="k">return</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">contains</span>
 </pre></div>
 
 
@@ -300,29 +284,24 @@
                 <!-- <p>There are probably no <a href="./python-closures-and-free-variables.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./dissecting-the-reduce-function.html" rel="bookmark" title="Permalink to Dissecting the Reduce Function">Dissecting the Reduce Function</a></h1>
+                        <h1 class="entry-title"><a href="./dissecting-the-reduce-function.html" rel="bookmark" title="Permalink to Dissecting the Reduce Function">Dissecting the Reduce Function</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-07T00:00:00">
-                Mon 07 April 2014
+                April 07 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
 </footer><!-- /.post-info -->                <div class="entry-summary">
                     <p>Good morning, <a href="http://www.vice.com/columns/good-morning-sinners-with-warren-ellis">sinners</a>. Today we're going to figure out what the hell is going on inside a Python expression like:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="o">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
 </pre></div>
 
 
@@ -344,23 +323,18 @@
                 <!-- <p>There are probably no <a href="./dissecting-the-reduce-function.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="bookmark" title="Permalink to After Six Months of Learning The Python, I Can Finally Print "Hello World!"">After Six Months of Learning The Python, I Can Finally Print "Hello World!"</a></h1>
+                        <h1 class="entry-title"><a href="./after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="bookmark" title="Permalink to After Six Months of Learning The Python, I Can Finally Print "Hello World!"">After Six Months of Learning The Python, I Can Finally Print "Hello World!"</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-04-01T00:00:00">
-                Tue 01 April 2014
+                April 01 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -385,23 +359,18 @@
                 <!-- <p>There are probably no <a href="./after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./a-love-affair-with-broken-things.html" rel="bookmark" title="Permalink to A Love Affair With Broken Things">A Love Affair With Broken Things</a></h1>
+                        <h1 class="entry-title"><a href="./a-love-affair-with-broken-things.html" rel="bookmark" title="Permalink to A Love Affair With Broken Things">A Love Affair With Broken Things</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-03-31T00:00:00">
-                Mon 31 March 2014
+                March 31 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -431,23 +400,18 @@
                 <!-- <p>There are probably no <a href="./a-love-affair-with-broken-things.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./whats-the-deal-with-builtins-vs-builtin.html" rel="bookmark" title="Permalink to What's the deal with __builtins__ vs __builtin__">What's the deal with __builtins__ vs __builtin__</a></h1>
+                        <h1 class="entry-title"><a href="./whats-the-deal-with-builtins-vs-builtin.html" rel="bookmark" title="Permalink to What's the deal with __builtins__ vs __builtin__">What's the deal with <code>__builtins__</code> vs <code>__builtin__</code></a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-03-23T00:00:00">
-                Sun 23 March 2014
+                March 23 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -486,23 +450,18 @@
                 <!-- <p>There are probably no <a href="./whats-the-deal-with-builtins-vs-builtin.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./import-accio-bootstrapping-python-grammar.html" rel="bookmark" title="Permalink to Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar">Replacing `import` with `accio`: A Dive into Bootstrapping and Python's Grammar</a></h1>
+                        <h1 class="entry-title"><a href="./import-accio-bootstrapping-python-grammar.html" rel="bookmark" title="Permalink to Replacing import with accio: A Dive into Bootstrapping and Python's Grammar">Replacing <code>import</code> with <code>accio</code>: A Dive into Bootstrapping and Python's Grammar</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-03-14T00:00:00">
-                Fri 14 March 2014
+                March 14 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -531,23 +490,18 @@
                 <!-- <p>There are probably no <a href="./import-accio-bootstrapping-python-grammar.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./github-pages-publication-git-hooks.html" rel="bookmark" title="Permalink to GitHub Pages Publication with Git Hooks">GitHub Pages Publication with Git Hooks</a></h1>
+                        <h1 class="entry-title"><a href="./github-pages-publication-git-hooks.html" rel="bookmark" title="Permalink to GitHub Pages Publication with Git Hooks">GitHub Pages Publication with Git Hooks</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-03-08T00:00:00">
-                Sat 08 March 2014
+                March 08 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -572,23 +526,18 @@
                 <!-- <p>There are probably no <a href="./github-pages-publication-git-hooks.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
-        
 
- 
-            <li><article class="hentry">    
+            <li><article class="hentry">
                 <header>
-                        <h1><a href="./how-should-i-learn-programming.html" rel="bookmark" title="Permalink to How Should I Learn Programming?">How Should I Learn Programming?</a></h1>
+                        <h1 class="entry-title"><a href="./how-should-i-learn-programming.html" rel="bookmark" title="Permalink to How Should I Learn Programming?">How Should I Learn Programming?</a></h1>
                 </header>
-                
+
                 <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-02-23T00:00:00">
-                Sun 23 February 2014
+                February 23 2014
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/meta.html">Meta</a>  --></p>
 
 

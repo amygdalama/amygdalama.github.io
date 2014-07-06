@@ -42,12 +42,9 @@
     <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2013-12-24T22:23:00">
-                Tue 24 December 2013
+                December 24 2013
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
@@ -58,16 +55,16 @@ from one of my clients.</p>
 <p>This method uses PyMC to estimate the real conversion rate for each page
 and Matplotlib to visually interpret the results.</p>
 <p>First, I import the relevant packages:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>  
-<span class="kn">import</span> <span class="nn">pymc</span> <span class="kn">as</span> <span class="nn">pm</span>  
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="kn">as</span> <span class="nn">pm</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 </pre></div>
 
 
 <p>My client ran a landing page test with the following results:</p>
-<div class="highlight"><pre><span class="n">clicks_A</span> <span class="o">=</span> <span class="mi">1135</span>  
-<span class="n">orders_A</span> <span class="o">=</span> <span class="mi">5</span>  
-<span class="n">clicks_B</span> <span class="o">=</span> <span class="mi">1149</span>  
+<div class="highlight"><pre><span class="n">clicks_A</span> <span class="o">=</span> <span class="mi">1135</span>
+<span class="n">orders_A</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">clicks_B</span> <span class="o">=</span> <span class="mi">1149</span>
 <span class="n">orders_B</span> <span class="o">=</span> <span class="mi">17</span>
 </pre></div>
 
@@ -78,7 +75,7 @@ of page B is higher than page A.</p>
 <p>To format this data for the analysis, I create a numpy array for each
 page with 1s representing orders and 0s representing clicks without an
 order:</p>
-<div class="highlight"><pre><span class="n">data_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">clicks_A</span> <span class="o">-</span> <span class="n">orders_A</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">orders_A</span><span class="p">]</span>  
+<div class="highlight"><pre><span class="n">data_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">clicks_A</span> <span class="o">-</span> <span class="n">orders_A</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">orders_A</span><span class="p">]</span>
 <span class="n">data_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">clicks_B</span> <span class="o">-</span> <span class="n">orders_B</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">orders_B</span><span class="p">]</span>
 </pre></div>
 
@@ -87,7 +84,7 @@ order:</p>
 assume, for simplicity, that the distributions are uniform (i.e. I have
 no prior knowledge of what <code>p_A</code> and 'p_B' are).
 [Note: the rest of the code in blog post is taken from [the book].</p>
-<div class="highlight"><pre><span class="n">p_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s">&#39;p_A&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  
+<div class="highlight"><pre><span class="n">p_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s">&#39;p_A&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">p_B</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s">&#39;p_B&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
@@ -97,8 +94,8 @@ to define a variable <code>delta</code>, which equals <code>p_B - p_A</code>. Si
 both <code>p_A</code> and <code>p_B</code>, I can calculate <code>delta</code>, it's a deterministic
 variable. In PyMC, deterministic variables are created using a function
 with a <code>pymc.deterministic</code> wrapper:</p>
-<div class="highlight"><pre><span class="nd">@pm.deterministic</span>  
-<span class="k">def</span> <span class="nf">delta</span><span class="p">(</span><span class="n">p_A</span><span class="o">=</span><span class="n">p_A</span><span class="p">,</span> <span class="n">p_B</span><span class="o">=</span><span class="n">p_B</span><span class="p">):</span>  
+<div class="highlight"><pre><span class="nd">@pm.deterministic</span>
+<span class="k">def</span> <span class="nf">delta</span><span class="p">(</span><span class="n">p_A</span><span class="o">=</span><span class="n">p_A</span><span class="p">,</span> <span class="n">p_B</span><span class="o">=</span><span class="n">p_B</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">p_B</span> <span class="o">-</span> <span class="n">p_A</span>
 </pre></div>
 
@@ -107,43 +104,43 @@ with a <code>pymc.deterministic</code> wrapper:</p>
 algorithm (I don't understand what this code is actually doing yet - an
 explanation is coming up in Chapter 3):</p>
 <div class="highlight"><pre><span class="n">obs_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="s">&quot;obs_A&quot;</span><span class="p">,</span>
-<span class="n">p_A</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">data_A</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>  
+<span class="n">p_A</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">data_A</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
 <span class="n">obs_B</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="s">&quot;obs_B&quot;</span><span class="p">,</span> <span class="n">p_B</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">data_B</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
 
-<span class="n">mcmc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MCMC</span><span class="p">([</span><span class="n">p_A</span><span class="p">,</span> <span class="n">p_B</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">obs_A</span><span class="p">,</span> <span class="n">obs_B</span><span class="p">])</span>  
+<span class="n">mcmc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MCMC</span><span class="p">([</span><span class="n">p_A</span><span class="p">,</span> <span class="n">p_B</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">obs_A</span><span class="p">,</span> <span class="n">obs_B</span><span class="p">])</span>
 <span class="n">mcmc</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">20000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 
 
 <p>Then I plot the posterior distributions for the three unknowns:</p>
-<div class="highlight"><pre><span class="n">p_A_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;p_A&quot;</span><span class="p">)[:]</span>  
-<span class="n">p_B_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;p_B&quot;</span><span class="p">)[:]</span>  
+<div class="highlight"><pre><span class="n">p_A_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;p_A&quot;</span><span class="p">)[:]</span>
+<span class="n">p_B_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;p_B&quot;</span><span class="p">)[:]</span>
 <span class="n">delta_samples</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s">&quot;delta&quot;</span><span class="p">)[:]</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mo">035</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">p_A_samples</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>  
-<span class="n">label</span><span class="o">=</span><span class="s">&quot;posterior of $p_A$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#A60628&quot;</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  
-<span class="n">edgecolor</span><span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mo">035</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">p_A_samples</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+<span class="n">label</span><span class="o">=</span><span class="s">&quot;posterior of $p_A$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#A60628&quot;</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="n">edgecolor</span><span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Posterior distributions of $p_A$, $p_B$, and delta</span>
 <span class="n">unknowns</span><span class="s">&quot;)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mo">035</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">p_B_samples</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>  
-        <span class="n">label</span><span class="o">=</span><span class="s">&quot;posterior of $p_B$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#467821&quot;</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  
-        <span class="n">edgecolor</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mo">035</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">p_B_samples</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s">&quot;posterior of $p_B$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#467821&quot;</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">edgecolor</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">delta_samples</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>  
-        <span class="n">label</span><span class="o">=</span><span class="s">&quot;posterior of $p_B$ - $p_A$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#7A68A6&quot;</span><span class="p">,</span><span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  
-        <span class="n">edgecolor</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>  
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>  
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">delta_samples</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s">&quot;posterior of $p_B$ - $p_A$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#7A68A6&quot;</span><span class="p">,</span><span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">edgecolor</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -154,16 +151,16 @@ explanation is coming up in Chapter 3):</p>
 <p>I can also compute the probability that the true conversion rate of page
 A, <code>p_A</code>, is better than the true conversion rate of page
 B, <code>p_A</code>:</p>
-<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Probability site A is BETTER than site B: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span>   
-<span class="p">(</span><span class="n">delta_samples</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  
-<span class="k">print</span> <span class="s">&quot;Probability site A is WORSE than site B: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span>   
+<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Probability site A is BETTER than site B: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span>
+<span class="p">(</span><span class="n">delta_samples</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&quot;Probability site A is WORSE than site B: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span>
 <span class="p">(</span><span class="n">delta_samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
 
 
-<p>This should print out:  </p>
-<div class="highlight"><pre>Probability page A is BETTER than page B: 0.006  
-Probability page A is WORSE than page B: 0.994
+<p>This should print out:</p>
+<div class="highlight"><pre><span class="go">Probability page A is BETTER than page B: 0.006</span>
+<span class="go">Probability page A is WORSE than page B: 0.994</span>
 </pre></div>
 
 

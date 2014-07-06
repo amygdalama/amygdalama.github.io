@@ -19,10 +19,10 @@
 &lt;blockquote&gt;
 &lt;p&gt;By default, when in the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__builtins__&lt;/code&gt; is the built-in module &lt;code&gt;__builtin__&lt;/code&gt; (note: no 's'); when in any other module, &lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module itself.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;What. What does that mean. &lt;/p&gt;
+&lt;p&gt;What. What does that mean.&lt;/p&gt;
 &lt;p&gt;This talk of the "&lt;code&gt;__main__&lt;/code&gt; module" and "any other module" reminds me of a sequence of words that I've known for quite a while, but haven't completely grokked:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;We can access the name of the current module with the builtin variable &lt;code&gt;__name__&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;We can access the name of the current module with the builtin variable &lt;code&gt;__name__&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;You're probably familiar with the related canonical statement:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -31,9 +31,9 @@
 
 
 &lt;p&gt;But what does "current module" mean? What does the &lt;code&gt;__name__&lt;/code&gt; variable look like when it does not equal &lt;code&gt;__main__&lt;/code&gt;?&lt;/p&gt;
-&lt;p&gt;I happen to know, because I've obsessively read about the &lt;code&gt;import&lt;/code&gt; statement, another sequence of words: &lt;/p&gt;
+&lt;p&gt;I happen to know, because I've obsessively read about the &lt;code&gt;import&lt;/code&gt; statement, another sequence of words:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Any code executed as a result of an &lt;code&gt;import&lt;/code&gt; isn't executed in the &lt;code&gt;__main__&lt;/code&gt; module. &lt;/p&gt;
+&lt;p&gt;Any code executed as a result of an &lt;code&gt;import&lt;/code&gt; isn't executed in the &lt;code&gt;__main__&lt;/code&gt; module.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Let's use these bits of knowledge to observe the behavior of &lt;code&gt;__builtins__&lt;/code&gt; both inside and outside of the &lt;code&gt;__main__&lt;/code&gt; module. We can also check out the &lt;code&gt;__name__&lt;/code&gt; variable while we're at it.&lt;/p&gt;
 &lt;p&gt;First, let's make a script, &lt;code&gt;a.py&lt;/code&gt;, which will allow us to observe the behavior of &lt;code&gt;__builtin__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt;, and &lt;code&gt;__name__&lt;/code&gt;.&lt;/p&gt;
@@ -57,7 +57,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Okay. So we're in the &lt;code&gt;__main__&lt;/code&gt; module, and in here &lt;code&gt;__builtin__&lt;/code&gt; is pointing to the same module object as &lt;code&gt;__builtins__&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Okay. So we're in the &lt;code&gt;__main__&lt;/code&gt; module, and in here &lt;code&gt;__builtin__&lt;/code&gt; is pointing to the same module object as &lt;code&gt;__builtins__&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;What happens if we &lt;code&gt;import a&lt;/code&gt; in another script? The code in &lt;code&gt;a&lt;/code&gt; will execute, but it won't be executed within the &lt;code&gt;__main__&lt;/code&gt; module. Instead, it'll be executed within the &lt;code&gt;a&lt;/code&gt; module. Let's write another script, &lt;code&gt;b.py&lt;/code&gt;, to find out what happens to &lt;code&gt;__builtins__&lt;/code&gt; outside of &lt;code&gt;__main__&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;__builtin__&lt;/span&gt;
 
@@ -93,7 +93,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Aha. So when we're outside the context of the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__name__&lt;/code&gt; is just equal to the name of the module where code is currently being executed. That seems logical. And outside of &lt;code&gt;__main__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt; is a dict, rather than a module. &lt;/p&gt;
+&lt;p&gt;Aha. So when we're outside the context of the &lt;code&gt;__main__&lt;/code&gt; module, &lt;code&gt;__name__&lt;/code&gt; is just equal to the name of the module where code is currently being executed. That seems logical. And outside of &lt;code&gt;__main__&lt;/code&gt;, &lt;code&gt;__builtins__&lt;/code&gt; is a dict, rather than a module.&lt;/p&gt;
 &lt;p&gt;We were told earlier that, outside the context of &lt;code&gt;__main__&lt;/code&gt;, &lt;em&gt;"&lt;code&gt;__builtins__&lt;/code&gt; is an alias for the dictionary of the &lt;code&gt;__builtin__&lt;/code&gt; module"&lt;/em&gt;. I think that means that &lt;code&gt;__builtins__ is __builtin__.__dict__&lt;/code&gt;. Let's see if my hypothesis is true, by adding another line to the bottom of our &lt;code&gt;a.py&lt;/code&gt; file:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;__builtins__ is __builtin__.__dict__&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__builtins__&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;__builtin__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__dict__&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -117,7 +117,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Yes! My hypothesis was correct. Okay. So now I get why using &lt;code&gt;__builtin__&lt;/code&gt; is better than &lt;code&gt;__builtins__&lt;/code&gt;: &lt;/p&gt;
+&lt;p&gt;Yes! My hypothesis was correct. Okay. So now I get why using &lt;code&gt;__builtin__&lt;/code&gt; is better than &lt;code&gt;__builtins__&lt;/code&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The type, and thus behavior, of &lt;code&gt;__builtins__&lt;/code&gt; changes based on the context of where it's being executed, while the type and behavior of &lt;code&gt;__builtin__&lt;/code&gt; is constant. Rad.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Thanks, stranger who &lt;a href="https://github.com/amygdalama/nagini/issues/1"&gt;suggested&lt;/a&gt; I look into this, for the learning opportunity. And thanks, always, to Allison Kaptur, for exploring this topic with me.&lt;/p&gt;
 &lt;p&gt;The code for this blog post is on &lt;a href="https://github.com/amygdalama/builtins"&gt;GitHub&lt;/a&gt;, of course.&lt;/p&gt;</summary><category term="python"></category><category term="builtins"></category><category term="hacker school"></category><category term="python internals"></category></entry></feed>

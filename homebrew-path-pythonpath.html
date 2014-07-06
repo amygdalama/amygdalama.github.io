@@ -42,12 +42,9 @@
     <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2013-12-02T21:48:00">
-                Mon 02 December 2013
+                December 02 2013
         </abbr>
 
-        <address class="vcard author">
-                By <a class="url fn" href="./author/amy-hanlon.html">Amy Hanlon</a>
-        </address>
 <p><!-- In <a href="./category/little-eureka-moments.html">Little Eureka Moments</a>  --></p>
 
 
@@ -60,14 +57,14 @@ struggle, I figured out how to solve this problem.</p>
 
 
 <p>Which will give you output looking something like this:</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">type</span> -a python  
-python is /usr/local/bin/python  
-python is //anaconda/bin/python  
-python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python  
-python is //anaconda/bin/python  
-python is //anaconda/bin/python  
-python is /usr/bin/python  
-python is /usr/local/bin/python
+<div class="highlight"><pre><span class="gp">$</span> <span class="nb">type</span> -a python
+<span class="go">python is /usr/local/bin/python</span>
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python</span>
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is /usr/bin/python</span>
+<span class="go">python is /usr/local/bin/python</span>
 </pre></div>
 
 
@@ -81,109 +78,104 @@ machine the directory to find <code>python</code> when you type it in the termin
 python where to look for modules to import. To see where python is
 currently looking for modules, run <code>python</code> in your terminal and type the
 following commands:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>  
-<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span>
 </pre></div>
 
 
 <p>As output, python will print out a list of the directories where it
 looks for modules:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>  
-<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>  
-<span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/setuptools-1.3-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/pip-1.4.1-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages&#39;</span><span class="p">,</span> <span class="s">&#39;/Users/amyhanlon&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python27.zip&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages&#39;</span><span class="p">,</span>
-<span class="s">&#39;/Library/Python/2.7/site-packages&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+<span class="go">[&#39;&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/setuptools-1.3-py2.7.egg&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/pip-1.4.1-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages&#39;, &#39;/Users/amyhanlon&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python27.zip&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload&#39;,</span>
+<span class="go">&#39;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages&#39;,</span>
+<span class="go">&#39;/Library/Python/2.7/site-packages&#39;]</span>
 </pre></div>
 
 
-<p>To fix this problem, use the terminal to open the hidden file called
-<code>~/.bash_profile</code> which exists in your home directory (the <code>~</code> symbolizes your home directory). I opened
-this file with TextWrangler, but you can replace 'TextWrangler' in the
-command with whichever text editing program you use (the default OSX
-text editor is TextEdit).</p>
-<div class="highlight"><pre><span class="nv">$ </span>open -a TextWrangler ~/.bash_profile
+<p>To fix this problem, open the hidden file called <code>~/.bash_profile</code> which exists in your home directory (the <code>~</code> symbolizes your home directory).</p>
+<div class="highlight"><pre><span class="nv">$ </span>subl ~/.bash_profile
 </pre></div>
 
 
+<p>Here I'm using the <code>subl</code> command which opens files in Sublime.</p>
 <p>The file contents should look something like this:</p>
-<div class="highlight"><pre><span class="c"># Setting `PATH` for Python 2.7  </span>
-<span class="c"># The original version is saved in .bash_profile.pysave  </span>
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&quot;</span>  
-<span class="nb">export</span> <span class="sb">`</span>PATH<span class="sb">`</span>  
-<span class="c"># added by Anaconda 1.7.0 installer  </span>
-<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:$PATH&quot;</span>  
-<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:<span class="nv">$PATH</span>  
+<div class="highlight"><pre><span class="c"># Setting `PATH` for Python 2.7</span>
+<span class="c"># The original version is saved in .bash_profile.pysave</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&quot;</span>
+<span class="nb">export</span> <span class="sb">`</span>PATH<span class="sb">`</span>
+<span class="c"># added by Anaconda 1.7.0 installer</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:$PATH&quot;</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:<span class="nv">$PATH</span>
 <span class="nb">export </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>
 </pre></div>
 
 
-<p>The last PATH= and PYTHONPATH= lines should be directed to the Anaconda
-location of python, and in this case they aren't. To fix this, comment
-out or delete lines that incorrectly assign the <code>PATH</code> and <code>PYTHONPATH</code> variables, and
+<p>The last <code>PATH=</code> and <code>PYTHONPATH=</code> lines should be directed to the Anaconda location of python, and in this case they aren't. To fix this, comment out or delete lines that incorrectly assign the <code>PATH</code> and <code>PYTHONPATH</code> variables, and
 add lines that assign the correct variables. After making edits, my file looks like this:</p>
-<div class="highlight"><pre><span class="c"># Setting PATH for Python 2.7  </span>
-<span class="c"># The original version is saved in .bash_profile.pysave  </span>
+<div class="highlight"><pre><span class="c"># Setting PATH for Python 2.7</span>
+<span class="c"># The original version is saved in .bash_profile.pysave</span>
 <span class="c">#</span>
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&quot;</span>  
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:${PATH}&quot;</span>  
-<span class="nb">export</span> <span class="sb">`</span>PATH<span class="sb">`</span>  
-<span class="c"># added by Anaconda 1.7.0 installer  </span>
-<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:$PATH&quot;</span>  
-<span class="c"># export PATH=/usr/local/bin:$PATH  </span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}&quot;</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:${PATH}&quot;</span>
+<span class="nb">export</span> <span class="sb">`</span>PATH<span class="sb">`</span>
+<span class="c"># added by Anaconda 1.7.0 installer</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/bin:$PATH&quot;</span>
+<span class="c"># export PATH=/usr/local/bin:$PATH</span>
 <span class="c"># export</span>
-<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>  
+<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>
 <span class="nb">export </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;//anaconda/lib/python2.7/site-packages:$PYTHONPATH&quot;</span>
 </pre></div>
 
 
 <p>Save the file. Then, in the terminal (after exiting python), source the
 file, and see if you've fixed the <code>PATH</code> and <code>PYTHONPATH</code>:</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile  
-<span class="nv">$ </span><span class="nb">type</span> -a python
-python is //anaconda/bin/python  
-python is //anaconda/bin/python  
-python is /usr/local/bin/python  
-python is //anaconda/bin/python  
-python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python  
-python is //anaconda/bin/python  
-python is //anaconda/bin/python  
-python is /usr/bin/python  
-python is /usr/local/bin/python
+<div class="highlight"><pre><span class="gp">$</span> <span class="nb">source</span> ~/.bash_profile
+<span class="gp">$</span> <span class="nb">type</span> -a python
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is /usr/local/bin/python</span>
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is /Library/Frameworks/Python.framework/Versions/2.7/bin/python</span>
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is //anaconda/bin/python</span>
+<span class="go">python is /usr/bin/python</span>
+<span class="go">python is /usr/local/bin/python</span>
 </pre></div>
 
 
 <p>Now you should see the Anaconda python (or your preferable python) at
 the top of the list in the output.</p>
 <p>Check your <code>PYTHONPATH</code> in the python interpreter by using the same method as before:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>  
-<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>  
-<span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;//anaconda/lib/python2.7/site-packages/gspread-0.1.0-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/fuzzywuzzy-0.2-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/inflect-0.2.4-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/beautifulsoup4-4.3.2-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/pyicloud-0.3.0-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/foursquare-20130707-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/poster-0.8.1-py2.7.egg&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages&#39;</span><span class="p">,</span> <span class="s">&#39;/Users/amyhanlon&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python27.zip&#39;</span><span class="p">,</span> <span class="s">&#39;//anaconda/lib/python2.7&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/plat-darwin&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/plat-mac&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/plat-mac/lib-scriptpackages&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/lib-tk&#39;</span><span class="p">,</span> <span class="s">&#39;//anaconda/lib/python2.7/lib-old&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/lib-dynload&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/PIL&#39;</span><span class="p">,</span>
-<span class="s">&#39;//anaconda/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+<span class="go">[&#39;&#39;, &#39;//anaconda/lib/python2.7/site-packages/gspread-0.1.0-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/fuzzywuzzy-0.2-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/inflect-0.2.4-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/beautifulsoup4-4.3.2-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/pyicloud-0.3.0-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/foursquare-20130707-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/poster-0.8.1-py2.7.egg&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages&#39;, &#39;/Users/amyhanlon&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python27.zip&#39;, &#39;//anaconda/lib/python2.7&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/plat-darwin&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/plat-mac&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/plat-mac/lib-scriptpackages&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/lib-tk&#39;, &#39;//anaconda/lib/python2.7/lib-old&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/lib-dynload&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/PIL&#39;,</span>
+<span class="go">&#39;//anaconda/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info&#39;]</span>
 </pre></div>
 
 

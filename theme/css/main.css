@@ -11,16 +11,13 @@
 @import url("reset.css");
 @import url("pygment.css");
 @import url("typogrify.css");
-@import url(http://fonts.googleapis.com/css?family=Lobster);
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
-
 
 /***** Global *****/
 /* Body */
 body {
     background: url("https://raw2.github.com/amygdalama/blog-source/master/pelican-themes/subtle/static/css/noisy_grid.png");
-    font-family: 'Droid Sans', sans-serif;
-    font-size: 14px ;
+    font-family: 'PT Serif', sans-serif;
+    font-size: 18px ;
     line-height: 1.429;
     margin: 0;
     padding: 0;
@@ -39,12 +36,12 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 700;
 	line-height: 1.1;
 	margin-bottom: .8em;
-	font-family: 'Droid Sans', sans-serif;
-	
+	font-family: 'PT Serif', sans-serif;
+
 }
 
 h3, h4, h5, h6 { margin-top: .8em; }
-	
+
 hr { border: 2px solid #EEEEEE; }
 
 /* Anchors */
@@ -56,16 +53,18 @@ a:link, a:visited {
 	text-decoration: underline;
 }
 a:hover, a:active {
-	background-color: #C74451;
-	color: #fff;
-	text-decoration: none;
-	text-shadow: none;
+	color: #7E262E;
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	transition: all .5s ease;
 }
 
 h1 a:hover {
     background-color: inherit
 }
-	
+
 /* Paragraphs */
 p {margin-bottom: 1.143em;}
 
@@ -89,6 +88,7 @@ ol {
     /*margin:5px;*/
     padding-bottom:1em;
     padding-top:1em;
+    color: #aaa;
 }
 
 .post-info p{
@@ -96,7 +96,6 @@ ol {
 }
 
 .summary-tags {
-	margin-left: 190px;
 }
 
 .readmore { float: right }
@@ -105,7 +104,24 @@ dl {margin: 0 0 1.5em 0;}
 dt {font-weight: bold;}
 dd {margin-left: 1.5em;}
 
-pre{background-color: #000; padding: 10px; color: #fff; margin: 10px; overflow: auto;}
+pre {
+	font-family: Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+	padding: 10px;
+	margin: 10px;
+	overflow: auto;
+	font-size: .8em;
+}
+
+code {
+	font-family: Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+	display: inline-block;
+	font-size: .8em;
+	color: #555;
+	border: 1px solid #ddd;
+	border-radius: 0.4em;
+	padding: 0 .3em;
+	margin: -1px 0;
+}
 
 /* Quotes */
 blockquote {
@@ -125,7 +141,7 @@ div.note {
 
 /* Tables */
 table {margin: .5em auto 1.5em auto; width: 98%;}
-	
+
 	/* Thead */
 	thead th {padding: .5em .4em; text-align: left;}
 	thead td {}
@@ -133,14 +149,14 @@ table {margin: .5em auto 1.5em auto; width: 98%;}
 	/* Tbody */
 	tbody td {padding: .5em .4em;}
 	tbody th {}
-	
+
 	tbody .alt td {}
 	tbody .alt th {}
-	
+
 	/* Tfoot */
 	tfoot th {}
 	tfoot td {}
-	
+
 /* HTML5 tags */
 header, section, footer,
 aside, nav, article, figure {
@@ -157,15 +173,14 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 *****************/
 #banner {
 	margin: 0 auto;
-	padding: 2.5em 0 155px 0;
-	background-image:url(https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/header.png);
+	padding: 2.5em 0 0 0;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 0 115px;
 }
 
 	/* Banner */
-	#banner h1 {font-family: 'Lobster', cursive; font-size: 3.571em; line-height: 0;}
+	#banner h1 {font-family: 'PT Serif', sans-serif; font-size: 3.571em; line-height: 0;}
 	#banner h1 a:link, #banner h1 a:visited {
 		color: #000305;
 		display: block;
@@ -179,28 +194,28 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 		color: #C74451;
 		text-shadow: none;
 	}
-	
+
 	#banner h1 strong {font-size: 0.36em; font-weight: normal;}
-	
+
 	/* Main Nav */
 	#banner nav {
 		background: #000305;
-		font-size: 1.143em;
+		font-size: 1em;
 		height: 40px;
 		line-height: 30px;
-		margin: 0 auto 2em auto;
+		margin: 0 auto 1em auto;
 		padding: 0;
 		text-align: center;
 		width: 800px;
-		
+
 		border-radius: 5px;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
 	}
-	
+
 	#banner nav ul {list-style: none; margin: 0 auto; width: 800px;}
 	#banner nav li {float: left; display: inline; margin: 0;}
-	
+
 	#banner nav a:link, #banner nav a:visited {
 		color: #fff;
 		display: inline-block;
@@ -211,15 +226,15 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	#banner nav a:hover, #banner nav a:active,
 	#banner nav .active a:link, #banner nav .active a:visited {
 		background: #C74451;
-		color: #fff;           
+		color: #fff;
 		text-shadow: none !important;
 	}
-	
+
 	#banner nav li:first-child a {
 		border-top-left-radius: 5px;
 		-moz-border-radius-topleft: 5px;
 		-webkit-border-top-left-radius: 5px;
-		
+
 		border-bottom-left-radius: 5px;
 		-moz-border-radius-bottomleft: 5px;
 		-webkit-border-bottom-left-radius: 5px;
@@ -229,14 +244,13 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	Featured
 *****************/
 #featured {
-	
-	background: url("toptop.png") no-repeat, url('downdown.png') no-repeat, url("white.png") repeat;
+	background-color: white;
 	background-position: top,bottom,top;
 	margin-bottom: 2em;
 	overflow: hidden;
 	padding: 20px;
 	width: 760px;
-	
+
 	border-radius: 0px;
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
@@ -260,13 +274,13 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	Body
 *****************/
 #content {
-	background: url("toptop.png") no-repeat, url('downdown.png') no-repeat, url("white.png") repeat;
+	background-color: white;
 	background-position: top,bottom,top;
 	margin-bottom: 2em;
 	overflow: hidden;
 	padding: 20px 20px;
 	width: 760px;
-	
+
 	border-radius: 0px;
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
@@ -284,7 +298,6 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	font-size: 1.429em;
 	margin-bottom: .25em;
 	padding: 0 3px;
-	font-family: 'Lobster', cursive;
 }
 
 #extras a:link, #extras a:visited {
@@ -302,23 +315,23 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 		float: left;
 		width: 615px;
 	}
-	
+
 	#extras .blogroll li {float: left; margin: 0 20px 0 0; width: 185px;}
-	
+
 	/* Social */
 	#extras .social {
 		text-align: left;
 		width: 175px;
 	}
-	
+
 	#extras div[class='social'] a {
 		background-repeat: no-repeat;
 		background-position: 3px 6px;
 		padding-left: 25px;
 	}
-	
+
 		/* Icons */
-		
+
 
 		.social a[href*='facebook.com'] {background-image: url('../images/icons/facebook.png');
 		background-size: 16px 16px; }
@@ -347,7 +360,7 @@ img.left, figure.left {float: right; margin: 0 0 2em 2em;}
 	padding: 20px;
 	text-align: left;
 	width: 760px;
-	
+
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -378,10 +391,9 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 #content > .hentry {padding: 1em 0;}
 .hentry img{display : none ;}
 
-.entry-title {font-family: "Droid Sans", "sans-serif"; 
-	font-size: 2.5em;
-	font-weight: 900; 
-	margin-bottom: 0px; 
+.entry-title {
+	font-weight: 900;
+	margin-bottom: 0px;
 	margin-top: 0;
 	color: #000305;}
 
@@ -394,26 +406,23 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 	color: #C74451;
 }
 
-.page-title {font-family: "Lobster", "cursive"; 
+.page-title {
 	font-size: 3em;
-	font-weight: 900; 
-	margin-bottom: 10px; 
+	font-weight: 900;
+	margin-bottom: 10px;
 	margin-top: 0;
 	color: #000305;
 
 }
 
 .other-articles {
-	font-size: 3em;
-	font-family: "Lobster", cursive;
+	font-size: 2.5em;
 }
 
 .entry-summary {
-	margin-left: 190px;
 }
 
 .hentry h1 {
-	font-family: "Droid Sans", "sans-serif";
 	text-decoration: none;
 	font-weight: 900;
 	color: #000305;
@@ -434,22 +443,17 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 .hentry .post-info * {font-style: normal;}
 
 	/* Content */
-	.hentry footer {margin-bottom: 2em;}
+/*	.hentry footer {margin-bottom: 2em;}*/
 	.hentry footer address {display: inline;}
 	#posts-list footer address {display: block;}
 
 	/* Blog Index */
 	#posts-list {list-style: none; margin: 0;}
 	#posts-list .hentry {padding-left: 10px; position: relative;}
-	
+
 	#posts-list footer {
-		left: 10px;
-		position: relative;
-        float: left;
-		top: 0.5em;
-		width: 190px;
 	}
-	
+
 	/* About the Author */
 	#about-author {
 		background: #f9f9f9;
@@ -457,21 +461,21 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 		font-style: normal;
 		margin: 2em 0;
 		padding: 10px 20px 15px 20px;
-		
+
 		border-radius: 5px;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
 	}
-	
+
 	#about-author strong {
 		color: #C64350;
 		clear: both;
 		display: block;
 		font-size: 1.429em;
 	}
-	
+
 	#about-author .photo {border: 1px solid #ddd; float: left; margin: 5px 1em 0 0;}
-	
+
 	/* Comments */
 	#comments-list {list-style: none; margin: 0 1em;}
 	#comments-list blockquote {
@@ -480,25 +484,25 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 		font-style: normal;
 		margin: 0;
 		padding: 15px 20px;
-		
+
 		border-radius: 5px;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
 	}
 	#comments-list footer {color: #888; padding: .5em 1em 0 0; text-align: right;}
-	
+
 	#comments-list li:nth-child(2n) blockquote {background: #F5f5f5;}
-	
+
 	/* Add a Comment */
 	#add-comment label {clear: left; float: left; text-align: left; width: 150px;}
 	#add-comment input[type='text'],
 	#add-comment input[type='email'],
 	#add-comment input[type='url'] {float: left; width: 200px;}
-	
+
 	#add-comment textarea {float: left; height: 150px; width: 495px;}
-	
+
 	#add-comment p.req {clear: both; margin: 0 .5em 1em 0; text-align: right;}
-	
+
 	#add-comment input[type='submit'] {float: right; margin: 0 .5em;}
 	#add-comment * {margin-bottom: .5em;}
 
