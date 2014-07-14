@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Phonebook Tutorial</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+   
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="..">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="..">Home</a></li>
+                    <li><a href="../pages/about.html">About</a></li>
+                    <li><a href="../pages/contact.html">Contact</a></li>
+                    <li><a href="../pages/projects.html">Projects</a></li>
+                    <li><a href="../pages/talks.html">Talks</a></li>
+                </ul></nav>
+
+        </header><!-- /#banner -->
+        
+<section id="content" class="body">    
+    <h1 class="page-title">Phonebook Tutorial</h1>
+    <p>Let's make a command line tool for managing phonebook entries!</p>
+<h2>What it should do</h2>
+<p>We'll make a <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> application that should support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
+<p>The application will have a command line interface. The program should support the following commands:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py create ex_phonebook
+<span class="go">Created phonebook &#39;ex_phonebook.pb&#39; in the current directory.</span>
+
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;432 123 4321&#39;</span> ex_phonebook
+<span class="go">Added an entry to ex_phonebook.pb:</span>
+<span class="go">Jane Doe    432 123 4321</span>
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Lin&#39;</span> <span class="s1">&#39;509 123 4567&#39;</span> ex_phonebook
+<span class="go">Added an entry to ex_phonebook.pb:</span>
+<span class="go">Jane Lin    509 123 4567</span>
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Lin&#39;</span> <span class="s1">&#39;643 357 9876&#39;</span> ex_phonebook
+<span class="go">Error: Jane Lin already exists in ex_phonebook. Use the &#39;update&#39; command to change this entry.</span>
+
+<span class="gp">$</span> python phonebook.py update <span class="s1">&#39;Jane Lin&#39;</span> <span class="s1">&#39;643 357 9876&#39;</span> ex_phonebook
+<span class="go">Updated an entry in ex_phonebook.pb.</span>
+<span class="go">Previous entry:</span>
+<span class="go">Jane Lin    509 123 4567</span>
+<span class="go">New entry:</span>
+<span class="go">Jane Lin    643 357 9876</span>
+
+<span class="gp">$</span> python phonebook.py lookup <span class="s1">&#39;Jane&#39;</span> ex_phonebook
+<span class="go">Jane Doe    432 123 4321</span>
+<span class="go">Jane Lin    643 357 9876</span>
+
+<span class="gp">$</span> python phonebook.py reverse-lookup <span class="s1">&#39;643 357 9876&#39;</span> ex_phonebook
+<span class="go">Jane Lin    643 357 9876</span>
+
+<span class="gp">$</span> python phonebook.py remove <span class="s1">&#39;Jane Doe&#39;</span> ex_phonebook
+<span class="go">Removed an entry from ex_phonebook.pb:</span>
+<span class="go">Jane Doe    432 123 4321</span>
+<span class="gp">$</span> python phonebook.py remove <span class="s1">&#39;John Doe&#39;</span> ex_phonebook
+<span class="go">Error: &#39;John Doe&#39; does not exist in ex_phonebook.pb</span>
+</pre></div>
+
+
+<h2>Things we'll (maybe) learn about</h2>
+<p>There are many different approaches to solving this problem. Depending on the approach you choose and your experience level, you'll have the opportunity to learn about:</p>
+<ul>
+<li>argument parsing</li>
+<li>data structures that allow fast lookup</li>
+<li>looking through strings for matches</li>
+<li>writing tests</li>
+<li>using a database</li>
+</ul>
+<h2>How to read this tutorial</h2>
+<h2>Argument parsing</h2>
+<p>If you don't know how to parse arguments passed to the Python interpreter from the command line, see if you can figure out how to do it by googling. Maybe google "python command line arguments" as a start.</p>
+<h4>Intro to argument parsing</h4>
+<p>Arguments passed to python scripts from the command line are accessible using the sys module. Here's a simple example script that prints out the arguments passed to the Python interpreter:</p>
+<div class="highlight"><pre><span class="c"># ex.py</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">print</span> <span class="s">&quot;The arguments given to the script are: &quot;</span>
+<span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</pre></div>
+
+
+<p>What happens when you execute the script giving it some arguments?</p>
+<div class="highlight"><pre><span class="gp">$</span> python ex.py red flowers hi
+<span class="go">The arguments given to the script are:</span>
+<span class="go">[&#39;ex.py&#39;, &#39;red&#39;, &#39;flowers&#39;, &#39;hi&#39;]</span>
+</pre></div>
+
+
+<p>So <code>sys.argv</code> is a list, containing the name of the python script (<code>'ex.py'</code>), and then the three arguments we passed, all represented as strings.</p>
+<h4>Rolling your own argument parser</h4>
+<p>For your phonebook application, you might choose to manually parse your arguments. This would look something like this:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="c"># placeholder for create_phonebook function</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">add_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="c"># placeholder for add_entry function</span>
+    <span class="k">pass</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+    <span class="n">script</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c"># name of script is first arg</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>   <span class="c"># the next arg will be the main command</span>
+
+    <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
+        <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;add&#39;</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">add_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">)</span>
+
+    <span class="c"># define similar elif statements for update, lookup,</span>
+    <span class="c"># reverse-lookup, and delete commands</span>
+</pre></div>
+
+
+<p>If you're not sure how the <code>pop</code> method works or why I have the <code>if __name__ == '__main__'</code> statement, google it! A huge part of becoming a better programmer is learning how to google things you don't understand.</p>
+<p>There are some potential issues with this code. Try to figure out what they are. Try to improve the code.</p>
+<p>Things you could try:</p>
+<ul>
+<li>unpack the arguments<ul>
+<li><code>name, number = args</code></li>
+</ul>
+</li>
+<li>error handling<ul>
+<li><code>raise</code> or <code>print</code> error messages if the number of arguments is incorrect</li>
+<li>if you don't know how to <code>raise</code> exceptions and you want to learn, now is a great time! google it!</li>
+</ul>
+</li>
+<li>map the commands to their</li>
+</ul>
+<h4>Using the <code>argparse</code> module</h4>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-48330831-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+<script type="text/javascript">
+    var disqus_shortname = 'mathamy';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
