@@ -35,13 +35,19 @@
 <section id="content" class="body">    
     <h1 class="page-title">Phonebook Exercise</h1>
     <p>Let's make a command line tool for managing phonebook entries!</p>
+<h1 id="prologue">Prologue</h1>
+<p>Depending on your learning style and experience level, you might get through all of these chapters. Or you might just get through the first one. That's okay! The main priority for this exercise is to write a lot of code and understand what the code you're writing does. Don't worry about "finishing", whatever that means.</p>
+<p>If you don't understand a phrase or a line of code that I use, try googling it! A huge part of becoming a better programmer is learning how to google things you don't understand. If that doesn't help, ask me! I enjoy explaining things.</p>
+<p>Most of the chapters are split up into sections roughly ordered by difficulty level. The more difficult sections are marked as optional. Also, feel free to skip or skim through the sections that cover content you're already familiar with.</p>
+<h1 id="table-of-contents">Table of Contents</h1>
 <div class="toc">
 <ul>
 <li><a href="#prologue">Prologue</a></li>
+<li><a href="#table-of-contents">Table of Contents</a></li>
 <li><a href="#1-specifications">1. Specifications</a></li>
 <li><a href="#2-planning-organizing">2. Planning &amp; Organizing</a></li>
 <li><a href="#3-argument-parsing">3. Argument parsing</a><ul>
-<li><a href="#31-intro-to-argument-parsing">3.1 Intro to argument parsing</a></li>
+<li><a href="#31-accessing-command-line-arguments">3.1 Accessing command line arguments</a></li>
 <li><a href="#32-rolling-your-own-argument-parser">3.2 Rolling your own argument parser</a></li>
 <li><a href="#33-level-up-your-argument-parser">*3.3 Level up your argument parser</a><ul>
 <li><a href="#331-unpack-the-arguments">*3.3.1 Unpack the arguments</a></li>
@@ -52,15 +58,11 @@
 <li><a href="#34-using-the-argparse-module">*3.4 Using the argparse module</a></li>
 </ul>
 </li>
-<li><a href="#4-data-persistence">4. Data Persistence</a></li>
-<li><a href="#5-partial-string-matching">5. Partial String Matching</a></li>
-<li><a href="#6-writing-tests">6. Writing Tests</a></li>
+<li><a href="#4-writing-tests">4. Writing Tests</a></li>
+<li><a href="#5-data-persistence">5. Data Persistence</a></li>
+<li><a href="#6-partial-string-matching">6. Partial String Matching</a></li>
 </ul>
 </div>
-<h1 id="prologue">Prologue</h1>
-<p>Depending on your learning style and experience level, you might get through all of these chapters. Or you might just get through the first one. That's okay! The main priority for this exercise is to write a lot of code and understand what the code you're writing does. Don't worry about "finishing", whatever that means.</p>
-<p>If you don't understand a phrase or a line of code that I use, try googling it! A huge part of becoming a better programmer is learning how to google things you don't understand. If that doesn't help, ask me! I enjoy explaining things.</p>
-<p>Most of the chapters are split up into sections roughly ordered by difficulty level. The more difficult sections are marked as optional. Also, feel free to skip or skim through the sections that cover content you're already familiar with.</p>
 <h1 id="1-specifications">1. Specifications</h1>
 <p>We'll make a <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> application that will support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
 <p>The application will have a command line interface supporting the following commands and behaviors:</p>
@@ -114,27 +116,30 @@
 <p>If you don't know why I included an <code>if __name__ == '__main__'</code> statement, try googling it! Now is an excellent time to find out.</p>
 <h1 id="3-argument-parsing">3. Argument parsing</h1>
 <p>If you don't know how to parse arguments passed to the Python interpreter from the command line, see if you can figure out how to do it by googling. Maybe google "python command line arguments" as a start.</p>
-<h2 id="31-intro-to-argument-parsing">3.1 Intro to argument parsing</h2>
+<h2 id="31-accessing-command-line-arguments">3.1 Accessing command line arguments</h2>
 <p>Arguments passed to Python scripts from the command line are accessible using the <code>sys</code> module. Here's a simple example script that prints out the arguments passed to the Python interpreter:</p>
 <div class="highlight"><pre><span class="c"># ex.py</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="k">print</span> <span class="s">&quot;The arguments given to the interpreter are: &quot;</span>
+<span class="k">print</span> <span class="s">&quot;The arguments given to the interpreter are:&quot;</span>
 <span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
 </pre></div>
 
 
 <p>What happens when you execute the script giving it some arguments?</p>
-<div class="highlight"><pre><span class="gp">$</span> python ex.py red flowers hi
+<div class="highlight"><pre><span class="gp">$</span> python ex.py cats dragons frogs
 <span class="go">The arguments given to the interpreter are:</span>
-<span class="go">[&#39;ex.py&#39;, &#39;red&#39;, &#39;flowers&#39;, &#39;hi&#39;]</span>
+<span class="go">[&#39;ex.py&#39;, &#39;cats&#39;, &#39;dragons&#39;, &#39;frogs&#39;]</span>
 </pre></div>
 
 
 <p>So <code>sys.argv</code> is a list, containing the name of the script (<code>'ex.py'</code>), and then the three arguments we passed, all represented as strings.</p>
 <h2 id="32-rolling-your-own-argument-parser">3.2 Rolling your own argument parser</h2>
 <p>For your phonebook application, you might choose to manually parse your arguments, which could look something like this:</p>
-<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="highlight"><pre><span class="c"># skeleton code from ch2 defining your functions</span>
+<span class="c"># like create_phonebook and add_entry</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
     <span class="n">script</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c"># name of script is first arg</span>
     <span class="n">command</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>   <span class="c"># the next arg will be the main command</span>
@@ -173,8 +178,41 @@
 <p>This works even though <code>args</code> is a list and not a tuple!</p>
 <h4 id="332-error-handling">*3.3.2 Error handling</h4>
 <p>What happens when a user passes an incorrect number of arguments? Try giving your program too few arguments. Now try with too many arguments.</p>
-<p>Our users might find it useful for us to <code>raise</code> or <code>print</code> descriptive error messages if the number of arguments is incorrect. How could we add this to our program?</p>
-<p>If you don't know how to <code>raise</code> exceptions and you want to learn, now is a great time! google it!</p>
+<p>Our users might find it useful for us to <code>print</code> descriptive error messages if the number of arguments is incorrect. How could we add this to our program?</p>
+<p>We could do something like this:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Not enough arguments!&quot;</span>
+</pre></div>
+
+
+<p>Using <code>print</code> statements to indicate that an invalid number of arguments were passed is sufficient for now, but will make writing tests difficult.</p>
+<p>For example, let's say we wanted to test that running our program with the command</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py create
+</pre></div>
+
+
+<p>(which is missing an argument for the phonebook name) caused an error. How would we do that? Well, we could manually type in the command and observe the results. But would we want to do that with every command variation? And for too many arguments as well as too few? That quickly becomes too many things to remember to test manually.</p>
+<p>Thankfully, testing frameworks like Python's <code>unittest</code> provide methods that test whether code <code>raise</code>s a specific exception. We'll cover more on testing and using <code>unittest</code> in the next chapter.</p>
+<p>To make writing tests easier, we can define a custom exception that we'll call <code>ArgumentError</code>. To do this we just need to subclass it from the built-in <code>Exception</code> class:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">ArgumentError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span>
+</pre></div>
+
+
+<p>Now to <code>raise</code> this exception when an invalid number of arguments is passed:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span><span class="s">&quot;Not enough arguments!&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Try <code>raise</code>ing our <code>ArgumentError</code> exception any time a user enters too few or too many arguments.</p>
 <h4 id="333-mapping-commands-to-functions">*3.3.3 Mapping commands to functions</h4>
 <p>This section is a bit more advanced than the others. Feel free to skip it!</p>
 <p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
@@ -205,9 +243,9 @@
 <p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
 <h2 id="34-using-the-argparse-module">*3.4 Using the <code>argparse</code> module</h2>
 <p>If you already know how to manually write an argument parser, try reading this section to learn about the <code>argparse</code> module.</p>
-<h1 id="4-data-persistence">4. Data Persistence</h1>
-<h1 id="5-partial-string-matching">5. Partial String Matching</h1>
-<h1 id="6-writing-tests">6. Writing Tests</h1>
+<h1 id="4-writing-tests">4. Writing Tests</h1>
+<h1 id="5-data-persistence">5. Data Persistence</h1>
+<h1 id="6-partial-string-matching">6. Partial String Matching</h1>
 </section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
