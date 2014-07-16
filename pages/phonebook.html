@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Phonebook Tutorial</title>
+        <title>Phonebook Exercise</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -33,11 +33,11 @@
         </header><!-- /#banner -->
         
 <section id="content" class="body">    
-    <h1 class="page-title">Phonebook Tutorial</h1>
+    <h1 class="page-title">Phonebook Exercise</h1>
     <p>Let's make a command line tool for managing phonebook entries!</p>
-<h2>What it should do</h2>
-<p>We'll make a <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> application that should support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
-<p>The application will have a command line interface. The program should support the following commands:</p>
+<h1>Specifications</h1>
+<p>We'll make a <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> application that will support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
+<p>The application will have a command line interface supporting the following commands and behaviors:</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py create ex_phonebook
 <span class="go">Created phonebook &#39;ex_phonebook.pb&#39; in the current directory.</span>
 
@@ -72,38 +72,60 @@
 </pre></div>
 
 
-<h2>Things we'll (maybe) learn about</h2>
-<p>There are many different approaches to solving this problem. Depending on the approach you choose and your experience level, you'll have the opportunity to learn about:</p>
+<h1>About this exercise</h1>
+<p>This exercise can be organized into the following sections:</p>
 <ul>
+<li>planning &amp; organizing</li>
 <li>argument parsing</li>
-<li>data structures that allow fast lookup</li>
-<li>looking through strings for matches</li>
+<li>data persistence</li>
+<li>partial string matching</li>
 <li>writing tests</li>
-<li>using a database</li>
 </ul>
-<h2>How to read this tutorial</h2>
-<h2>Argument parsing</h2>
+<p>Depending on your learning style and experience level, you might get through all of these sections. Or you might just get through the first one. That's okay! The main priority for this exercise is to write a lot of code and understand what the code you're writing does. Don't worry about "finishing", whatever that means.</p>
+<p>If you don't understand a phrase or a line of code that I use, try googling it! A huge part of becoming a better programmer is learning how to google things you don't understand. If that doesn't help, ask me! I enjoy explaining things.</p>
+<p>Most of the sections are split up into different methods by experience level. You can work on this exercise in a number of different ways, including:</p>
+<ul>
+<li>for each section, choose one method to complete, and then move on to the next section</li>
+<li>for each section, begin at the first method and then refactor your code as you level up to more advanced methods</li>
+</ul>
+<p>Both of these strategies (or anything in between) will work well. Do whichever you think works best with your learning style and current experience level. With the first strategy, you'll be more likely to end up with a completed product. With the second strategy, you'll be more likely to end up with thorough understanding of a couple sections.</p>
+<h1>Part I: Planning &amp; Organizing</h1>
+<p>What are the functions that you'll need for your program? What arguments will each of those functions need? Write a skeleton program that has those functions definitions, but where the functions just <code>pass</code>, rather than actually doing anything.</p>
+<p>Here is an example skeleton program with a function definition for <code>create</code>ing a phonebook. You'll need more functions, too, but this is a start:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="c"># placeholder for create_phonebook function</span>
+    <span class="k">pass</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+
+<p>If you don't know why I included an <code>if __name__ == '__main__'</code> statement, try googling it! Now is an excellent time to find out.</p>
+<h1>Part II: Argument parsing</h1>
 <p>If you don't know how to parse arguments passed to the Python interpreter from the command line, see if you can figure out how to do it by googling. Maybe google "python command line arguments" as a start.</p>
-<h4>Intro to argument parsing</h4>
-<p>Arguments passed to python scripts from the command line are accessible using the sys module. Here's a simple example script that prints out the arguments passed to the Python interpreter:</p>
+<p>If you already know a bit about argument parsing, and want to learn about a Python module that helps with more advanced argument parsing, skip to the "Using the <code>argparse</code> module" section.</p>
+<h2>Intro to argument parsing</h2>
+<p>Arguments passed to Python scripts from the command line are accessible using the <code>sys</code> module. Here's a simple example script that prints out the arguments passed to the Python interpreter:</p>
 <div class="highlight"><pre><span class="c"># ex.py</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="k">print</span> <span class="s">&quot;The arguments given to the script are: &quot;</span>
+<span class="k">print</span> <span class="s">&quot;The arguments given to the interpreter are: &quot;</span>
 <span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
 </pre></div>
 
 
 <p>What happens when you execute the script giving it some arguments?</p>
 <div class="highlight"><pre><span class="gp">$</span> python ex.py red flowers hi
-<span class="go">The arguments given to the script are:</span>
+<span class="go">The arguments given to the interpreter are:</span>
 <span class="go">[&#39;ex.py&#39;, &#39;red&#39;, &#39;flowers&#39;, &#39;hi&#39;]</span>
 </pre></div>
 
 
-<p>So <code>sys.argv</code> is a list, containing the name of the python script (<code>'ex.py'</code>), and then the three arguments we passed, all represented as strings.</p>
-<h4>Rolling your own argument parser</h4>
-<p>For your phonebook application, you might choose to manually parse your arguments. This would look something like this:</p>
+<p>So <code>sys.argv</code> is a list, containing the name of the script (<code>'ex.py'</code>), and then the three arguments we passed, all represented as strings.</p>
+<h2>Rolling your own argument parser</h2>
+<p>For your phonebook application, you might choose to manually parse your arguments, which could look something like this:</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
 
 
@@ -137,22 +159,49 @@
 </pre></div>
 
 
-<p>If you're not sure how the <code>pop</code> method works or why I have the <code>if __name__ == '__main__'</code> statement, google it! A huge part of becoming a better programmer is learning how to google things you don't understand.</p>
+<p>If you're not sure how the <code>pop</code> method works, google it!</p>
 <p>There are some potential issues with this code. Try to figure out what they are. Try to improve the code.</p>
-<p>Things you could try:</p>
-<ul>
-<li>unpack the arguments<ul>
-<li><code>name, number = args</code></li>
-</ul>
-</li>
-<li>error handling<ul>
-<li><code>raise</code> or <code>print</code> error messages if the number of arguments is incorrect</li>
-<li>if you don't know how to <code>raise</code> exceptions and you want to learn, now is a great time! google it!</li>
-</ul>
-</li>
-<li>map the commands to their</li>
-</ul>
-<h4>Using the <code>argparse</code> module</h4>
+<h2>Level up your argument parser</h2>
+<p>Here are some optional things you could do to make your argument parsing better:</p>
+<h4>Unpack the arguments</h4>
+<p>Use tuple unpacking to bind variable names to the arguments in one line of code rather than in many lines of code:</p>
+<div class="highlight"><pre><span class="sb">`name, number = args`</span>
+</pre></div>
+
+
+<h4>Error handling</h4>
+<p>What happens when a user passes an incorrect number of arguments? Try giving your program too few arguments. Now try with too many arguments.</p>
+<p>It might be useful for your users to <code>raise</code> or <code>print</code> descriptive error messages if the number of arguments is incorrect. How could you add this to your program?</p>
+<p>If you don't know how to <code>raise</code> exceptions and you want to learn, now is a great time! google it!</p>
+<h4>Mapping commands to functions</h4>
+<p>This section is a bit more advanced than the others. Feel free to skip it!</p>
+<p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
+<div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;create&#39;</span> <span class="p">:</span> <span class="n">create</span><span class="p">,</span>  <span class="c"># create is a function defined elsewhere</span>
+    <span class="s">&#39;add&#39;</span> <span class="p">:</span> <span class="n">add</span><span class="p">,</span>
+    <span class="s">&#39;update&#39;</span> <span class="p">:</span> <span class="n">update</span><span class="p">,</span>
+    <span class="s">&#39;delete&#39;</span> <span class="p">:</span> <span class="n">delete</span><span class="p">,</span>
+    <span class="s">&#39;lookup&#39;</span> <span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
+    <span class="s">&#39;reverse-lookup&#39;</span> <span class="p">:</span> <span class="n">reverse_lookup</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Having functions be values in a dictionary might be pretty foreign to you. But it can be really useful!</p>
+<p>We can could look up the appropriate function for the given command like this:</p>
+<div class="highlight"><pre><span class="n">func</span> <span class="o">=</span> <span class="n">command_funcs</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Here the variable <code>command</code> is the main command you grabbed from the command line arguments. <code>func</code> is the function associated with <code>command</code> in the <code>command_funcs</code> dictionary we created.</p>
+<p>To execute <code>func</code>, we could try:</p>
+<div class="highlight"><pre><span class="n">func</span><span class="p">()</span>
+</pre></div>
+
+
+<p>But we need to figure out how to pass the appropriate arguments to <code>func</code>. <code>func</code> could be any of <code>create</code>, <code>add</code>, <code>update</code>, <code>delete</code>, etc. These functions take varying number of arguments. So how can we pass the correct number of arguments to <code>func</code> without a messy <code>if</code> statement?</p>
+<p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
+<h2>Using the <code>argparse</code> module</h2>
 </section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
