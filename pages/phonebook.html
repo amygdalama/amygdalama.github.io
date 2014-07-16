@@ -58,6 +58,7 @@
 </li>
 <li><a href="#4-raising-exceptions">4. Raising Exceptions</a><ul>
 <li><a href="#41-invalid-number-of-arguments">4.1 Invalid number of arguments</a></li>
+<li><a href="#42-invalid-arguments">4.2 Invalid arguments</a></li>
 </ul>
 </li>
 <li><a href="#5-writing-tests">5. Writing Tests</a></li>
@@ -264,6 +265,13 @@
 
 
 <p>Try <code>raise</code>ing our <code>ArgumentError</code> exception any time a user enters too few or too many arguments.</p>
+<h2 id="42-invalid-arguments">4.2 Invalid arguments</h2>
+<p>What happens when a user enters an invalid phone number? A user might expect to receive an error if they tried entering:</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">python</span> <span class="n">phonebook</span><span class="o">.</span><span class="n">py</span> <span class="n">add</span> <span class="s">&#39;Jane Doe&#39;</span> <span class="s">&#39;cat&#39;</span>
+</pre></div>
+
+
+<p>This is the correct <em>number</em> of arguments, but the user is attempting to enter the string <code>'cat'</code> where the phone number is supposed to go. Maybe we should verify phone numbers before we store them.</p>
 <h1 id="5-writing-tests">5. Writing Tests</h1>
 <h1 id="6-data-persistence">6. Data Persistence</h1>
 <h1 id="7-partial-string-matching">7. Partial String Matching</h1>
