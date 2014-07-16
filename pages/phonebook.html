@@ -202,6 +202,7 @@
 </pre></div>
 
 
+<p>Subclassing isn't particularly important to understand for this exercise, but is definitely important to understand in other contexts. I won't cover it here.</p>
 <p>Now to <code>raise</code> this exception when an invalid number of arguments is passed:</p>
 <div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
@@ -212,9 +213,22 @@
 </pre></div>
 
 
+<p>Now see what happens when you run:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py create
+</pre></div>
+
+
+<p>You should see an error message like this:</p>
+<div class="highlight"><pre><span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;phonebook.py&quot;</span>, line <span class="m">25</span>, in <span class="n">&lt;module&gt;</span>
+    <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span><span class="s">&quot;Not enough arguments!&quot;</span><span class="p">)</span>
+<span class="gr">__main__.ArgumentError</span>: <span class="n">Not enough arguments!</span>
+</pre></div>
+
+
 <p>Try <code>raise</code>ing our <code>ArgumentError</code> exception any time a user enters too few or too many arguments.</p>
 <h4 id="333-mapping-commands-to-functions">*3.3.3 Mapping commands to functions</h4>
-<p>This section is a bit more advanced than the others. Feel free to skip it!</p>
+<p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
 <p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
 <div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;create&#39;</span> <span class="p">:</span> <span class="n">create</span><span class="p">,</span>  <span class="c"># create is a function defined elsewhere</span>
