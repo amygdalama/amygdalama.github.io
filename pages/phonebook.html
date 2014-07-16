@@ -51,16 +51,25 @@
 <li><a href="#32-rolling-your-own-argument-parser">3.2 Rolling your own argument parser</a></li>
 <li><a href="#33-level-up-your-argument-parser">*3.3 Level up your argument parser</a><ul>
 <li><a href="#331-unpack-the-arguments">*3.3.1 Unpack the arguments</a></li>
-<li><a href="#332-error-handling">*3.3.2 Error handling</a></li>
-<li><a href="#333-mapping-commands-to-functions">*3.3.3 Mapping commands to functions</a></li>
+<li><a href="#332-mapping-commands-to-functions">*3.3.2 Mapping commands to functions</a></li>
 </ul>
 </li>
-<li><a href="#34-using-the-argparse-module">*3.4 Using the argparse module</a></li>
 </ul>
 </li>
-<li><a href="#4-writing-tests">4. Writing Tests</a></li>
-<li><a href="#5-data-persistence">5. Data Persistence</a></li>
-<li><a href="#6-partial-string-matching">6. Partial String Matching</a></li>
+<li><a href="#4-raising-exceptions">4. Raising Exceptions</a><ul>
+<li><a href="#41-invalid-number-of-arguments">4.1 Invalid number of arguments</a></li>
+<li><a href="#42-invalid-entries">4.2 Invalid entries</a></li>
+</ul>
+</li>
+<li><a href="#5-writing-tests">5. Writing Tests</a></li>
+<li><a href="#6-data-persistence">6. Data Persistence</a></li>
+<li><a href="#7-partial-string-matching">7. Partial String Matching</a></li>
+<li><a href="#8-further-reading">8. Further Reading</a></li>
+<li><a href="#appendix">Appendix</a><ul>
+<li><a href="#subclasses-possible">Subclasses (possible)</a></li>
+<li><a href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="1-specifications">1. Specifications</h1>
@@ -176,9 +185,38 @@
 
 
 <p>This works even though <code>args</code> is a list and not a tuple!</p>
-<h4 id="332-error-handling">*3.3.2 Error handling</h4>
+<h4 id="332-mapping-commands-to-functions">*3.3.2 Mapping commands to functions</h4>
+<p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
+<p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
+<div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;create&#39;</span> <span class="p">:</span> <span class="n">create</span><span class="p">,</span>  <span class="c"># create is a function defined elsewhere</span>
+    <span class="s">&#39;add&#39;</span> <span class="p">:</span> <span class="n">add</span><span class="p">,</span>
+    <span class="s">&#39;update&#39;</span> <span class="p">:</span> <span class="n">update</span><span class="p">,</span>
+    <span class="s">&#39;delete&#39;</span> <span class="p">:</span> <span class="n">delete</span><span class="p">,</span>
+    <span class="s">&#39;lookup&#39;</span> <span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
+    <span class="s">&#39;reverse-lookup&#39;</span> <span class="p">:</span> <span class="n">reverse_lookup</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Having functions as values in a dictionary might be pretty foreign at first, but it can be really useful, as we're about to see!</p>
+<p>We can look up the appropriate function for the given command like this:</p>
+<div class="highlight"><pre><span class="n">func</span> <span class="o">=</span> <span class="n">command_funcs</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Here the variable <code>command</code> is the main command you grabbed from the command line arguments. <code>func</code> is the function associated with <code>command</code> in the <code>command_funcs</code> dictionary we created.</p>
+<p>To invoke <code>func</code>, we could try:</p>
+<div class="highlight"><pre><span class="n">func</span><span class="p">()</span>
+</pre></div>
+
+
+<p>But we need to figure out how to pass the appropriate arguments to <code>func</code>. <code>func</code> could be any of <code>create</code>, <code>add</code>, <code>update</code>, <code>delete</code>, etc. These functions take varying number of arguments. So how can we pass the correct number of arguments to <code>func</code> without a messy <code>if</code> statement?</p>
+<p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
+<h1 id="4-raising-exceptions">4. Raising Exceptions</h1>
 <p>What happens when a user passes an incorrect number of arguments? Try giving your program too few arguments. Now try with too many arguments.</p>
-<p>Our users might find it useful for us to <code>print</code> descriptive error messages if the number of arguments is incorrect. How could we add this to our program?</p>
+<p>Our users might find it useful for us to <code>print</code> descriptive error messages if the number of arguments is incorrect. How could we add this to our progam?</p>
+<h2 id="41-invalid-number-of-arguments">4.1 Invalid number of arguments</h2>
 <p>We could do something like this:</p>
 <div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
@@ -227,39 +265,18 @@
 
 
 <p>Try <code>raise</code>ing our <code>ArgumentError</code> exception any time a user enters too few or too many arguments.</p>
-<h4 id="333-mapping-commands-to-functions">*3.3.3 Mapping commands to functions</h4>
-<p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
-<p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
-<div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;create&#39;</span> <span class="p">:</span> <span class="n">create</span><span class="p">,</span>  <span class="c"># create is a function defined elsewhere</span>
-    <span class="s">&#39;add&#39;</span> <span class="p">:</span> <span class="n">add</span><span class="p">,</span>
-    <span class="s">&#39;update&#39;</span> <span class="p">:</span> <span class="n">update</span><span class="p">,</span>
-    <span class="s">&#39;delete&#39;</span> <span class="p">:</span> <span class="n">delete</span><span class="p">,</span>
-    <span class="s">&#39;lookup&#39;</span> <span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
-    <span class="s">&#39;reverse-lookup&#39;</span> <span class="p">:</span> <span class="n">reverse_lookup</span>
-<span class="p">}</span>
-</pre></div>
-
-
-<p>Having functions as values in a dictionary might be pretty foreign at first, but it can be really useful, as we're about to see!</p>
-<p>We can look up the appropriate function for the given command like this:</p>
-<div class="highlight"><pre><span class="n">func</span> <span class="o">=</span> <span class="n">command_funcs</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
-</pre></div>
-
-
-<p>Here the variable <code>command</code> is the main command you grabbed from the command line arguments. <code>func</code> is the function associated with <code>command</code> in the <code>command_funcs</code> dictionary we created.</p>
-<p>To invoke <code>func</code>, we could try:</p>
-<div class="highlight"><pre><span class="n">func</span><span class="p">()</span>
-</pre></div>
-
-
-<p>But we need to figure out how to pass the appropriate arguments to <code>func</code>. <code>func</code> could be any of <code>create</code>, <code>add</code>, <code>update</code>, <code>delete</code>, etc. These functions take varying number of arguments. So how can we pass the correct number of arguments to <code>func</code> without a messy <code>if</code> statement?</p>
-<p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
-<h2 id="34-using-the-argparse-module">*3.4 Using the <code>argparse</code> module</h2>
-<p>If you already know how to manually write an argument parser, try reading this section to learn about the <code>argparse</code> module.</p>
-<h1 id="4-writing-tests">4. Writing Tests</h1>
-<h1 id="5-data-persistence">5. Data Persistence</h1>
-<h1 id="6-partial-string-matching">6. Partial String Matching</h1>
+<h2 id="42-invalid-entries">4.2 Invalid entries</h2>
+<p>What happens when a user enters an invalid number?</p>
+<h1 id="5-writing-tests">5. Writing Tests</h1>
+<h1 id="6-data-persistence">6. Data Persistence</h1>
+<h1 id="7-partial-string-matching">7. Partial String Matching</h1>
+<h1 id="8-further-reading">8. Further Reading</h1>
+<h1 id="appendix">Appendix</h1>
+<h2 id="subclasses-possible">Subclasses (possible)</h2>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li>The <code>argparse</code> module</li>
+</ul>
 </section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
