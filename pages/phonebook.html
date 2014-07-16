@@ -35,7 +35,33 @@
 <section id="content" class="body">    
     <h1 class="page-title">Phonebook Exercise</h1>
     <p>Let's make a command line tool for managing phonebook entries!</p>
-<h1>Specifications</h1>
+<div class="toc">
+<ul>
+<li><a href="#prologue">Prologue</a></li>
+<li><a href="#1-specifications">1. Specifications</a></li>
+<li><a href="#2-planning-organizing">2. Planning &amp; Organizing</a></li>
+<li><a href="#3-argument-parsing">3. Argument parsing</a><ul>
+<li><a href="#31-intro-to-argument-parsing">3.1 Intro to argument parsing</a></li>
+<li><a href="#32-rolling-your-own-argument-parser">3.2 Rolling your own argument parser</a></li>
+<li><a href="#33-level-up-your-argument-parser">*3.3 Level up your argument parser</a><ul>
+<li><a href="#331-unpack-the-arguments">*3.3.1 Unpack the arguments</a></li>
+<li><a href="#332-error-handling">*3.3.2 Error handling</a></li>
+<li><a href="#333-mapping-commands-to-functions">*3.3.3 Mapping commands to functions</a></li>
+</ul>
+</li>
+<li><a href="#34-using-the-argparse-module">*3.4 Using the argparse module</a></li>
+</ul>
+</li>
+<li><a href="#4-data-persistence">4. Data Persistence</a></li>
+<li><a href="#5-partial-string-matching">5. Partial String Matching</a></li>
+<li><a href="#6-writing-tests">6. Writing Tests</a></li>
+</ul>
+</div>
+<h1 id="prologue">Prologue</h1>
+<p>Depending on your learning style and experience level, you might get through all of these chapters. Or you might just get through the first one. That's okay! The main priority for this exercise is to write a lot of code and understand what the code you're writing does. Don't worry about "finishing", whatever that means.</p>
+<p>If you don't understand a phrase or a line of code that I use, try googling it! A huge part of becoming a better programmer is learning how to google things you don't understand. If that doesn't help, ask me! I enjoy explaining things.</p>
+<p>Most of the chapters are split up into sections roughly ordered by difficulty level. The more difficult sections are marked as optional. Also, feel free to skip or skim through the sections that cover content you're already familiar with.</p>
+<h1 id="1-specifications">1. Specifications</h1>
 <p>We'll make a <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> application that will support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
 <p>The application will have a command line interface supporting the following commands and behaviors:</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py create ex_phonebook
@@ -72,24 +98,7 @@
 </pre></div>
 
 
-<h1>About this exercise</h1>
-<p>This exercise can be organized into the following sections:</p>
-<ul>
-<li>planning &amp; organizing</li>
-<li>argument parsing</li>
-<li>data persistence</li>
-<li>partial string matching</li>
-<li>writing tests</li>
-</ul>
-<p>Depending on your learning style and experience level, you might get through all of these sections. Or you might just get through the first one. That's okay! The main priority for this exercise is to write a lot of code and understand what the code you're writing does. Don't worry about "finishing", whatever that means.</p>
-<p>If you don't understand a phrase or a line of code that I use, try googling it! A huge part of becoming a better programmer is learning how to google things you don't understand. If that doesn't help, ask me! I enjoy explaining things.</p>
-<p>Most of the sections are split up into different methods by experience level. You can work on this exercise in a number of different ways, including:</p>
-<ul>
-<li>for each section, choose one method to complete, and then move on to the next section</li>
-<li>for each section, begin at the first method and then refactor your code as you level up to more advanced methods</li>
-</ul>
-<p>Both of these strategies (or anything in between) will work well. Do whichever you think works best with your learning style and current experience level. With the first strategy, you'll be more likely to end up with a completed product. With the second strategy, you'll be more likely to end up with thorough understanding of a couple sections.</p>
-<h1>Part I: Planning &amp; Organizing</h1>
+<h1 id="2-planning-organizing">2. Planning &amp; Organizing</h1>
 <p>What are the functions that you'll need for your program? What arguments will each of those functions need? Write a skeleton program that has those functions definitions, but where the functions just <code>pass</code>, rather than actually doing anything.</p>
 <p>Here is an example skeleton program with a function definition for <code>create</code>ing a phonebook. You'll need more functions, too, but this is a start:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
@@ -103,10 +112,9 @@
 
 
 <p>If you don't know why I included an <code>if __name__ == '__main__'</code> statement, try googling it! Now is an excellent time to find out.</p>
-<h1>Part II: Argument parsing</h1>
+<h1 id="3-argument-parsing">3. Argument parsing</h1>
 <p>If you don't know how to parse arguments passed to the Python interpreter from the command line, see if you can figure out how to do it by googling. Maybe google "python command line arguments" as a start.</p>
-<p>If you already know a bit about argument parsing, and want to learn about a Python module that helps with more advanced argument parsing, skip to the "Using the <code>argparse</code> module" section.</p>
-<h2>Intro to argument parsing</h2>
+<h2 id="31-intro-to-argument-parsing">3.1 Intro to argument parsing</h2>
 <p>Arguments passed to Python scripts from the command line are accessible using the <code>sys</code> module. Here's a simple example script that prints out the arguments passed to the Python interpreter:</p>
 <div class="highlight"><pre><span class="c"># ex.py</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -124,35 +132,22 @@
 
 
 <p>So <code>sys.argv</code> is a list, containing the name of the script (<code>'ex.py'</code>), and then the three arguments we passed, all represented as strings.</p>
-<h2>Rolling your own argument parser</h2>
+<h2 id="32-rolling-your-own-argument-parser">3.2 Rolling your own argument parser</h2>
 <p>For your phonebook application, you might choose to manually parse your arguments, which could look something like this:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
-
-
-<span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
-    <span class="c"># placeholder for create_phonebook function</span>
-    <span class="k">pass</span>
-
-
-<span class="k">def</span> <span class="nf">add_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">):</span>
-    <span class="c"># placeholder for add_entry function</span>
-    <span class="k">pass</span>
-
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
     <span class="n">script</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c"># name of script is first arg</span>
     <span class="n">command</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>   <span class="c"># the next arg will be the main command</span>
 
     <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
         <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">)</span>
+        <span class="n">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">)</span>    <span class="c"># create_phonebook function should be defined above</span>
 
     <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;add&#39;</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">number</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">add_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">)</span>
+        <span class="n">add_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">)</span>     <span class="c"># add_entry function should be defined above</span>
 
     <span class="c"># define similar elif statements for update, lookup,</span>
     <span class="c"># reverse-lookup, and delete commands</span>
@@ -161,19 +156,26 @@
 
 <p>If you're not sure how the <code>pop</code> method works, google it!</p>
 <p>There are some potential issues with this code. Try to figure out what they are. Try to improve the code.</p>
-<h2>Level up your argument parser</h2>
-<p>Here are some optional things you could do to make your argument parsing better:</p>
-<h4>Unpack the arguments</h4>
-<p>Use tuple unpacking to bind variable names to the arguments in one line of code rather than in many lines of code:</p>
-<div class="highlight"><pre><span class="sb">`name, number = args`</span>
+<h2 id="33-level-up-your-argument-parser">*3.3 Level up your argument parser</h2>
+<p>The argument parser we wrote in section 3.2 wasn't really that great. There's lots of duplicate logic, and it wouldn't be too easy to add or remove a command from our program. Let's try making it better with some more advanced techniques.</p>
+<h4 id="331-unpack-the-arguments">*3.3.1 Unpack the arguments</h4>
+<p>Use tuple unpacking to bind variable names to the arguments in one line of code rather than in many lines of code. For example, we can turn this:</p>
+<div class="highlight"><pre><span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">number</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
 
-<h4>Error handling</h4>
+<p>into this:</p>
+<div class="highlight"><pre><span class="n">name</span><span class="p">,</span> <span class="n">number</span> <span class="o">=</span> <span class="n">args</span>
+</pre></div>
+
+
+<p>This works even though <code>args</code> is a list and not a tuple!</p>
+<h4 id="332-error-handling">*3.3.2 Error handling</h4>
 <p>What happens when a user passes an incorrect number of arguments? Try giving your program too few arguments. Now try with too many arguments.</p>
-<p>It might be useful for your users to <code>raise</code> or <code>print</code> descriptive error messages if the number of arguments is incorrect. How could you add this to your program?</p>
+<p>Our users might find it useful for us to <code>raise</code> or <code>print</code> descriptive error messages if the number of arguments is incorrect. How could we add this to our program?</p>
 <p>If you don't know how to <code>raise</code> exceptions and you want to learn, now is a great time! google it!</p>
-<h4>Mapping commands to functions</h4>
+<h4 id="333-mapping-commands-to-functions">*3.3.3 Mapping commands to functions</h4>
 <p>This section is a bit more advanced than the others. Feel free to skip it!</p>
 <p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
 <div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
@@ -187,21 +189,25 @@
 </pre></div>
 
 
-<p>Having functions be values in a dictionary might be pretty foreign to you. But it can be really useful!</p>
-<p>We can could look up the appropriate function for the given command like this:</p>
+<p>Having functions as values in a dictionary might be pretty foreign at first, but it can be really useful, as we're about to see!</p>
+<p>We can look up the appropriate function for the given command like this:</p>
 <div class="highlight"><pre><span class="n">func</span> <span class="o">=</span> <span class="n">command_funcs</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
 </pre></div>
 
 
 <p>Here the variable <code>command</code> is the main command you grabbed from the command line arguments. <code>func</code> is the function associated with <code>command</code> in the <code>command_funcs</code> dictionary we created.</p>
-<p>To execute <code>func</code>, we could try:</p>
+<p>To invoke <code>func</code>, we could try:</p>
 <div class="highlight"><pre><span class="n">func</span><span class="p">()</span>
 </pre></div>
 
 
 <p>But we need to figure out how to pass the appropriate arguments to <code>func</code>. <code>func</code> could be any of <code>create</code>, <code>add</code>, <code>update</code>, <code>delete</code>, etc. These functions take varying number of arguments. So how can we pass the correct number of arguments to <code>func</code> without a messy <code>if</code> statement?</p>
 <p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
-<h2>Using the <code>argparse</code> module</h2>
+<h2 id="34-using-the-argparse-module">*3.4 Using the <code>argparse</code> module</h2>
+<p>If you already know how to manually write an argument parser, try reading this section to learn about the <code>argparse</code> module.</p>
+<h1 id="4-data-persistence">4. Data Persistence</h1>
+<h1 id="5-partial-string-matching">5. Partial String Matching</h1>
+<h1 id="6-writing-tests">6. Writing Tests</h1>
 </section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
