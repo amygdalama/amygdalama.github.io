@@ -41,7 +41,10 @@
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#1-specifications">1. Specifications</a></li>
-<li><a href="#2-planning-organizing">2. Planning &amp; Organizing</a></li>
+<li><a href="#2-code-skeleton">2. Code Skeleton</a><ul>
+<li><a href="#21-the-__name__-variable">2.1 The __name__ Variable</a></li>
+</ul>
+</li>
 <li><a href="#3-argument-parsing">3. Argument parsing</a><ul>
 <li><a href="#31-accessing-arguments">3.1 Accessing Arguments</a></li>
 <li><a href="#32-parsing-arguments">3.2 Parsing Arguments</a></li>
@@ -55,7 +58,7 @@
 </ul>
 </li>
 <li><a href="#5-writing-tests">5. Writing Tests</a></li>
-<li><a href="#6-data-persistence">6. Data Persistence</a></li>
+<li><a href="#6-data-storage">6. Data Storage</a></li>
 <li><a href="#7-partial-string-matching">7. Partial String Matching</a><ul>
 <li><a href="#71-string-methods">7.1 string Methods</a><ul>
 <li><a href="#711-matching-partial-names">7.1.1 Matching Partial Names</a></li>
@@ -78,11 +81,12 @@
 </ul>
 </div>
 <p>Depending on your learning style and experience level, you might get through all of these sections. Or you might just get through the first one. That's okay! The main priority for this exercise is to write a lot of code and understand what the code you're writing does. Don't worry about "finishing", whatever that means.</p>
-<p>If you don't understand a phrase or a line of code that I use, try googling it! A huge part of becoming a better programmer is learning how to google things you don't understand. If that doesn't help, ask me! I enjoy explaining things.</p>
-<p>The more difficult sections are marked with an asterisk and are optional. Also, feel free to skip or skim through the sections that cover content you're already familiar with.</p>
+<p>If you don't understand a phrase or a line of code that I use, ask me! I can show you what I'd do to figure out what the line of code means. Learning how to figure out the things you don't know is an important skill in programming.</p>
+<p>The more challenging sections are marked with an asterisk (*). If you find the sections without askerisks challenging, I recommend skipping the more challenging ones for now. You can come back to them later if you're curious.</p>
+<p>On the other hand, if you have a good idea for how to do the things outlined in a section, try doing it without reading through the section first, and just use the tutorial for reference if you get stuck.</p>
 <h1 id="1-specifications">1. Specifications</h1>
-<p>We'll make a <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> application that will support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
-<p>The application will have a command line interface supporting the following commands and behaviors:</p>
+<p>We'll write a Python program that will support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
+<p>The program will have a command line interface supporting the following commands and behaviors:</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py create ex_phonebook
 <span class="go">Created phonebook &#39;ex_phonebook.pb&#39; in the current directory.</span>
 
@@ -117,9 +121,9 @@
 </pre></div>
 
 
-<h1 id="2-planning-organizing">2. Planning &amp; Organizing</h1>
+<h1 id="2-code-skeleton">2. Code Skeleton</h1>
 <p>What are the functions that you'll need for your program? What arguments will each of those functions need? Write a skeleton program that has those functions definitions, but where the functions just <code>pass</code>, rather than actually doing anything.</p>
-<p>Here is an example skeleton program with a function definition for <code>create</code>ing a phonebook. You'll need more functions, too, but this is a start:</p>
+<p>Here is an example skeleton program with function definitions for <code>create</code>ing a phonebook and <code>add</code>ing an entry to the phonebook. You'll need more functions, too, but this is a start:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
     <span class="c"># create a new phonebook</span>
     <span class="k">pass</span>
@@ -136,7 +140,60 @@
 
 
 <p>Similarly, create functions for <code>update</code>, <code>lookup</code>, <code>reverse-lookup</code>, and <code>delete</code>.</p>
-<p>If you don't know why I included an <code>if __name__ == '__main__'</code> statement, try googling it! Now is an excellent time to find out.</p>
+<h2 id="21-the-__name__-variable">2.1 The <code>__name__</code> Variable</h2>
+<p>Why do I have <code>if __name__ == '__main__':</code> in the above code snippet?</p>
+<p>Suppose someone (maybe you) wanted to <code>import</code> this <code>phonebook.py</code> script into another program. Maybe you want to do this so you could write tests for the program (which we'll cover later), or because you wanted to make a web front-end to the program. You would probably want some code that executes only if the script is executed directly (e.g. by calling <code>python phonebook.py</code> on the command line) that is <em>not</em> executed when you <code>import</code> the script into another Python program.</p>
+<p>This is exactly what the <code>if __name__ == '__main__'</code> code block is for. <code>__name__</code> is a variable whose value will be <code>__main__</code> if the script was executed directly (e.g. by <code>python phonebook.py</code>) and otherwise will be the name of the module, (e.g. <code>phonebook</code>).</p>
+<p>To make this a bit more concrete, let's make a couple example scripts:</p>
+<p><code>a.py</code>:</p>
+<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;__name__: &quot;</span><span class="p">,</span> <span class="n">__name__</span>
+</pre></div>
+
+
+<p><code>b.py</code>:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">a</span>
+</pre></div>
+
+
+<p>Now let's execute each of these scripts and see what happens.</p>
+<div class="highlight"><pre><span class="gp">$</span> python a.py
+<span class="go">__name__:  __main__</span>
+</pre></div>
+
+
+<p><code>a.py</code> is fairly straightforward -- we execute the <code>print</code> statement, and we see that the value of the variable <code>__name__</code> is the string <code>'__main__'</code>. <code>__name__</code> is a variable that is defined for us automatically in every Python program, and if the program was executed directly, its value is the string <code>'__main__'</code>. Great.</p>
+<p>Now let's execute <code>b.py</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> python b.py
+<span class="go">__name__:  a</span>
+</pre></div>
+
+
+<p><code>b.py</code> is a bit less straightforward. Here we <code>import a</code>, which <em>executes the code that is inside <code>a.py</code></em>. This also adds the variables defined in <code>a</code> to our namespace. I'll give a basic overview of what <code>import</code> does in the next section.</p>
+<p>So the value of <code>__name__</code> inside <code>a</code> in this context is the string <code>'a'</code>, rather than <code>'__main__'</code>. This is because the code is being executed by result of an <code>import</code> statement, rather than being executed directly.</p>
+<p>How could we execute different code when we <code>import</code> a script than when we execute the script directly? This is where the <code>if __name__ == '__main__'</code> part comes into play. Let's make two more example scripts to explore this.</p>
+<p><code>c.py</code>:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;c.py was executed directly&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;c.py was imported&quot;</span>
+</pre></div>
+
+
+<p><code>d.py</code>:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">c</span>
+</pre></div>
+
+
+<p>And let's execute each of these scripts to see what happens:</p>
+<div class="highlight"><pre><span class="gp">$</span> python c.py
+<span class="go">c.py was executed directly</span>
+
+<span class="gp">$</span> python d.py
+<span class="go">c.py was imported</span>
+</pre></div>
+
+
+<p>Viola! So that's what the <code>if __name__ == '__main__'</code> statement does. We'll be adding some code that we don't want to execute when we <code>import phonebook</code> into this code block.</p>
 <h1 id="3-argument-parsing">3. Argument parsing</h1>
 <p>If you don't know how to parse arguments passed to the Python interpreter from the command line, see if you can figure out how to do it by googling. Maybe google "python command line arguments" as a start.</p>
 <h2 id="31-accessing-arguments">3.1 Accessing Arguments</h2>
@@ -337,7 +394,7 @@
 <p>Try <code>raise</code>ing our <code>ArgumentError</code> exception any time a user enters too few or too many arguments.</p>
 <p>We should also <code>raise</code> an exception if the phone number passed as an argument isn't valid, but we'll do that later when we talk about partial string matching.</p>
 <h1 id="5-writing-tests">5. Writing Tests</h1>
-<h1 id="6-data-persistence">6. Data Persistence</h1>
+<h1 id="6-data-storage">6. Data Storage</h1>
 <h1 id="7-partial-string-matching">7. Partial String Matching</h1>
 <h2 id="71-string-methods">7.1 <code>string</code> Methods</h2>
 <h4 id="711-matching-partial-names">7.1.1 Matching Partial Names</h4>
