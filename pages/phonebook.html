@@ -51,20 +51,24 @@ Let's make a command line tool for managing phonebook entries!</p>
 <li><a href="#32-parsing-arguments">3.2 Parsing Arguments</a></li>
 <li><a href="#33-unpacking-arguments">3.3 Unpacking Arguments</a></li>
 <li><a href="#34-handling-bad-arguments">3.4 Handling Bad Arguments</a></li>
-<li><a href="#35-mapping-commands-to-functions">*3.5 Mapping commands to functions</a></li>
 </ul>
 </li>
-<li><a href="#4-raising-exceptions">4. Raising Exceptions</a><ul>
-<li><a href="#41-invalid-number-of-arguments">4.1 Invalid number of arguments</a></li>
+<li><a href="#4-data-storage">4. Data Storage</a><ul>
+<li><a href="#41-creating-a-phonebook">4.1 Creating a Phonebook</a></li>
+<li><a href="#42-adding-an-entry">4.2 Adding an Entry</a></li>
+<li><a href="#43-updating-an-entry">4.3 Updating an Entry</a></li>
+<li><a href="#44-removing-an-entry">4.4 Removing an Entry</a></li>
+<li><a href="#45-looking-up-an-entry-by-name">4.5 Looking up an Entry by Name</a></li>
+<li><a href="#46-looking-up-an-entry-by-phone-number">4.6 Looking up an Entry by Phone Number</a></li>
 </ul>
 </li>
 <li><a href="#5-writing-tests">5. Writing Tests</a><ul>
 <li><a href="#51-a-basic-test">5.1 A Basic Test</a></li>
 <li><a href="#52-a-testspy-script">5.2 A tests.py Script</a></li>
-<li><a href="#53-testing-with-the-unittest-module">*5.3 Testing with the unittest Module</a></li>
+<li><a href="#53-raising-exceptions">5.3 Raising Exceptions</a></li>
+<li><a href="#54-testing-with-the-unittest-module">*5.4 Testing with the unittest Module</a></li>
 </ul>
 </li>
-<li><a href="#6-data-storage">6. Data Storage</a></li>
 <li><a href="#7-partial-string-matching">7. Partial String Matching</a><ul>
 <li><a href="#71-string-methods">7.1 string Methods</a><ul>
 <li><a href="#711-matching-partial-names">7.1.1 Matching Partial Names</a></li>
@@ -80,8 +84,11 @@ Let's make a command line tool for managing phonebook entries!</p>
 </li>
 <li><a href="#8-further-reading">8. Further Reading</a></li>
 <li><a href="#appendix">Appendix</a><ul>
-<li><a href="#subclasses-possible">Subclasses (possible)</a></li>
-<li><a href="#further-reading">Further Reading</a></li>
+<li><a href="#further-reading">Further Reading</a><ul>
+<li><a href="#the-argparse-module">The argparse module</a></li>
+<li><a href="#mapping-commands-to-functions">Mapping commands to functions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -311,13 +318,26 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>Similarly, define <code>elif</code> statements for <code>update</code>, <code>lookup</code>, <code>reverse-lookup</code>, and <code>delete</code>.</p>
 <p><a href="#top">Back to top</a></p>
 <h2 id="34-handling-bad-arguments">3.4 Handling Bad Arguments</h2>
-<p>What happens if your program is given arguments that aren't supported? For example, try typing:</p>
+<p>What happens if your program isn't given any arguments? Try:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py
+<span class="go">Traceback (most recent call last):</span>
+<span class="go">  File &quot;phonebook.py&quot;, line 69, in &lt;module&gt;</span>
+<span class="go">    command = args.pop(0)   # the next arg will be the main command</span>
+<span class="go">IndexError: pop from empty list</span>
+</pre></div>
+
+
+<p>What if it's given an argument that isn't supported?</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py cats
 </pre></div>
 
 
 <p>What about if you try <code>add</code>ing a phone number, but you only give it a name, and not a number?</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span>
+<span class="go">Traceback (most recent call last):</span>
+<span class="go">  File &quot;phonebook.py&quot;, line 79, in &lt;module&gt;</span>
+<span class="go">    name, number, phonebook_name = args</span>
+<span class="go">ValueError: need more than 1 value to unpack</span>
 </pre></div>
 
 
@@ -326,52 +346,67 @@ Let's make a command line tool for managing phonebook entries!</p>
 </pre></div>
 
 
-<p>It would be helpful to print out an error message for situations like this.</p>
-<p><a href="#top">Back to top</a></p>
-<h2 id="35-mapping-commands-to-functions">*3.5 Mapping commands to functions</h2>
-<p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
-<p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
-<div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;create&#39;</span> <span class="p">:</span> <span class="n">create</span><span class="p">,</span>  <span class="c"># create is a function defined elsewhere</span>
-    <span class="s">&#39;add&#39;</span> <span class="p">:</span> <span class="n">add</span><span class="p">,</span>
-    <span class="s">&#39;update&#39;</span> <span class="p">:</span> <span class="n">update</span><span class="p">,</span>
-    <span class="s">&#39;delete&#39;</span> <span class="p">:</span> <span class="n">delete</span><span class="p">,</span>
-    <span class="s">&#39;lookup&#39;</span> <span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
-    <span class="s">&#39;reverse-lookup&#39;</span> <span class="p">:</span> <span class="n">reverse_lookup</span>
-<span class="p">}</span>
+<p>It would be helpful to print out a more descriptive error message for these cases, rather than having Python print out a confusing message (or nothing at all).</p>
+<p>For a start, we can add <code>print</code> statements and then <code>quit</code> when our program is given bad arguments:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[:]</span>
+    <span class="n">script</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c"># name of script is first arg</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Not enough arguments&quot;</span>
+        <span class="n">quit</span><span class="p">()</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>   <span class="c"># the next arg will be the main command</span>
 </pre></div>
 
 
-<p>Having functions as values in a dictionary might be pretty foreign at first, but it can be really useful, as we're about to see!</p>
-<p>We can look up the appropriate function for the given command like this:</p>
-<div class="highlight"><pre><span class="n">func</span> <span class="o">=</span> <span class="n">command_funcs</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
-</pre></div>
-
-
-<p>Here the variable <code>command</code> is the main command you grabbed from the command line arguments. <code>func</code> is the function associated with <code>command</code> in the <code>command_funcs</code> dictionary we created.</p>
-<p>To invoke <code>func</code>, we could try:</p>
-<div class="highlight"><pre><span class="n">func</span><span class="p">()</span>
-</pre></div>
-
-
-<p>But we need to figure out how to pass the appropriate arguments to <code>func</code>. <code>func</code> could be any of <code>create</code>, <code>add</code>, <code>update</code>, <code>delete</code>, etc. These functions take varying number of arguments. So how can we pass the correct number of arguments to <code>func</code> without a messy <code>if</code> statement?</p>
-<p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
-<p><a href="#top">Back to top</a></p>
-<h1 id="4-raising-exceptions">4. Raising Exceptions</h1>
-<p>What happens when a user passes an incorrect number of arguments? Try giving your program too few arguments. Now try with too many arguments.</p>
-<p>Our users might find it useful for us to <code>print</code> descriptive error messages if the number of arguments is incorrect. How could we add this to our progam?</p>
-<h2 id="41-invalid-number-of-arguments">4.1 Invalid number of arguments</h2>
-<p>We could do something like this:</p>
+<p>Here, we take advantage of an empty list being <code>False</code>y. If there are no arguments left in <code>args</code> after we <code>pop</code> off the script name, <code>not args</code> will evaluate to <code>True</code>, and we'll <code>print</code> an error message and <code>quit</code>. Otherwise we can move on with our program.</p>
+<p>Similarly, we can add a check that we're given the correct number of arguments for the <code>create</code> command:</p>
 <div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;Not enough arguments!&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Phonebook name required&quot;</span>
+        <span class="n">quit</span><span class="p">()</span>
+    <span class="n">phonebook_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">)</span>
 </pre></div>
 
 
-<p>Using <code>print</code> statements to indicate that an invalid number of arguments were passed is sufficient for now, but will make writing tests difficult.</p>
+<p>Add similar checks for each of the commands. Make your program <code>print</code> error messages and <code>quit</code> any time:</p>
+<ul>
+<li>there aren't enough arguments</li>
+<li>there are too many arguments</li>
+<li>an argument given is invalid</li>
+</ul>
+<p>Doing checks based on the <code>len</code> of <code>args</code> is considered bad Python style. It's usually better to put code in <code>try</code>/<code>except</code> clauses. Similarly, when we write tests, we're going to want to <code>raise</code> exceptions rather than just <code>print</code>ing and <code>quit</code>ing. But for now, this will do.</p>
+<p>Your program should now support the following:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py
+<span class="go">Command required</span>
+<span class="gp">$</span> python phonebook.py cats
+<span class="go">Invalid command</span>
+<span class="gp">$</span> python phonebook.py add
+<span class="go">Name, number, and phonebook name required</span>
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span>
+<span class="go">Name, number, and phonebook name required</span>
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;234-234-2334&#39;</span>
+<span class="go">Name, number, and phonebook name required</span>
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;234-234-2334&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;234-234-2334&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span> <span class="s1">&#39;cats&#39;</span>
+<span class="go">Name, number, and phonebook name required</span>
+</pre></div>
+
+
+<p>Similarly, try giving the other commands (<code>update</code>, <code>remove</code>, <code>lookup</code>, and <code>reverse-lookup</code>) too few and too many arguments. You want to make sure that the behavior that you expect is what actually happens.</p>
+<p><a href="#top">Back to top</a></p>
+<h1 id="4-data-storage">4. Data Storage</h1>
+<p>Now that we have a skeleton of functions for each of our commands, and we call the appropriate functions for each command with the appropriate arguments, we need to figure out how to store our phonebook entries. First we'll start with saving these entries to a file, and reading them into a dictionary data structure. A more advanced option would be to save the data in a database.</p>
+<h2 id="41-creating-a-phonebook">4.1 Creating a Phonebook</h2>
+<h2 id="42-adding-an-entry">4.2 Adding an Entry</h2>
+<h2 id="43-updating-an-entry">4.3 Updating an Entry</h2>
+<h2 id="44-removing-an-entry">4.4 Removing an Entry</h2>
+<h2 id="45-looking-up-an-entry-by-name">4.5 Looking up an Entry by Name</h2>
+<h2 id="46-looking-up-an-entry-by-phone-number">4.6 Looking up an Entry by Phone Number</h2>
+<h1 id="5-writing-tests">5. Writing Tests</h1>
+<h2 id="51-a-basic-test">5.1 A Basic Test</h2>
+<h2 id="52-a-testspy-script">5.2 A <code>tests.py</code> Script</h2>
+<h2 id="53-raising-exceptions">5.3 Raising Exceptions</h2>
 <p>For example, let's say we wanted to test that running our program with the command</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py create
 </pre></div>
@@ -411,11 +446,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>Try <code>raise</code>ing our <code>ArgumentError</code> exception any time a user enters too few or too many arguments.</p>
 <p>We should also <code>raise</code> an exception if the phone number passed as an argument isn't valid, but we'll do that later when we talk about partial string matching.</p>
 <p><a href="#top">Back to top</a></p>
-<h1 id="5-writing-tests">5. Writing Tests</h1>
-<h2 id="51-a-basic-test">5.1 A Basic Test</h2>
-<h2 id="52-a-testspy-script">5.2 A <code>tests.py</code> Script</h2>
-<h2 id="53-testing-with-the-unittest-module">*5.3 Testing with the <code>unittest</code> Module</h2>
-<h1 id="6-data-storage">6. Data Storage</h1>
+<h2 id="54-testing-with-the-unittest-module">*5.4 Testing with the <code>unittest</code> Module</h2>
 <h1 id="7-partial-string-matching">7. Partial String Matching</h1>
 <h2 id="71-string-methods">7.1 <code>string</code> Methods</h2>
 <h4 id="711-matching-partial-names">7.1.1 Matching Partial Names</h4>
@@ -425,11 +456,37 @@ Let's make a command line tool for managing phonebook entries!</p>
 <h4 id="722-validating-phone-numbers">*7.2.2 Validating Phone Numbers</h4>
 <h1 id="8-further-reading">8. Further Reading</h1>
 <h1 id="appendix">Appendix</h1>
-<h2 id="subclasses-possible">Subclasses (possible)</h2>
 <h2 id="further-reading">Further Reading</h2>
-<ul>
-<li>The <code>argparse</code> module</li>
-</ul>
+<h3 id="the-argparse-module">The <code>argparse</code> module</h3>
+<h3 id="mapping-commands-to-functions">Mapping commands to functions</h3>
+<p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
+<p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
+<div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;create&#39;</span> <span class="p">:</span> <span class="n">create</span><span class="p">,</span>  <span class="c"># create is a function defined elsewhere</span>
+    <span class="s">&#39;add&#39;</span> <span class="p">:</span> <span class="n">add</span><span class="p">,</span>
+    <span class="s">&#39;update&#39;</span> <span class="p">:</span> <span class="n">update</span><span class="p">,</span>
+    <span class="s">&#39;delete&#39;</span> <span class="p">:</span> <span class="n">delete</span><span class="p">,</span>
+    <span class="s">&#39;lookup&#39;</span> <span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
+    <span class="s">&#39;reverse-lookup&#39;</span> <span class="p">:</span> <span class="n">reverse_lookup</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Having functions as values in a dictionary might be pretty foreign at first, but it can be really useful, as we're about to see!</p>
+<p>We can look up the appropriate function for the given command like this:</p>
+<div class="highlight"><pre><span class="n">func</span> <span class="o">=</span> <span class="n">command_funcs</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Here the variable <code>command</code> is the main command you grabbed from the command line arguments. <code>func</code> is the function associated with <code>command</code> in the <code>command_funcs</code> dictionary we created.</p>
+<p>To invoke <code>func</code>, we could try:</p>
+<div class="highlight"><pre><span class="n">func</span><span class="p">()</span>
+</pre></div>
+
+
+<p>But we need to figure out how to pass the appropriate arguments to <code>func</code>. <code>func</code> could be any of <code>create</code>, <code>add</code>, <code>update</code>, <code>delete</code>, etc. These functions take varying number of arguments. So how can we pass the correct number of arguments to <code>func</code> without a messy <code>if</code> statement?</p>
+<p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
+<p><a href="#top">Back to top</a></p>
 </section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
