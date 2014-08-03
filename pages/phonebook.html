@@ -34,7 +34,8 @@
         
 <section id="content" class="body">    
     <h1 class="page-title">Phonebook Exercise</h1>
-    <p>Let's make a command line tool for managing phonebook entries!</p>
+    <p><a name="top"></a>
+Let's make a command line tool for managing phonebook entries!</p>
 <h1 id="introduction">Introduction</h1>
 <p>This exercise is organized in a few sections:</p>
 <div class="toc">
@@ -121,6 +122,7 @@
 </pre></div>
 
 
+<p><a href="#top">Back to top</a></p>
 <h1 id="2-code-skeleton">2. Code Skeleton</h1>
 <p>What are the functions that you'll need for your program? What arguments will each of those functions need? Write a skeleton program that has those functions definitions, but where the functions just <code>pass</code>, rather than actually doing anything.</p>
 <p>Here is an example skeleton program with function definitions for <code>create</code>ing a phonebook and <code>add</code>ing an entry to the phonebook. You'll need more functions, too, but this is a start:</p>
@@ -140,35 +142,36 @@
 
 
 <p>Similarly, create functions for <code>update</code>, <code>lookup</code>, <code>reverse-lookup</code>, and <code>delete</code>.</p>
+<p><a href="#top">Back to top</a></p>
 <h2 id="21-the-__name__-variable">2.1 The <code>__name__</code> Variable</h2>
 <p>Why do I have <code>if __name__ == '__main__':</code> in the above code snippet?</p>
 <p>Suppose someone (maybe you) wanted to <code>import</code> this <code>phonebook.py</code> script into another program. Maybe you want to do this so you could write tests for the program (which we'll cover later), or because you wanted to make a web front-end to the program. You would probably want some code that executes only if the script is executed directly (e.g. by calling <code>python phonebook.py</code> on the command line) that is <em>not</em> executed when you <code>import</code> the script into another Python program.</p>
 <p>This is exactly what the <code>if __name__ == '__main__'</code> code block is for. <code>__name__</code> is a variable whose value will be <code>__main__</code> if the script was executed directly (e.g. by <code>python phonebook.py</code>) and otherwise will be the name of the module, (e.g. <code>phonebook</code>).</p>
-<p>To make this a bit more concrete, let's make a couple example scripts:</p>
-<p><code>a.py</code>:</p>
+<p>To make this a bit more concrete, let's make some example scripts:</p>
+<p>First <code>a.py</code>:</p>
 <div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;__name__: &quot;</span><span class="p">,</span> <span class="n">__name__</span>
 </pre></div>
 
 
-<p><code>b.py</code>:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">a</span>
-</pre></div>
-
-
-<p>Now let's execute each of these scripts and see what happens.</p>
+<p>What happens when we execute <code>a.py</code>?</p>
 <div class="highlight"><pre><span class="gp">$</span> python a.py
 <span class="go">__name__:  __main__</span>
 </pre></div>
 
 
 <p><code>a.py</code> is fairly straightforward -- we execute the <code>print</code> statement, and we see that the value of the variable <code>__name__</code> is the string <code>'__main__'</code>. <code>__name__</code> is a variable that is defined for us automatically in every Python program, and if the program was executed directly, its value is the string <code>'__main__'</code>. Great.</p>
-<p>Now let's execute <code>b.py</code>:</p>
+<p>Let's define a second script, <code>b.py</code>:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">a</span>
+</pre></div>
+
+
+<p>And execute <code>b.py</code>:</p>
 <div class="highlight"><pre><span class="gp">$</span> python b.py
 <span class="go">__name__:  a</span>
 </pre></div>
 
 
-<p><code>b.py</code> is a bit less straightforward. Here we <code>import a</code>, which <em>executes the code that is inside <code>a.py</code></em>. This also adds the variables defined in <code>a</code> to our namespace. I'll give a basic overview of what <code>import</code> does in the next section.</p>
+<p><code>b.py</code> is a bit less straightforward. Here we <code>import a</code>, which <em>executes the code that is inside <code>a.py</code></em>. I'll give a basic overview of what <code>import</code> does in the next section.</p>
 <p>So the value of <code>__name__</code> inside <code>a</code> in this context is the string <code>'a'</code>, rather than <code>'__main__'</code>. This is because the code is being executed by result of an <code>import</code> statement, rather than being executed directly.</p>
 <p>How could we execute different code when we <code>import</code> a script than when we execute the script directly? This is where the <code>if __name__ == '__main__'</code> part comes into play. Let's make two more example scripts to explore this.</p>
 <p><code>c.py</code>:</p>
@@ -194,8 +197,8 @@
 
 
 <p>Viola! So that's what the <code>if __name__ == '__main__'</code> statement does. We'll be adding some code that we don't want to execute when we <code>import phonebook</code> into this code block.</p>
+<p><a href="#top">Back to top</a></p>
 <h1 id="3-argument-parsing">3. Argument parsing</h1>
-<p>If you don't know how to parse arguments passed to the Python interpreter from the command line, see if you can figure out how to do it by googling. Maybe google "python command line arguments" as a start.</p>
 <h2 id="31-accessing-arguments">3.1 Accessing Arguments</h2>
 <p>Arguments passed to Python scripts from the command line are accessible using the <code>sys</code> module. Here's a simple example script that prints out the arguments passed to the Python interpreter:</p>
 <div class="highlight"><pre><span class="c"># ex.py</span>
@@ -214,6 +217,7 @@
 
 
 <p>So <code>sys.argv</code> is a list, containing the name of the script (<code>'ex.py'</code>), and then the three arguments we passed, all represented as strings.</p>
+<p><a href="#top">Back to top</a></p>
 <h2 id="32-parsing-arguments">3.2 Parsing Arguments</h2>
 <p>For your phonebook application, you might choose to manually parse your arguments. For the first two commands, <code>create</code> and <code>add</code>, your code would look something like this:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
@@ -249,6 +253,7 @@
 <p>Similarly, define <code>elif</code> statements for <code>update</code>, <code>lookup</code>, <code>reverse-lookup</code>, and <code>delete</code>.</p>
 <p>If you're not sure how the <code>pop</code> method works, google it!</p>
 <p>There are some potential issues with this code. Try to figure out what they are. Try to improve the code.</p>
+<p><a href="#top">Back to top</a></p>
 <h2 id="33-unpacking-arguments">3.3 Unpacking Arguments</h2>
 <p>List unpacking can make our code naming the variables in each of the <code>if</code>/<code>elif</code> blocks much cleaner.</p>
 <p>For example, we can turn this:</p>
@@ -295,6 +300,7 @@
 
 <p>We left the <code>pop</code> line for the <code>create</code> command since there should be only one argument left. What happens if you try to unpack a list with only one element? Try figuring it out in your REPL.</p>
 <p>Similarly, define <code>elif</code> statements for <code>update</code>, <code>lookup</code>, <code>reverse-lookup</code>, and <code>delete</code>.</p>
+<p><a href="#top">Back to top</a></p>
 <h2 id="34-handling-bad-arguments">3.4 Handling Bad Arguments</h2>
 <p>What happens if your program is given arguments that aren't supported? For example, try typing:</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py cats
@@ -312,6 +318,7 @@
 
 
 <p>It would be helpful to print out an error message for situations like this.</p>
+<p><a href="#top">Back to top</a></p>
 <h2 id="35-mapping-commands-to-functions">*3.5 Mapping commands to functions</h2>
 <p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
 <p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
@@ -340,6 +347,7 @@
 
 <p>But we need to figure out how to pass the appropriate arguments to <code>func</code>. <code>func</code> could be any of <code>create</code>, <code>add</code>, <code>update</code>, <code>delete</code>, etc. These functions take varying number of arguments. So how can we pass the correct number of arguments to <code>func</code> without a messy <code>if</code> statement?</p>
 <p>This is where the super awesome <code>*args</code> comes in handy. Try reading up on <code>*args</code>. Then try figuring out how to use it to pass <code>func</code> the rest of the arguments that were given on the command line. Try to figure out how to handle when an incorrect number of arguments is passed.</p>
+<p><a href="#top">Back to top</a></p>
 <h1 id="4-raising-exceptions">4. Raising Exceptions</h1>
 <p>What happens when a user passes an incorrect number of arguments? Try giving your program too few arguments. Now try with too many arguments.</p>
 <p>Our users might find it useful for us to <code>print</code> descriptive error messages if the number of arguments is incorrect. How could we add this to our progam?</p>
@@ -393,6 +401,7 @@
 
 <p>Try <code>raise</code>ing our <code>ArgumentError</code> exception any time a user enters too few or too many arguments.</p>
 <p>We should also <code>raise</code> an exception if the phone number passed as an argument isn't valid, but we'll do that later when we talk about partial string matching.</p>
+<p><a href="#top">Back to top</a></p>
 <h1 id="5-writing-tests">5. Writing Tests</h1>
 <h1 id="6-data-storage">6. Data Storage</h1>
 <h1 id="7-partial-string-matching">7. Partial String Matching</h1>
