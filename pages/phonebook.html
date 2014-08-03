@@ -58,7 +58,12 @@ Let's make a command line tool for managing phonebook entries!</p>
 <li><a href="#41-invalid-number-of-arguments">4.1 Invalid number of arguments</a></li>
 </ul>
 </li>
-<li><a href="#5-writing-tests">5. Writing Tests</a></li>
+<li><a href="#5-writing-tests">5. Writing Tests</a><ul>
+<li><a href="#51-a-basic-test">5.1 A Basic Test</a></li>
+<li><a href="#52-a-testspy-script">5.2 A tests.py Script</a></li>
+<li><a href="#53-testing-with-the-unittest-module">*5.3 Testing with the unittest Module</a></li>
+</ul>
+</li>
 <li><a href="#6-data-storage">6. Data Storage</a></li>
 <li><a href="#7-partial-string-matching">7. Partial String Matching</a><ul>
 <li><a href="#71-string-methods">7.1 string Methods</a><ul>
@@ -171,7 +176,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 </pre></div>
 
 
-<p><code>b.py</code> is a bit less straightforward. Here we <code>import a</code>, which <em>executes the code that is inside <code>a.py</code></em>. I'll give a basic overview of what <code>import</code> does in the next section.</p>
+<p><code>b.py</code> is a bit less straightforward. Here we <code>import a</code>, which <em>executes the code that is inside <code>a.py</code></em>. I'll give a basic overview of what <code>import</code> does in a later section.</p>
 <p>So the value of <code>__name__</code> inside <code>a</code> in this context is the string <code>'a'</code>, rather than <code>'__main__'</code>. This is because the code is being executed by result of an <code>import</code> statement, rather than being executed directly.</p>
 <p>How could we execute different code when we <code>import</code> a script than when we execute the script directly? This is where the <code>if __name__ == '__main__'</code> part comes into play. Let's make two more example scripts to explore this.</p>
 <p><code>c.py</code>:</p>
@@ -219,7 +224,8 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>So <code>sys.argv</code> is a list, containing the name of the script (<code>'ex.py'</code>), and then the three arguments we passed, all represented as strings.</p>
 <p><a href="#top">Back to top</a></p>
 <h2 id="32-parsing-arguments">3.2 Parsing Arguments</h2>
-<p>For your phonebook application, you might choose to manually parse your arguments. For the first two commands, <code>create</code> and <code>add</code>, your code would look something like this:</p>
+<p>For your phonebook application, you might choose to manually parse your arguments. This code should go in an <code>if __name__ == '__main__'</code> code block because parsing arguments doesn't make sense when you're <code>import</code>ing a module.</p>
+<p>For the first two commands, <code>create</code> and <code>add</code>, your code would look something like this:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
     <span class="c"># create a new phonebook</span>
     <span class="k">pass</span>
@@ -230,11 +236,11 @@ Let's make a command line tool for managing phonebook entries!</p>
     <span class="k">pass</span>
 
 
-<span class="c"># include functions for other arguments</span>
+<span class="c"># include functions for other commands</span>
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[:]</span>      <span class="c"># make a copy</span>
     <span class="n">script</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c"># name of script is first arg</span>
     <span class="n">command</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>   <span class="c"># the next arg will be the main command</span>
 
@@ -251,8 +257,12 @@ Let's make a command line tool for managing phonebook entries!</p>
 
 
 <p>Similarly, define <code>elif</code> statements for <code>update</code>, <code>lookup</code>, <code>reverse-lookup</code>, and <code>delete</code>.</p>
-<p>If you're not sure how the <code>pop</code> method works, google it!</p>
-<p>There are some potential issues with this code. Try to figure out what they are. Try to improve the code.</p>
+<p>If you're not sure how the <code>pop</code> method works, google it, and play around with it in your REPL! Some questions you can try to figure out:</p>
+<ol>
+<li>What happens if you don't give <code>pop</code> an argument?</li>
+<li>What happens to <code>sys.argv</code> if we <code>pop</code> elements off <code>args</code>?</li>
+<li>What happens to <code>sys.argv</code> if we set <code>args</code> equal to <code>sys.argv</code> rather than <code>sys.argv[:]</code>?</li>
+</ol>
 <p><a href="#top">Back to top</a></p>
 <h2 id="33-unpacking-arguments">3.3 Unpacking Arguments</h2>
 <p>List unpacking can make our code naming the variables in each of the <code>if</code>/<code>elif</code> blocks much cleaner.</p>
@@ -284,7 +294,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[:]</span>      <span class="c"># make a copy</span>
     <span class="n">script</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c"># name of script is first arg</span>
     <span class="n">command</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>   <span class="c"># the next arg will be the main command</span>
 
@@ -403,6 +413,9 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>We should also <code>raise</code> an exception if the phone number passed as an argument isn't valid, but we'll do that later when we talk about partial string matching.</p>
 <p><a href="#top">Back to top</a></p>
 <h1 id="5-writing-tests">5. Writing Tests</h1>
+<h2 id="51-a-basic-test">5.1 A Basic Test</h2>
+<h2 id="52-a-testspy-script">5.2 A <code>tests.py</code> Script</h2>
+<h2 id="53-testing-with-the-unittest-module">*5.3 Testing with the <code>unittest</code> Module</h2>
 <h1 id="6-data-storage">6. Data Storage</h1>
 <h1 id="7-partial-string-matching">7. Partial String Matching</h1>
 <h2 id="71-string-methods">7.1 <code>string</code> Methods</h2>
