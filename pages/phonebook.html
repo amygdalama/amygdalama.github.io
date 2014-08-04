@@ -56,10 +56,8 @@ Let's make a command line tool for managing phonebook entries!</p>
 <li><a href="#4-data-storage">4. Data Storage</a><ul>
 <li><a href="#41-creating-a-phonebook">4.1 Creating a Phonebook</a></li>
 <li><a href="#42-adding-an-entry">4.2 Adding an Entry</a></li>
-<li><a href="#43-updating-an-entry">4.3 Updating an Entry</a></li>
-<li><a href="#44-removing-an-entry">4.4 Removing an Entry</a></li>
-<li><a href="#45-looking-up-an-entry-by-name">4.5 Looking up an Entry by Name</a></li>
-<li><a href="#46-looking-up-an-entry-by-phone-number">4.6 Looking up an Entry by Phone Number</a></li>
+<li><a href="#43-looking-up-an-entry-by-name">4.3 Looking up an Entry by Name</a></li>
+<li><a href="#44-other-functionality">4.4 Other Functionality</a></li>
 </ul>
 </li>
 <li><a href="#5-writing-tests">5. Writing Tests</a><ul>
@@ -69,26 +67,9 @@ Let's make a command line tool for managing phonebook entries!</p>
 <li><a href="#54-testing-with-the-unittest-module">*5.4 Testing with the unittest Module</a></li>
 </ul>
 </li>
-<li><a href="#7-partial-string-matching">7. Partial String Matching</a><ul>
-<li><a href="#71-string-methods">7.1 string Methods</a><ul>
-<li><a href="#711-matching-partial-names">7.1.1 Matching Partial Names</a></li>
-<li><a href="#712-validating-phone-numbers">7.1.2 Validating Phone Numbers</a></li>
-</ul>
-</li>
-<li><a href="#72-regular-expressions">*7.2 Regular Expressions</a><ul>
-<li><a href="#721-matching-partial-names">*7.2.1 Matching Partial Names</a></li>
-<li><a href="#722-validating-phone-numbers">*7.2.2 Validating Phone Numbers</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#8-further-reading">8. Further Reading</a></li>
-<li><a href="#appendix">Appendix</a><ul>
 <li><a href="#further-reading">Further Reading</a><ul>
 <li><a href="#the-argparse-module">The argparse module</a></li>
 <li><a href="#mapping-commands-to-functions">Mapping commands to functions</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -396,13 +377,191 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>Similarly, try giving the other commands (<code>update</code>, <code>remove</code>, <code>lookup</code>, and <code>reverse-lookup</code>) too few and too many arguments. You want to make sure that the behavior that you expect is what actually happens.</p>
 <p><a href="#top">Back to top</a></p>
 <h1 id="4-data-storage">4. Data Storage</h1>
-<p>Now that we have a skeleton of functions for each of our commands, and we call the appropriate functions for each command with the appropriate arguments, we need to figure out how to store our phonebook entries. First we'll start with saving these entries to a file, and reading them into a dictionary data structure. A more advanced option would be to save the data in a database.</p>
+<p>Now that we have a skeleton of functions for each of our commands, and we call the appropriate functions for each command with the appropriate arguments, we need to figure out how to store and access our phonebook entries. First we'll start with saving these entries to a file, and reading them into a dictionary data structure. A more advanced option would be to save the data in a database.</p>
 <h2 id="41-creating-a-phonebook">4.1 Creating a Phonebook</h2>
+<p>Let's work on the <code>create_phonebook</code> function. This function should create a new text file in the working directory.</p>
+<p>We can create a file by <code>open</code>ing a file in write mode:</p>
+<div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;filename.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The <code>'w'</code> parameter designates write mode. There is also read mode and append mode, both of which we'll use later.</p>
+<p>Any time you <code>open</code> a file you must remember to <code>close</code> it, or your changes won't be saved!</p>
+<div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;filename.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Since it's easy to forget to <code>close</code> a file, it's best practice to instead <code>open</code> files using the <code>with</code> statement:</p>
+<div class="highlight"><pre><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;filename.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c"># do things with f</span>
+    <span class="k">pass</span>
+</pre></div>
+
+
+<p><code>with</code> automatically <code>close</code>s the file for you, so you don't have to remember.</p>
+<p>Let's use this to fill out our <code>create_phonebook</code> function, which should execute with the <code>create</code> command:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">.txt&#39;</span> <span class="o">%</span> <span class="n">phonebook_name</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+
+
+<p>The syntax <code>'%s.txt' % phonebook_name</code> is called string interpolation. The variable on the right side of the <code>%</code> gets substituted for the <code>%s</code> inside the string. This will create files with names like <code>phonebook.txt</code> or <code>ex_phonebook.txt</code>.</p>
+<p>We just <code>pass</code> because we don't need to write anything to the file at this point.</p>
+<p>Now let's see what happens when we use our program to <code>create</code> a phonebook:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py create <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="gp">$</span> ls
+<span class="go">ex_phonebook.txt phonebook.py</span>
+</pre></div>
+
+
+<p>We should see that a file <code>ex_phonebook.txt</code> was created!</p>
+<p>Let's say we manually added some entries into our <code>ex_phonebook.txt</code> file, and tried creating another phonebook with the same name? Would our data get overwritten? Or would Python throw an error? Let's see!</p>
+<p>I'm manually typing some text into <code>ex_phonebook.txt</code> using my text editor:</p>
+<div class="highlight"><pre>Jane Doe    123-123-1234
+</pre></div>
+
+
+<p>Now let's try <code>create</code>ing <code>ex_phonebook</code> again:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py create <span class="s1">&#39;ex_phonebook&#39;</span>
+</pre></div>
+
+
+<p>And... oh no! The contents of <code>ex_phonebook.txt</code> have been deleted! We don't want our users to accidentally delete the entire contents of their phonebooks this way. Let's rewrite the <code>create_phonebook</code> function so that it won't overwrite any existing files.</p>
+<p>To check if the file exists, we'll need to use the <code>os</code> module. Add this import statement to the top of your <code>phonebook.py</code> script:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+
+
+<p>And then edit the <code>create_phonebook</code> function:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">create_phonebook</span><span class="p">(</span><span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.txt&#39;</span> <span class="o">%</span> <span class="n">phonebook_name</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;That phonebook already exists!&quot;</span>
+        <span class="n">quit</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+
+
+<p>Now let's check that this works:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py create <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="go">That phonebook already exists!</span>
+</pre></div>
+
+
+<p>Sweet!</p>
 <h2 id="42-adding-an-entry">4.2 Adding an Entry</h2>
-<h2 id="43-updating-an-entry">4.3 Updating an Entry</h2>
-<h2 id="44-removing-an-entry">4.4 Removing an Entry</h2>
-<h2 id="45-looking-up-an-entry-by-name">4.5 Looking up an Entry by Name</h2>
-<h2 id="46-looking-up-an-entry-by-phone-number">4.6 Looking up an Entry by Phone Number</h2>
+<p>Now that we can <code>create</code> phonebooks, let's work on the <code>add_entry</code> function.</p>
+<p>Recall that we should support adding an entry with the following command:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;234-234-2334&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+</pre></div>
+
+
+<p>For now, adding an entry will mean adding a line to the phonebook.</p>
+<p>To add a line to a file, we'll need to <code>open</code> the file in append mode:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">add_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>   <span class="c"># add newline</span>
+</pre></div>
+
+
+<p><code>'%s\t%s' % (name, number)</code> is another example of string interpolation. This will substitute the first item in the tuple after the <code>%</code> for the first <code>%s</code> and the second item in the tuple for the second <code>%s</code>. The <code>\t</code> in the middle is the symbol for a tab. So our entries will be stored in a tab-delimited format.</p>
+<p>Let's try adding a couple entries:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py add <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;234-234-2334&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="gp">$</span> python phonebook.py add <span class="s1">&#39;John Doe&#39;</span> <span class="s1">&#39;789-234-4567&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+</pre></div>
+
+
+<p>Now the <code>ex_phonebook.txt</code> file should look like:</p>
+<div class="highlight"><pre>Jane Doe    234-234-2334
+John Doe    789-234-4567
+</pre></div>
+
+
+<p>There are plenty of things we should do to make this <code>add_entry</code> function better, like</p>
+<ul>
+<li>check for duplicate entries</li>
+<li>make sure the given phonebook name exists</li>
+</ul>
+<p>But for now let's move on. We can come back to these if we want.</p>
+<h2 id="43-looking-up-an-entry-by-name">4.3 Looking up an Entry by Name</h2>
+<p>Now, let's work on the <code>lookup_name</code> function. We want to read the contents of a phonebook file, and print out the matching entries, if there are any. There are so many ways to do this!</p>
+<p>We'll need to <code>open</code> a file in read mode, and then iterate through each line of the file. We can do that with:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">lookup_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.txt&#39;</span> <span class="o">%</span> <span class="n">phonebook_name</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>      <span class="c"># &#39;r&#39; for read mode</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">line</span>
+</pre></div>
+
+
+<p>We'll first just try <code>print</code>ing the <code>line</code> to see what it looks like:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py lookup <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="go">Jane Doe    234-234-2334</span>
+
+<span class="go">John Doe    789-234-4567</span>
+</pre></div>
+
+
+<p>Hmm. This doesn't give us much information. We can use the function <code>repr</code> to tell us the actual representation of the lines:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">lookup_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.txt&#39;</span> <span class="o">%</span> <span class="n">phonebook_name</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>            <span class="c"># use repr function</span>
+</pre></div>
+
+
+<p>After replacing this in our <code>phonebook.py</code> file, let's see what the <code>lookup_name</code> function prints:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py lookup <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="go">&#39;Jane Doe\t234-234-2334\n&#39;</span>
+<span class="go">&#39;John Doe\t789-234-4567\n&#39;</span>
+</pre></div>
+
+
+<p>Okay! That is more illuminating. So for each line, we have a string containing the name, followed by a tab (<code>\t</code>), followed by the number, followed by a newline (<code>\n</code>).</p>
+<p>We need to somehow extract the names from each of these lines so we can compare it to the name we're looking up.</p>
+<p>Python has some helpful string methods that we can use here. <code>rstrip</code> removes trailing whitespace from a string (<code>\n</code> counts as whitespace), and <code>split</code> breaks up a string into a list based on the characters of your choosing.</p>
+<p>So, for each of these lines, let's <code>strip</code> off the whitespace, and <code>split</code> the string into a list on the <code>\t</code> character:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">lookup_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.txt&#39;</span> <span class="o">%</span> <span class="n">phonebook_name</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>      <span class="c"># use string methods</span>
+</pre></div>
+
+
+<p>This will <code>print</code> the results:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py lookup <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="go">[&#39;Jane Doe&#39;, &#39;234-234-2334&#39;]</span>
+<span class="go">[&#39;John Doe&#39;, &#39;789-234-4567&#39;]</span>
+</pre></div>
+
+
+<p>Great! Now we need to see if the name of the entry is the same as the name we're looking up, and only <code>print</code> the names that match:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">lookup_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">phonebook_name</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.txt&#39;</span> <span class="o">%</span> <span class="n">phonebook_name</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">entry_name</span><span class="p">,</span> <span class="n">entry_number</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">entry_name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">entry_name</span><span class="p">,</span> <span class="n">entry_number</span>
+</pre></div>
+
+
+<p>Now when we run our program:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py lookup <span class="s1">&#39;Jane Doe&#39;</span> <span class="s1">&#39;ex_phonebook&#39;</span>
+<span class="go">Jane Doe 234-234-2334</span>
+</pre></div>
+
+
+<p>Great! Now it only prints matches. When we write tests for this function, we'll want to <code>return</code> the matches, rather than just <code>print</code>ing them, but for now this will do.</p>
+<h2 id="44-other-functionality">4.4 Other Functionality</h2>
+<p>Now we can create phonebooks, add entries, and look up existing entries by name. How could we remove a name? Update a name? Look up a name by phone number? Try writing these functions on your own.</p>
+<p>I'll give you a hint: deleting a line from a file isn't very straightforward. Instead, you'll need to save the lines you want to keep in a list, remove the old contents of the file by opening it in write mode, and then write the lines you saved in the list to the file.</p>
 <h1 id="5-writing-tests">5. Writing Tests</h1>
 <h2 id="51-a-basic-test">5.1 A Basic Test</h2>
 <h2 id="52-a-testspy-script">5.2 A <code>tests.py</code> Script</h2>
@@ -447,16 +606,11 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>We should also <code>raise</code> an exception if the phone number passed as an argument isn't valid, but we'll do that later when we talk about partial string matching.</p>
 <p><a href="#top">Back to top</a></p>
 <h2 id="54-testing-with-the-unittest-module">*5.4 Testing with the <code>unittest</code> Module</h2>
-<h1 id="7-partial-string-matching">7. Partial String Matching</h1>
-<h2 id="71-string-methods">7.1 <code>string</code> Methods</h2>
-<h4 id="711-matching-partial-names">7.1.1 Matching Partial Names</h4>
-<h4 id="712-validating-phone-numbers">7.1.2 Validating Phone Numbers</h4>
-<h2 id="72-regular-expressions">*7.2 Regular Expressions</h2>
-<h4 id="721-matching-partial-names">*7.2.1 Matching Partial Names</h4>
-<h4 id="722-validating-phone-numbers">*7.2.2 Validating Phone Numbers</h4>
-<h1 id="8-further-reading">8. Further Reading</h1>
-<h1 id="appendix">Appendix</h1>
-<h2 id="further-reading">Further Reading</h2>
+<h1 id="further-reading">Further Reading</h1>
+<ul>
+<li>Partial String Matching</li>
+<li>Regular Expressions</li>
+</ul>
 <h3 id="the-argparse-module">The <code>argparse</code> module</h3>
 <h3 id="mapping-commands-to-functions">Mapping commands to functions</h3>
 <p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
