@@ -42,15 +42,13 @@ Let's make a command line tool for managing phonebook entries!</p>
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#1-specifications">1. Specifications</a></li>
-<li><a href="#2-code-skeleton">2. Code Skeleton</a><ul>
-<li><a href="#21-the-__name__-variable">2.1 The __name__ Variable</a></li>
-</ul>
-</li>
+<li><a href="#2-code-skeleton">2. Code Skeleton</a></li>
 <li><a href="#3-argument-parsing">3. Argument parsing</a><ul>
 <li><a href="#31-accessing-arguments">3.1 Accessing Arguments</a></li>
 <li><a href="#32-parsing-arguments">3.2 Parsing Arguments</a></li>
 <li><a href="#33-unpacking-arguments">3.3 Unpacking Arguments</a></li>
 <li><a href="#34-handling-bad-arguments">3.4 Handling Bad Arguments</a></li>
+<li><a href="#35-more-ideas">*3.5 More Ideas</a></li>
 </ul>
 </li>
 <li><a href="#4-data-storage">4. Data Storage</a><ul>
@@ -58,17 +56,19 @@ Let's make a command line tool for managing phonebook entries!</p>
 <li><a href="#42-adding-an-entry">4.2 Adding an Entry</a></li>
 <li><a href="#43-looking-up-an-entry-by-name">4.3 Looking up an Entry by Name</a></li>
 <li><a href="#44-other-functionality">4.4 Other Functionality</a></li>
+<li><a href="#45-more-ideas">*4.5 More Ideas</a></li>
 </ul>
 </li>
 <li><a href="#5-writing-tests">5. Writing Tests</a><ul>
 <li><a href="#51-a-basic-test">5.1 A Basic Test</a></li>
 <li><a href="#52-a-testspy-script">5.2 A tests.py Script</a></li>
-<li><a href="#53-raising-exceptions">5.3 Raising Exceptions</a></li>
+<li><a href="#53-testing-bad-input">5.3 Testing Bad Input</a></li>
 <li><a href="#54-testing-with-the-unittest-module">*5.4 Testing with the unittest Module</a></li>
 </ul>
 </li>
 <li><a href="#further-reading">Further Reading</a><ul>
-<li><a href="#the-argparse-module">The argparse module</a></li>
+<li><a href="#helpful-modules-and-resources">Helpful Modules and Resources</a></li>
+<li><a href="#the-__name__-variable">The __name__ Variable</a></li>
 <li><a href="#mapping-commands-to-functions">Mapping commands to functions</a></li>
 </ul>
 </li>
@@ -78,6 +78,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>If you don't understand a phrase or a line of code that I use, ask me! I can show you what I'd do to figure out what the line of code means. Learning how to figure out the things you don't know is an important skill in programming.</p>
 <p>The more challenging sections are marked with an asterisk (*). If you find the sections without askerisks challenging, I recommend skipping the more challenging ones for now. You can come back to them later if you're curious.</p>
 <p>On the other hand, if you have a good idea for how to do the things outlined in a section, try doing it without reading through the section first, and just use the tutorial for reference if you get stuck.</p>
+<p>At the end of some sections I have links to additional resources if you'd like to implement a more advanced command line tool.</p>
 <h1 id="1-specifications">1. Specifications</h1>
 <p>We'll write a Python program that will support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
 <p>The program will have a command line interface supporting the following commands and behaviors:</p>
@@ -135,61 +136,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 
 
 <p>Similarly, create functions for <code>update</code>, <code>lookup</code>, <code>reverse-lookup</code>, and <code>delete</code>.</p>
-<p><a href="#top">Back to top</a></p>
-<h2 id="21-the-__name__-variable">2.1 The <code>__name__</code> Variable</h2>
-<p>Why do I have <code>if __name__ == '__main__':</code> in the above code snippet?</p>
-<p>Suppose someone (maybe you) wanted to <code>import</code> this <code>phonebook.py</code> script into another program. Maybe you want to do this so you could write tests for the program (which we'll cover later), or because you wanted to make a web front-end to the program. You would probably want some code that executes only if the script is executed directly (e.g. by calling <code>python phonebook.py</code> on the command line) that is <em>not</em> executed when you <code>import</code> the script into another Python program.</p>
-<p>This is exactly what the <code>if __name__ == '__main__'</code> code block is for. <code>__name__</code> is a variable whose value will be <code>__main__</code> if the script was executed directly (e.g. by <code>python phonebook.py</code>) and otherwise will be the name of the module, (e.g. <code>phonebook</code>).</p>
-<p>To make this a bit more concrete, let's make some example scripts:</p>
-<p>First <code>a.py</code>:</p>
-<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;__name__: &quot;</span><span class="p">,</span> <span class="n">__name__</span>
-</pre></div>
-
-
-<p>What happens when we execute <code>a.py</code>?</p>
-<div class="highlight"><pre><span class="gp">$</span> python a.py
-<span class="go">__name__:  __main__</span>
-</pre></div>
-
-
-<p><code>a.py</code> is fairly straightforward -- we execute the <code>print</code> statement, and we see that the value of the variable <code>__name__</code> is the string <code>'__main__'</code>. <code>__name__</code> is a variable that is defined for us automatically in every Python program, and if the program was executed directly, its value is the string <code>'__main__'</code>. Great.</p>
-<p>Let's define a second script, <code>b.py</code>:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">a</span>
-</pre></div>
-
-
-<p>And execute <code>b.py</code>:</p>
-<div class="highlight"><pre><span class="gp">$</span> python b.py
-<span class="go">__name__:  a</span>
-</pre></div>
-
-
-<p><code>b.py</code> is a bit less straightforward. Here we <code>import a</code>, which <em>executes the code that is inside <code>a.py</code></em>. I'll give a basic overview of what <code>import</code> does in a later section.</p>
-<p>So the value of <code>__name__</code> inside <code>a</code> in this context is the string <code>'a'</code>, rather than <code>'__main__'</code>. This is because the code is being executed by result of an <code>import</code> statement, rather than being executed directly.</p>
-<p>How could we execute different code when we <code>import</code> a script than when we execute the script directly? This is where the <code>if __name__ == '__main__'</code> part comes into play. Let's make two more example scripts to explore this.</p>
-<p><code>c.py</code>:</p>
-<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="k">print</span> <span class="s">&quot;c.py was executed directly&quot;</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="k">print</span> <span class="s">&quot;c.py was imported&quot;</span>
-</pre></div>
-
-
-<p><code>d.py</code>:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">c</span>
-</pre></div>
-
-
-<p>And let's execute each of these scripts to see what happens:</p>
-<div class="highlight"><pre><span class="gp">$</span> python c.py
-<span class="go">c.py was executed directly</span>
-
-<span class="gp">$</span> python d.py
-<span class="go">c.py was imported</span>
-</pre></div>
-
-
-<p>Viola! So that's what the <code>if __name__ == '__main__'</code> statement does. We'll be adding some code that we don't want to execute when we <code>import phonebook</code> into this code block.</p>
+<p>Wondering what the <code>if __name__ == '__main__'</code> code block is for? It's where you put code that you want to execute when you run this Python script directly, but not when you <code>import</code> this script into another one. More information on what that means can be found in the <a href="#__name__">Further Reading</a> section.</p>
 <p><a href="#top">Back to top</a></p>
 <h1 id="3-argument-parsing">3. Argument parsing</h1>
 <h2 id="31-accessing-arguments">3.1 Accessing Arguments</h2>
@@ -375,6 +322,15 @@ Let's make a command line tool for managing phonebook entries!</p>
 
 
 <p>Similarly, try giving the other commands (<code>update</code>, <code>remove</code>, <code>lookup</code>, and <code>reverse-lookup</code>) too few and too many arguments. You want to make sure that the behavior that you expect is what actually happens.</p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="35-more-ideas">*3.5 More Ideas</h2>
+<p>If this section hasn't challenged you enough, here are some things you could work on that might be more interesting for you:</p>
+<ul>
+<li>Parse the commands using a module like <code>argparse</code></li>
+<li><code>raise</code> exceptions instead of <code>print</code>ing error messages when the user gives bad input</li>
+<li>Even better, <code>raise</code> exceptions <em>and</em> <code>print</code> human-readable, helpful error messages when the user gives bad input</li>
+<li>Practice test-driven development! Try writing a test for what should happen for a possible input (good or bad), run the test and watch it fail, and then work on your code until the test passes. Then repeat.</li>
+</ul>
 <p><a href="#top">Back to top</a></p>
 <h1 id="4-data-storage">4. Data Storage</h1>
 <p>Now that we have a skeleton of functions for each of our commands, and we call the appropriate functions for each command with the appropriate arguments, we need to figure out how to store and access our phonebook entries. First we'll start with saving these entries to a file, and reading them into a dictionary data structure. A more advanced option would be to save the data in a database.</p>
@@ -562,23 +518,41 @@ John Doe    789-234-4567
 <h2 id="44-other-functionality">4.4 Other Functionality</h2>
 <p>Now we can create phonebooks, add entries, and look up existing entries by name. How could we remove a name? Update a name? Look up a name by phone number? Try writing these functions on your own.</p>
 <p>I'll give you a hint: deleting a line from a file isn't very straightforward. Instead, you'll need to save the lines you want to keep in a list, remove the old contents of the file by opening it in write mode, and then write the lines you saved in the list to the file.</p>
+<h2 id="45-more-ideas">*4.5 More Ideas</h2>
+<p>If this section hasn't challenged you enough, here are some things you could work on that might be more interesting for you:</p>
+<ul>
+<li>
+<p>Enable partial string matching using either string methods or regular expressions (using the <code>re</code> module). i.e. make this work:</p>
+<div class="highlight"><pre><span class="gp">$</span> python phonebook.py lookup <span class="s1">&#39;Jane&#39;</span> ex_phonebook
+<span class="go">Jane Doe    432 123 4321</span>
+<span class="go">Jane Lin    643 357 9876</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Store the phonebook entries in a database! Some common Python modules that help you interact with databases are <code>sqlite3</code> and <code>sqlalchemy</code>.</p>
+</li>
+<li>Store the phonebook entries as dictionaries using the <code>pickle</code> module!</li>
+</ul>
 <h1 id="5-writing-tests">5. Writing Tests</h1>
+<p>This part isn't finished yet! If you get to this point, let me know, and I can do a demo!</p>
 <h2 id="51-a-basic-test">5.1 A Basic Test</h2>
 <h2 id="52-a-testspy-script">5.2 A <code>tests.py</code> Script</h2>
-<h2 id="53-raising-exceptions">5.3 Raising Exceptions</h2>
-<p>For example, let's say we wanted to test that running our program with the command</p>
+<h2 id="53-testing-bad-input">5.3 Testing Bad Input</h2>
+<p>Let's say we wanted to test that running our program with the command</p>
 <div class="highlight"><pre><span class="gp">$</span> python phonebook.py create
 </pre></div>
 
 
-<p>(which is missing an argument for the phonebook name) caused an error. How would we do that? Well, we could manually type in the command and observe the results. But would we want to do that with every command variation? And for too many arguments as well as too few? That quickly becomes too many things to remember to test manually.</p>
-<p>Thankfully, testing frameworks like Python's <code>unittest</code> provide methods that test whether code <code>raise</code>s a specific exception. We'll cover more on testing and using <code>unittest</code> in the next chapter.</p>
+<p>(which is missing an argument for the phonebook name) causes an error. How would we do that? Well, we could manually type in the command and observe the results. But would we want to do that with every command variation? And for too many arguments as well as too few? That quickly becomes too many things to remember to test manually.</p>
+<p>Thankfully, testing frameworks like Python's <code>unittest</code> provide methods that test whether code <code>raise</code>s a specific exception.</p>
 <p>To make writing tests easier, we can define a custom exception that we'll call <code>ArgumentError</code>. To do this we just need to subclass it from the built-in <code>Exception</code> class:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">ArgumentError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span>
 </pre></div>
 
 
-<p>Subclassing isn't particularly important to understand for this exercise, but is definitely important to understand in other contexts. I won't cover it here.</p>
+<p>Subclassing and class inheritance is out of scope for this exercise, but it's really interesting! I definitely recommend reading about it and playing around with it.</p>
 <p>Now to <code>raise</code> this exception when an invalid number of arguments is passed:</p>
 <div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;create&#39;</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
@@ -607,14 +581,70 @@ John Doe    789-234-4567
 <p><a href="#top">Back to top</a></p>
 <h2 id="54-testing-with-the-unittest-module">*5.4 Testing with the <code>unittest</code> Module</h2>
 <h1 id="further-reading">Further Reading</h1>
+<h2 id="helpful-modules-and-resources">Helpful Modules and Resources</h2>
 <ul>
-<li>Partial String Matching</li>
-<li>Regular Expressions</li>
+<li>The <a href="https://docs.python.org/dev/library/argparse.html"><code>argparse</code> module</a> for building a powerful command line argument parser</li>
+<li>The <a href="https://docs.python.org/2/library/re.html"><code>re</code> module</a> for Regular Expressions</li>
+<li><a href="http://www.diveintopython3.net/">Dive Into Python</a> for generally learning about Python</li>
 </ul>
-<h3 id="the-argparse-module">The <code>argparse</code> module</h3>
-<h3 id="mapping-commands-to-functions">Mapping commands to functions</h3>
-<p>This section is a bit more advanced than the others. If you've found the previous sections difficult, you might want to skip this one and come back to it later.</p>
-<p>Having an <code>if</code>/<code>elif</code> statement for each command is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
+<p><a name="__name__"></a></p>
+<h2 id="the-__name__-variable">The <code>__name__</code> Variable</h2>
+<p>Why do I have <code>if __name__ == '__main__':</code> in the above code snippet?</p>
+<p>Suppose someone (maybe you) wanted to <code>import</code> this <code>phonebook.py</code> script into another program. Maybe you want to do this so you could write tests for the program (which we'll cover later), or because you wanted to make a web front-end to the program. You would probably want some code that executes only if the script is executed directly (e.g. by calling <code>python phonebook.py</code> on the command line) that is <em>not</em> executed when you <code>import</code> the script into another Python program.</p>
+<p>This is exactly what the <code>if __name__ == '__main__'</code> code block is for. <code>__name__</code> is a variable whose value will be <code>__main__</code> if the script was executed directly (e.g. by <code>python phonebook.py</code>) and otherwise will be the name of the module, (e.g. <code>phonebook</code>).</p>
+<p>To make this a bit more concrete, let's make some example scripts:</p>
+<p>First <code>a.py</code>:</p>
+<div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;__name__: &quot;</span><span class="p">,</span> <span class="n">__name__</span>
+</pre></div>
+
+
+<p>What happens when we execute <code>a.py</code>?</p>
+<div class="highlight"><pre><span class="gp">$</span> python a.py
+<span class="go">__name__:  __main__</span>
+</pre></div>
+
+
+<p><code>a.py</code> is fairly straightforward -- we execute the <code>print</code> statement, and we see that the value of the variable <code>__name__</code> is the string <code>'__main__'</code>. <code>__name__</code> is a variable that is defined for us automatically in every Python program, and if the program was executed directly, its value is the string <code>'__main__'</code>. Great.</p>
+<p>Let's define a second script, <code>b.py</code>:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">a</span>
+</pre></div>
+
+
+<p>And execute <code>b.py</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> python b.py
+<span class="go">__name__:  a</span>
+</pre></div>
+
+
+<p><code>b.py</code> is a bit less straightforward. Here we <code>import a</code>, which <em>executes the code that is inside <code>a.py</code></em>. I'll give a basic overview of what <code>import</code> does in a later section.</p>
+<p>So the value of <code>__name__</code> inside <code>a</code> in this context is the string <code>'a'</code>, rather than <code>'__main__'</code>. This is because the code is being executed by result of an <code>import</code> statement, rather than being executed directly.</p>
+<p>How could we execute different code when we <code>import</code> a script than when we execute the script directly? This is where the <code>if __name__ == '__main__'</code> part comes into play. Let's make two more example scripts to explore this.</p>
+<p><code>c.py</code>:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;c.py was executed directly&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;c.py was imported&quot;</span>
+</pre></div>
+
+
+<p><code>d.py</code>:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">c</span>
+</pre></div>
+
+
+<p>And let's execute each of these scripts to see what happens:</p>
+<div class="highlight"><pre><span class="gp">$</span> python c.py
+<span class="go">c.py was executed directly</span>
+
+<span class="gp">$</span> python d.py
+<span class="go">c.py was imported</span>
+</pre></div>
+
+
+<p>Viola! So that's what the <code>if __name__ == '__main__'</code> statement does. We'll be adding some code that we don't want to execute when we <code>import phonebook</code> into this code block.</p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="mapping-commands-to-functions">Mapping commands to functions</h2>
+<p>Having an <code>if</code>/<code>elif</code> statement for each of our commands is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
 <div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;create&#39;</span> <span class="p">:</span> <span class="n">create</span><span class="p">,</span>  <span class="c"># create is a function defined elsewhere</span>
     <span class="s">&#39;add&#39;</span> <span class="p">:</span> <span class="n">add</span><span class="p">,</span>
