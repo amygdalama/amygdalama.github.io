@@ -79,6 +79,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>The more challenging sections are marked with an asterisk (*). If you find the sections without askerisks challenging, I recommend skipping the more challenging ones for now. You can come back to them later if you're curious.</p>
 <p>On the other hand, if you have a good idea for how to do the things outlined in a section, try doing it without reading through the section first, and just use the tutorial for reference if you get stuck.</p>
 <p>At the end of some sections I have links to additional resources if you'd like to implement a more advanced command line tool.</p>
+<p>If you'd like to see what my code looks like when I worked through this exercise, I have snapshots of my <code>phonebook.py</code> file for each section <a href="https://github.com/amygdalama/phonebook-tutorial">on GitHub</a>.</p>
 <h1 id="1-specifications">1. Specifications</h1>
 <p>We'll write a Python program that will support creating, retrieving, updating, and deleting phonebook entries consisting of a name and a phone number.</p>
 <p>The program will have a command line interface supporting the following commands and behaviors:</p>
@@ -195,7 +196,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 <p>If you're not sure how the <code>pop</code> method works, google it, and play around with it in your REPL! Some questions you can try to figure out:</p>
 <ol>
 <li>What happens if you don't give <code>pop</code> an argument?</li>
-<li>What does the comment "make a copy" mean?</li>
+<li>What does the comment "make a copy" mean? What happens if you don't make a copy?</li>
 </ol>
 <p><a href="#top">Back to top</a></p>
 <h2 id="33-unpacking-arguments">3.3 Unpacking Arguments</h2>
@@ -329,6 +330,7 @@ Let's make a command line tool for managing phonebook entries!</p>
 <li>Parse the commands using a module like <code>argparse</code></li>
 <li><code>raise</code> exceptions instead of <code>print</code>ing error messages when the user gives bad input</li>
 <li>Even better, <code>raise</code> exceptions <em>and</em> <code>print</code> human-readable, helpful error messages when the user gives bad input</li>
+<li><a href="#map">Map the commands to functions using a dictionary!</a></li>
 <li>Practice test-driven development! Try writing a test for what should happen for a possible input (good or bad), run the test and watch it fail, and then work on your code until the test passes. Then repeat.</li>
 </ul>
 <p><a href="#top">Back to top</a></p>
@@ -589,7 +591,7 @@ John Doe    789-234-4567
 </ul>
 <p><a name="__name__"></a></p>
 <h2 id="the-__name__-variable">The <code>__name__</code> Variable</h2>
-<p>Why do I have <code>if __name__ == '__main__':</code> in the above code snippet?</p>
+<p>What does <code>if __name__ == '__main__':</code> do, and why do I have it in my program?</p>
 <p>Suppose someone (maybe you) wanted to <code>import</code> this <code>phonebook.py</code> script into another program. Maybe you want to do this so you could write tests for the program (which we'll cover later), or because you wanted to make a web front-end to the program. You would probably want some code that executes only if the script is executed directly (e.g. by calling <code>python phonebook.py</code> on the command line) that is <em>not</em> executed when you <code>import</code> the script into another Python program.</p>
 <p>This is exactly what the <code>if __name__ == '__main__'</code> code block is for. <code>__name__</code> is a variable whose value will be <code>__main__</code> if the script was executed directly (e.g. by <code>python phonebook.py</code>) and otherwise will be the name of the module, (e.g. <code>phonebook</code>).</p>
 <p>To make this a bit more concrete, let's make some example scripts:</p>
@@ -643,6 +645,7 @@ John Doe    789-234-4567
 
 <p>Viola! So that's what the <code>if __name__ == '__main__'</code> statement does. We'll be adding some code that we don't want to execute when we <code>import phonebook</code> into this code block.</p>
 <p><a href="#top">Back to top</a></p>
+<p><a name="map"></a></p>
 <h2 id="mapping-commands-to-functions">Mapping commands to functions</h2>
 <p>Having an <code>if</code>/<code>elif</code> statement for each of our commands is kind of ugly. Instead, try creating a dictionary mapping the commands to their corresponding functions, like this:</p>
 <div class="highlight"><pre><span class="n">command_funcs</span> <span class="o">=</span> <span class="p">{</span>
