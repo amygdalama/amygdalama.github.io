@@ -140,7 +140,7 @@
 
 
 &lt;p&gt;So, how do we better understand what's happening inside this expression?&lt;/p&gt;
-&lt;h2&gt;A Mental Model&lt;/h2&gt;
+&lt;h2 id="a-mental-model"&gt;A Mental Model&lt;/h2&gt;
 &lt;p&gt;Let's look at a specific example of our expression and examine a mental model -- which may or may not be correct -- for what's happening to the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; inside the expression.&lt;/p&gt;
 &lt;p&gt;I said earlier that &lt;code&gt;things&lt;/code&gt; needs to be an iterable. So, presumably, &lt;code&gt;things&lt;/code&gt; could be a string. Let's try:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;things&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;012&amp;#39;&lt;/span&gt;
@@ -214,7 +214,7 @@
 
 &lt;p&gt;This results in an error because you can't concatenate a string and a list.&lt;/p&gt;
 &lt;p&gt;Is my mental model correct? We can tell that the model ultimately returns the same value as the expression, but how can we tell if these are really the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each step?&lt;/p&gt;
-&lt;h2&gt;Testing the Model&lt;/h2&gt;
+&lt;h2 id="testing-the-model"&gt;Testing the Model&lt;/h2&gt;
 &lt;p&gt;We'll need to figure out some clever way of printing or storing the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each step.&lt;/p&gt;
 &lt;p&gt;Let's recall the original expression:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
@@ -234,7 +234,7 @@
 
 
 &lt;p&gt;Let's apply the mental model to help us understand this example.&lt;/p&gt;
-&lt;h4&gt;Step 1:&lt;/h4&gt;
+&lt;h4 id="step-1"&gt;Step 1:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
   &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
 
@@ -247,7 +247,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4&gt;Step 2:&lt;/h4&gt;
+&lt;h4 id="step-2"&gt;Step 2:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
   &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
 
@@ -259,7 +259,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4&gt;Step 3:&lt;/h4&gt;
+&lt;h4 id="step-3"&gt;Step 3:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
   &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
 
@@ -286,16 +286,16 @@
 
 
 &lt;p&gt;Victory! But what does this mean?&lt;/p&gt;
-&lt;h2&gt;Wait what were we trying to do again?&lt;/h2&gt;
+&lt;h2 id="wait-what-were-we-trying-to-do-again"&gt;Wait what were we trying to do again?&lt;/h2&gt;
 &lt;p&gt;We've been attempting to understand what happens inside a &lt;code&gt;reduce&lt;/code&gt; function. We developed a mental model for what happens to the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each iteration, and we came up with a way to test to see if the mental model was accurate. And it was!&lt;/p&gt;
 &lt;p&gt;I think this might be one of those posts that is less about what I intended it to be about (dissecting the &lt;code&gt;reduce&lt;/code&gt; function) and more about the approach I would take to accomplish what I intended it to be about. Meta, sinners.&lt;/p&gt;</summary><category term="hacker school"></category><category term="python"></category><category term="functional programming"></category></entry><entry><title>A Love Affair With Broken Things</title><link href="http://amygdalama.github.io/a-love-affair-with-broken-things.html" rel="alternate"></link><updated>2014-03-31T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-31:a-love-affair-with-broken-things.html</id><summary type="html">&lt;p&gt;I love broken things, unfinished things, breaking things, unfinishing things. Broken and unfinished things allow you to see the process in which they were created; their most intimate secrets are exposed.&lt;/p&gt;
-&lt;h2&gt;Broken Statues&lt;/h2&gt;
+&lt;h2 id="broken-statues"&gt;Broken Statues&lt;/h2&gt;
 &lt;p&gt;A week ago, inside &lt;a href="http://www.metmuseum.org/en"&gt;The Metropolitan Museum of Art&lt;/a&gt;, my love for broken things was realized. Just &lt;em&gt;look&lt;/em&gt; at these. They're so &lt;em&gt;naked, vulnerable&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="some ladies, broken" src="/images/broken_ladies.JPG" title="broken ladies" /&gt;
 &lt;img alt="a face, broken" src="/images/broken_face.JPG" title="broken face" /&gt;
 &lt;img alt="a torso, broken" src="/images/broken_torso.JPG" title="broken torso" /&gt;&lt;/p&gt;
 &lt;p&gt;Okay so some of them are literally naked, but you get the point. When a statue is broken, you can sneak a peek inside! You get so many clues about how it was made! Is it hollow? What's it made out of? Is the material on the outside the same as the inside? Does it have a frame?&lt;/p&gt;
-&lt;h2&gt;Breaking Code&lt;/h2&gt;
+&lt;h2 id="breaking-code"&gt;Breaking Code&lt;/h2&gt;
 &lt;p&gt;While I can't bring myself to break art to get clues about the process of its creation, I &lt;em&gt;can&lt;/em&gt; break code! Breaking code is free and doesn't hurt anyone! (As long as you keep it local...) I do this quite a bit as a method of learning - removing the pieces of code that you don't understand reveals the purpose of those pieces. It's like removing the arm of a statue to look inside.&lt;/p&gt;
 &lt;p&gt;Let's look at some code from Mary Rose Cook's functional programming &lt;a href="http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming"&gt;tutorial&lt;/a&gt; (which is amazing, and you should absolutely read it and do the exercises and spend time understanding it completely if you're at all interested in functional programming). We won't understand the code at first (or at least &lt;em&gt;I&lt;/em&gt; won't), but we'll take apart the pieces of the code in an attempt to better understand their purpose.&lt;/p&gt;
 &lt;p&gt;Mary aptly explains what Python's builtin &lt;code&gt;map&lt;/code&gt; function does:&lt;/p&gt;

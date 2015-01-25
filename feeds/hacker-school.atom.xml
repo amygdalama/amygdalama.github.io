@@ -5,7 +5,7 @@
 &lt;p&gt;This challenge is inspired by Iron Blogger, which requires participants to blog once a week, and if you miss a week, you owe $5. Mike Walker, from the Fall 2013 batch of Hacker School, &lt;a href="http://blog.lazerwalker.com/blog/2013/12/24/one-post-a-week-running-an-iron-blogger-challenge"&gt;wrote extensively&lt;/a&gt; about Iron Blogger.  &lt;/p&gt;
 &lt;p&gt;The difference with Iron Maker, or Iron Forger, or Iron Something-Clever-That-Will-Hopefully-Come-To-Me-In-The-Near-Future, is that we will be completing small, self-contained programming projects, rather than writing blog posts.  &lt;/p&gt;
 &lt;p&gt;Specifically, I want to work on projects that take about 4-8 hours to complete, and center around making, for lack of a better word, a &lt;em&gt;product&lt;/em&gt;. &lt;/p&gt;
-&lt;h2&gt;Criteria&lt;/h2&gt;
+&lt;h2 id="criteria"&gt;Criteria&lt;/h2&gt;
 &lt;p&gt;A few days ago, I &lt;a href="https://twitter.com/amygdalama/status/456950130286292992"&gt;asked Twitter&lt;/a&gt; for project ideas, but I hadn't yet figured out how to explicitly define criteria for what I was looking for. &lt;a href="https://twitter.com/moss"&gt;Moss Collum&lt;/a&gt; responded with an excellent &lt;a href="http://makingcodespeak.com/2014/04/18/tiny-projects.html"&gt;blog post&lt;/a&gt;, which includes some defining characteristics of good projects:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;ul&gt;
@@ -16,13 +16,13 @@
 &lt;li&gt;&lt;strong&gt;Fun&lt;/strong&gt;: The problem should be something I can care about enough to stay engaged.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
-&lt;h2&gt;Purpose&lt;/h2&gt;
+&lt;h2 id="purpose"&gt;Purpose&lt;/h2&gt;
 &lt;p&gt;These projects are not intended to result in products that people will actually use. Instead, the intention is to get exposure to new tools and concepts and to practice making software design decisions. &lt;/p&gt;
-&lt;h2&gt;Suggested Projects&lt;/h2&gt;
+&lt;h2 id="suggested-projects"&gt;Suggested Projects&lt;/h2&gt;
 &lt;p&gt;I'll be maintaining a &lt;a href="https://github.com/amygdalama/programming-projects"&gt;list&lt;/a&gt; of suggested projects on GitHub. I'm trying to keep the list short, manageable, and high-quality, so I'm only adding projects that I'm committed to working on, and then for each project I'll be adding details on how long it took and what parts were fun/challenging/easy/boring.&lt;/p&gt;
 &lt;p&gt;The repo also contains a list of resources with much more extensive project lists. If I'm missing any good resources, of if you've completed any small projects that have been particularly enlightening, please submit a pull request or create an issue! &lt;/p&gt;</summary><category term="hacker school"></category></entry><entry><title>Hacker School Day 2: Goals! Or, A Grasp For Sanity</title><link href="http://amygdalama.github.io/hacker-school-day-2-goals.html" rel="alternate"></link><updated>2014-02-12T10:02:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-12:hacker-school-day-2-goals.html</id><summary type="html">&lt;p&gt;I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
 collaborate on I felt a bit like:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/allthetennisballs.gif" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/allthetennisballs.gif" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;(Credit to Hacker School alumnus Alex Beaulne for finding this perfect
 gif.)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;In an attempt to regain a bit of sanity, yesterday I prioritized setting
@@ -34,7 +34,7 @@ be found on my &lt;a href="https://github.com/amygdalama/hacker-school-progress"
 ensure that what I set out to accomplish aligned with my values and my
 motivations for attending Hacker School. These lists are ranked somewhat
 by importance, but probably aren't perfectly ordered.&lt;/p&gt;
-&lt;h3&gt;What do I want to get out of Hacker School?&lt;/h3&gt;
+&lt;h3 id="what-do-i-want-to-get-out-of-hacker-school"&gt;What do I want to get out of Hacker School?&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Greater confidence, honesty, self-awareness, bravery&lt;/li&gt;
 &lt;li&gt;Gain expertise in Python, Data Analysis, Machine Learning (currently
@@ -43,7 +43,7 @@ by importance, but probably aren't perfectly ordered.&lt;/p&gt;
     to achieve greatness&lt;/li&gt;
 &lt;li&gt;Frankly, a job&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;What do I want to accomplish at Hacker School?&lt;/h3&gt;
+&lt;h3 id="what-do-i-want-to-accomplish-at-hacker-school"&gt;What do I want to accomplish at Hacker School?&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;One large (1-month) project which
     requires pulling data from many sources and applying a recommender
@@ -73,7 +73,7 @@ but not entirely certain it's not all just a dream.&lt;/p&gt;
 adventure. Hacker School is self-described as a writers' retreat for
 programmers. I've heard other Hacker Schoolers struggle to explain it as
 a day spa for programmers, a hippie commune programming cult (okay, that
-one was me), not a school, not necessarily for &lt;a href="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/hackers-movie.jpg"&gt;these&lt;/a&gt; kind of
+one was me), not a school, not necessarily for &lt;a href="http://amygdalama.github.io/images/hackers-movie.jpg"&gt;these&lt;/a&gt; kind of
 Hackers, and more. The Hacker School founders and facilitators have
 written extensively about what Hacker School is and is not, so dig into
 their blog if you're curious. It's difficult to define, and they do a
@@ -87,7 +87,7 @@ before. In turn she showed me some regression modeling in R.&lt;/p&gt;
 &lt;p&gt;I also got to play with HS's resident Apple II. One of the other Hacker
 Schoolers wrote a simple for loop to print out "DONG" 100 times. Why
 would you do anything else?&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/appleiidong.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/appleiidong.jpg" /&gt;&lt;/p&gt;
 &lt;p&gt;I am supremely honored and excited as Hell to be at Hacker School. For
 the next three months, I will be surrounded by intellectually curious
 nerds who are more thoughtful and self-aware than most people I know. I

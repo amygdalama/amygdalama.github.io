@@ -46,7 +46,7 @@
 </footer><!-- /.post-info --><p>At <a href="https://www.hackerschool.com/">Hacker School</a>, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!</p>
 <p>Although this project started as a joke, I've quickly descended so deeply into Python internals that I've, with the guidance of the fabulous Hacker School facilitator <a href="http://akaptur.github.io/">Allison Kaptur</a>, made edits to the CPython source code, and compiled a Python to compile a Python. All to replace the <code>import</code> statement with <code>accio</code>.</p>
 <p>But before we get into compiling the Harry Potter Python I lovingly call Nagini, let's first talk about some Python internals basics, with spells as examples, of course.</p>
-<h1>Overwriting Builtin Functions</h1>
+<h1 id="overwriting-builtin-functions">Overwriting Builtin Functions</h1>
 <p>Python builtin functions are stored in a module called <code>__builtins__</code> that's automatically imported on startup.</p>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">)</span>
 <span class="go">[&#39;ArithmeticError&#39;, &#39;AssertionError&#39;, &#39;AttributeError&#39;, &#39;BaseException&#39;, &#39;BufferError&#39;, &#39;BytesWarning&#39;, &#39;DeprecationWarning&#39;, &#39;EOFError&#39;, &#39;Ellipsis&#39;, &#39;EnvironmentError&#39;, &#39;Exception&#39;, &#39;False&#39;, &#39;FloatingPointError&#39;, &#39;FutureWarning&#39;, &#39;GeneratorExit&#39;, &#39;IOError&#39;, &#39;ImportError&#39;, &#39;ImportWarning&#39;, &#39;IndentationError&#39;, &#39;IndexError&#39;, &#39;KeyError&#39;, &#39;KeyboardInterrupt&#39;, &#39;LookupError&#39;, &#39;MemoryError&#39;, &#39;NameError&#39;, &#39;None&#39;, &#39;NotImplemented&#39;, &#39;NotImplementedError&#39;, &#39;OSError&#39;, &#39;OverflowError&#39;, &#39;PendingDeprecationWarning&#39;, &#39;ReferenceError&#39;, &#39;RuntimeError&#39;, &#39;RuntimeWarning&#39;, &#39;StandardError&#39;, &#39;StopIteration&#39;, &#39;SyntaxError&#39;, &#39;SyntaxWarning&#39;, &#39;SystemError&#39;, &#39;SystemExit&#39;, &#39;TabError&#39;, &#39;True&#39;, &#39;TypeError&#39;, &#39;UnboundLocalError&#39;, &#39;UnicodeDecodeError&#39;, &#39;UnicodeEncodeError&#39;, &#39;UnicodeError&#39;, &#39;UnicodeTranslateError&#39;, &#39;UnicodeWarning&#39;, &#39;UserWarning&#39;, &#39;ValueError&#39;, &#39;Warning&#39;, &#39;ZeroDivisionError&#39;, &#39;_&#39;, &#39;__debug__&#39;, &#39;__doc__&#39;, &#39;__import__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;abs&#39;, &#39;all&#39;, &#39;any&#39;, &#39;apply&#39;, &#39;basestring&#39;, &#39;bin&#39;, &#39;bool&#39;, &#39;buffer&#39;, &#39;bytearray&#39;, &#39;bytes&#39;, &#39;callable&#39;, &#39;chr&#39;, &#39;classmethod&#39;, &#39;cmp&#39;, &#39;coerce&#39;, &#39;compile&#39;, &#39;complex&#39;, &#39;copyright&#39;, &#39;credits&#39;, &#39;delattr&#39;, &#39;dict&#39;, &#39;dir&#39;, &#39;divmod&#39;, &#39;enumerate&#39;, &#39;eval&#39;, &#39;execfile&#39;, &#39;exit&#39;, &#39;file&#39;, &#39;filter&#39;, &#39;float&#39;, &#39;format&#39;, &#39;frozenset&#39;, &#39;getattr&#39;, &#39;globals&#39;, &#39;hasattr&#39;, &#39;hash&#39;, &#39;help&#39;, &#39;hex&#39;, &#39;id&#39;, &#39;input&#39;, &#39;int&#39;, &#39;intern&#39;, &#39;isinstance&#39;, &#39;issubclass&#39;, &#39;iter&#39;, &#39;len&#39;, &#39;license&#39;, &#39;list&#39;, &#39;locals&#39;, &#39;long&#39;, &#39;map&#39;, &#39;max&#39;, &#39;memoryview&#39;, &#39;min&#39;, &#39;next&#39;, &#39;object&#39;, &#39;oct&#39;, &#39;open&#39;, &#39;ord&#39;, &#39;pow&#39;, &#39;print&#39;, &#39;property&#39;, &#39;quit&#39;, &#39;range&#39;, &#39;raw_input&#39;, &#39;reduce&#39;, &#39;reload&#39;, &#39;repr&#39;, &#39;reversed&#39;, &#39;round&#39;, &#39;set&#39;, &#39;setattr&#39;, &#39;slice&#39;, &#39;sorted&#39;, &#39;staticmethod&#39;, &#39;str&#39;, &#39;sum&#39;, &#39;super&#39;, &#39;tuple&#39;, &#39;type&#39;, &#39;unichr&#39;, &#39;unicode&#39;, &#39;vars&#39;, &#39;xrange&#39;, &#39;zip&#39;]</span>
@@ -134,7 +134,7 @@
 
 <p>Kind of! Although I want <code>import os</code> to be a <code>SyntaxError</code> rather than an <code>ImportError</code> because clearly <code>import</code> is the wrong thing to type and the user should know to type <code>accio</code> instead.</p>
 <p>So, to completely overwrite <code>import</code> with <code>accio</code>, we'll need to learn where Python defines statements.</p>
-<h1>Grammar</h1>
+<h1 id="grammar">Grammar</h1>
 <p>Eli Bendersky wrote a great <a href="http://eli.thegreenplace.net/2010/06/30/python-internals-adding-a-new-statement-to-python/">blog post</a> about adding an <code>until</code> statement to Python. Since we want to <em>replace</em> a statement, rather than add one, our method will be a bit different.</p>
 <p>Regardless, it looks like the place to start for changing Python's statements is in the <code>Grammar</code> file in the Python <a href="http://docs.python.org/devguide/setup.html">source code</a>. <strong>Python source code!</strong> Isn't this <em>fun?!</em></p>
 <p>Python's source code is stored in a Mercurial repository, so first we'll have to install Mercurial.</p>
@@ -202,7 +202,7 @@
 
 
 <p>Aha! This script is executed via our environment Python! Our environment Python only understands <code>import</code>. So <code>keyword.py</code> needs to have <code>import</code> and not <code>accio</code>. However, since we got a <code>SyntaxError</code> on an <code>import</code> statement, that must mean that at least sometimes during the process of compiling we're required to use <code>accio</code> instead of <code>import</code>. Hrm... Any ideas?</p>
-<h1>Yo Dawg, I Heard You Like Pythons</h1>
+<h1 id="yo-dawg-i-heard-you-like-pythons">Yo Dawg, I Heard You Like Pythons</h1>
 <p>What if we did something crazy like compiled an intermediary Python that understands <em>both</em> <code>accio</code> <em>and</em> <code>import</code>, and used <em>that</em> Python to compile <em>another</em> Python that only understands <code>accio</code>? (Full credit for this idea goes to <a href="http://akaptur.github.io/">Allison Kaptur</a>.)</p>
 <p>So, for our intermediary Python we'll need to edit the <code>Grammar</code> file like so:</p>
 <div class="highlight"><pre><span class="n">import_name</span><span class="p">:</span> <span class="s">&#39;import&#39;</span> <span class="n">dotted_as_names</span> <span class="o">|</span> <span class="s">&#39;accio&#39;</span> <span class="n">dotted_as_names</span>
@@ -272,7 +272,7 @@
 
 
 <p>HOLY SHIT IT WORKS!</p>
-<h1>Fin</h1>
+<h1 id="fin">Fin</h1>
 <p>That's it. We just compiled two Pythons and fooled around with source code for the sake of a joke. Grab yourselves a beer, friends. Victory.</p>
 <p>My super messy and not-really-prepared-for-the-general-public GitHub <a href="https://github.com/amygdalama/nagini">repo</a> contains both versions of Python, for reference.</p>
                     <p>    <!-- <p> -->

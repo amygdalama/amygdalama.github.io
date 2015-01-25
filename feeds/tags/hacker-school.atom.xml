@@ -5,7 +5,7 @@
 &lt;p&gt;This challenge is inspired by Iron Blogger, which requires participants to blog once a week, and if you miss a week, you owe $5. Mike Walker, from the Fall 2013 batch of Hacker School, &lt;a href="http://blog.lazerwalker.com/blog/2013/12/24/one-post-a-week-running-an-iron-blogger-challenge"&gt;wrote extensively&lt;/a&gt; about Iron Blogger.  &lt;/p&gt;
 &lt;p&gt;The difference with Iron Maker, or Iron Forger, or Iron Something-Clever-That-Will-Hopefully-Come-To-Me-In-The-Near-Future, is that we will be completing small, self-contained programming projects, rather than writing blog posts.  &lt;/p&gt;
 &lt;p&gt;Specifically, I want to work on projects that take about 4-8 hours to complete, and center around making, for lack of a better word, a &lt;em&gt;product&lt;/em&gt;. &lt;/p&gt;
-&lt;h2&gt;Criteria&lt;/h2&gt;
+&lt;h2 id="criteria"&gt;Criteria&lt;/h2&gt;
 &lt;p&gt;A few days ago, I &lt;a href="https://twitter.com/amygdalama/status/456950130286292992"&gt;asked Twitter&lt;/a&gt; for project ideas, but I hadn't yet figured out how to explicitly define criteria for what I was looking for. &lt;a href="https://twitter.com/moss"&gt;Moss Collum&lt;/a&gt; responded with an excellent &lt;a href="http://makingcodespeak.com/2014/04/18/tiny-projects.html"&gt;blog post&lt;/a&gt;, which includes some defining characteristics of good projects:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;ul&gt;
@@ -16,9 +16,9 @@
 &lt;li&gt;&lt;strong&gt;Fun&lt;/strong&gt;: The problem should be something I can care about enough to stay engaged.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
-&lt;h2&gt;Purpose&lt;/h2&gt;
+&lt;h2 id="purpose"&gt;Purpose&lt;/h2&gt;
 &lt;p&gt;These projects are not intended to result in products that people will actually use. Instead, the intention is to get exposure to new tools and concepts and to practice making software design decisions. &lt;/p&gt;
-&lt;h2&gt;Suggested Projects&lt;/h2&gt;
+&lt;h2 id="suggested-projects"&gt;Suggested Projects&lt;/h2&gt;
 &lt;p&gt;I'll be maintaining a &lt;a href="https://github.com/amygdalama/programming-projects"&gt;list&lt;/a&gt; of suggested projects on GitHub. I'm trying to keep the list short, manageable, and high-quality, so I'm only adding projects that I'm committed to working on, and then for each project I'll be adding details on how long it took and what parts were fun/challenging/easy/boring.&lt;/p&gt;
 &lt;p&gt;The repo also contains a list of resources with much more extensive project lists. If I'm missing any good resources, of if you've completed any small projects that have been particularly enlightening, please submit a pull request or create an issue! &lt;/p&gt;</summary><category term="hacker school"></category></entry><entry><title>Dissecting the Reduce Function</title><link href="http://amygdalama.github.io/dissecting-the-reduce-function.html" rel="alternate"></link><updated>2014-04-07T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-07:dissecting-the-reduce-function.html</id><summary type="html">&lt;p&gt;Good morning, &lt;a href="http://www.vice.com/columns/good-morning-sinners-with-warren-ellis"&gt;sinners&lt;/a&gt;. Today we're going to figure out what the hell is going on inside a Python expression like:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
@@ -41,7 +41,7 @@
 
 
 &lt;p&gt;So, how do we better understand what's happening inside this expression?&lt;/p&gt;
-&lt;h2&gt;A Mental Model&lt;/h2&gt;
+&lt;h2 id="a-mental-model"&gt;A Mental Model&lt;/h2&gt;
 &lt;p&gt;Let's look at a specific example of our expression and examine a mental model -- which may or may not be correct -- for what's happening to the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; inside the expression.&lt;/p&gt;
 &lt;p&gt;I said earlier that &lt;code&gt;things&lt;/code&gt; needs to be an iterable. So, presumably, &lt;code&gt;things&lt;/code&gt; could be a string. Let's try:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;things&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;012&amp;#39;&lt;/span&gt;
@@ -115,7 +115,7 @@
 
 &lt;p&gt;This results in an error because you can't concatenate a string and a list.&lt;/p&gt;
 &lt;p&gt;Is my mental model correct? We can tell that the model ultimately returns the same value as the expression, but how can we tell if these are really the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each step?&lt;/p&gt;
-&lt;h2&gt;Testing the Model&lt;/h2&gt;
+&lt;h2 id="testing-the-model"&gt;Testing the Model&lt;/h2&gt;
 &lt;p&gt;We'll need to figure out some clever way of printing or storing the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each step.&lt;/p&gt;
 &lt;p&gt;Let's recall the original expression:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[])&lt;/span&gt;
@@ -135,7 +135,7 @@
 
 
 &lt;p&gt;Let's apply the mental model to help us understand this example.&lt;/p&gt;
-&lt;h4&gt;Step 1:&lt;/h4&gt;
+&lt;h4 id="step-1"&gt;Step 1:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
   &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
 
@@ -148,7 +148,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4&gt;Step 2:&lt;/h4&gt;
+&lt;h4 id="step-2"&gt;Step 2:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
   &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
 
@@ -160,7 +160,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4&gt;Step 3:&lt;/h4&gt;
+&lt;h4 id="step-3"&gt;Step 3:&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;things&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
   &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
 
@@ -187,7 +187,7 @@
 
 
 &lt;p&gt;Victory! But what does this mean?&lt;/p&gt;
-&lt;h2&gt;Wait what were we trying to do again?&lt;/h2&gt;
+&lt;h2 id="wait-what-were-we-trying-to-do-again"&gt;Wait what were we trying to do again?&lt;/h2&gt;
 &lt;p&gt;We've been attempting to understand what happens inside a &lt;code&gt;reduce&lt;/code&gt; function. We developed a mental model for what happens to the values of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;x&lt;/code&gt; at each iteration, and we came up with a way to test to see if the mental model was accurate. And it was!&lt;/p&gt;
 &lt;p&gt;I think this might be one of those posts that is less about what I intended it to be about (dissecting the &lt;code&gt;reduce&lt;/code&gt; function) and more about the approach I would take to accomplish what I intended it to be about. Meta, sinners.&lt;/p&gt;</summary><category term="hacker school"></category><category term="python"></category><category term="functional programming"></category></entry><entry><title>After Six Months of Learning The Python, I Can Finally Print "Hello World!"</title><link href="http://amygdalama.github.io/after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="alternate"></link><updated>2014-04-01T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-04-01:after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html</id><summary type="html">&lt;p&gt;I've been trying to learn how to write a function in the Python that prints two words, only two, "Hello World." I've been trying for six months. And today, friends, I've done it.&lt;/p&gt;
 &lt;p&gt;I've read so many places that you can make print statements in the Python like so:&lt;/p&gt;
@@ -253,13 +253,13 @@
 
 &lt;p&gt;Neat! We don't need the &lt;code&gt;"def bar():"&lt;/code&gt; part in the string we pass to &lt;code&gt;compile&lt;/code&gt; because at this point, &lt;code&gt;bar&lt;/code&gt; already exists and we're just overwriting the code in the body of the &lt;code&gt;bar&lt;/code&gt; function.&lt;/p&gt;
 &lt;p&gt;Share in the comments if you know of any other ways to print statements in the Python!&lt;/p&gt;</summary><category term="python"></category><category term="python internals"></category><category term="hello world"></category><category term="hacker school"></category></entry><entry><title>A Love Affair With Broken Things</title><link href="http://amygdalama.github.io/a-love-affair-with-broken-things.html" rel="alternate"></link><updated>2014-03-31T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-31:a-love-affair-with-broken-things.html</id><summary type="html">&lt;p&gt;I love broken things, unfinished things, breaking things, unfinishing things. Broken and unfinished things allow you to see the process in which they were created; their most intimate secrets are exposed.&lt;/p&gt;
-&lt;h2&gt;Broken Statues&lt;/h2&gt;
+&lt;h2 id="broken-statues"&gt;Broken Statues&lt;/h2&gt;
 &lt;p&gt;A week ago, inside &lt;a href="http://www.metmuseum.org/en"&gt;The Metropolitan Museum of Art&lt;/a&gt;, my love for broken things was realized. Just &lt;em&gt;look&lt;/em&gt; at these. They're so &lt;em&gt;naked, vulnerable&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="some ladies, broken" src="/images/broken_ladies.JPG" title="broken ladies" /&gt;
 &lt;img alt="a face, broken" src="/images/broken_face.JPG" title="broken face" /&gt;
 &lt;img alt="a torso, broken" src="/images/broken_torso.JPG" title="broken torso" /&gt;&lt;/p&gt;
 &lt;p&gt;Okay so some of them are literally naked, but you get the point. When a statue is broken, you can sneak a peek inside! You get so many clues about how it was made! Is it hollow? What's it made out of? Is the material on the outside the same as the inside? Does it have a frame?&lt;/p&gt;
-&lt;h2&gt;Breaking Code&lt;/h2&gt;
+&lt;h2 id="breaking-code"&gt;Breaking Code&lt;/h2&gt;
 &lt;p&gt;While I can't bring myself to break art to get clues about the process of its creation, I &lt;em&gt;can&lt;/em&gt; break code! Breaking code is free and doesn't hurt anyone! (As long as you keep it local...) I do this quite a bit as a method of learning - removing the pieces of code that you don't understand reveals the purpose of those pieces. It's like removing the arm of a statue to look inside.&lt;/p&gt;
 &lt;p&gt;Let's look at some code from Mary Rose Cook's functional programming &lt;a href="http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming"&gt;tutorial&lt;/a&gt; (which is amazing, and you should absolutely read it and do the exercises and spend time understanding it completely if you're at all interested in functional programming). We won't understand the code at first (or at least &lt;em&gt;I&lt;/em&gt; won't), but we'll take apart the pieces of the code in an attempt to better understand their purpose.&lt;/p&gt;
 &lt;p&gt;Mary aptly explains what Python's builtin &lt;code&gt;map&lt;/code&gt; function does:&lt;/p&gt;
@@ -467,7 +467,7 @@
 &lt;p&gt;The code for this blog post is on &lt;a href="https://github.com/amygdalama/builtins"&gt;GitHub&lt;/a&gt;, of course.&lt;/p&gt;</summary><category term="python"></category><category term="builtins"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>Replacing import with accio: A Dive into Bootstrapping and Python's Grammar</title><link href="http://amygdalama.github.io/import-accio-bootstrapping-python-grammar.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-14:import-accio-bootstrapping-python-grammar.html</id><summary type="html">&lt;p&gt;At &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;, I've been building an alternate universe Python by overwriting builtin functions and statements with Harry Potter spells. This is a thing you can do at Hacker School!&lt;/p&gt;
 &lt;p&gt;Although this project started as a joke, I've quickly descended so deeply into Python internals that I've, with the guidance of the fabulous Hacker School facilitator &lt;a href="http://akaptur.github.io/"&gt;Allison Kaptur&lt;/a&gt;, made edits to the CPython source code, and compiled a Python to compile a Python. All to replace the &lt;code&gt;import&lt;/code&gt; statement with &lt;code&gt;accio&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;But before we get into compiling the Harry Potter Python I lovingly call Nagini, let's first talk about some Python internals basics, with spells as examples, of course.&lt;/p&gt;
-&lt;h1&gt;Overwriting Builtin Functions&lt;/h1&gt;
+&lt;h1 id="overwriting-builtin-functions"&gt;Overwriting Builtin Functions&lt;/h1&gt;
 &lt;p&gt;Python builtin functions are stored in a module called &lt;code&gt;__builtins__&lt;/code&gt; that's automatically imported on startup.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;dir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;[&amp;#39;ArithmeticError&amp;#39;, &amp;#39;AssertionError&amp;#39;, &amp;#39;AttributeError&amp;#39;, &amp;#39;BaseException&amp;#39;, &amp;#39;BufferError&amp;#39;, &amp;#39;BytesWarning&amp;#39;, &amp;#39;DeprecationWarning&amp;#39;, &amp;#39;EOFError&amp;#39;, &amp;#39;Ellipsis&amp;#39;, &amp;#39;EnvironmentError&amp;#39;, &amp;#39;Exception&amp;#39;, &amp;#39;False&amp;#39;, &amp;#39;FloatingPointError&amp;#39;, &amp;#39;FutureWarning&amp;#39;, &amp;#39;GeneratorExit&amp;#39;, &amp;#39;IOError&amp;#39;, &amp;#39;ImportError&amp;#39;, &amp;#39;ImportWarning&amp;#39;, &amp;#39;IndentationError&amp;#39;, &amp;#39;IndexError&amp;#39;, &amp;#39;KeyError&amp;#39;, &amp;#39;KeyboardInterrupt&amp;#39;, &amp;#39;LookupError&amp;#39;, &amp;#39;MemoryError&amp;#39;, &amp;#39;NameError&amp;#39;, &amp;#39;None&amp;#39;, &amp;#39;NotImplemented&amp;#39;, &amp;#39;NotImplementedError&amp;#39;, &amp;#39;OSError&amp;#39;, &amp;#39;OverflowError&amp;#39;, &amp;#39;PendingDeprecationWarning&amp;#39;, &amp;#39;ReferenceError&amp;#39;, &amp;#39;RuntimeError&amp;#39;, &amp;#39;RuntimeWarning&amp;#39;, &amp;#39;StandardError&amp;#39;, &amp;#39;StopIteration&amp;#39;, &amp;#39;SyntaxError&amp;#39;, &amp;#39;SyntaxWarning&amp;#39;, &amp;#39;SystemError&amp;#39;, &amp;#39;SystemExit&amp;#39;, &amp;#39;TabError&amp;#39;, &amp;#39;True&amp;#39;, &amp;#39;TypeError&amp;#39;, &amp;#39;UnboundLocalError&amp;#39;, &amp;#39;UnicodeDecodeError&amp;#39;, &amp;#39;UnicodeEncodeError&amp;#39;, &amp;#39;UnicodeError&amp;#39;, &amp;#39;UnicodeTranslateError&amp;#39;, &amp;#39;UnicodeWarning&amp;#39;, &amp;#39;UserWarning&amp;#39;, &amp;#39;ValueError&amp;#39;, &amp;#39;Warning&amp;#39;, &amp;#39;ZeroDivisionError&amp;#39;, &amp;#39;_&amp;#39;, &amp;#39;__debug__&amp;#39;, &amp;#39;__doc__&amp;#39;, &amp;#39;__import__&amp;#39;, &amp;#39;__name__&amp;#39;, &amp;#39;__package__&amp;#39;, &amp;#39;abs&amp;#39;, &amp;#39;all&amp;#39;, &amp;#39;any&amp;#39;, &amp;#39;apply&amp;#39;, &amp;#39;basestring&amp;#39;, &amp;#39;bin&amp;#39;, &amp;#39;bool&amp;#39;, &amp;#39;buffer&amp;#39;, &amp;#39;bytearray&amp;#39;, &amp;#39;bytes&amp;#39;, &amp;#39;callable&amp;#39;, &amp;#39;chr&amp;#39;, &amp;#39;classmethod&amp;#39;, &amp;#39;cmp&amp;#39;, &amp;#39;coerce&amp;#39;, &amp;#39;compile&amp;#39;, &amp;#39;complex&amp;#39;, &amp;#39;copyright&amp;#39;, &amp;#39;credits&amp;#39;, &amp;#39;delattr&amp;#39;, &amp;#39;dict&amp;#39;, &amp;#39;dir&amp;#39;, &amp;#39;divmod&amp;#39;, &amp;#39;enumerate&amp;#39;, &amp;#39;eval&amp;#39;, &amp;#39;execfile&amp;#39;, &amp;#39;exit&amp;#39;, &amp;#39;file&amp;#39;, &amp;#39;filter&amp;#39;, &amp;#39;float&amp;#39;, &amp;#39;format&amp;#39;, &amp;#39;frozenset&amp;#39;, &amp;#39;getattr&amp;#39;, &amp;#39;globals&amp;#39;, &amp;#39;hasattr&amp;#39;, &amp;#39;hash&amp;#39;, &amp;#39;help&amp;#39;, &amp;#39;hex&amp;#39;, &amp;#39;id&amp;#39;, &amp;#39;input&amp;#39;, &amp;#39;int&amp;#39;, &amp;#39;intern&amp;#39;, &amp;#39;isinstance&amp;#39;, &amp;#39;issubclass&amp;#39;, &amp;#39;iter&amp;#39;, &amp;#39;len&amp;#39;, &amp;#39;license&amp;#39;, &amp;#39;list&amp;#39;, &amp;#39;locals&amp;#39;, &amp;#39;long&amp;#39;, &amp;#39;map&amp;#39;, &amp;#39;max&amp;#39;, &amp;#39;memoryview&amp;#39;, &amp;#39;min&amp;#39;, &amp;#39;next&amp;#39;, &amp;#39;object&amp;#39;, &amp;#39;oct&amp;#39;, &amp;#39;open&amp;#39;, &amp;#39;ord&amp;#39;, &amp;#39;pow&amp;#39;, &amp;#39;print&amp;#39;, &amp;#39;property&amp;#39;, &amp;#39;quit&amp;#39;, &amp;#39;range&amp;#39;, &amp;#39;raw_input&amp;#39;, &amp;#39;reduce&amp;#39;, &amp;#39;reload&amp;#39;, &amp;#39;repr&amp;#39;, &amp;#39;reversed&amp;#39;, &amp;#39;round&amp;#39;, &amp;#39;set&amp;#39;, &amp;#39;setattr&amp;#39;, &amp;#39;slice&amp;#39;, &amp;#39;sorted&amp;#39;, &amp;#39;staticmethod&amp;#39;, &amp;#39;str&amp;#39;, &amp;#39;sum&amp;#39;, &amp;#39;super&amp;#39;, &amp;#39;tuple&amp;#39;, &amp;#39;type&amp;#39;, &amp;#39;unichr&amp;#39;, &amp;#39;unicode&amp;#39;, &amp;#39;vars&amp;#39;, &amp;#39;xrange&amp;#39;, &amp;#39;zip&amp;#39;]&lt;/span&gt;
@@ -555,7 +555,7 @@
 
 &lt;p&gt;Kind of! Although I want &lt;code&gt;import os&lt;/code&gt; to be a &lt;code&gt;SyntaxError&lt;/code&gt; rather than an &lt;code&gt;ImportError&lt;/code&gt; because clearly &lt;code&gt;import&lt;/code&gt; is the wrong thing to type and the user should know to type &lt;code&gt;accio&lt;/code&gt; instead.&lt;/p&gt;
 &lt;p&gt;So, to completely overwrite &lt;code&gt;import&lt;/code&gt; with &lt;code&gt;accio&lt;/code&gt;, we'll need to learn where Python defines statements.&lt;/p&gt;
-&lt;h1&gt;Grammar&lt;/h1&gt;
+&lt;h1 id="grammar"&gt;Grammar&lt;/h1&gt;
 &lt;p&gt;Eli Bendersky wrote a great &lt;a href="http://eli.thegreenplace.net/2010/06/30/python-internals-adding-a-new-statement-to-python/"&gt;blog post&lt;/a&gt; about adding an &lt;code&gt;until&lt;/code&gt; statement to Python. Since we want to &lt;em&gt;replace&lt;/em&gt; a statement, rather than add one, our method will be a bit different.&lt;/p&gt;
 &lt;p&gt;Regardless, it looks like the place to start for changing Python's statements is in the &lt;code&gt;Grammar&lt;/code&gt; file in the Python &lt;a href="http://docs.python.org/devguide/setup.html"&gt;source code&lt;/a&gt;. &lt;strong&gt;Python source code!&lt;/strong&gt; Isn't this &lt;em&gt;fun?!&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Python's source code is stored in a Mercurial repository, so first we'll have to install Mercurial.&lt;/p&gt;
@@ -623,7 +623,7 @@
 
 
 &lt;p&gt;Aha! This script is executed via our environment Python! Our environment Python only understands &lt;code&gt;import&lt;/code&gt;. So &lt;code&gt;keyword.py&lt;/code&gt; needs to have &lt;code&gt;import&lt;/code&gt; and not &lt;code&gt;accio&lt;/code&gt;. However, since we got a &lt;code&gt;SyntaxError&lt;/code&gt; on an &lt;code&gt;import&lt;/code&gt; statement, that must mean that at least sometimes during the process of compiling we're required to use &lt;code&gt;accio&lt;/code&gt; instead of &lt;code&gt;import&lt;/code&gt;. Hrm... Any ideas?&lt;/p&gt;
-&lt;h1&gt;Yo Dawg, I Heard You Like Pythons&lt;/h1&gt;
+&lt;h1 id="yo-dawg-i-heard-you-like-pythons"&gt;Yo Dawg, I Heard You Like Pythons&lt;/h1&gt;
 &lt;p&gt;What if we did something crazy like compiled an intermediary Python that understands &lt;em&gt;both&lt;/em&gt; &lt;code&gt;accio&lt;/code&gt; &lt;em&gt;and&lt;/em&gt; &lt;code&gt;import&lt;/code&gt;, and used &lt;em&gt;that&lt;/em&gt; Python to compile &lt;em&gt;another&lt;/em&gt; Python that only understands &lt;code&gt;accio&lt;/code&gt;? (Full credit for this idea goes to &lt;a href="http://akaptur.github.io/"&gt;Allison Kaptur&lt;/a&gt;.)&lt;/p&gt;
 &lt;p&gt;So, for our intermediary Python we'll need to edit the &lt;code&gt;Grammar&lt;/code&gt; file like so:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;import_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;import&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;dotted_as_names&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;accio&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;dotted_as_names&lt;/span&gt;
@@ -693,7 +693,7 @@
 
 
 &lt;p&gt;HOLY SHIT IT WORKS!&lt;/p&gt;
-&lt;h1&gt;Fin&lt;/h1&gt;
+&lt;h1 id="fin"&gt;Fin&lt;/h1&gt;
 &lt;p&gt;That's it. We just compiled two Pythons and fooled around with source code for the sake of a joke. Grab yourselves a beer, friends. Victory.&lt;/p&gt;
 &lt;p&gt;My super messy and not-really-prepared-for-the-general-public GitHub &lt;a href="https://github.com/amygdalama/nagini"&gt;repo&lt;/a&gt; contains both versions of Python, for reference.&lt;/p&gt;</summary><category term="python"></category><category term="harry potter"></category><category term="bootstrapping"></category><category term="cpython"></category><category term="compilers"></category><category term="grammar"></category><category term="hacker school"></category><category term="python internals"></category></entry><entry><title>GitHub Pages Publication with Git Hooks</title><link href="http://amygdalama.github.io/github-pages-publication-git-hooks.html" rel="alternate"></link><updated>2014-03-08T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-03-08:github-pages-publication-git-hooks.html</id><summary type="html">&lt;p&gt;As I &lt;a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html"&gt;wrote&lt;/a&gt; at length a couple weeks ago, this blog is hosted on &lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; and generated by &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. Generally the integration between the two is quite blissful, except for managing two separate repositories - &lt;a href="https://github.com/amygdalama/blog-source"&gt;blog-source&lt;/a&gt; for my blog's source content, configuration files, and theme, and &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;amygdalama.github.io&lt;/a&gt; for my Pelican-generated site.&lt;/p&gt;
 &lt;p&gt;Lately I've been pushing to these two separate repositories manually, so my workflow looks something like:&lt;/p&gt;
@@ -742,7 +742,7 @@ git push origin master
 
 
 &lt;p&gt;And that's it! Joyful automation!&lt;/p&gt;
-&lt;h2&gt;Edit&lt;/h2&gt;
+&lt;h2 id="edit"&gt;Edit&lt;/h2&gt;
 &lt;p&gt;&lt;em&gt;2014-03-14&lt;/em&gt;: Hacker Schooler Matthew Avant has a &lt;a href="http://www.mavant.com/4.html"&gt;superior&lt;/a&gt; method using a pre-push hook (rather than a post-commit hook). I'm using his method now :)&lt;/p&gt;</summary><category term="github pages"></category><category term="pelican"></category><category term="git"></category><category term="blogging"></category><category term="hacker school"></category></entry><entry><title>How Should I Learn Programming?</title><link href="http://amygdalama.github.io/how-should-i-learn-programming.html" rel="alternate"></link><updated>2014-02-23T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-23:how-should-i-learn-programming.html</id><summary type="html">&lt;p&gt;I rarely hear the question &lt;em&gt;"How should I learn programming?"&lt;/em&gt; from individuals who are just beginning to write code. Instead I hear way more specific variants like:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;What are the best sites for learning programming?&lt;/li&gt;
@@ -750,29 +750,29 @@ git push origin master
 &lt;li&gt;What's a good textbook...?&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;These are not very helpful questions to ask! Programming is not a subject in which you can just take a class or read a book and then "get it".&lt;/p&gt;
-&lt;h2&gt;Tutorials Are Boring&lt;/h2&gt;
+&lt;h2 id="tutorials-are-boring"&gt;Tutorials Are Boring&lt;/h2&gt;
 &lt;p&gt;Tutorials/books/online classes are good for learning the basics of a language (syntax, control flow like for-loops and if-statements, data types like strings, arrays, etc). You want to use tutorials to give you enough of a framework to know what problems can be solved through programming and what to google when you run into an issue or a bug. &lt;/p&gt;
 &lt;p&gt;At some point when you're taking an online class or going through a tutorial, you'll probably find that you no longer find it intellectually stimulating. This is okay! Tutorials are basically monkey-see, monkey-do. They &lt;em&gt;aren't&lt;/em&gt; intellectually stimulating (at least usually). When you get to this point, it is okay to quit the tutorial! Instead you should work on something that will satisfy your curiousity. You should write your own programs!&lt;/p&gt;
 &lt;p&gt;I only really started learning &lt;em&gt;how to program&lt;/em&gt;, i.e. how to solve a problem by myself from start to finish by writing code, when I strayed from tutorials. Instead I would think of interesting problems to solve (or find &lt;a href="https://www.kaggle.com/competitions"&gt;some&lt;/a&gt; &lt;a href="https://projecteuler.net/"&gt;online&lt;/a&gt;) and then struggle through creating solutions. This approach is similar to actual coding in the wild! However, it can be very scary for new programmers! &lt;/p&gt;
-&lt;h2&gt;Communities Are Inspiring&lt;/h2&gt;
+&lt;h2 id="communities-are-inspiring"&gt;Communities Are Inspiring&lt;/h2&gt;
 &lt;p&gt;Being surrounded by other humans who are learning programming and working on really interesting projects is an essential part of becoming a better programmer! I am &lt;em&gt;extremely&lt;/em&gt; fortunate to be a part of the epitome of this type of community at &lt;a href="https://www.hackerschool.com/"&gt;Hacker School&lt;/a&gt;. Being part of a group of programmers dedicated to learning and making cool things is quite inspiring, and you can probably find a group like this in your city, too! Many cities have &lt;a href="http://www.meetup.com/"&gt;Meetup&lt;/a&gt; groups related to programming. Join those! Go to hackathons! Meet friends that are better programmers than you! Get real humans to read your code and give you suggestions on how to improve! Pair program! These things, however, are terrifying! They are not easy! You will be exposing your weaknesses and lack of knowledge to other human beings! Oh dear! &lt;/p&gt;
-&lt;h2&gt;The Fear, You Will Let It Pass Through You&lt;/h2&gt;
-&lt;p&gt;&lt;img src="https://raw2.github.com/amygdalama/blog-source/master/content/images/paul_fear.jpg"&gt;&lt;/p&gt;
+&lt;h2 id="the-fear-you-will-let-it-pass-through-you"&gt;The Fear, You Will Let It Pass Through You&lt;/h2&gt;
+&lt;p&gt;&lt;img src="http://amygdalama.github.io/images/paul_fear.jpg"&gt;&lt;/p&gt;
 &lt;p&gt;This fear is totally reasonable! And there are so many more reasons to be afraid! Most of us are quite accustomed to learning in a very sequential way, in which we start with Chapter 1, and then once we finish Chapter 12, everyone assumes we know what we're talking about. Learning to code is very different from this, and foreign things can be scary! Also, working on solving problems on our own can be scary because maybe you aren't smart enough! And working on solving problems with others is scary because you might not be good at communicating your ideas! Or you might not be as good at programming as they are! Or maybe you picked the wrong programming language! Or maybe you're afraid of not putting in enough effort to really get anywhere! Or of working so much you get burnt out! There are many things to be afraid of. In fact, on the first day of Hacker School we made a list of these things:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Hacker Schoolers Are Nervous" src="https://raw2.github.com/amygdalama/blog-source/master/content/images/hs-nervous.jpeg" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Hacker Schoolers Are Nervous" src="http://amygdalama.github.io/images/hs-nervous.jpeg" /&gt;&lt;/p&gt;
 &lt;p&gt;See! Other people are afraid! Fear is normal!&lt;/p&gt;
 &lt;p&gt;It is essential to become aware of your fears. List them. Have someone read the list. You will probably giggle together. They are probably afraid, too.&lt;/p&gt;
-&lt;h2&gt;Fuck tutorials. Write a program. Send it to another human.&lt;/h2&gt;
+&lt;h2 id="fuck-tutorials-write-a-program-send-it-to-another-human"&gt;Fuck tutorials. Write a program. Send it to another human.&lt;/h2&gt;
 &lt;p&gt;You can send it to me! Here's my email: amyehanlon@gmail.com &amp;lt;3&lt;/p&gt;
 &lt;p&gt;A huge shoutout to the fabulous &lt;a href="http://melchua.com/"&gt;Mel Chua&lt;/a&gt; for talking through this post with me and giving me a better vocabulary and framework for understanding learning.&lt;/p&gt;</summary><category term="learning"></category><category term="hacker school"></category></entry><entry><title>Migrating to GitHub Pages using Pelican</title><link href="http://amygdalama.github.io/migrating-to-github-pages-using-pelican.html" rel="alternate"></link><updated>2014-02-22T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-22:migrating-to-github-pages-using-pelican.html</id><summary type="html">&lt;p&gt;Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (&lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt;) and attempting to learn enough CSS and &lt;a href="http://jinja.pocoo.org/"&gt;Jinja&lt;/a&gt; to handle setting up my site using &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. I have no experience with CSS! And my HTML experience is limited to injecting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.&lt;/p&gt;
 &lt;p&gt;The great part about this whole process is that with Pelican, I can write my blog posts and pages in &lt;a href="http://daringfireball.net/projects/markdown/"&gt;Markdown&lt;/a&gt; (about which I also knew little until last week, but it's &lt;em&gt;wonderfully easy to learn&lt;/em&gt;.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.&lt;/p&gt;
 &lt;p&gt;There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others make this transition with less misery.&lt;/p&gt;
-&lt;h2&gt;GitHub Pages Setup&lt;/h2&gt;
+&lt;h2 id="github-pages-setup"&gt;GitHub Pages Setup&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;Create a GitHub repo following the &lt;a href="http://pages.github.com/"&gt;GitHub Pages instructions&lt;/a&gt; (the first step only!)&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;em&gt;A note on GitHub Pages:&lt;/em&gt; I believe your HTML files (particularly your index.html file) must be in the &lt;em&gt;main directory&lt;/em&gt; of your git repo for this to work. This will be important later. More detail is given in the &lt;strong&gt;Posting to GitHub&lt;/strong&gt; section.&lt;/p&gt;
-&lt;h2&gt;Pelican Setup&lt;/h2&gt;
+&lt;h2 id="pelican-setup"&gt;Pelican Setup&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Install necessary &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican"&gt;packages&lt;/a&gt;&lt;/p&gt;
@@ -857,7 +857,7 @@ git push origin master
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Exporting Existing Content&lt;/h2&gt;
+&lt;h2 id="exporting-existing-content"&gt;Exporting Existing Content&lt;/h2&gt;
 &lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/"&gt;Export WordPress content to XML&lt;/a&gt;&lt;/li&gt;
@@ -866,7 +866,7 @@ git push origin master
 &lt;li&gt;Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing).&lt;/li&gt;
 &lt;li&gt;Move your Markdown files to the &lt;code&gt;content&lt;/code&gt; directory within your website's main directory. Content intended to be static pages (i.e. About Me, Contact, etc) should go in the &lt;code&gt;content/pages&lt;/code&gt; directory. Articles/blog posts should go in the &lt;code&gt;content&lt;/code&gt; directory.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Pelican Themes&lt;/h2&gt;
+&lt;h2 id="pelican-themes"&gt;Pelican Themes&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Clone the available &lt;a href="https://github.com/getpelican/pelican-themes"&gt;Pelican Themes&lt;/a&gt; into your blog's main directory.&lt;/p&gt;
@@ -887,12 +887,12 @@ git push origin master
 &lt;p&gt;This method is better than using &lt;code&gt;pelican-themes&lt;/code&gt; as described &lt;a href="http://docs.getpelican.com/en/3.3.0/pelican-themes.html"&gt;here&lt;/a&gt;, because it ensures that the Pelican HTML output will reflect any changes you make to the theme (without having to re-install the theme by running the &lt;code&gt;pelican-themes&lt;/code&gt; command).&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Customization&lt;/h2&gt;
+&lt;h2 id="customization"&gt;Customization&lt;/h2&gt;
 &lt;p&gt;All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the &lt;code&gt;main.css&lt;/code&gt; file found in your theme's directory. For example, I've made many edits to the file &lt;code&gt;pelican-themes/subtle/static/css/main.css&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page.&lt;/p&gt;
 &lt;p&gt;There should also be HTML files that serve as templates for specific types of pages. For example, &lt;code&gt;article.html&lt;/code&gt; defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.&lt;/p&gt;
 &lt;p&gt;If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.&lt;/p&gt;
-&lt;h2&gt;Generating Your Site&lt;/h2&gt;
+&lt;h2 id="generating-your-site"&gt;Generating Your Site&lt;/h2&gt;
 &lt;p&gt;Once you have markdown files in your &lt;code&gt;content&lt;/code&gt; folder, navigate to your blog's main directory and run:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
 &lt;span class="nv"&gt;$ &lt;/span&gt;make devserver
@@ -900,7 +900,7 @@ git push origin master
 
 
 &lt;p&gt;&lt;code&gt;make devserver&lt;/code&gt; does a number of things: first it runs the &lt;code&gt;pelican&lt;/code&gt; command on your &lt;code&gt;content&lt;/code&gt; folder to generate HTML for your site using the theme you specify in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file, and serves your site locally at &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;. &lt;code&gt;make devserver&lt;/code&gt; will also automatically regenerate your site (i.e. run &lt;code&gt;pelican&lt;/code&gt; on &lt;code&gt;content&lt;/code&gt; every time you save a change to a content, configuration, or theme file! Just refresh the page in your browser, and you should immediately see the changes. If this doesn't work, it's probably due to the settings you have in your configuration files (&lt;code&gt;pelicanconf.py&lt;/code&gt;, &lt;code&gt;Makefile&lt;/code&gt;, and/or &lt;code&gt;develop_server.sh&lt;/code&gt;).&lt;/p&gt;
-&lt;h2&gt;Posting to GitHub&lt;/h2&gt;
+&lt;h2 id="posting-to-github"&gt;Posting to GitHub&lt;/h2&gt;
 &lt;p&gt;Recall that you need a repository on GitHub named &lt;em&gt;username.github.io&lt;/em&gt; (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).&lt;/p&gt;
 &lt;p&gt;It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!&lt;/p&gt;
 &lt;p&gt;However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the &lt;code&gt;output&lt;/code&gt; folder (recall that Pelican by default saves the HTML it generates in this folder).&lt;/p&gt;
@@ -935,9 +935,9 @@ git push origin master
 
 &lt;p&gt;You'll also need to set up another repository for your source content, configuration files, and theme, which is annoying. I added a .gitignore to this repo to ignore the files in the output folder, but that isn't necessary.&lt;/p&gt;
 &lt;p&gt;Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)&lt;/p&gt;
-&lt;h2&gt;Custom Domain Setup&lt;/h2&gt;
+&lt;h2 id="custom-domain-setup"&gt;Custom Domain Setup&lt;/h2&gt;
 &lt;p&gt;If you have your own domain name that you'd like to use instead of &lt;em&gt;username.github.io&lt;/em&gt;, you'll need to follow &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;Fin&lt;/h2&gt;
+&lt;h2 id="fin"&gt;Fin&lt;/h2&gt;
 &lt;p&gt;Feel free to poke around my blog's &lt;a href="https://github.com/amygdalama/blog-source"&gt;GitHub&lt;/a&gt; &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;repos&lt;/a&gt; (beware: there are unpublished draft posts in there). My configuration files in particular might be useful to you.&lt;/p&gt;
 &lt;p&gt;If any of you Hacker Schoolers have trouble migrating your blog, I'd be happy to help!&lt;/p&gt;</summary><category term="pelican"></category><category term="blogging"></category><category term="wordpress"></category><category term="github pages"></category><category term="markdown"></category><category term="hacker school"></category></entry><entry><title>ipython and pandas are whoa!</title><link href="http://amygdalama.github.io/ipython-and-pandas-are-whoa.html" rel="alternate"></link><updated>2014-02-14T15:52:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-14:ipython-and-pandas-are-whoa.html</id><summary type="html">&lt;p&gt;In my first five months of using Python, I would create .py files and
 then execute them in the terminal, like the loyal follower of &lt;a href="http://learnpythonthehardway.org/book/"&gt;LPTHW&lt;/a&gt;
@@ -1069,7 +1069,7 @@ following lines to your barbaric-script.py file:&lt;/p&gt;
 
 
 &lt;p&gt;A histogram should pop up in a separate window:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/barbaric.png" /&gt;&lt;/p&gt;
 &lt;p&gt;That's a lot of code (18 lines)! And we didn't even do anything
 complicated - just parsed our data and plotted a histogram. Also, notice
 that each time you tried to fix a bug or add a feature (like plotting
@@ -1093,7 +1093,7 @@ up in your browser.&lt;/p&gt;
 ipython notebook will open up in another tab. A new cell will also open
 up. Cells are places where you can write and execute code. This is what
 a cell looks like:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/ipythoncell.png" /&gt;&lt;/p&gt;
 &lt;p&gt;To allow matplotlib to post plots within your notebook, rather than
 opening up a separate window (like when we executed our .py script),
 type the following into the cell:&lt;/p&gt;
@@ -1105,7 +1105,7 @@ type the following into the cell:&lt;/p&gt;
 your cursor is currently in and then automatically either move to the
 next cell, if one exists, or open up a new cell). Once you press
 shift+enter, your notebook should look like:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/ipythoncell.png" /&gt;&lt;/p&gt;
 &lt;p&gt;In the next cell, import the packages we'll be using, namely
 matplotlib.pyplot and pandas:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
@@ -1137,7 +1137,7 @@ code!&lt;/p&gt;
 
 &lt;p&gt;You should see a beautifully formatted table! This is a pandas data
 frame, which is similar to a data frame in R.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/table.png" /&gt;&lt;/p&gt;
 &lt;p&gt;Now let's plot a histogram for the Sepal Length column.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# I use two brackets around &amp;#39;Sepal Length&amp;#39; to force pandas to make this&lt;/span&gt;
 &lt;span class="c"&gt;# a data frame rather than just a series, which is like a numpy array.&lt;/span&gt;
@@ -1153,7 +1153,7 @@ frame, which is similar to a data frame in R.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/quite_elegant.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/quite_elegant.png" /&gt;&lt;/p&gt;
 &lt;p&gt;By this point it should be fairly obvious that ipython and pandas are
 both awesome for data analysis! They make Python a much more serious
 contender as a tool for data analysis by giving you quick and easy
@@ -1166,7 +1166,7 @@ incidentally I'll be collaborating with her next week (eeeep)!&lt;/p&gt;
 &lt;p&gt;My code for this post can be found on my &lt;a href="https://github.com/amygdalama/ipython-pandas-whoa"&gt;GitHub&lt;/a&gt;, and the ipython
 notebook can be easily viewed on &lt;a href="http://nbviewer.ipython.org/github/amygdalama/ipython-pandas-whoa/blob/master/ipython-pandas-whoa.ipynb"&gt;NBViewer&lt;/a&gt;.&lt;/p&gt;</summary><category term="data analysis"></category><category term="hacker school"></category><category term="ipython"></category><category term="matplotlib"></category><category term="pandas"></category><category term="python"></category></entry><entry><title>Hacker School Day 2: Goals! Or, A Grasp For Sanity</title><link href="http://amygdalama.github.io/hacker-school-day-2-goals.html" rel="alternate"></link><updated>2014-02-12T10:02:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-12:hacker-school-day-2-goals.html</id><summary type="html">&lt;p&gt;I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
 collaborate on I felt a bit like:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/allthetennisballs.gif" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/allthetennisballs.gif" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;(Credit to Hacker School alumnus Alex Beaulne for finding this perfect
 gif.)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;In an attempt to regain a bit of sanity, yesterday I prioritized setting
@@ -1178,7 +1178,7 @@ be found on my &lt;a href="https://github.com/amygdalama/hacker-school-progress"
 ensure that what I set out to accomplish aligned with my values and my
 motivations for attending Hacker School. These lists are ranked somewhat
 by importance, but probably aren't perfectly ordered.&lt;/p&gt;
-&lt;h3&gt;What do I want to get out of Hacker School?&lt;/h3&gt;
+&lt;h3 id="what-do-i-want-to-get-out-of-hacker-school"&gt;What do I want to get out of Hacker School?&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Greater confidence, honesty, self-awareness, bravery&lt;/li&gt;
 &lt;li&gt;Gain expertise in Python, Data Analysis, Machine Learning (currently
@@ -1187,7 +1187,7 @@ by importance, but probably aren't perfectly ordered.&lt;/p&gt;
     to achieve greatness&lt;/li&gt;
 &lt;li&gt;Frankly, a job&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;What do I want to accomplish at Hacker School?&lt;/h3&gt;
+&lt;h3 id="what-do-i-want-to-accomplish-at-hacker-school"&gt;What do I want to accomplish at Hacker School?&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;One large (1-month) project which
     requires pulling data from many sources and applying a recommender
@@ -1217,7 +1217,7 @@ but not entirely certain it's not all just a dream.&lt;/p&gt;
 adventure. Hacker School is self-described as a writers' retreat for
 programmers. I've heard other Hacker Schoolers struggle to explain it as
 a day spa for programmers, a hippie commune programming cult (okay, that
-one was me), not a school, not necessarily for &lt;a href="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/hackers-movie.jpg"&gt;these&lt;/a&gt; kind of
+one was me), not a school, not necessarily for &lt;a href="http://amygdalama.github.io/images/hackers-movie.jpg"&gt;these&lt;/a&gt; kind of
 Hackers, and more. The Hacker School founders and facilitators have
 written extensively about what Hacker School is and is not, so dig into
 their blog if you're curious. It's difficult to define, and they do a
@@ -1231,7 +1231,7 @@ before. In turn she showed me some regression modeling in R.&lt;/p&gt;
 &lt;p&gt;I also got to play with HS's resident Apple II. One of the other Hacker
 Schoolers wrote a simple for loop to print out "DONG" 100 times. Why
 would you do anything else?&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/appleiidong.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/appleiidong.jpg" /&gt;&lt;/p&gt;
 &lt;p&gt;I am supremely honored and excited as Hell to be at Hacker School. For
 the next three months, I will be surrounded by intellectually curious
 nerds who are more thoughtful and self-aware than most people I know. I

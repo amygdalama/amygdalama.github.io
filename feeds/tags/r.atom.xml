@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/tags/r.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2013-11-26T23:07:00-05:00</updated><entry><title>Visualizing Social Circles Using Facebook Data</title><link href="http://amygdalama.github.io/visualizing-social-circles-using-facebook-data.html" rel="alternate"></link><updated>2013-11-26T23:07:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2013-11-26:visualizing-social-circles-using-facebook-data.html</id><summary type="html">&lt;p&gt;Intrigued by David Smith's &lt;a href="http://blog.revolutionanalytics.com/2013/11/how-to-analyze-you-facebook-friends-network-with-r.html"&gt;Facebook friends network analysis&lt;/a&gt; using
 the Rfacebook package, I decided to try it out on my own group of
-friends, to see if my social circles are clique-y ala &lt;a href="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/nshs.jpg"&gt;North Shore High
+friends, to see if my social circles are clique-y ala &lt;a href="http://amygdalama.github.io/images/nshs.jpg"&gt;North Shore High
 School&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/fb-network.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/fb-network.png" /&gt;&lt;/p&gt;
 &lt;p&gt;It turns out the social circles in my network were visualized almost
 perfectly! The smallest group to the far right of the graph contains
 family members, the large group at the top contains current co-workers,

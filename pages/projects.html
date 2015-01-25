@@ -34,7 +34,7 @@
         
 <section id="content" class="body">    
     <h1 class="page-title">Projects</h1>
-    <h2>Nagini: Replacing <code>import</code> with <code>accio</code></h2>
+    <h2 id="nagini-replacing-import-with-accio">Nagini: Replacing <code>import</code> with <code>accio</code></h2>
 <p>I spent about a week at Hacker School mischievously replacing Python builtin functions and statements with Harry Potter spells. I created a custom Harry Potter-themed Python that I named Nagini, after Voldemort's snake.</p>
 <p>Replacing functions was fairly easy - you can do it in the REPL! However, replacing <code>import</code> was not as easy, because import is a statement.</p>
 <p>To replace <code>import</code> with <code>accio</code>, a Harry Potter spell, I compiled an intermediary Python that understood both <code>import</code> and <code>accio</code> as valid statements and then used that Python to compile another Python that only understood <code>accio</code> as a valid statement. Yes, I compiled a Python to compile a Python! The main modifications that I made to the CPython source code was in the Grammar files. Here are the two versions of the files:
@@ -43,7 +43,7 @@ Only <code>accio</code>: https://github.com/amygdalama/nagini/blob/master/nagini
 (The relevant lines start at around line 53 in both of those files.)</p>
 <p>I wrote a <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">blog post</a> about this project and the internet loved it! It was on the front page of Hacker News! And on Reddit! And a bunch of people Tweeted about it!</p>
 <p>I also gave a <a href="http://www.slideshare.net/AmyHanlon/replacing-import-with-accio">talk</a> on this project at PyLadies and at Hack and Tell.</p>
-<h4>Things I learned about:</h4>
+<h4 id="things-i-learned-about">Things I learned about:</h4>
 <ul>
 <li>CPython source code, in general.</li>
 <li>Python Grammar file, specifically. The Grammar file is where valid Python statements are defined. I had to edit this file a couple of times in order to replace the <code>import</code> statement with <code>accio</code>, which is one letter shorter, so strictly better.</li>
@@ -54,21 +54,21 @@ Only <code>accio</code>: https://github.com/amygdalama/nagini/blob/master/nagini
 </ul>
 <p>Collaborators: <a href="http://akaptur.github.io/">Allison Kaptur</a></p>
 <p>The code for this project is on <a href="https://github.com/amygdalama/nagini">GitHub</a>.</p>
-<h2>Furrier Transform: Converting an image of my cat to sound</h2>
+<h2 id="furrier-transform-converting-an-image-of-my-cat-to-sound">Furrier Transform: Converting an image of my cat to sound</h2>
 <p>This was an attempt at creating a sound from an image of my cat. The idea was that, since a spectrogram is an image representation of a sound, an arbitrary image could be interpreted as a spectrogram of a sound. With that assumption, I attempted to create a sound that would have the spectrogram of an image of my cat.</p>
 <p>I quickly realized that starting with an image of my cat was a bad idea, because I had no way of telling if the sound I created was correct or not. So, I decided to start with an actual spectrogram of an actual sound, and then try to reconstruct the original sound from the spectrogram. Then I could tell if I was even close or not.</p>
 <p>Later I found that this is actually a <a href="http://arxiv.org/abs/1209.2076">"longstanding problem in audio signal processing"</a> and is anything but trivial. So, needless to say, I never completed this project. But I think I'm finally okay with that!</p>
 <p>Fair warning: you do not want to listen to any audio files that this program creates. They are wildly unpleasant.</p>
-<h4>Things I learned about:</h4>
+<h4 id="things-i-learned-about_1">Things I learned about:</h4>
 <ul>
 <li>Fourier Transforms, Additive Synthesis, signal processing, and how sound works in the analog and digital worlds. This was super interesting and fun to learn about!</li>
 <li>numpy, scipy, matplotlib, and ipython notebooks.</li>
 </ul>
 <p>Collaborators: Andreas Dewes, David Dalrymple, Robert P. Sokolowski, Sean Patrick Murphy</p>
 <p>The code for this project is on <a href="https://github.com/amygdalama/furrier-transform">GitHub</a>.</p>
-<h2>Phonebook Command Line Tool</h2>
+<h2 id="phonebook-command-line-tool">Phonebook Command Line Tool</h2>
 <p>A phonebook command line tool, which was super interesting to make!</p>
-<h4>Things I learned about:</h4>
+<h4 id="things-i-learned-about_2">Things I learned about:</h4>
 <ul>
 <li>Sqlite3 specifically, and databases in general.</li>
 <li>Raising Exceptions.</li>
@@ -76,7 +76,7 @@ Only <code>accio</code>: https://github.com/amygdalama/nagini/blob/master/nagini
 <li>Tests! I learned about Python's unittest and nose modules. I spent a lot of time thinking about how to design my test cases and how to test if any unexpected behavior occurred.</li>
 </ul>
 <p>The code for this project is on <a href="https://github.com/amygdalama/phonebook">GitHub</a>.</p>
-<h2>Weekly Blog</h2>
+<h2 id="weekly-blog">Weekly Blog</h2>
 <p>I've maintained a slightly-more-frequent-than-weekly <a href="http://mathamy.com/">blog</a> since starting Hacker School. I realized that writing is one of the ways I learn best - explaining things forces me to think very explicitly about them. Often, when I sit down to write a blog post, I realize that I didn't understand the topic as well as I thought, so I put in extra effort to understand the topic very well.</p>
 <p>Some posts:</p>
 <ul>
@@ -89,10 +89,10 @@ Only <code>accio</code>: https://github.com/amygdalama/nagini/blob/master/nagini
 <li><a href="http://mathamy.com/how-should-i-learn-programming.html">How Should I Learn Programming?</a></li>
 <li><a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html">Migrating to GitHub Pages using Pelican</a></li>
 </ul>
-<h2>Personal Website</h2>
+<h2 id="personal-website">Personal Website</h2>
 <p>I entered the batch with a simple Wordpress blog and quickly realized that I could not stand formatting code blocks in Wordpress's editor. Plus Wordpress is so <em>boring</em>. So I made a static site hosted on GitHub Pages.
 After setting up my new website, I wrote a <a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html">blog post</a> on how I did it, and was able to help a bunch of other Hacker Schoolers who wanted a similar setup.</p>
-<h4>Things I learned about:</h4>
+<h4 id="things-i-learned-about_3">Things I learned about:</h4>
 <ul>
 <li>Pelican, a static site-generator, like Octopress, but written in Python. Static site generators are super rad because they allow you to write posts in Markdown, which brings me to...</li>
 <li>Markdown!</li>
@@ -106,7 +106,7 @@ After setting up my new website, I wrote a <a href="http://mathamy.com/migrating
 <p>Here's the repo containing my source content, customized theme, and configuration files: https://github.com/amygdalama/blog-source</p>
 <p>Collaborators: Carl Vogel, Robert Lord</p>
 <p><a href="https://github.com/amygdalama/blog-source">Here</a>'s the repo containing my source content, customized theme, and configuration files.</p>
-<h2>Iron Forger</h2>
+<h2 id="iron-forger">Iron Forger</h2>
 <p>After Hacker School, I organized a weekly "make a product or you owe $5 to a charity" challenge called <a href="http://mathamy.com/introducing-iron-maker-or-forger-or-something.html">Iron Forger</a>.</p>
 <p>In eight weeks, we made the following things:</p>
 <ul>

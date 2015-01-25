@@ -2,12 +2,12 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/tags/markdown.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-02-22T00:00:00-05:00</updated><entry><title>Migrating to GitHub Pages using Pelican</title><link href="http://amygdalama.github.io/migrating-to-github-pages-using-pelican.html" rel="alternate"></link><updated>2014-02-22T00:00:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-22:migrating-to-github-pages-using-pelican.html</id><summary type="html">&lt;p&gt;Over the past week I've been dog-paddling through the ocean of misery that is migrating a blog from one host (WordPress) to another (&lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt;) and attempting to learn enough CSS and &lt;a href="http://jinja.pocoo.org/"&gt;Jinja&lt;/a&gt; to handle setting up my site using &lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;Pelican&lt;/a&gt;. I have no experience with CSS! And my HTML experience is limited to injecting angst into my MySpace profile! And I became aware of Jinja and Pelican's existence about a week ago! So obviously I've drowned myself in 1.5 bottles of my neighborhood liquor store's 2-bottles-of-wine-for-$10 special.&lt;/p&gt;
 &lt;p&gt;The great part about this whole process is that with Pelican, I can write my blog posts and pages in &lt;a href="http://daringfireball.net/projects/markdown/"&gt;Markdown&lt;/a&gt; (about which I also knew little until last week, but it's &lt;em&gt;wonderfully easy to learn&lt;/em&gt;.) I am so tired of wrangling with WordPress's built-in editor trying to get my code blocks and in-line code to format correctly. Markdown is a blissful alternative.&lt;/p&gt;
 &lt;p&gt;There's a plethora of material online on Pelican and GitHub pages, but it is fairly disconnected and presumes a certain level of front-end development experience, of which I have none. Hopefully this post can help others make this transition with less misery.&lt;/p&gt;
-&lt;h2&gt;GitHub Pages Setup&lt;/h2&gt;
+&lt;h2 id="github-pages-setup"&gt;GitHub Pages Setup&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;Create a GitHub repo following the &lt;a href="http://pages.github.com/"&gt;GitHub Pages instructions&lt;/a&gt; (the first step only!)&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;em&gt;A note on GitHub Pages:&lt;/em&gt; I believe your HTML files (particularly your index.html file) must be in the &lt;em&gt;main directory&lt;/em&gt; of your git repo for this to work. This will be important later. More detail is given in the &lt;strong&gt;Posting to GitHub&lt;/strong&gt; section.&lt;/p&gt;
-&lt;h2&gt;Pelican Setup&lt;/h2&gt;
+&lt;h2 id="pelican-setup"&gt;Pelican Setup&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Install necessary &lt;a href="http://docs.getpelican.com/en/3.1.1/getting_started.html#installing-pelican"&gt;packages&lt;/a&gt;&lt;/p&gt;
@@ -92,7 +92,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Exporting Existing Content&lt;/h2&gt;
+&lt;h2 id="exporting-existing-content"&gt;Exporting Existing Content&lt;/h2&gt;
 &lt;p&gt;This section assumes you have existing content on a WordPress blog. Pelican also has an importer for Dotclear and RSS/Atom feeds. You can skip this section if you don't have existing content living elsewhere that you want to port to your site on GitHub Pages.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href="http://en.blog.wordpress.com/2006/06/12/xml-import-export/"&gt;Export WordPress content to XML&lt;/a&gt;&lt;/li&gt;
@@ -101,7 +101,7 @@
 &lt;li&gt;Manually edit the Markdown output (your code blocks, links, embedded images will likely need editing).&lt;/li&gt;
 &lt;li&gt;Move your Markdown files to the &lt;code&gt;content&lt;/code&gt; directory within your website's main directory. Content intended to be static pages (i.e. About Me, Contact, etc) should go in the &lt;code&gt;content/pages&lt;/code&gt; directory. Articles/blog posts should go in the &lt;code&gt;content&lt;/code&gt; directory.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Pelican Themes&lt;/h2&gt;
+&lt;h2 id="pelican-themes"&gt;Pelican Themes&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Clone the available &lt;a href="https://github.com/getpelican/pelican-themes"&gt;Pelican Themes&lt;/a&gt; into your blog's main directory.&lt;/p&gt;
@@ -122,12 +122,12 @@
 &lt;p&gt;This method is better than using &lt;code&gt;pelican-themes&lt;/code&gt; as described &lt;a href="http://docs.getpelican.com/en/3.3.0/pelican-themes.html"&gt;here&lt;/a&gt;, because it ensures that the Pelican HTML output will reflect any changes you make to the theme (without having to re-install the theme by running the &lt;code&gt;pelican-themes&lt;/code&gt; command).&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Customization&lt;/h2&gt;
+&lt;h2 id="customization"&gt;Customization&lt;/h2&gt;
 &lt;p&gt;All elements of your theme are customizable! You can change attributes of text like font, size, color, and more in the &lt;code&gt;main.css&lt;/code&gt; file found in your theme's directory. For example, I've made many edits to the file &lt;code&gt;pelican-themes/subtle/static/css/main.css&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Similarly, you can change layouts of your pages (like what shows up in your site nav menu) by exploring the HTML files in the &lt;code&gt;templates&lt;/code&gt; folder within your theme. There will usually be a &lt;code&gt;base.html&lt;/code&gt; file (or something similar) that provides the foundation for things like your header and site nav menu that will apply to every page.&lt;/p&gt;
 &lt;p&gt;There should also be HTML files that serve as templates for specific types of pages. For example, &lt;code&gt;article.html&lt;/code&gt; defines the basic structure for your articles/blog posts. If you want to change the metadata that displays above article content, you should look there.&lt;/p&gt;
 &lt;p&gt;If you see something on your website that you want to change, and you're not sure where to look in your theme's CSS/HTML files, right click on the element in the browser and go to "Inspect Element". This will show you where in the HTML the element is (on the left) and what parts of the CSS file define its style (on the right). You can adjust things here in the browser to test out different fonts, colors, etc, but changes you make to the code in your browser will not be reflected in your source files.&lt;/p&gt;
-&lt;h2&gt;Generating Your Site&lt;/h2&gt;
+&lt;h2 id="generating-your-site"&gt;Generating Your Site&lt;/h2&gt;
 &lt;p&gt;Once you have markdown files in your &lt;code&gt;content&lt;/code&gt; folder, navigate to your blog's main directory and run:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
 &lt;span class="nv"&gt;$ &lt;/span&gt;make devserver
@@ -135,7 +135,7 @@
 
 
 &lt;p&gt;&lt;code&gt;make devserver&lt;/code&gt; does a number of things: first it runs the &lt;code&gt;pelican&lt;/code&gt; command on your &lt;code&gt;content&lt;/code&gt; folder to generate HTML for your site using the theme you specify in your &lt;code&gt;pelicanconf.py&lt;/code&gt; file, and serves your site locally at &lt;a href="http://localhost:8000"&gt;http://localhost:8000&lt;/a&gt;. &lt;code&gt;make devserver&lt;/code&gt; will also automatically regenerate your site (i.e. run &lt;code&gt;pelican&lt;/code&gt; on &lt;code&gt;content&lt;/code&gt; every time you save a change to a content, configuration, or theme file! Just refresh the page in your browser, and you should immediately see the changes. If this doesn't work, it's probably due to the settings you have in your configuration files (&lt;code&gt;pelicanconf.py&lt;/code&gt;, &lt;code&gt;Makefile&lt;/code&gt;, and/or &lt;code&gt;develop_server.sh&lt;/code&gt;).&lt;/p&gt;
-&lt;h2&gt;Posting to GitHub&lt;/h2&gt;
+&lt;h2 id="posting-to-github"&gt;Posting to GitHub&lt;/h2&gt;
 &lt;p&gt;Recall that you need a repository on GitHub named &lt;em&gt;username.github.io&lt;/em&gt; (this will be the remote repository for your blog), and that your HTML files need to be in this repository's main directory (not within a subdirectory).&lt;/p&gt;
 &lt;p&gt;It's intuitive to initialize a local repository for your blog within your blog's main directory, because in addition to posting the HTML, you'd also like to backup your content Markdown files, configuration files, and customized theme. This is a reasonable desire!&lt;/p&gt;
 &lt;p&gt;However, if you do this, GitHub won't generate your site! It isn't smart enough to know that the HTML files it needs to serve are actually contained within the &lt;code&gt;output&lt;/code&gt; folder (recall that Pelican by default saves the HTML it generates in this folder).&lt;/p&gt;
@@ -170,8 +170,8 @@
 
 &lt;p&gt;You'll also need to set up another repository for your source content, configuration files, and theme, which is annoying. I added a .gitignore to this repo to ignore the files in the output folder, but that isn't necessary.&lt;/p&gt;
 &lt;p&gt;Within about 10 minutes of pushing your changes, your site should be up and running! (Later changes should be reflected on your site almost instantaneously.)&lt;/p&gt;
-&lt;h2&gt;Custom Domain Setup&lt;/h2&gt;
+&lt;h2 id="custom-domain-setup"&gt;Custom Domain Setup&lt;/h2&gt;
 &lt;p&gt;If you have your own domain name that you'd like to use instead of &lt;em&gt;username.github.io&lt;/em&gt;, you'll need to follow &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;Fin&lt;/h2&gt;
+&lt;h2 id="fin"&gt;Fin&lt;/h2&gt;
 &lt;p&gt;Feel free to poke around my blog's &lt;a href="https://github.com/amygdalama/blog-source"&gt;GitHub&lt;/a&gt; &lt;a href="https://github.com/amygdalama/amygdalama.github.io"&gt;repos&lt;/a&gt; (beware: there are unpublished draft posts in there). My configuration files in particular might be useful to you.&lt;/p&gt;
 &lt;p&gt;If any of you Hacker Schoolers have trouble migrating your blog, I'd be happy to help!&lt;/p&gt;</summary><category term="pelican"></category><category term="blogging"></category><category term="wordpress"></category><category term="github pages"></category><category term="markdown"></category><category term="hacker school"></category></entry></feed>

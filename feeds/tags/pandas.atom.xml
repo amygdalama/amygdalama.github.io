@@ -129,7 +129,7 @@ following lines to your barbaric-script.py file:&lt;/p&gt;
 
 
 &lt;p&gt;A histogram should pop up in a separate window:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/barbaric.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/barbaric.png" /&gt;&lt;/p&gt;
 &lt;p&gt;That's a lot of code (18 lines)! And we didn't even do anything
 complicated - just parsed our data and plotted a histogram. Also, notice
 that each time you tried to fix a bug or add a feature (like plotting
@@ -153,7 +153,7 @@ up in your browser.&lt;/p&gt;
 ipython notebook will open up in another tab. A new cell will also open
 up. Cells are places where you can write and execute code. This is what
 a cell looks like:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/ipythoncell.png" /&gt;&lt;/p&gt;
 &lt;p&gt;To allow matplotlib to post plots within your notebook, rather than
 opening up a separate window (like when we executed our .py script),
 type the following into the cell:&lt;/p&gt;
@@ -165,7 +165,7 @@ type the following into the cell:&lt;/p&gt;
 your cursor is currently in and then automatically either move to the
 next cell, if one exists, or open up a new cell). Once you press
 shift+enter, your notebook should look like:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/ipythoncell.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/ipythoncell.png" /&gt;&lt;/p&gt;
 &lt;p&gt;In the next cell, import the packages we'll be using, namely
 matplotlib.pyplot and pandas:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
@@ -197,7 +197,7 @@ code!&lt;/p&gt;
 
 &lt;p&gt;You should see a beautifully formatted table! This is a pandas data
 frame, which is similar to a data frame in R.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/table.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/table.png" /&gt;&lt;/p&gt;
 &lt;p&gt;Now let's plot a histogram for the Sepal Length column.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# I use two brackets around &amp;#39;Sepal Length&amp;#39; to force pandas to make this&lt;/span&gt;
 &lt;span class="c"&gt;# a data frame rather than just a series, which is like a numpy array.&lt;/span&gt;
@@ -213,7 +213,7 @@ frame, which is similar to a data frame in R.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/quite_elegant.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/quite_elegant.png" /&gt;&lt;/p&gt;
 &lt;p&gt;By this point it should be fairly obvious that ipython and pandas are
 both awesome for data analysis! They make Python a much more serious
 contender as a tool for data analysis by giving you quick and easy

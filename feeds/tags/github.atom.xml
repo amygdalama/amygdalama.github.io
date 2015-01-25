@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/tags/github.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2014-02-12T10:02:00-05:00</updated><entry><title>Hacker School Day 2: Goals! Or, A Grasp For Sanity</title><link href="http://amygdalama.github.io/hacker-school-day-2-goals.html" rel="alternate"></link><updated>2014-02-12T10:02:00-05:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2014-02-12:hacker-school-day-2-goals.html</id><summary type="html">&lt;p&gt;I have to admit day 1 of Hacker School was fairly overwhelming for me. With so many amazing people to talk to and interesting projects to
 collaborate on I felt a bit like:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/allthetennisballs.gif" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/allthetennisballs.gif" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;(Credit to Hacker School alumnus Alex Beaulne for finding this perfect
 gif.)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;In an attempt to regain a bit of sanity, yesterday I prioritized setting
@@ -13,7 +13,7 @@ be found on my &lt;a href="https://github.com/amygdalama/hacker-school-progress"
 ensure that what I set out to accomplish aligned with my values and my
 motivations for attending Hacker School. These lists are ranked somewhat
 by importance, but probably aren't perfectly ordered.&lt;/p&gt;
-&lt;h3&gt;What do I want to get out of Hacker School?&lt;/h3&gt;
+&lt;h3 id="what-do-i-want-to-get-out-of-hacker-school"&gt;What do I want to get out of Hacker School?&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Greater confidence, honesty, self-awareness, bravery&lt;/li&gt;
 &lt;li&gt;Gain expertise in Python, Data Analysis, Machine Learning (currently
@@ -22,7 +22,7 @@ by importance, but probably aren't perfectly ordered.&lt;/p&gt;
     to achieve greatness&lt;/li&gt;
 &lt;li&gt;Frankly, a job&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;What do I want to accomplish at Hacker School?&lt;/h3&gt;
+&lt;h3 id="what-do-i-want-to-accomplish-at-hacker-school"&gt;What do I want to accomplish at Hacker School?&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;One large (1-month) project which
     requires pulling data from many sources and applying a recommender

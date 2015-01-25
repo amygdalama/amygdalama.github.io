@@ -69,7 +69,7 @@
 
 
 <p>So, how do we better understand what's happening inside this expression?</p>
-<h2>A Mental Model</h2>
+<h2 id="a-mental-model">A Mental Model</h2>
 <p>Let's look at a specific example of our expression and examine a mental model -- which may or may not be correct -- for what's happening to the values of <code>a</code> and <code>x</code> inside the expression.</p>
 <p>I said earlier that <code>things</code> needs to be an iterable. So, presumably, <code>things</code> could be a string. Let's try:</p>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">things</span> <span class="o">=</span> <span class="s">&#39;012&#39;</span>
@@ -143,7 +143,7 @@
 
 <p>This results in an error because you can't concatenate a string and a list.</p>
 <p>Is my mental model correct? We can tell that the model ultimately returns the same value as the expression, but how can we tell if these are really the values of <code>a</code> and <code>x</code> at each step?</p>
-<h2>Testing the Model</h2>
+<h2 id="testing-the-model">Testing the Model</h2>
 <p>We'll need to figure out some clever way of printing or storing the values of <code>a</code> and <code>x</code> at each step.</p>
 <p>Let's recall the original expression:</p>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">things</span><span class="p">,</span> <span class="p">[])</span>
@@ -163,7 +163,7 @@
 
 
 <p>Let's apply the mental model to help us understand this example.</p>
-<h4>Step 1:</h4>
+<h4 id="step-1">Step 1:</h4>
 <div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
   <span class="o">==</span> <span class="s">&#39;0&#39;</span>
 
@@ -176,7 +176,7 @@
 </pre></div>
 
 
-<h4>Step 2:</h4>
+<h4 id="step-2">Step 2:</h4>
 <div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
   <span class="o">==</span> <span class="s">&#39;1&#39;</span>
 
@@ -188,7 +188,7 @@
 </pre></div>
 
 
-<h4>Step 3:</h4>
+<h4 id="step-3">Step 3:</h4>
 <div class="highlight"><pre><span class="n">x</span> <span class="o">==</span> <span class="n">things</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
   <span class="o">==</span> <span class="s">&#39;2&#39;</span>
 
@@ -215,7 +215,7 @@
 
 
 <p>Victory! But what does this mean?</p>
-<h2>Wait what were we trying to do again?</h2>
+<h2 id="wait-what-were-we-trying-to-do-again">Wait what were we trying to do again?</h2>
 <p>We've been attempting to understand what happens inside a <code>reduce</code> function. We developed a mental model for what happens to the values of <code>a</code> and <code>x</code> at each iteration, and we came up with a way to test to see if the mental model was accurate. And it was!</p>
 <p>I think this might be one of those posts that is less about what I intended it to be about (dissecting the <code>reduce</code> function) and more about the approach I would take to accomplish what I intended it to be about. Meta, sinners.</p>
       <p>

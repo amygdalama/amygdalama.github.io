@@ -98,7 +98,7 @@ explanation is coming up in Chapter 3):&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="alt text" src="https://raw2.github.com/amygdalama/amygdalama.github.io/master/images/pymc_posteriors.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="http://amygdalama.github.io/images/pymc_posteriors.png" /&gt;&lt;/p&gt;
 &lt;p&gt;I can also compute the probability that the true conversion rate of page
 A, &lt;code&gt;p_A&lt;/code&gt;, is better than the true conversion rate of page
 B, &lt;code&gt;p_A&lt;/code&gt;:&lt;/p&gt;
