@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Draft</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+   
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="..">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href="..">Home</a></li>
+                    <li><a href="../pages/about.html">About</a></li>
+                    <li><a href="../pages/contact.html">Contact</a></li>
+                    <li><a href="../pages/projects.html">Projects</a></li>
+                    <li><a href="../pages/talks.html">Talks</a></li>
+                </ul></nav>
+
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="drafts/inagini.html" rel="bookmark"
+           title="Permalink to Draft">Draft</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-02-01T00:00:00">
+                February 01 2015
+        </abbr>
+
+<p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info -->      <h1 id="building-a-website-with-an-embedded-nagini-interpreter">Building a website with an embedded nagini interpreter</h1>
+<h1 id="the-server">the server</h1>
+<ol>
+<li>spawn a python interpreter process for each session/connection</li>
+<li>send statements to the interpreter process and receive stdout in response</li>
+<li>maintain state</li>
+<li>isolate the interpreter processes in an os-level sandbox to protect against malicious code, resource exhaustion, etc</li>
+</ol>
+<p>I'm building a website with an embedded <a href="https://github.com/amygdalama/nagini">Nagini</a> console. Ultimately I want the front end to look like a REPL. When a user types a statement into the REPL and presses enter, an AJAX request will be sent to my web server. The web server will generate a unique ID for the user's session, saved in a cookie. Then, the web server will send the ID and statement to a server that spawns a new Nagini interpreter process, sandboxed at the OS-level, for the session. The interpreter will execute the statement, and the server will redirect the interpreter's stdout back to the webserver. The webserver will ultimately send the stdout back to the browser.</p>
+<p>My plan, which is totally subject to change, is:</p>
+<ol>
+<li>build a server that listens on a local port and spawns a new Python interpreter process for every incoming connection</li>
+<li>build a client that sends Python statements over the connection to the server</li>
+<li>when the server receives a </li>
+</ol>
+<p>First I'd like to build a server that listens on a local port. When an incoming connection is established, the server spawns a new Python interpreter process, and the client is able to </p>
+      <p>
+    <!-- <p> -->
+        tags: 
+           <a href="../tag/inagini.html">inagini</a>
+    <!-- </p> -->
+    
+      </p>
+    </div><!-- /.entry-content -->
+    <br>
+    <div class="comments">
+      <h1>Comments</h1>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "drafts/inagini.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://mathamy.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-48330831-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+<script type="text/javascript">
+    var disqus_shortname = 'mathamy';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
