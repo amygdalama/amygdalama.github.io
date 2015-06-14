@@ -36,6 +36,56 @@
                     <ol id="posts-list" class="hfeed" start="9">
             <li><article class="hentry">
                 <header>
+                        <h1 class="entry-title"><a href="./whats-the-deal-with-builtins-vs-builtin.html" rel="bookmark" title="Permalink to What's the deal with __builtins__ vs __builtin__">What's the deal with <code>__builtins__</code> vs <code>__builtin__</code></a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-03-23T00:00:00">
+                March 23 2014
+        </abbr>
+
+<p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>Seriously, what's the difference? When you first fire up the Python interpreter, <code>__builtins__</code> is in your namespace for free:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;__builtins__&#39;, &#39;__name__&#39;, &#39;__doc__&#39;, &#39;__package__&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">__builtins__</span>
+<span class="go">&lt;module &#39;__builtin__&#39; (built-in)&gt;</span>
+</pre></div>
+
+
+<p>But it appears to be the <code>__builtin__</code> module (singular)! If you:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">__builtin__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">__builtin__</span> <span class="ow">is</span> <span class="n">__builtins__</span>
+<span class="bp">True</span>
+</pre></div>
+
+
+<p>Hrm. So they ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
+        tags: 
+           <a href="./tag/python.html">python</a>
+           <a href="./tag/builtins.html">builtins</a>
+           <a href="./tag/hacker-school.html">hacker school</a>
+           <a href="./tag/python-internals.html">python internals</a>
+    <!-- </p> -->
+    
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="./whats-the-deal-with-builtins-vs-builtin.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="./whats-the-deal-with-builtins-vs-builtin.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                         <h1 class="entry-title"><a href="./import-accio-bootstrapping-python-grammar.html" rel="bookmark" title="Permalink to Replacing import with accio: A Dive into Bootstrapping and Python's Grammar">Replacing <code>import</code> with <code>accio</code>: A Dive into Bootstrapping and Python's Grammar</a></h1>
                 </header>
 
@@ -375,43 +425,6 @@ from one of my clients.</p>
                 <!-- <a class="readmore" href="./using-pymc-to-analyze-ab-testing-data.html">read more</a> -->
             </p>
                 <!-- <p>There are probably no <a href="./using-pymc-to-analyze-ab-testing-data.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                        <h1 class="entry-title"><a href="./homebrew-path-pythonpath.html" rel="bookmark" title="Permalink to wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH">wget Sanity after Installing Homebrew and F*cking Up PATH/PYTHONPATH</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-12-02T21:48:00">
-                December 02 2013
-        </abbr>
-
-<p><!-- In <a href="./category/little-eureka-moments.html">Little Eureka Moments</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <div class="entry-summary">
-                    <p>About a week ago, I installed <a href="http://brew.sh/">Homebrew</a> on my OSX, mostly because I wanted to use Unix's <code>wget</code> command (It's like Unix's <a href="http://en.wikipedia.org/wiki/List_of_spells_in_Harry_Potter">accio</a>! <code>wget horcrux</code>. <code>wget firebolt</code>.)</p>
-<p>Unfortunately, doing so installed a new version of python on my machine and switched the <code>PATH</code> and <code>PYTHONPATH</code> away from ...</p>
-                </div>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="./tag/anaconda.html">anaconda</a>
-           <a href="./tag/homebrew.html">homebrew</a>
-           <a href="./tag/osx.html">osx</a>
-           <a href="./tag/python.html">python</a>
-           <a href="./tag/unix.html">unix</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="./homebrew-path-pythonpath.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="./homebrew-path-pythonpath.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
 <p class="paginator">

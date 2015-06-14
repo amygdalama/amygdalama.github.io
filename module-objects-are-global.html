@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Module objects are global!</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+   
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href=".">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href=".">Home</a></li>
+                    <li><a href="./pages/about.html">About</a></li>
+                    <li><a href="./pages/contact.html">Contact</a></li>
+                    <li><a href="./pages/projects.html">Projects</a></li>
+                    <li><a href="./pages/talks.html">Talks</a></li>
+                </ul></nav>
+
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="module-objects-are-global.html" rel="bookmark"
+           title="Permalink to Module objects are global!">Module objects are global!</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-06-14T00:00:00">
+                June 14 2015
+        </abbr>
+
+<p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info -->      <p>One of my favorite kinds of bugs is when a test that seems entirely unrelated to a code change fails. I've trained myself to look for the common causes, usually having to deal with shared state due to a test missing a proper teardown. But this week, I had a new kind of failure, one to do with module objects and how Python's import mechanism works, which, if you didn't know, is also <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">one of my favorite things</a>.</p>
+<p>I've been experimenting with <a href="https://github.com/joke2k/faker">faker</a>, a package for generating random phone numbers, email addresses, etc, for use in tests. My goal was to have a wide surface area of phone numbers used across tests, but also for each test to use the same phone number(s) every test run.</p>
+<p>Using <code>faker</code> is pretty simple:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">phone_number</span><span class="p">()</span>
+<span class="go">u&#39;742-547-3459x52762&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">phone_number</span><span class="p">()</span>
+<span class="go">u&#39;742-547-3459x52762&#39;</span>
+</pre></div>
+
+
+<p>Here, I'm seeding the <code>Faker</code> instance so we get the same phone number for each call. Having to do this in the setup for every test, though, seemed like a lot of tedious work, and probably easy to forget, so I wanted to see if I could build a nose plugin that would seed a <code>Faker</code> instance for me based on the hash of the test name.</p>
+<p>This worked great... until I ran our entire test suite, and a test that <em>didn't</em> use <code>faker</code> mysteriously started failing due to an invalid phone number.</p>
+<p>However, after a bit of digging, I found that the failing test <em>did</em> use the <code>random</code> module, generating a phone number like this:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">phone_number_digits</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+</pre></div>
+
+
+<p>I immediately recognize that this has some possibility to generate an invalid phone number (<code>999</code> isn't a valid area code). I try running the test suite again, assuming that there's a small chance that this test will fail, and maybe I just got unlucky. Nope, it failed a second time. No matter how many times I run the test suite, this test fails.</p>
+<p>Hrm.</p>
+<p>Does seeding <code>faker</code> also seed <code>random</code>? Let's test this out in our REPL:</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="go">85</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="go">85</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="go">85</span>
+</pre></div>
+
+
+<p>Aha! So <code>faker</code> seeds <code>random</code>. But how does that work? Time to look at the source for <code>faker</code> to see how <code>seed</code> works. <a href="https://github.com/joke2k/faker/blob/e036b29268d346000453211d6f3153e99bdc2fe6/faker/generator.py#L52">Here's</a> the relevant code:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">seed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calls random.seed&quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Here's a summary of what we know so far:</p>
+<ol>
+<li>module <code>a</code> imports module <code>b</code></li>
+<li>module <code>b</code> seeds <code>random</code></li>
+<li>as a result, <code>random</code> is <em>also</em> seeded in module <code>a</code></li>
+</ol>
+<p>This must mean that the <code>random</code> imported in <code>a</code> is the <em>same</em> module object as the <code>random</code> imported in <code>b</code>. So if this is the case, we can do things like add attributes to <code>random</code> in one module, and access them in another module. Let's try!</p>
+<div class="highlight"><pre><span class="c"># a.py:</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">defined_in_a</span> <span class="o">=</span> <span class="s">&quot;hi!&quot;</span>
+
+
+<span class="c"># b.py:</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">defined_in_a</span><span class="p">)</span>
+</pre></div>
+
+
+<p>When we try running <code>b.py</code>, do we get a <code>NameError</code>? Or does this resolve and print <code>"hi!"</code>? Let's see:</p>
+<div class="highlight"><pre><span class="gp">$</span> python b.py
+<span class="go">hi!</span>
+</pre></div>
+
+
+<p>Neat. So module objects are global. For more on how this works, this documentation might be helpful:</p>
+<ul>
+<li><a href="https://docs.python.org/3/reference/import.html#the-import-system">the import system</a></li>
+<li><a href="https://docs.python.org/3.4/library/sys.html#sys.modules">sys. modules</a></li>
+</ul>
+<p>If you're thinking that it's probably bad that seeding <code>faker</code> has side-effects outside of <code>faker</code>, you're right! <a href="https://github.com/joke2k/faker/issues/14">Here's</a> a ticket explaining why this is a problem and some possible solutions.</p>
+      <p>
+    <!-- <p> -->
+        tags: 
+           <a href="./tag/python.html">python</a>
+           <a href="./tag/import.html">import</a>
+           <a href="./tag/debugging.html">debugging</a>
+    <!-- </p> -->
+    
+      </p>
+    </div><!-- /.entry-content -->
+    <br>
+    <div class="comments">
+      <h1>Comments</h1>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "module-objects-are-global.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://mathamy.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-48330831-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+<script type="text/javascript">
+    var disqus_shortname = 'mathamy';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
