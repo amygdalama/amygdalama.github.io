@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Watch it fail</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+   
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href=".">Amy Hanlon </a></h1>
+                <nav><ul>
+                    <li><a href=".">Home</a></li>
+                    <li><a href="./pages/about.html">About</a></li>
+                    <li><a href="./pages/contact.html">Contact</a></li>
+                    <li><a href="./pages/projects.html">Projects</a></li>
+                    <li><a href="./pages/talks.html">Talks</a></li>
+                </ul></nav>
+
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="watch-it-fail.html" rel="bookmark"
+           title="Permalink to Watch it fail">Watch it fail</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-06-27T00:00:00">
+                June 27 2015
+        </abbr>
+
+<p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info -->      <p>A tenet of test-driven development is, because you're writing your test first, you <em>watch it fail</em>, and then you write code to make it pass.
+Here are three examples of tests that pass even when they shouldn't. See if you can figure out why!</p>
+<h3 id="1-willow">1. willow</h3>
+<p>A colleague of mine found a bunch of tests in our test suite using <a href="https://docs.python.org/3/library/unittest.mock.html">mock</a> that were written like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestChangePrimaryEmail</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_change_primary_email_sends_email_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
+        <span class="n">old_email</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
+        <span class="n">new_email</span> <span class="o">=</span> <span class="s">&#39;test@example.com&#39;</span>
+
+        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">Emailer</span><span class="p">,</span> <span class="s">&#39;send&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_send</span><span class="p">:</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">change_primary_email</span><span class="p">(</span><span class="n">new_email</span><span class="p">)</span>
+
+        <span class="n">mock_send</span><span class="o">.</span><span class="n">assert_has_call</span><span class="p">(</span><span class="n">old_email</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This test would pass even if <code>user.change_primary_email</code> never sends an email! Why?</p>
+<h3 id="2-lying-cat">2. lying cat</h3>
+<p>Let's say we wanted to test cancelling a user, where a user object could look like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">is_cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span>
+
+    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+
+
+<p>And then our test looks like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestCancelUser</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_cancel_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
+
+        <span class="n">user</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This test would pass even if the user wasn't cancelled! Why?</p>
+<h3 id="3-cady">3. cady</h3>
+<p>Just this week we found a great bug:</p>
+<ul>
+<li>some users have special "post to wordpress" email addresses saved in their contact books</li>
+<li>users can send invites to join Venmo to all of the email addresses in their contact book (who aren't already Venmo users)</li>
+</ul>
+<p>The combination of these two things could cause us to post an invite to join Venmo to the user's Wordpress blog. Oops.</p>
+<p>A colleague fixed this bug by blacklisting emails with a Wordpress domain in our invite emailer and wrote a test for it like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestDontEmailWordpress</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_inviting_contacts_skips_wordpress_emails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
+        <span class="n">user_to_invite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_another_test_user</span><span class="p">()</span>
+        <span class="n">user_to_invite</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s">&#39;blacklisted@wordpress.com&#39;</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">add_to_contacts</span><span class="p">(</span><span class="n">user_to_invite</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">Emailer</span><span class="p">,</span> <span class="s">&#39;send&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_send</span><span class="p">:</span>
+            <span class="n">spam_contact_book_with_invites</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">mock_send</span><span class="o">.</span><span class="n">called</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This test would pass even if Wordpress emails weren't blacklisted! Why?</p>
+      <p>
+    <!-- <p> -->
+        tags: 
+           <a href="./tag/testing.html">testing</a>
+           <a href="./tag/puzzles.html">puzzles</a>
+    <!-- </p> -->
+    
+      </p>
+    </div><!-- /.entry-content -->
+    <br>
+    <div class="comments">
+      <h1>Comments</h1>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "watch-it-fail.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://mathamy.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-48330831-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+<script type="text/javascript">
+    var disqus_shortname = 'mathamy';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

@@ -34,7 +34,104 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="./module-objects-are-global.html">Module objects are global!</a></h1>
+                    <h1 class="entry-title"><a href="./watch-it-fail.html">Watch it fail</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-06-27T00:00:00">
+                June 27 2015
+        </abbr>
+
+<p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>A tenet of test-driven development is, because you're writing your test first, you <em>watch it fail</em>, and then you write code to make it pass.
+Here are three examples of tests that pass even when they shouldn't. See if you can figure out why!</p>
+<h3 id="1-willow">1. willow</h3>
+<p>A colleague of mine found a bunch of tests in our test suite using <a href="https://docs.python.org/3/library/unittest.mock.html">mock</a> that were written like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestChangePrimaryEmail</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_change_primary_email_sends_email_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
+        <span class="n">old_email</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
+        <span class="n">new_email</span> <span class="o">=</span> <span class="s">&#39;test@example.com&#39;</span>
+
+        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">Emailer</span><span class="p">,</span> <span class="s">&#39;send&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_send</span><span class="p">:</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">change_primary_email</span><span class="p">(</span><span class="n">new_email</span><span class="p">)</span>
+
+        <span class="n">mock_send</span><span class="o">.</span><span class="n">assert_has_call</span><span class="p">(</span><span class="n">old_email</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This test would pass even if <code>user.change_primary_email</code> never sends an email! Why?</p>
+<h3 id="2-lying-cat">2. lying cat</h3>
+<p>Let's say we wanted to test cancelling a user, where a user object could look like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">is_cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span>
+
+    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+
+
+<p>And then our test looks like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestCancelUser</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_cancel_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
+
+        <span class="n">user</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This test would pass even if the user wasn't cancelled! Why?</p>
+<h3 id="3-cady">3. cady</h3>
+<p>Just this week we found a great bug:</p>
+<ul>
+<li>some users have special "post to wordpress" email addresses saved in their contact books</li>
+<li>users can send invites to join Venmo to all of the email addresses in their contact book (who aren't already Venmo users)</li>
+</ul>
+<p>The combination of these two things could cause us to post an invite to join Venmo to the user's Wordpress blog. Oops.</p>
+<p>A colleague fixed this bug by blacklisting emails with a Wordpress domain in our invite emailer and wrote a test for it like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestDontEmailWordpress</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_inviting_contacts_skips_wordpress_emails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
+        <span class="n">user_to_invite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_another_test_user</span><span class="p">()</span>
+        <span class="n">user_to_invite</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s">&#39;blacklisted@wordpress.com&#39;</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">add_to_contacts</span><span class="p">(</span><span class="n">user_to_invite</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">Emailer</span><span class="p">,</span> <span class="s">&#39;send&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_send</span><span class="p">:</span>
+            <span class="n">spam_contact_book_with_invites</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">mock_send</span><span class="o">.</span><span class="n">called</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This test would pass even if Wordpress emails weren't blacklisted! Why?</p>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="./tag/testing.html">testing</a>
+           <a href="./tag/puzzles.html">puzzles</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="./watch-it-fail.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class="page-title">Other articles</h1>
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                        <h1 class="entry-title"><a href="./module-objects-are-global.html" rel="bookmark" title="Permalink to Module objects are global!">Module objects are global!</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-06-14T00:00:00">
                 June 14 2015
@@ -43,97 +140,25 @@
 <p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>One of my favorite kinds of bugs is when a test that seems entirely unrelated to a code change fails. I've trained myself to look for the common causes, usually having to deal with shared state due to a test missing a proper teardown. But this week, I had a new kind of failure, one to do with module objects and how Python's import mechanism works, which, if you didn't know, is also <a href="http://mathamy.com/import-accio-bootstrapping-python-grammar.html">one of my favorite things</a>.</p>
-<p>I've been experimenting with <a href="https://github.com/joke2k/faker">faker</a>, a package for generating random phone numbers, email addresses, etc, for use in tests. My goal was to have a wide surface area of phone numbers used across tests, but also for each test to use the same phone number(s) every test run.</p>
-<p>Using <code>faker</code> is pretty simple:</p>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">phone_number</span><span class="p">()</span>
-<span class="go">u&#39;742-547-3459x52762&#39;</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">phone_number</span><span class="p">()</span>
-<span class="go">u&#39;742-547-3459x52762&#39;</span>
-</pre></div>
-
-
-<p>Here, I'm seeding the <code>Faker</code> instance so we get the same phone number for each call. Having to do this in the setup for every test, though, seemed like a lot of tedious work, and probably easy to forget, so I wanted to see if I could build a nose plugin that would seed a <code>Faker</code> instance for me based on the hash of the test name.</p>
-<p>This worked great... until I ran our entire test suite, and a test that <em>didn't</em> use <code>faker</code> mysteriously started failing due to an invalid phone number.</p>
-<p>However, after a bit of digging, I found that the failing test <em>did</em> use the <code>random</code> module, generating a phone number like this:</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">phone_number_digits</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-<span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
-</pre></div>
-
-
-<p>I immediately recognize that this has some possibility to generate an invalid phone number (<code>999</code> isn't a valid area code). I try running the test suite again, assuming that there's a small chance that this test will fail, and maybe I just got unlucky. Nope, it failed a second time. No matter how many times I run the test suite, this test fails.</p>
-<p>Hrm.</p>
-<p>Does seeding <code>faker</code> also seed <code>random</code>? Let's test this out in our REPL:</p>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="go">85</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="go">85</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="go">85</span>
-</pre></div>
-
-
-<p>Aha! So <code>faker</code> seeds <code>random</code>. But how does that work? Time to look at the source for <code>faker</code> to see how <code>seed</code> works. <a href="https://github.com/joke2k/faker/blob/e036b29268d346000453211d6f3153e99bdc2fe6/faker/generator.py#L52">Here's</a> the relevant code:</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">seed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calls random.seed&quot;&quot;&quot;</span>
-    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-</pre></div>
-
-
-<p>Here's a summary of what we know so far:</p>
-<ol>
-<li>module <code>a</code> imports module <code>b</code></li>
-<li>module <code>b</code> seeds <code>random</code></li>
-<li>as a result, <code>random</code> is <em>also</em> seeded in module <code>a</code></li>
-</ol>
-<p>This must mean that the <code>random</code> imported in <code>a</code> is the <em>same</em> module object as the <code>random</code> imported in <code>b</code>. So if this is the case, we can do things like add attributes to <code>random</code> in one module, and access them in another module. Let's try!</p>
-<div class="highlight"><pre><span class="c"># a.py:</span>
-<span class="kn">import</span> <span class="nn">random</span>
-
-<span class="n">random</span><span class="o">.</span><span class="n">defined_in_a</span> <span class="o">=</span> <span class="s">&quot;hi!&quot;</span>
-
-
-<span class="c"># b.py:</span>
-<span class="kn">import</span> <span class="nn">random</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">defined_in_a</span><span class="p">)</span>
-</pre></div>
-
-
-<p>When we try running <code>b.py</code>, do we get a <code>NameError</code>? Or does this resolve and print <code>"hi!"</code>? Let's see:</p>
-<div class="highlight"><pre><span class="gp">$</span> python b.py
-<span class="go">hi!</span>
-</pre></div>
-
-
-<p>Neat. So module objects are global. For more on how this works, this documentation might be helpful:</p>
-<ul>
-<li><a href="https://docs.python.org/3/reference/import.html#the-import-system">the import system</a></li>
-<li><a href="https://docs.python.org/3.4/library/sys.html#sys.modules">sys. modules</a></li>
-</ul>
-<p>If you're thinking that it's probably bad that seeding <code>faker</code> has side-effects outside of <code>faker</code>, you're right! <a href="https://github.com/joke2k/faker/issues/14">Here's</a> a ticket explaining why this is a problem and some possible solutions.</p>
-                    <p>    <!-- <p> -->
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>One of my favorite kinds of bugs is when a test that seems entirely unrelated to a code change fails. I've trained myself to look for the common causes, usually having to deal with shared state due to a test missing a proper teardown. But this week, I had ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="./tag/python.html">python</a>
            <a href="./tag/import.html">import</a>
            <a href="./tag/debugging.html">debugging</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="./module-objects-are-global.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class="page-title">Other articles</h1>
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="./module-objects-are-global.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="./module-objects-are-global.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -437,47 +462,6 @@
                 <!-- <a class="readmore" href="./after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html">read more</a> -->
             </p>
                 <!-- <p>There are probably no <a href="./after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                        <h1 class="entry-title"><a href="./a-love-affair-with-broken-things.html" rel="bookmark" title="Permalink to A Love Affair With Broken Things">A Love Affair With Broken Things</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-03-31T00:00:00">
-                March 31 2014
-        </abbr>
-
-<p><!-- In <a href="./category/projects.html">Projects</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <div class="entry-summary">
-                    <p>I love broken things, unfinished things, breaking things, unfinishing things. Broken and unfinished things allow you to see the process in which they were created; their most intimate secrets are exposed.</p>
-<h2 id="broken-statues">Broken Statues</h2>
-<p>A week ago, inside <a href="http://www.metmuseum.org/en">The Metropolitan Museum of Art</a>, my love for broken things was realized. Just ...</p>
-                </div>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="./tag/learning.html">learning</a>
-           <a href="./tag/hacker-school.html">hacker school</a>
-           <a href="./tag/python.html">python</a>
-           <a href="./tag/functional-programming.html">functional programming</a>
-           <a href="./tag/map.html">map</a>
-           <a href="./tag/lambda.html">lambda</a>
-           <a href="./tag/python-internals.html">python internals</a>
-           <a href="./tag/grammar.html">grammar</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="./a-love-affair-with-broken-things.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="./a-love-affair-with-broken-things.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
 <p class="paginator">
