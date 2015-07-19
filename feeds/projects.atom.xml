@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/projects.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2015-06-27T00:00:00-04:00</updated><entry><title>Watch it fail</title><link href="http://amygdalama.github.io/watch-it-fail.html" rel="alternate"></link><updated>2015-06-27T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2015-06-27:watch-it-fail.html</id><summary type="html">&lt;p&gt;A tenet of test-driven development is, because you're writing your test first, you &lt;em&gt;watch it fail&lt;/em&gt;, and then you write code to make it pass.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Amy Hanlon</title><link href="http://amygdalama.github.io/" rel="alternate"></link><link href="http://amygdalama.github.io/feeds/projects.atom.xml" rel="self"></link><id>http://amygdalama.github.io/</id><updated>2015-07-19T00:00:00-04:00</updated><entry><title>Death to the rubber stamp!</title><link href="http://amygdalama.github.io/death-to-the-rubber-stamp.html" rel="alternate"></link><updated>2015-07-19T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2015-07-19:death-to-the-rubber-stamp.html</id><summary type="html">&lt;p&gt;You work really hard on some code, submit a pull request, hoping for some feedback, and then, dun dun dunnnn...&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;✨ lgtm! ✨&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;iframe src="//giphy.com/embed/3h5pe45FM9qUM" width="480" height="267" frameBorder="0" style="max-width: 100%" class="giphy-embed" webkitAllowFullScreen mozallowfullscreen allowFullScreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;Come on. We all know that all software is broken. No pull request is perfect -- there's always room for improvement. Yet so often we respond with an even shorter version of &lt;em&gt;"yeah, sure, whatever"&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;This response is not helpful for you as the reviewer, and it's not helpful for the author, and it's not helpful for your organization. So, let's say someone assigns you a pull request. How can you do something more useful than simply giving it a rubber stamp of approval?&lt;/p&gt;
+&lt;h3 id="ask-lots-of-questions"&gt;Ask lots of questions!&lt;/h3&gt;
+&lt;p&gt;When I get a pull request, here are some questions I ask myself (and if the answer isn't clear, I ask the author).
+These questions both help find improvements in the patch, and also can start meaningful discussions that can help each of you learn more about how to think about code.&lt;/p&gt;
+&lt;h3 id="meta"&gt;Meta&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;What problem is this pull request is solving?&lt;/li&gt;
+&lt;li&gt;Is it solving the right problem?&lt;/li&gt;
+&lt;li&gt;Does it solve the problem?&lt;/li&gt;
+&lt;li&gt;What are other ways the problem could be solved? Why did the author choose this solution?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="history"&gt;History&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Do the commit messages accurately describe what problem is being solved?&lt;/li&gt;
+&lt;li&gt;Do the structure and history of the commits make sense? &lt;/li&gt;
+&lt;li&gt;Are there any surprises in any of the commits (eg things you wouldn't expect to be included in the commit based on the commit message)?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="design"&gt;Design&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Good programmers write code that humans can understand.
+&lt;em&gt;- Martin Fowler&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Is the code well-tested?&lt;/li&gt;
+&lt;li&gt;Is the code easy to read?&lt;/li&gt;
+&lt;li&gt;Are there any parts that are confusing?&lt;/li&gt;
+&lt;li&gt;Are the names informative?&lt;/li&gt;
+&lt;li&gt;Are there any functions that do things that surprise you?&lt;/li&gt;
+&lt;li&gt;Do the functions do only one thing?&lt;/li&gt;
+&lt;li&gt;Are the statements in each function all at the same level of abstraction?&lt;/li&gt;
+&lt;li&gt;Are there any other code smells?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If the code is confusing or hard to read, that's a problem with the code, not you (the reader). Ask the author to clarify and to make it easier to read.&lt;/p&gt;
+&lt;h3 id="details"&gt;Details&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Does the code comply to your org's coding standards?&lt;/li&gt;
+&lt;li&gt;Could the tests ever fail?&lt;/li&gt;
+&lt;li&gt;Do you see any obvious bugs? (This one's hard!)&lt;/li&gt;
+&lt;li&gt;Does the patch touch any particularly volatile or high-risk parts of the codebase?&lt;/li&gt;
+&lt;li&gt;If the patch has bugs, what's the worst thing that could happen?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;What questions do you ask when reviewing code?&lt;/p&gt;
+&lt;h3 id="related-reading"&gt;Related reading&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://rachelbythebay.com/w/2012/03/10/review/"&gt;Code reviews with a rubber stamp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://groups.google.com/a/chromium.org/forum/#!topic/chromium-dev/b0Lb_mXfp0Y"&gt;Please don't rubber stamp code reviews&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://jvns.ca/blog/2014/06/13/asking-questions-is-a-superpower/"&gt;Asking questions is a superpower&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=hY14Er6JX2s"&gt;Your Brain's API: Giving and receiving technical help&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/01323508820"&gt;Clean Code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="code review"></category></entry><entry><title>Watch it fail</title><link href="http://amygdalama.github.io/watch-it-fail.html" rel="alternate"></link><updated>2015-06-27T00:00:00-04:00</updated><author><name>Amy Hanlon</name></author><id>tag:amygdalama.github.io,2015-06-27:watch-it-fail.html</id><summary type="html">&lt;p&gt;A tenet of test-driven development is, because you're writing your test first, you &lt;em&gt;watch it fail&lt;/em&gt;, and then you write code to make it pass.
 Here are three examples of tests that pass even when they shouldn't. See if you can figure out why!&lt;/p&gt;
 &lt;h3 id="1-willow"&gt;1. willow&lt;/h3&gt;
 &lt;p&gt;A colleague of mine found a bunch of tests in our test suite using &lt;a href="https://docs.python.org/3/library/unittest.mock.html"&gt;mock&lt;/a&gt; that were written like this:&lt;/p&gt;

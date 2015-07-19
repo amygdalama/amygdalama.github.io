@@ -34,7 +34,90 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../watch-it-fail.html">Watch it fail</a></h1>
+                    <h1 class="entry-title"><a href="../death-to-the-rubber-stamp.html">Death to the rubber stamp!</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-07-19T00:00:00">
+                July 19 2015
+        </abbr>
+
+<p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>You work really hard on some code, submit a pull request, hoping for some feedback, and then, dun dun dunnnn...</p>
+<blockquote>
+<p>✨ lgtm! ✨</p>
+</blockquote>
+<iframe src="//giphy.com/embed/3h5pe45FM9qUM" width="480" height="267" frameBorder="0" style="max-width: 100%" class="giphy-embed" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+<p>Come on. We all know that all software is broken. No pull request is perfect -- there's always room for improvement. Yet so often we respond with an even shorter version of <em>"yeah, sure, whatever"</em>.</p>
+<p>This response is not helpful for you as the reviewer, and it's not helpful for the author, and it's not helpful for your organization. So, let's say someone assigns you a pull request. How can you do something more useful than simply giving it a rubber stamp of approval?</p>
+<h3 id="ask-lots-of-questions">Ask lots of questions!</h3>
+<p>When I get a pull request, here are some questions I ask myself (and if the answer isn't clear, I ask the author).
+These questions both help find improvements in the patch, and also can start meaningful discussions that can help each of you learn more about how to think about code.</p>
+<h3 id="meta">Meta</h3>
+<ul>
+<li>What problem is this pull request is solving?</li>
+<li>Is it solving the right problem?</li>
+<li>Does it solve the problem?</li>
+<li>What are other ways the problem could be solved? Why did the author choose this solution?</li>
+</ul>
+<h3 id="history">History</h3>
+<ul>
+<li>Do the commit messages accurately describe what problem is being solved?</li>
+<li>Do the structure and history of the commits make sense? </li>
+<li>Are there any surprises in any of the commits (eg things you wouldn't expect to be included in the commit based on the commit message)?</li>
+</ul>
+<h3 id="design">Design</h3>
+<blockquote>
+<p>Good programmers write code that humans can understand.
+<em>- Martin Fowler</em></p>
+</blockquote>
+<ul>
+<li>Is the code well-tested?</li>
+<li>Is the code easy to read?</li>
+<li>Are there any parts that are confusing?</li>
+<li>Are the names informative?</li>
+<li>Are there any functions that do things that surprise you?</li>
+<li>Do the functions do only one thing?</li>
+<li>Are the statements in each function all at the same level of abstraction?</li>
+<li>Are there any other code smells?</li>
+</ul>
+<p>If the code is confusing or hard to read, that's a problem with the code, not you (the reader). Ask the author to clarify and to make it easier to read.</p>
+<h3 id="details">Details</h3>
+<ul>
+<li>Does the code comply to your org's coding standards?</li>
+<li>Could the tests ever fail?</li>
+<li>Do you see any obvious bugs? (This one's hard!)</li>
+<li>Does the patch touch any particularly volatile or high-risk parts of the codebase?</li>
+<li>If the patch has bugs, what's the worst thing that could happen?</li>
+</ul>
+<p>What questions do you ask when reviewing code?</p>
+<h3 id="related-reading">Related reading</h3>
+<ul>
+<li><a href="https://rachelbythebay.com/w/2012/03/10/review/">Code reviews with a rubber stamp</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/forum/#!topic/chromium-dev/b0Lb_mXfp0Y">Please don't rubber stamp code reviews</a></li>
+<li><a href="http://jvns.ca/blog/2014/06/13/asking-questions-is-a-superpower/">Asking questions is a superpower</a></li>
+<li><a href="https://www.youtube.com/watch?v=hY14Er6JX2s">Your Brain's API: Giving and receiving technical help</a></li>
+<li><a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/01323508820">Clean Code</a></li>
+</ul>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="../tag/code-review.html">code review</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="../death-to-the-rubber-stamp.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class="page-title">Other articles</h1>
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                        <h1 class="entry-title"><a href="../watch-it-fail.html" rel="bookmark" title="Permalink to Watch it fail">Watch it fail</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-06-27T00:00:00">
                 June 27 2015
@@ -43,88 +126,27 @@
 <p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>A tenet of test-driven development is, because you're writing your test first, you <em>watch it fail</em>, and then you write code to make it pass.
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>A tenet of test-driven development is, because you're writing your test first, you <em>watch it fail</em>, and then you write code to make it pass.
 Here are three examples of tests that pass even when they shouldn't. See if you can figure out why!</p>
 <h3 id="1-willow">1. willow</h3>
-<p>A colleague of mine found a bunch of tests in our test suite using <a href="https://docs.python.org/3/library/unittest.mock.html">mock</a> that were written like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestChangePrimaryEmail</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">test_change_primary_email_sends_email_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
-        <span class="n">old_email</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
-        <span class="n">new_email</span> <span class="o">=</span> <span class="s">&#39;test@example.com&#39;</span>
-
-        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">Emailer</span><span class="p">,</span> <span class="s">&#39;send&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_send</span><span class="p">:</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">change_primary_email</span><span class="p">(</span><span class="n">new_email</span><span class="p">)</span>
-
-        <span class="n">mock_send</span><span class="o">.</span><span class="n">assert_has_call</span><span class="p">(</span><span class="n">old_email</span><span class="p">)</span>
-</pre></div>
-
-
-<p>This test would pass even if <code>user.change_primary_email</code> never sends an email! Why?</p>
-<h3 id="2-lying-cat">2. lying cat</h3>
-<p>Let's say we wanted to test cancelling a user, where a user object could look like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="o">...</span>
-
-    <span class="k">def</span> <span class="nf">is_cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span>
-
-    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span> <span class="o">=</span> <span class="bp">True</span>
-</pre></div>
-
-
-<p>And then our test looks like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestCancelUser</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">test_cancel_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
-
-        <span class="n">user</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">)</span>
-</pre></div>
-
-
-<p>This test would pass even if the user wasn't cancelled! Why?</p>
-<h3 id="3-cady">3. cady</h3>
-<p>Just this week we found a great bug:</p>
-<ul>
-<li>some users have special "post to wordpress" email addresses saved in their contact books</li>
-<li>users can send invites to join Venmo to all of the email addresses in their contact book (who aren't already Venmo users)</li>
-</ul>
-<p>The combination of these two things could cause us to post an invite to join Venmo to the user's Wordpress blog. Oops.</p>
-<p>A colleague fixed this bug by blacklisting emails with a Wordpress domain in our invite emailer and wrote a test for it like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">TestDontEmailWordpress</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">test_inviting_contacts_skips_wordpress_emails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test_user</span><span class="p">()</span>
-        <span class="n">user_to_invite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_another_test_user</span><span class="p">()</span>
-        <span class="n">user_to_invite</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s">&#39;blacklisted@wordpress.com&#39;</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">add_to_contacts</span><span class="p">(</span><span class="n">user_to_invite</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">Emailer</span><span class="p">,</span> <span class="s">&#39;send&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_send</span><span class="p">:</span>
-            <span class="n">spam_contact_book_with_invites</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">mock_send</span><span class="o">.</span><span class="n">called</span><span class="p">)</span>
-</pre></div>
-
-
-<p>This test would pass even if Wordpress emails weren't blacklisted! Why?</p>
-                    <p>    <!-- <p> -->
+<p>A colleague ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="../tag/testing.html">testing</a>
            <a href="../tag/puzzles.html">puzzles</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="../watch-it-fail.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1 class="page-title">Other articles</h1>
-                    <ol id="posts-list" class="hfeed">
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="../watch-it-fail.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="../watch-it-fail.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -426,42 +448,6 @@ Here are three examples of tests that pass even when they shouldn't. See if you 
                 <!-- <a class="readmore" href="../dissecting-the-reduce-function.html">read more</a> -->
             </p>
                 <!-- <p>There are probably no <a href="../dissecting-the-reduce-function.html#disqus_thread">comments</a>.</p> -->
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                        <h1 class="entry-title"><a href="../after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html" rel="bookmark" title="Permalink to After Six Months of Learning The Python, I Can Finally Print "Hello World!"">After Six Months of Learning The Python, I Can Finally Print "Hello World!"</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-04-01T00:00:00">
-                April 01 2014
-        </abbr>
-
-<p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
-
-
-</footer><!-- /.post-info -->                <div class="entry-summary">
-                    <p>I've been trying to learn how to write a function in the Python that prints two words, only two, "Hello World." I've been trying for six months. And today, friends, I've done it.</p>
-<p>I've read so many places that you can make print statements in the ...</p>
-                </div>
-                <p class='summary-tags'>
-    <!-- <p> -->
-        tags: 
-           <a href="../tag/python.html">python</a>
-           <a href="../tag/python-internals.html">python internals</a>
-           <a href="../tag/hello-world.html">hello world</a>
-           <a href="../tag/hacker-school.html">hacker school</a>
-    <!-- </p> -->
-    
-                </p>
-
-                <p>
-                <!-- <a class="readmore" href="../after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html">read more</a> -->
-            </p>
-                <!-- <p>There are probably no <a href="../after-six-months-of-learning-the-python-i-can-finally-print-hello-world.html#disqus_thread">comments</a>.</p> -->
                 </div><!-- /.entry-content -->
             </article></li>
 <p class="paginator">
