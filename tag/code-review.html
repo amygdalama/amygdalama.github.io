@@ -34,7 +34,40 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../death-to-the-rubber-stamp.html">Death to the rubber stamp!</a></h1>
+                    <h1 class="entry-title"><a href="../video-how-reviewing-code-makes-me-a-better-programmer.html">Video: How reviewing code makes me a better programmer!</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-08-17T00:00:00">
+                August 17 2015
+        </abbr>
+
+<p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
+
+
+</footer><!-- /.post-info --><p>Many developers see code review as a way to keep code compliant and to reduce bugs, but code review can be so much more than that!
+In this talk, I'll share how reviewing code became one of the most valuable ways for me to become a better programmer.
+I'll cover how you can learn more from code review, how you can improve your skills as a reviewer, and how to influence your colleagues to give you better code review.</p>
+<p>Here's my talk about how reviewing code makes me a better programmer. You can also <a href="http://www.slideshare.net/AmyHanlon/how-reviewing-code-makes-me-a-better-programmer">view my slides</a>.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MfKQGNUHaqs" frameborder="0" allowfullscreen></iframe>
+                    <p>    <!-- <p> -->
+        tags: 
+           <a href="../tag/speaking.html">speaking</a>
+           <a href="../tag/pygotham.html">pygotham</a>
+           <a href="../tag/code-review.html">code-review</a>
+    <!-- </p> -->
+    
+</p>
+<p>There are probably no <a href="../video-how-reviewing-code-makes-me-a-better-programmer.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1 class="page-title">Other articles</h1>
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                        <h1 class="entry-title"><a href="../death-to-the-rubber-stamp.html" rel="bookmark" title="Permalink to Death to the rubber stamp!">Death to the rubber stamp!</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-07-19T00:00:00">
                 July 19 2015
@@ -43,74 +76,32 @@
 <p><!-- In <a href="../category/projects.html">Projects</a>  --></p>
 
 
-</footer><!-- /.post-info --><p>You work really hard on some code, submit a pull request, hoping for some feedback, and then, dun dun dunnnn...</p>
+</footer><!-- /.post-info -->                <div class="entry-summary">
+                    <p>You work really hard on some code, submit a pull request, hoping for some feedback, and then, dun dun dunnnn...</p>
 <blockquote>
 <p>✨ lgtm! ✨</p>
 </blockquote>
 <iframe src="//giphy.com/embed/3h5pe45FM9qUM" width="480" height="267" frameBorder="0" style="max-width: 100%" class="giphy-embed" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-<p>Come on. We all know that all software is broken. No pull request is perfect -- there's always room for improvement. Yet so often we respond with an even shorter version of <em>"yeah, sure, whatever"</em>.</p>
-<p>This response is not helpful for you as the reviewer, and it's not helpful for the author, and it's not helpful for your organization. So, let's say someone assigns you a pull request. How can you do something more useful than simply giving it a rubber stamp of approval?</p>
-<h3 id="ask-lots-of-questions">Ask lots of questions!</h3>
-<p>When I get a pull request, here are some questions I ask myself (and if the answer isn't clear, I ask the author).
-These questions both help find improvements in the patch, and also can start meaningful discussions that can help each of you learn more about how to think about code.</p>
-<h3 id="meta">Meta</h3>
-<ul>
-<li>What problem is this pull request is solving?</li>
-<li>Is it solving the right problem?</li>
-<li>Does it solve the problem?</li>
-<li>What are other ways the problem could be solved? Why did the author choose this solution?</li>
-</ul>
-<h3 id="history">History</h3>
-<ul>
-<li>Do the commit messages accurately describe what problem is being solved?</li>
-<li>Do the structure and history of the commits make sense? </li>
-<li>Are there any surprises in any of the commits (eg things you wouldn't expect to be included in the commit based on the commit message)?</li>
-</ul>
-<h3 id="design">Design</h3>
-<blockquote>
-<p>Good programmers write code that humans can understand.
-<em>- Martin Fowler</em></p>
-</blockquote>
-<ul>
-<li>Is the code well-tested?</li>
-<li>Is the code easy to read?</li>
-<li>Are there any parts that are confusing?</li>
-<li>Are the names informative?</li>
-<li>Are there any functions that do things that surprise you?</li>
-<li>Do the functions do only one thing?</li>
-<li>Are the statements in each function all at the same level of abstraction?</li>
-<li>Are there any other code smells?</li>
-</ul>
-<p>If the code is confusing or hard to read, that's a problem with the code, not you (the reader). Ask the author to clarify and to make it easier to read.</p>
-<h3 id="details">Details</h3>
-<ul>
-<li>Does the code comply to your org's coding standards?</li>
-<li>Could the tests ever fail?</li>
-<li>Do you see any obvious bugs? (This one's hard!)</li>
-<li>Does the patch touch any particularly volatile or high-risk parts of the codebase?</li>
-<li>If the patch has bugs, what's the worst thing that could happen?</li>
-</ul>
-<p>What questions do you ask when reviewing code?</p>
-<h3 id="related-reading">Related reading</h3>
-<ul>
-<li><a href="https://rachelbythebay.com/w/2012/03/10/review/">Code reviews with a rubber stamp</a></li>
-<li><a href="https://groups.google.com/a/chromium.org/forum/#!topic/chromium-dev/b0Lb_mXfp0Y">Please don't rubber stamp code reviews</a></li>
-<li><a href="http://jvns.ca/blog/2014/06/13/asking-questions-is-a-superpower/">Asking questions is a superpower</a></li>
-<li><a href="https://www.youtube.com/watch?v=hY14Er6JX2s">Your Brain's API: Giving and receiving technical help</a></li>
-<li><a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/01323508820">Clean Code</a></li>
-</ul>
-                    <p>    <!-- <p> -->
+<p>Come on. We all know that all software is broken. No pull request is perfect -- there's always room for improvement. Yet so often we respond with an even ...</p>
+                </div>
+                <p class='summary-tags'>
+    <!-- <p> -->
         tags: 
            <a href="../tag/code-review.html">code review</a>
     <!-- </p> -->
     
-</p>
-<p>There are probably no <a href="../death-to-the-rubber-stamp.html#disqus_thread">comments</a>.</p>                </article>
+                </p>
+
+                <p>
+                <!-- <a class="readmore" href="../death-to-the-rubber-stamp.html">read more</a> -->
+            </p>
+                <!-- <p>There are probably no <a href="../death-to-the-rubber-stamp.html#disqus_thread">comments</a>.</p> -->
+                </div><!-- /.entry-content -->
+            </article></li>
 <p class="paginator">
     Page 1 / 1
 </p>
-            </aside><!-- /#featured -->
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
         <section id="extras" class="body">
